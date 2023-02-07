@@ -9,7 +9,7 @@ class SplashActivity: BaseActivity<ActivitySplashBinding>(ActivitySplashBinding:
     override fun initAfterBinding() {
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
-            changeActivity(MainActivity::class.java)
+            changeActivity(LoginActivity::class.java)
             finish()
         }, 1500)
     }
