@@ -11,7 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 
 abstract class BaseActivity<T : ViewBinding>(private val inflate: (LayoutInflater) -> T) : AppCompatActivity() {
-    private lateinit var binding: T
+    protected lateinit var binding: T
+        private set
 
     private var imm: InputMethodManager? = null
 

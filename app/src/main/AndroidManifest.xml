@@ -25,6 +25,9 @@
                 android:value="" />
         </activity>
         <activity android:name=".LoginActivity" />
+        <activity android:name=".SignupAgreeActivity" />
+        <activity android:name=".SignupNicknameActivity" />
+        <activity android:name=".SignupFinishActivity" />
         <activity android:name=".MainActivity" />
     </application>
 
