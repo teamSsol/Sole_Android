@@ -25,12 +25,12 @@
                 android:value="" />
         </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".SignupAgreeActivity" />
-        <activity android:name=".SignupAgreeServiceActivity" />
-        <activity android:name=".SignupAgreePersonalActivity" />
-        <activity android:name=".SignupAgreeMarketingActivity" />
-        <activity android:name=".SignupNicknameActivity" />
-        <activity android:name=".SignupFinishActivity" />
+        <activity android:name=".Signup.SignupAgreeActivity" />
+        <activity android:name=".Signup.SignupAgreeServiceActivity" />
+        <activity android:name=".Signup.SignupAgreePersonalActivity" />
+        <activity android:name=".Signup.SignupAgreeMarketingActivity" />
+        <activity android:name=".Signup.SignupNicknameActivity" />
+        <activity android:name=".Signup.SignupFinishActivity" />
         <activity android:name=".MainActivity" />
     </application>
 

@@ -1,5 +1,6 @@
 package cmc.sole.android
 
+import cmc.sole.android.Signup.SignupAgreeActivity
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivityLoginBinding
 

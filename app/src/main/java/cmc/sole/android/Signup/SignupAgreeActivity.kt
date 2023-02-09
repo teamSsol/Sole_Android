@@ -1,11 +1,11 @@
-package cmc.sole.android
+package cmc.sole.android.Signup
 
 import android.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivitySignupAgreeBinding
-import java.security.AccessController.getContext
 
 
 class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySignupAgreeBinding::inflate) {
@@ -116,9 +116,7 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
     private fun checkAll(): Boolean {
         if ((signupAgreeVM.getService() == true) && (signupAgreeVM.getPersonal() == true) && (signupAgreeVM.getMarketing()) == true) {
             binding.signupAgreeAllIv.setImageResource(R.drawable.ic_radio_check)
-            showLog("EXAMPLE", "1 ${signupAgreeVM.getAll()} / ${signupAgreeVM.getService()} / ${signupAgreeVM.getPersonal()} / ${signupAgreeVM.getMarketing()}")
             signupAgreeVM.setAll()
-            showLog("EXAMPLE", "2 ${signupAgreeVM.getAll()} / ${signupAgreeVM.getService()} / ${signupAgreeVM.getPersonal()} / ${signupAgreeVM.getMarketing()}")
             return true
         } else if (signupAgreeVM.getAll() != false) {
             signupAgreeVM.setAll()
@@ -135,8 +133,6 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
 
         val onText = ContextCompat.getColor(this, R.color.black)
         val offText = Color.parseColor("#FFFFFF")
-
-        showLog("EXAMPLE", "${signupAgreeVM.getService()} / ${signupAgreeVM.getPersonal()}")
 
         if ((signupAgreeVM.getService() == true) && (signupAgreeVM.getPersonal() == true)) {
             binding.signupAgreeNextBtn.setCardBackgroundColor(on)
