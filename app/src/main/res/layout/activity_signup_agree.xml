@@ -74,6 +74,8 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_radio_default"
                 android:layout_marginStart="2dp"
+                android:paddingHorizontal="3dp"
+                android:paddingVertical="3dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
@@ -114,10 +116,12 @@
 
             <ImageView
                 android:id="@+id/signup_agree_service_iv"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:src="@drawable/ic_radio_default"
                 android:layout_marginStart="2dp"
+                android:paddingVertical="3dp"
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
@@ -142,6 +146,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_arrow_right"
+                android:paddingVertical="4dp"
+                android:paddingStart="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
@@ -158,10 +164,12 @@
 
             <ImageView
                 android:id="@+id/signup_agree_personal_iv"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:src="@drawable/ic_radio_default"
                 android:layout_marginStart="2dp"
+                android:paddingVertical="3dp"
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
@@ -186,6 +194,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_arrow_right"
+                android:paddingVertical="4dp"
+                android:paddingStart="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
@@ -203,10 +213,12 @@
 
             <ImageView
                 android:id="@+id/signup_agree_marketing_iv"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:src="@drawable/ic_radio_default"
                 android:layout_marginStart="2dp"
+                android:paddingVertical="3dp"
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
@@ -231,6 +243,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_arrow_right"
+                android:paddingVertical="4dp"
+                android:paddingStart="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
@@ -253,6 +267,7 @@
         app:layout_constraintBottom_toBottomOf="parent" >
 
         <TextView
+            android:id="@+id/signup_agree_next_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="동의하고 계속하기"

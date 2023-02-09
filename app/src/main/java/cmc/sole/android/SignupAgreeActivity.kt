@@ -1,8 +1,12 @@
 package cmc.sole.android
 
+import android.graphics.Color
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivitySignupAgreeBinding
+import java.security.AccessController.getContext
+
 
 class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySignupAgreeBinding::inflate) {
 
@@ -30,49 +34,50 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
                 checkOption(0, true)
 
                 checkOption(1, true)
-                if (signupAgreeVM.getService() == false) {
-                    signupAgreeVM.setService()
-                }
+                if (signupAgreeVM.getService() == false) signupAgreeVM.setService()
 
                 checkOption(2, true)
-                if (signupAgreeVM.getPersonal() == false) {
-                    signupAgreeVM.setPersonal()
-                }
+                if (signupAgreeVM.getPersonal() == false) signupAgreeVM.setPersonal()
 
                 checkOption(3, true)
-                if (signupAgreeVM.getMarketing() == false) {
-                    signupAgreeVM.setMarketing()
-                }
+                if (signupAgreeVM.getMarketing() == false) signupAgreeVM.setMarketing()
+
             } else {
                 checkOption(0, false)
 
                 checkOption(1, false)
-                if (signupAgreeVM.getService() == true) {
-                    signupAgreeVM.setService()
-                }
+                if (signupAgreeVM.getService() == true) signupAgreeVM.setService()
 
                 checkOption(2, false)
-                if (signupAgreeVM.getPersonal() == true) {
-                    signupAgreeVM.setPersonal()
-                }
+                if (signupAgreeVM.getPersonal() == true) signupAgreeVM.setPersonal()
 
                 checkOption(3, false)
-                if (signupAgreeVM.getMarketing() == true) {
-                    signupAgreeVM.setMarketing()
-                }
+                if (signupAgreeVM.getMarketing() == true) signupAgreeVM.setMarketing()
             }
+
+            checkNext()
         }
 
         binding.signupAgreeServiceIv.setOnClickListener {
             signupAgreeVM.setService()
             checkOption(1, signupAgreeVM.getService())
             checkAll()
+            checkNext()
+        }
+
+        binding.signupAgreeServiceArrow.setOnClickListener {
+            changeActivity(SignupAgreeServiceActivity::class.java)
         }
 
         binding.signupAgreePersonalIv.setOnClickListener {
             signupAgreeVM.setPersonal()
             checkOption(2, signupAgreeVM.getPersonal())
             checkAll()
+            checkNext()
+        }
+
+        binding.signupAgreePersonalArrow.setOnClickListener {
+            changeActivity(SignupAgreePersonalActivity::class.java)
         }
 
         binding.signupAgreeMarketingIv.setOnClickListener {
@@ -80,8 +85,17 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
             checkOption(3, signupAgreeVM.getMarketing())
             checkAll()
         }
+
+        binding.signupAgreeMarketingArrow.setOnClickListener {
+            changeActivity(SignupAgreeMarketingActivity::class.java)
+        }
+
+        binding.signupAgreeNextBtn.setOnClickListener {
+            changeActivity(SignupNicknameActivity::class.java)
+        }
     }
 
+    // SignupAgreeVM 에서 받아온 값이 True 인지 False 인지에 따라 이미지 설정
     private fun checkOption(order: Int, option: Boolean?) {
         if (order == 0) {
             if (option == true) binding.signupAgreeAllIv.setImageResource(R.drawable.ic_radio_check)
@@ -98,6 +112,7 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
         }
     }
 
+    // 전체 다 선택했는지 확인
     private fun checkAll(): Boolean {
         if ((signupAgreeVM.getService() == true) && (signupAgreeVM.getPersonal() == true) && (signupAgreeVM.getMarketing()) == true) {
             binding.signupAgreeAllIv.setImageResource(R.drawable.ic_radio_check)
@@ -110,6 +125,27 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
         }
 
         binding.signupAgreeAllIv.setImageResource(R.drawable.ic_radio_default)
+        return false
+    }
+
+    // 다음으로 넘어가는 버튼 활성화/비활성화
+    private fun checkNext(): Boolean {
+        val on = ContextCompat.getColor(this, R.color.main)
+        val off = Color.parseColor("#D3D4D5")
+
+        val onText = ContextCompat.getColor(this, R.color.black)
+        val offText = Color.parseColor("#FFFFFF")
+
+        showLog("EXAMPLE", "${signupAgreeVM.getService()} / ${signupAgreeVM.getPersonal()}")
+
+        if ((signupAgreeVM.getService() == true) && (signupAgreeVM.getPersonal() == true)) {
+            binding.signupAgreeNextBtn.setCardBackgroundColor(on)
+            binding.signupAgreeNextTv.setTextColor(onText)
+            return true
+        }
+
+        binding.signupAgreeNextBtn.setCardBackgroundColor(off)
+        binding.signupAgreeNextTv.setTextColor(offText)
         return false
     }
 }
