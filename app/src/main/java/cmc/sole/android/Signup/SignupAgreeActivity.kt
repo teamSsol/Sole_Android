@@ -91,7 +91,9 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
         }
 
         binding.signupAgreeNextBtn.setOnClickListener {
-            changeActivity(SignupNicknameActivity::class.java)
+            if ((signupAgreeVM.getService() == true) && (signupAgreeVM.getPersonal() == true)) {
+                changeActivity(SignupNicknameActivity::class.java)
+            }
         }
     }
 
