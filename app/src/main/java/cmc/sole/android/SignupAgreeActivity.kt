@@ -105,12 +105,11 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
             signupAgreeVM.setAll()
             showLog("EXAMPLE", "2 ${signupAgreeVM.getAll()} / ${signupAgreeVM.getService()} / ${signupAgreeVM.getPersonal()} / ${signupAgreeVM.getMarketing()}")
             return true
+        } else if (signupAgreeVM.getAll() != false) {
+            signupAgreeVM.setAll()
         }
 
         binding.signupAgreeAllIv.setImageResource(R.drawable.ic_radio_default)
-        showLog("EXAMPLE", "3 ${signupAgreeVM.getAll()} / ${signupAgreeVM.getService()} / ${signupAgreeVM.getPersonal()} / ${signupAgreeVM.getMarketing()}")
-        signupAgreeVM.setAll()
-        showLog("EXAMPLE", "4 ${signupAgreeVM.getAll()} / ${signupAgreeVM.getService()} / ${signupAgreeVM.getPersonal()} / ${signupAgreeVM.getMarketing()}")
         return false
     }
 }
