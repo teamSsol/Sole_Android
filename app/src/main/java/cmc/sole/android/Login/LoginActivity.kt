@@ -1,4 +1,4 @@
-package cmc.sole.android
+package cmc.sole.android.Login
 
 import cmc.sole.android.Signup.SignupAgreeActivity
 import cmc.sole.android.Utils.BaseActivity

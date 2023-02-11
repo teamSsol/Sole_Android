@@ -2,6 +2,7 @@ package cmc.sole.android
 
 import android.os.Handler
 import android.os.Looper
+import cmc.sole.android.Login.LoginActivity
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivitySplashBinding
 
