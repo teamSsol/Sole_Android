@@ -1,5 +1,6 @@
 package cmc.sole.android.Login
 
+import android.content.Intent
 import android.util.Log
 import cmc.sole.android.BuildConfig
 import cmc.sole.android.Signup.SignupAgreeActivity
@@ -31,27 +32,27 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
         binding.loginKakaoCv.setOnClickListener {
             if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
                 UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
-                    if (error != null) {
-                        Log.e("EXAMPLE", "로그인 실패", error)
-                    }
+                    if (error != null) Log.e("EXAMPLE", "로그인 실패", error)
                     else if (token != null) {
                         showLog("EXAMPLE", "로그인 성공 ${token.accessToken}")
-
-                        changeActivity(SignupAgreeActivity::class.java)
+                        sendAccessToken(token.accessToken)
                     }
                 }
             } else {
                 UserApiClient.instance.loginWithKakaoAccount(this) { token, error ->
-                    if (error != null) {
-                        Log.e("EXAMPLE", "로그인 실패", error)
-                    }
+                    if (error != null) Log.e("EXAMPLE", "로그인 실패", error)
                     else if (token != null) {
                         showLog("EXAMPLE", "로그인 성공 ${token.accessToken}")
-
-                        changeActivity(SignupAgreeActivity::class.java)
+                        sendAccessToken(token.accessToken)
                     }
                 }
             }
         }
+    }
+
+    private fun sendAccessToken(accessToken: String) {
+        val intent = Intent(this, SignupAgreeActivity::class.java)
+        intent.putExtra("accessToken", accessToken)
+        startActivity(intent)
     }
 }

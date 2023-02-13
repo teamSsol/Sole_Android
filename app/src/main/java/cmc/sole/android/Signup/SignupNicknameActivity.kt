@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivitySignupNicknameBinding
@@ -13,7 +14,11 @@ import cmc.sole.android.databinding.ActivitySignupNicknameBinding
 
 class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(ActivitySignupNicknameBinding::inflate) {
 
+    private lateinit var signupAgreeVM: SignupViewModel
+
     override fun initAfterBinding() {
+        showLog("EXAMPLE", "token 2 = ${signupAgreeVM.getAccessToken()}")
+
         nicknameListener()
         initClickListener()
     }

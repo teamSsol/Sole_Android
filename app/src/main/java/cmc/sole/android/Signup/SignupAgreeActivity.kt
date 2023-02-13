@@ -7,13 +7,14 @@ import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivitySignupAgreeBinding
 
-
 class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySignupAgreeBinding::inflate) {
 
-    private lateinit var signupAgreeVM: SignupAgreeViewModel
+    private lateinit var signupAgreeVM: SignupViewModel
 
     override fun initAfterBinding() {
-        signupAgreeVM = ViewModelProvider(this).get(SignupAgreeViewModel::class.java)
+        signupAgreeVM = ViewModelProvider(this)[SignupViewModel::class.java]
+        signupAgreeVM.setAccessToken(intent.getStringExtra("accessToken").toString())
+        showLog("EXAMPLE", "token 1 = ${signupAgreeVM.getAccessToken()}")
 
         initRadioSetting()
         initClickListener()
