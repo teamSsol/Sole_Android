@@ -28,7 +28,7 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 /*
                 if (binding.signupNicknameEt.selectionEnd > 9) {
-                    nicknameOption(0, "사용자 아이디는 10자까지 작성이 가능해요")
+                    nicknameOption(0, "닉네임은 최대 10자까지 작성이 가능해요.")
                 } else if (binding.signupNicknameEt.selectionEnd <= 9) {
                     nicknameOption(1, null)
                 }
@@ -39,11 +39,11 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
                 if (binding.signupNicknameEt.length() in 1..10) {
                     // UPDATE: API 연결해서 다른 사용자가 사용 중인 닉네임인지 연결
                     // MEMO: if (만약 사용 중인 닉네임이 아니라면)
-                    nicknameOption(1, null)
+                    nicknameOption(1, "사용 가능한 닉네임입니다.")
                     // MEMO: else if (만약 사용 중인 닉네임이 맞다면)
-                    // nicknameOption(0, "이 사용자 아이디는 이미 다른 사람이 사용하고 있어요")
+                    // nicknameOption(0, "이 닉네임은 이미 다른 사람이 사용하고 있어요.")
                 } else if (binding.signupNicknameEt.length() > 10) {
-                    nicknameOption(0, "사용자 아이디는 10자까지 작성이 가능해요")
+                    nicknameOption(0, "닉네임은 최대 10자까지 작성이 가능해요.")
                 }
             }
         })
@@ -72,17 +72,16 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
         val off = Color.parseColor("#D3D4D5")
         val offText = Color.parseColor("#FFFFFF")
 
+        binding.signupNicknameErrorTv.text = message
+        binding.signupNicknameResult.visibility = View.VISIBLE
+
         if (option == 0) {
-            binding.signupNicknameErrorTv.text = message
-            binding.signupNicknameResult.setImageResource(R.drawable.ic_error)
-            binding.signupNicknameResult.visibility = View.VISIBLE
+            binding.signupNicknameResult.setImageResource(R.drawable.ic_signup_error)
             binding.signupNicknameNextBtn.setCardBackgroundColor(off)
             binding.signupNicknameNextTv.setTextColor(offText)
             binding.signupNicknameNextBtn.isEnabled = false
         } else if (option == 1) {
-            binding.signupNicknameErrorTv.text = ""
-            binding.signupNicknameResult.setImageResource(R.drawable.ic_radio_check)
-            binding.signupNicknameResult.visibility = View.VISIBLE
+            binding.signupNicknameResult.setImageResource(R.drawable.ic_signup_check)
             binding.signupNicknameNextBtn.setCardBackgroundColor(on)
             binding.signupNicknameNextTv.setTextColor(onText)
             binding.signupNicknameNextBtn.isEnabled = true
