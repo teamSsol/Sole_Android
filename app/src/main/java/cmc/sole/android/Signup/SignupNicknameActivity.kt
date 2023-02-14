@@ -1,19 +1,42 @@
 package cmc.sole.android.Signup
 
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
-import android.view.View.OnFocusChangeListener
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivitySignupNicknameBinding
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import java.io.File
 
 
 class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(ActivitySignupNicknameBinding::inflate) {
+
+    companion object{
+        // 갤러리 권한 요청
+        const val REQ_GALLERY = 1
+    }
+
+    private val imageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val imageUri = result.data?.data
+            imageUri?.let{
+                Glide.with(this)
+                    .load(imageUri).placeholder(R.drawable.ic_profile).fallback(R.drawable.ic_profile).fitCenter()
+                    .apply(RequestOptions().circleCrop().override(130,130))
+                    .into(binding.signupNicknameProfileIv)
+            }
+        }
+    }
 
     override fun initAfterBinding() {
         nicknameListener()
@@ -59,6 +82,22 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
     }
 
     private fun initClickListener() {
+        binding.signupNicknameProfilePlusCv.setOnClickListener {
+            val writePermission = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE)
+            val readPermission = ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE)
+
+            //권한 확인
+            if (writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
+                // 권한 요청
+                ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), REQ_GALLERY)
+            } else {
+                // 권한이 있는 경우 갤러리 실행
+                val intent = Intent(Intent.ACTION_PICK)
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+                imageResult.launch(intent)
+            }
+        }
+
         binding.signupNicknameNextBtn.setOnClickListener {
             if (binding.signupNicknameEt.length() in 1..10)
                 changeActivity(SignupFinishActivity::class.java)
