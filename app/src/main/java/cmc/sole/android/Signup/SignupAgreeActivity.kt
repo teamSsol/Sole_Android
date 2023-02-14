@@ -29,41 +29,19 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
 
     private fun initClickListener() {
         binding.signupAgreeAllIv.setOnClickListener {
-            signupAgreeVM.setAll()
+            checkEvent("all")
+        }
 
-            if (signupAgreeVM.getAll() == true) {
-                checkOption(0, true)
-
-                checkOption(1, true)
-                if (signupAgreeVM.getService() == false) signupAgreeVM.setService()
-
-                checkOption(2, true)
-                if (signupAgreeVM.getPersonal() == false) signupAgreeVM.setPersonal()
-
-                checkOption(3, true)
-                if (signupAgreeVM.getMarketing() == false) signupAgreeVM.setMarketing()
-
-            } else {
-                checkOption(0, false)
-
-                checkOption(1, false)
-                if (signupAgreeVM.getService() == true) signupAgreeVM.setService()
-
-                checkOption(2, false)
-                if (signupAgreeVM.getPersonal() == true) signupAgreeVM.setPersonal()
-
-                checkOption(3, false)
-                if (signupAgreeVM.getMarketing() == true) signupAgreeVM.setMarketing()
-            }
-
-            checkNext()
+        binding.signupAgreeAllTv.setOnClickListener {
+            checkEvent("all")
         }
 
         binding.signupAgreeServiceIv.setOnClickListener {
-            signupAgreeVM.setService()
-            checkOption(1, signupAgreeVM.getService())
-            checkAll()
-            checkNext()
+            checkEvent("service")
+        }
+
+        binding.signupAgreeServiceTv.setOnClickListener {
+            checkEvent("service")
         }
 
         binding.signupAgreeServiceArrow.setOnClickListener {
@@ -71,10 +49,11 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
         }
 
         binding.signupAgreePersonalIv.setOnClickListener {
-            signupAgreeVM.setPersonal()
-            checkOption(2, signupAgreeVM.getPersonal())
-            checkAll()
-            checkNext()
+            checkEvent("personal")
+        }
+
+        binding.signupAgreePersonalTv.setOnClickListener {
+            checkEvent("personal")
         }
 
         binding.signupAgreePersonalArrow.setOnClickListener {
@@ -82,9 +61,11 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
         }
 
         binding.signupAgreeMarketingIv.setOnClickListener {
-            signupAgreeVM.setMarketing()
-            checkOption(3, signupAgreeVM.getMarketing())
-            checkAll()
+            checkEvent("marketing")
+        }
+
+        binding.signupAgreeMarketingTv.setOnClickListener {
+            checkEvent("marketing")
         }
 
         binding.signupAgreeMarketingArrow.setOnClickListener {
@@ -94,6 +75,58 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
         binding.signupAgreeNextBtn.setOnClickListener {
             if ((signupAgreeVM.getService() == true) && (signupAgreeVM.getPersonal() == true)) {
                 changeActivity(SignupNicknameActivity::class.java)
+            }
+        }
+    }
+
+    private fun checkEvent(option: String) {
+        when (option) {
+            "all" -> {
+                signupAgreeVM.setAll()
+
+                if (signupAgreeVM.getAll() == true) {
+                    checkOption(0, true)
+
+                    checkOption(1, true)
+                    if (signupAgreeVM.getService() == false) signupAgreeVM.setService()
+
+                    checkOption(2, true)
+                    if (signupAgreeVM.getPersonal() == false) signupAgreeVM.setPersonal()
+
+                    checkOption(3, true)
+                    if (signupAgreeVM.getMarketing() == false) signupAgreeVM.setMarketing()
+
+                } else {
+                    checkOption(0, false)
+
+                    checkOption(1, false)
+                    if (signupAgreeVM.getService() == true) signupAgreeVM.setService()
+
+                    checkOption(2, false)
+                    if (signupAgreeVM.getPersonal() == true) signupAgreeVM.setPersonal()
+
+                    checkOption(3, false)
+                    if (signupAgreeVM.getMarketing() == true) signupAgreeVM.setMarketing()
+                }
+
+                checkNext()
+            }
+            "service" -> {
+                signupAgreeVM.setService()
+                checkOption(1, signupAgreeVM.getService())
+                checkAll()
+                checkNext()
+            }
+            "personal" -> {
+                signupAgreeVM.setPersonal()
+                checkOption(2, signupAgreeVM.getPersonal())
+                checkAll()
+                checkNext()
+            }
+            else -> {
+                signupAgreeVM.setMarketing()
+                checkOption(3, signupAgreeVM.getMarketing())
+                checkAll()
             }
         }
     }
