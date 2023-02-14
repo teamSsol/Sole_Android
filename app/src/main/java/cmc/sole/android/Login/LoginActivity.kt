@@ -3,6 +3,7 @@ package cmc.sole.android.Login
 import android.content.Intent
 import android.util.Log
 import cmc.sole.android.BuildConfig
+import cmc.sole.android.MainActivity
 import cmc.sole.android.Signup.SignupAgreeActivity
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivityLoginBinding
@@ -27,8 +28,12 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
     }
 
     private fun initClickListener() {
-        // 임시로 넣은 부분
-        // UPDATE: 카카오 로그인으로 업데이트 필요
+        // MEMO: 홈으로 가기 위해 임시로 넣은 부분
+        binding.splashLogoIv.setOnClickListener {
+            changeActivity(MainActivity::class.java)
+            finish()
+        }
+
         binding.loginKakaoCv.setOnClickListener {
             if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
                 UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->

@@ -38,7 +38,7 @@ abstract class BaseActivity<T : ViewBinding>(private val inflate: (LayoutInflate
         startActivity(Intent(this, activity))
     }
 
-    fun setFragment(id: Int, fragment: Fragment) {
-        supportFragmentManager.beginTransaction().replace(id, fragment).commit()
+    fun setFragment(frameId: Int, fragment: Fragment) {
+        supportFragmentManager.beginTransaction().replace(frameId, fragment).commit()
     }
 }
