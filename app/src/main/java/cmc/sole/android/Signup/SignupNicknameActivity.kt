@@ -41,6 +41,8 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
                     // nicknameOption(0, "이 닉네임은 이미 다른 사람이 사용하고 있어요.")
                 } else if (binding.signupNicknameEt.length() > 10) {
                     nicknameOption(0, "닉네임은 최대 10자까지 작성이 가능해요.")
+                } else if (binding.signupNicknameEt.length() == 0) {
+                    nicknameOption(-1, null)
                 }
             }
         })
@@ -69,19 +71,29 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
         val off = Color.parseColor("#D3D4D5")
         val offText = Color.parseColor("#FFFFFF")
 
-        binding.signupNicknameErrorTv.text = message
-        binding.signupNicknameResult.visibility = View.VISIBLE
+        binding.signupNicknameResultTv.text = message
 
-        if (option == 0) {
-            binding.signupNicknameResult.setImageResource(R.drawable.ic_signup_error)
-            binding.signupNicknameNextBtn.setCardBackgroundColor(off)
-            binding.signupNicknameNextTv.setTextColor(offText)
-            binding.signupNicknameNextBtn.isEnabled = false
-        } else if (option == 1) {
-            binding.signupNicknameResult.setImageResource(R.drawable.ic_signup_check)
-            binding.signupNicknameNextBtn.setCardBackgroundColor(on)
-            binding.signupNicknameNextTv.setTextColor(onText)
-            binding.signupNicknameNextBtn.isEnabled = true
+        when (option) {
+            -1 -> {
+                binding.signupNicknameResult.setImageResource(0)
+                binding.signupNicknameNextBtn.setCardBackgroundColor(off)
+                binding.signupNicknameNextTv.setTextColor(offText)
+                binding.signupNicknameNextBtn.isEnabled = false
+            }
+            0 -> {
+                binding.signupNicknameResult.setImageResource(R.drawable.ic_signup_error)
+                binding.signupNicknameResultTv.setTextColor(Color.parseColor("#FF717D"))
+                binding.signupNicknameNextBtn.setCardBackgroundColor(off)
+                binding.signupNicknameNextTv.setTextColor(offText)
+                binding.signupNicknameNextBtn.isEnabled = false
+            }
+            1 -> {
+                binding.signupNicknameResult.setImageResource(R.drawable.ic_signup_check)
+                binding.signupNicknameResultTv.setTextColor(Color.parseColor("#8BDEB5"))
+                binding.signupNicknameNextBtn.setCardBackgroundColor(on)
+                binding.signupNicknameNextTv.setTextColor(onText)
+                binding.signupNicknameNextBtn.isEnabled = true
+            }
         }
     }
 }

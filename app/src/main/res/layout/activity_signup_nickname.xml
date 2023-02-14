@@ -89,10 +89,8 @@
         android:id="@+id/signup_nickname_result"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:src="@drawable/ic_signup_check"
         android:layout_marginEnd="16dp"
         android:padding="5dp"
-        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/signup_nickname_et"
         app:layout_constraintBottom_toBottomOf="@id/signup_nickname_et" />
@@ -107,7 +105,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
-        android:id="@+id/signup_nickname_error_tv"
+        android:id="@+id/signup_nickname_result_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
