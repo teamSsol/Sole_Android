@@ -92,6 +92,7 @@
         android:src="@drawable/ic_signup_check"
         android:layout_marginEnd="16dp"
         android:padding="5dp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/signup_nickname_et"
         app:layout_constraintBottom_toBottomOf="@id/signup_nickname_et" />

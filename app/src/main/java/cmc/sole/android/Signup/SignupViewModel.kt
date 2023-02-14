@@ -4,14 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class SignupViewModel: ViewModel() {
-    var accessToken: MutableLiveData<String> = MutableLiveData<String>()
+    var accessToken: MutableLiveData<String?> = MutableLiveData<String?>()
     var all: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     var service: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     var personal: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     var marketing: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
-    fun setAccessToken(accessToken: String) {
-        this.accessToken.value = accessToken
+    fun setAccessToken(accessTokenValue: String) {
+        this.accessToken.value = accessTokenValue
     }
 
     fun setAll() {
@@ -30,8 +30,8 @@ class SignupViewModel: ViewModel() {
         marketing.value = marketing.value != true
     }
 
-    fun getAccessToken(): String? {
-        return accessToken.value
+    fun getAccessToken(): String {
+        return accessToken.value.toString()
     }
 
     fun getAll(): Boolean? {

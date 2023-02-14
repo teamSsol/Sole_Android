@@ -14,6 +14,10 @@ android {
         viewBinding = true
     }
 
+    dataBinding {
+        enabled = true
+    }
+
     defaultConfig {
         applicationId "cmc.sole.android"
         minSdk 21
