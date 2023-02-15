@@ -83,18 +83,20 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
         when (option) {
             "all" -> {
                 signupAgreeVM.setAll()
+                showLog("EXAMPLE", "signupAgreeVM.getAll() = ${signupAgreeVM.getAll()}")
+                showLog("EXAMPLE", "signupAgreeVM.getService() = ${signupAgreeVM.getService()}")
 
                 if (signupAgreeVM.getAll() == true) {
                     checkOption(0, true)
 
                     checkOption(1, true)
-                    if (signupAgreeVM.getService() == false) signupAgreeVM.setService()
+                    if (signupAgreeVM.getService() != true) signupAgreeVM.setService()
 
                     checkOption(2, true)
-                    if (signupAgreeVM.getPersonal() == false) signupAgreeVM.setPersonal()
+                    if (signupAgreeVM.getPersonal() != true) signupAgreeVM.setPersonal()
 
                     checkOption(3, true)
-                    if (signupAgreeVM.getMarketing() == false) signupAgreeVM.setMarketing()
+                    if (signupAgreeVM.getMarketing() != true) signupAgreeVM.setMarketing()
 
                 } else {
                     checkOption(0, false)
