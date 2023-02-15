@@ -14,7 +14,6 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
     override fun initAfterBinding() {
         signupAgreeVM = ViewModelProvider(this)[SignupViewModel::class.java]
         signupAgreeVM.setAccessToken(intent.getStringExtra("accessToken").toString())
-        showLog("EXAMPLE", "token 1 = ${signupAgreeVM.getAccessToken()}")
 
         initRadioSetting()
         initClickListener()
@@ -83,8 +82,6 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
         when (option) {
             "all" -> {
                 signupAgreeVM.setAll()
-                showLog("EXAMPLE", "signupAgreeVM.getAll() = ${signupAgreeVM.getAll()}")
-                showLog("EXAMPLE", "signupAgreeVM.getService() = ${signupAgreeVM.getService()}")
 
                 if (signupAgreeVM.getAll() == true) {
                     checkOption(0, true)

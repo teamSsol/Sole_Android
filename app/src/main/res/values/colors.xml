@@ -12,4 +12,6 @@
     <color name="high_gray">#FF2B2B2B</color>
     <color name="middle_gray">#FF6F6F6F</color>
     <color name="low_gray">#FFEAE9E5</color>
+    <color name="green">#FF8BDEB5</color>
+    <color name="red">#FFFF717D</color>
 </resources>

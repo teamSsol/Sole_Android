@@ -23,7 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/signup_finish_logo_iv"
-        app:layout_constraintBottom_toBottomOf="@id/signup_finish_next_btn">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
             android:id="@+id/signup_finish_content_tv1"
@@ -50,37 +50,12 @@
             android:gravity="center"
             android:textFontWeight="400"
             android:lineHeight="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="50dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/signup_finish_content_tv1"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/signup_finish_next_btn"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="60dp"
-        app:cardBackgroundColor="@color/main"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" >
-
-        <TextView
-            android:id="@+id/signup_finish_next_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="쏠 시작하기"
-            android:fontFamily="@font/button"
-            android:textSize="16sp"
-            android:layout_gravity="center"
-            android:textColor="@color/black" />
-
-    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
