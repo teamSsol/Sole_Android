@@ -12,6 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import cmc.sole.android.R
+import cmc.sole.android.Signup.Retrofit.SignupNicknameRequest
+import cmc.sole.android.Signup.Retrofit.SignupNicknameView
+import cmc.sole.android.Signup.Retrofit.SignupService
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivitySignupNicknameBinding
 import com.bumptech.glide.Glide
@@ -19,8 +22,9 @@ import com.bumptech.glide.request.RequestOptions
 import java.io.File
 
 
-class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(ActivitySignupNicknameBinding::inflate) {
+class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(ActivitySignupNicknameBinding::inflate), SignupNicknameView {
 
+    lateinit var signupService: SignupService
     companion object{
         // 갤러리 권한 요청
         const val REQ_GALLERY = 1
@@ -43,25 +47,19 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
         initClickListener()
     }
 
+    private fun initSignupServce(nickname: SignupNicknameRequest) {
+        signupService = SignupService()
+        signupService.setSignupNicknameView(this)
+        signupService.checkNickname(nickname)
+    }
+
     private fun nicknameListener() {
         binding.signupNicknameEt.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                /*
-                if (binding.signupNicknameEt.selectionEnd > 9) {
-                    nicknameOption(0, "닉네임은 최대 10자까지 작성이 가능해요.")
-                } else if (binding.signupNicknameEt.selectionEnd <= 9) {
-                    nicknameOption(1, null)
-                }
-                */
-            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
             override fun afterTextChanged(p0: Editable?) {
                 if (binding.signupNicknameEt.length() in 1..10) {
-                    // UPDATE: API 연결해서 다른 사용자가 사용 중인 닉네임인지 연결
-                    // MEMO: if (만약 사용 중인 닉네임이 아니라면)
-                    nicknameOption(1, "사용 가능한 닉네임입니다.")
-                    // MEMO: else if (만약 사용 중인 닉네임이 맞다면)
-                    // nicknameOption(0, "이 닉네임은 이미 다른 사람이 사용하고 있어요.")
+                    initSignupServce(SignupNicknameRequest(binding.signupNicknameEt.text.toString()))
                 } else if (binding.signupNicknameEt.length() > 10) {
                     nicknameOption(0, "닉네임은 최대 10자까지 작성이 가능해요.")
                 } else if (binding.signupNicknameEt.length() == 0) {
@@ -69,16 +67,6 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
                 }
             }
         })
-
-        /*
-        binding.signupNicknameEt.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                if (binding.signupNicknameEt.length() in 1..10) {
-                    nicknameOption(1, null)
-                }
-            }
-        }
-        */
     }
 
     private fun initClickListener() {
@@ -134,5 +122,13 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
                 binding.signupNicknameNextBtn.isEnabled = true
             }
         }
+    }
+
+    override fun signupNicknameSuccessView(result: Boolean) {
+        nicknameOption(1, "사용 가능한 닉네임입니다.")
+    }
+
+    override fun signupNicknameFailureView(msg: String) {
+        nicknameOption(0, "이 닉네임은 이미 다른 사람이 사용하고 있어요.")
     }
 }
