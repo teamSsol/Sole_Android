@@ -26,7 +26,7 @@ class SignupService {
                         signupNicknameView.signupNicknameSuccessView(signupResponse)
                     }
                 } else {
-                    // signupNicknameView.signupNicknameFailureView(signupnickname)
+                    signupNicknameView.signupNicknameFailureView()
                 }
             }
             override fun onFailure(call: Call<Boolean>, t: Throwable) {
