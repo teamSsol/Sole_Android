@@ -128,7 +128,7 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
         nicknameOption(1, "사용 가능한 닉네임입니다.")
     }
 
-    override fun signupNicknameFailureView(msg: String) {
+    override fun signupNicknameFailureView() {
         nicknameOption(0, "이 닉네임은 이미 다른 사람이 사용하고 있어요.")
     }
 }
