@@ -1,5 +1,6 @@
 package cmc.sole.android.Signup
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -9,21 +10,23 @@ import cmc.sole.android.databinding.ActivitySignupAgreeBinding
 
 class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySignupAgreeBinding::inflate) {
 
-    private lateinit var signupAgreeVM: SignupViewModel
+    private lateinit var signupVM: SignupViewModel
 
     override fun initAfterBinding() {
-        signupAgreeVM = ViewModelProvider(this)[SignupViewModel::class.java]
-        signupAgreeVM.setAccessToken(intent.getStringExtra("accessToken").toString())
+        signupVM = ViewModelProvider(this)[SignupViewModel::class.java]
+        signupVM.setAccessToken(intent.getStringExtra("accessToken").toString())
+
+        showLog("SIGNUP-SERVICE", "accessToken = ${signupVM.getAccessToken()}")
 
         initRadioSetting()
         initClickListener()
     }
 
     private fun initRadioSetting() {
-        checkOption(0, signupAgreeVM.getAll())
-        checkOption(1, signupAgreeVM.getService())
-        checkOption(2, signupAgreeVM.getPersonal())
-        checkOption(3, signupAgreeVM.getMarketing())
+        checkOption(0, signupVM.getAll())
+        checkOption(1, signupVM.getService())
+        checkOption(2, signupVM.getPersonal())
+        checkOption(3, signupVM.getMarketing())
     }
 
     private fun initClickListener() {
@@ -72,8 +75,11 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
         }
 
         binding.signupAgreeNextBtn.setOnClickListener {
-            if ((signupAgreeVM.getService() == true) && (signupAgreeVM.getPersonal() == true)) {
-                changeActivity(SignupNicknameActivity::class.java)
+            if ((signupVM.getService() == true) && (signupVM.getPersonal() == true)) {
+                val intent = Intent(this, SignupNicknameActivity::class.java)
+                intent.putExtra("accessToken", signupVM.getAccessToken())
+                startActivity(intent)
+                // changeActivity(SignupNicknameActivity::class.java)
             }
         }
     }
@@ -81,56 +87,56 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
     private fun checkEvent(option: String) {
         when (option) {
             "all" -> {
-                signupAgreeVM.setAll()
+                signupVM.setAll()
 
-                if (signupAgreeVM.getAll() == true) {
+                if (signupVM.getAll() == true) {
                     checkOption(0, true)
 
                     checkOption(1, true)
-                    if (signupAgreeVM.getService() != true) signupAgreeVM.setService()
+                    if (signupVM.getService() != true) signupVM.setService()
 
                     checkOption(2, true)
-                    if (signupAgreeVM.getPersonal() != true) signupAgreeVM.setPersonal()
+                    if (signupVM.getPersonal() != true) signupVM.setPersonal()
 
                     checkOption(3, true)
-                    if (signupAgreeVM.getMarketing() != true) signupAgreeVM.setMarketing()
+                    if (signupVM.getMarketing() != true) signupVM.setMarketing()
 
                 } else {
                     checkOption(0, false)
 
                     checkOption(1, false)
-                    if (signupAgreeVM.getService() == true) signupAgreeVM.setService()
+                    if (signupVM.getService() == true) signupVM.setService()
 
                     checkOption(2, false)
-                    if (signupAgreeVM.getPersonal() == true) signupAgreeVM.setPersonal()
+                    if (signupVM.getPersonal() == true) signupVM.setPersonal()
 
                     checkOption(3, false)
-                    if (signupAgreeVM.getMarketing() == true) signupAgreeVM.setMarketing()
+                    if (signupVM.getMarketing() == true) signupVM.setMarketing()
                 }
 
                 checkNext()
             }
             "service" -> {
-                signupAgreeVM.setService()
-                checkOption(1, signupAgreeVM.getService())
+                signupVM.setService()
+                checkOption(1, signupVM.getService())
                 checkAll()
                 checkNext()
             }
             "personal" -> {
-                signupAgreeVM.setPersonal()
-                checkOption(2, signupAgreeVM.getPersonal())
+                signupVM.setPersonal()
+                checkOption(2, signupVM.getPersonal())
                 checkAll()
                 checkNext()
             }
             else -> {
-                signupAgreeVM.setMarketing()
-                checkOption(3, signupAgreeVM.getMarketing())
+                signupVM.setMarketing()
+                checkOption(3, signupVM.getMarketing())
                 checkAll()
             }
         }
     }
 
-    // SignupAgreeVM 에서 받아온 값이 True 인지 False 인지에 따라 이미지 설정
+    // signupVM 에서 받아온 값이 True 인지 False 인지에 따라 이미지 설정
     private fun checkOption(order: Int, option: Boolean?) {
         if (order == 0) {
             if (option == true) binding.signupAgreeAllIv.setImageResource(R.drawable.ic_radio_check)
@@ -149,12 +155,12 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
 
     // 전체 다 선택했는지 확인
     private fun checkAll(): Boolean {
-        if ((signupAgreeVM.getService() == true) && (signupAgreeVM.getPersonal() == true) && (signupAgreeVM.getMarketing()) == true) {
+        if ((signupVM.getService() == true) && (signupVM.getPersonal() == true) && (signupVM.getMarketing()) == true) {
             binding.signupAgreeAllIv.setImageResource(R.drawable.ic_radio_check)
-            signupAgreeVM.setAll()
+            signupVM.setAll()
             return true
-        } else if (signupAgreeVM.getAll() != false) {
-            signupAgreeVM.setAll()
+        } else if (signupVM.getAll() != false) {
+            signupVM.setAll()
         }
 
         binding.signupAgreeAllIv.setImageResource(R.drawable.ic_radio_default)
@@ -169,7 +175,7 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
         val onText = ContextCompat.getColor(this, R.color.black)
         val offText = Color.parseColor("#FFFFFF")
 
-        if ((signupAgreeVM.getService() == true) && (signupAgreeVM.getPersonal() == true)) {
+        if ((signupVM.getService() == true) && (signupVM.getPersonal() == true)) {
             binding.signupAgreeNextBtn.setCardBackgroundColor(on)
             binding.signupAgreeNextTv.setTextColor(onText)
             return true

@@ -4,6 +4,7 @@ import cmc.sole.android.Utils.AuthorizationTokenInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 class NetworkModule {
     companion object {
@@ -19,12 +20,13 @@ class NetworkModule {
                     val client: OkHttpClient = OkHttpClient.Builder()
 /*                        .readTimeout(30000, TimeUnit.MILLISECONDS)
                         .connectTimeout(30000, TimeUnit.MILLISECONDS)*/
-                        .addNetworkInterceptor(AuthorizationTokenInterceptor()) // JWT 자동 헤더 전송 ="Bearer getJwt()"
+                        // .addNetworkInterceptor(AuthorizationTokenInterceptor()) // JWT 자동 헤더 전송 ="Bearer getJwt()"
                         .build()
 
                     retrofit = Retrofit.Builder()
                         .baseUrl(ApplicationClass.BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())
+                        .addConverterFactory(ScalarsConverterFactory.create())
                         .client(client)
                         .build()
                 }
