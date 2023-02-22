@@ -28,8 +28,12 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "KAKAO_API_KEY", properties['kakao_api_key']
-
         manifestPlaceholders["KAKAO_API_KEY"] = properties['kakao_api_key']
+
+        buildConfigField "String", "NAVER_CLIENT_ID", properties['naver_client_id']
+        manifestPlaceholders["NAVER_CLIENT_ID"] = properties['naver_client_id']
+        buildConfigField "String", "NAVER_CLIENT_SECRET", properties['naver_client_secret']
+        manifestPlaceholders["NAVER_CLIENT_SECRET"] = properties['naver_client_secret']
     }
 
     buildTypes {
@@ -64,4 +68,7 @@ dependencies {
 
     // Multipart Converter
     implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
+
+    // Naver Map
+    implementation 'com.naver.maps:map-sdk:3.16.0'
 }

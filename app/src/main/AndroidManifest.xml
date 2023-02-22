@@ -53,6 +53,10 @@
         <activity android:name=".MapFragment" />
         <activity android:name=".ProfileFragment" />
         <activity android:name=".HeartFragment" />
-    </application>
 
+        <!-- Naver Map -->
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="${NAVER_CLIENT_ID}" />
+    </application>
 </manifest>
