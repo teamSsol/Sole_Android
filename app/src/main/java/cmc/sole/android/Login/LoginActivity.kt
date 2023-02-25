@@ -3,6 +3,7 @@ package cmc.sole.android.Login
 import android.content.Intent
 import android.util.Log
 import cmc.sole.android.BuildConfig
+import cmc.sole.android.CourseDetailActivity
 import cmc.sole.android.MainActivity
 import cmc.sole.android.Signup.SignupAgreeActivity
 import cmc.sole.android.Utils.BaseActivity
@@ -30,7 +31,8 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
     private fun initClickListener() {
         // MEMO: 홈으로 가기 위해 임시로 넣은 부분
         binding.splashLogoIv.setOnClickListener {
-            changeActivity(MainActivity::class.java)
+            // changeActivity(MainActivity::class.java)
+            changeActivity(CourseDetailActivity::class.java)
             finish()
         }
 
