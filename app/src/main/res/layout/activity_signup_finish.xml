@@ -2,60 +2,41 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#151515">
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/signup_finish_content1_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="회원가입 완료!"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        android:fontFamily="@font/pretendard_bold"
+        android:layout_marginTop="60dp"
+        android:layout_marginStart="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/signup_finish_content2_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="쏠과 함께 지도 위에 나만의 발자국을 남겨봐요 :)"
+        android:textSize="14sp"
+        android:textColor="#FF404040"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/pretendard_medium"
+        app:layout_constraintStart_toStartOf="@id/signup_finish_content1_tv"
+        app:layout_constraintTop_toBottomOf="@id/signup_finish_content1_tv" />
 
     <ImageView
         android:id="@+id/signup_finish_logo_iv"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:src="@drawable/logo"
-        android:layout_marginTop="50dp"
-        app:layout_constraintBottom_toTopOf="@id/signup_finish_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="153dp"
+        android:layout_height="120dp"
+        android:src="@drawable/ic_logo_shape"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/signup_finish_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signup_finish_logo_iv"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <TextView
-            android:id="@+id/signup_finish_content_tv1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="회원가입 완료!"
-            android:textColor="@color/main"
-            android:fontFamily="@font/body"
-            android:textSize="24sp"
-            android:textFontWeight="600"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/signup_finish_content_tv2"/>
-
-        <TextView
-            android:id="@+id/signup_finish_content_tv2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="쏠과 함께 지도 위에\n나만의 발자국을 남겨봐요 :)"
-            android:textColor="@color/white"
-            android:fontFamily="@font/body"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:textFontWeight="400"
-            android:lineHeight="24dp"
-            android:layout_marginTop="50dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/signup_finish_content_tv1"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

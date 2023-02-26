@@ -192,9 +192,7 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
 
     private fun nicknameOption(option: Int, message: String?) {
         val on = ContextCompat.getColor(this@SignupNicknameActivity, R.color.main)
-        val onText = ContextCompat.getColor(this@SignupNicknameActivity, R.color.black)
         val off = Color.parseColor("#D3D4D5")
-        val offText = Color.parseColor("#FFFFFF")
 
         binding.signupNicknameResultTv.text = message
 
@@ -202,21 +200,18 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
             -1 -> {
                 binding.signupNicknameResult.setImageResource(0)
                 binding.signupNicknameNextBtn.setCardBackgroundColor(off)
-                binding.signupNicknameNextTv.setTextColor(offText)
                 binding.signupNicknameNextBtn.isEnabled = false
             }
             0 -> {
                 binding.signupNicknameResult.setImageResource(R.drawable.ic_signup_error)
                 binding.signupNicknameResultTv.setTextColor(Color.parseColor("#FF717D"))
                 binding.signupNicknameNextBtn.setCardBackgroundColor(off)
-                binding.signupNicknameNextTv.setTextColor(offText)
                 binding.signupNicknameNextBtn.isEnabled = false
             }
             1 -> {
                 binding.signupNicknameResult.setImageResource(R.drawable.ic_signup_check)
                 binding.signupNicknameResultTv.setTextColor(Color.parseColor("#8BDEB5"))
                 binding.signupNicknameNextBtn.setCardBackgroundColor(on)
-                binding.signupNicknameNextTv.setTextColor(onText)
                 binding.signupNicknameNextBtn.isEnabled = true
             }
         }
@@ -236,5 +231,6 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
 
     override fun signupSocialFailureView() {
         showToast("소셜 로그인 에러")
+        changeActivity(SignupFinishActivity::class.java)
     }
 }

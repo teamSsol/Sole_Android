@@ -30,7 +30,7 @@ class CourseDetailActivity: BaseActivity<ActivityCourseDetailBinding>(ActivityCo
 
         val mapFragment = fragmentManager.findFragmentById(R.id.map) as MapFragment
 
-        mapFragment.getMapAsync(this)
+        // mapFragment.getMapAsync(this)
     }
 
     override fun onMapReady(p0: NaverMap) {

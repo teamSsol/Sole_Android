@@ -172,17 +172,12 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
         val on = ContextCompat.getColor(this, R.color.main)
         val off = Color.parseColor("#D3D4D5")
 
-        val onText = ContextCompat.getColor(this, R.color.black)
-        val offText = Color.parseColor("#FFFFFF")
-
         if ((signupVM.getService() == true) && (signupVM.getPersonal() == true)) {
             binding.signupAgreeNextBtn.setCardBackgroundColor(on)
-            binding.signupAgreeNextTv.setTextColor(onText)
             return true
         }
 
         binding.signupAgreeNextBtn.setCardBackgroundColor(off)
-        binding.signupAgreeNextTv.setTextColor(offText)
         return false
     }
 }
