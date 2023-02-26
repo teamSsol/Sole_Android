@@ -47,10 +47,9 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:background="@color/white"
-        app:itemIconTint="@color/black"
-        app:labelVisibilityMode="unlabeled"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/main_bottom_navi"
-        app:itemIconSize="31dp"
+        app:itemIconSize="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

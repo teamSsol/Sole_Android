@@ -1,6 +1,7 @@
 package cmc.sole.android
 
 import android.os.Bundle
+import cmc.sole.android.MyCourse.MyCourseFragment
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivityCourseDetailBinding
 import com.naver.maps.map.NaverMap
@@ -10,7 +11,6 @@ import com.naver.maps.map.OnMapReadyCallback
 
 class CourseDetailActivity: BaseActivity<ActivityCourseDetailBinding>(ActivityCourseDetailBinding::inflate),
     OnMapReadyCallback {
-
 
     override fun initAfterBinding() {
 
@@ -28,7 +28,7 @@ class CourseDetailActivity: BaseActivity<ActivityCourseDetailBinding>(ActivityCo
 //                fm.beginTransaction().add(R.id.map, it).commit()
 //            }
 
-        val mapFragment = fragmentManager.findFragmentById(R.id.map) as MapFragment
+        val mapFragment = fragmentManager.findFragmentById(R.id.map) as MyCourseFragment
 
         // mapFragment.getMapAsync(this)
     }

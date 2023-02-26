@@ -1,4 +1,4 @@
-package cmc.sole.android
+package cmc.sole.android.Home
 
 import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.databinding.FragmentHomeBinding
