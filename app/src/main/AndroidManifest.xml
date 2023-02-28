@@ -17,7 +17,7 @@
         android:theme="@style/Theme.Sole"
         tools:targetApi="31">
         <activity
-            android:name=".CourseDetailActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,7 +54,7 @@
         <activity android:name=".Follow.FollowFragment" />
         <activity android:name=".Scrap.ScrapFragment" />
         <!-- test -->
-<!--        <activity android:name=".CourseDetailActivity" />-->
+        <activity android:name=".CourseDetailActivity" />
 
         <!-- Naver Map -->
         <meta-data
