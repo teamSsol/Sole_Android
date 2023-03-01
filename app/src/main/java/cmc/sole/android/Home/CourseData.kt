@@ -5,7 +5,7 @@ data class PopularCourse(
     var title: String
 )
 
-data class MyCourse(
+data class DefaultCourse(
     var image: String,
     var title: String,
     var scrap: Boolean,

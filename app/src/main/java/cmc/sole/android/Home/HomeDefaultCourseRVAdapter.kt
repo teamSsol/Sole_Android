@@ -4,25 +4,25 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.R
-import cmc.sole.android.databinding.ItemCourseMineBinding
+import cmc.sole.android.databinding.ItemCourseDefaultBinding
 
-class HomeMyCourseRVAdapter(private val courseList: ArrayList<MyCourse>): RecyclerView.Adapter<HomeMyCourseRVAdapter.ViewHolder>() {
+class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>): RecyclerView.Adapter<HomeDefaultCourseRVAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): HomeMyCourseRVAdapter.ViewHolder {
-        val binding: ItemCourseMineBinding = ItemCourseMineBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    ): HomeDefaultCourseRVAdapter.ViewHolder {
+        val binding: ItemCourseDefaultBinding = ItemCourseDefaultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: HomeMyCourseRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HomeDefaultCourseRVAdapter.ViewHolder, position: Int) {
         holder.bind(courseList[position])
     }
 
     override fun getItemCount(): Int = courseList.size
 
-    inner class ViewHolder(val binding: ItemCourseMineBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(course: MyCourse) {
+    inner class ViewHolder(val binding: ItemCourseDefaultBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(course: DefaultCourse) {
             binding.itemCourseTitleTv.text = course.title
 
             if (course.scrap)
