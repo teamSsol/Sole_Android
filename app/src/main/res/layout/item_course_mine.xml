@@ -56,12 +56,11 @@
                     android:id="@+id/item_course_heart_iv"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:src="@drawable/ic_heart_2"
+                    android:src="@drawable/ic_heart_card"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/item_course_title_tv"
-                    app:layout_constraintBottom_toBottomOf="@id/item_course_title_tv"
-                    app:tint="#999999" />
+                    app:layout_constraintBottom_toBottomOf="@id/item_course_title_tv" />
 
                 <TextView
                     android:id="@+id/item_course_location_tv"

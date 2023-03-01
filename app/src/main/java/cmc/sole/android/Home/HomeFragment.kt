@@ -2,12 +2,14 @@ package cmc.sole.android.Home
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Utils.BaseFragment
+import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
+import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.databinding.FragmentHomeBinding
 
 class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
-    lateinit var popularCourseRVAdapter: HomePopularCourseRVAdapter
-    lateinit var myCourseRVAdapter: HomeMyCourseRVAdapter
+    private lateinit var popularCourseRVAdapter: HomePopularCourseRVAdapter
+    private lateinit var myCourseRVAdapter: HomeMyCourseRVAdapter
     private var popularCourseList = ArrayList<PopularCourse>()
     private var myCourseList = ArrayList<MyCourse>()
 
@@ -18,10 +20,12 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
     private fun initAdapter() {
         popularCourseRVAdapter = HomePopularCourseRVAdapter(popularCourseList)
         binding.homePopularCourseRv.adapter = popularCourseRVAdapter
+        binding.homePopularCourseRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 20))
         binding.homePopularCourseRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         myCourseRVAdapter = HomeMyCourseRVAdapter(myCourseList)
         binding.homeMyCourseRv.adapter = myCourseRVAdapter
+        binding.homeMyCourseRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 40))
         binding.homeMyCourseRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         // MEMO: DummyData
