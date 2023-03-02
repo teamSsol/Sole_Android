@@ -2,6 +2,7 @@ package cmc.sole.android.Home
 
 import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
+import cmc.sole.android.Home.MyPage.MyPageActivity
 import cmc.sole.android.Home.Search.SearchActivity
 import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
@@ -48,6 +49,10 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
     private fun initClickListener() {
         binding.homeSearchIv.setOnClickListener {
             startActivity(Intent(activity, SearchActivity::class.java))
+        }
+
+        binding.homeProfileIv.setOnClickListener {
+            startActivity(Intent(activity, MyPageActivity::class.java))
         }
     }
 }
