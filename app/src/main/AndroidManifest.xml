@@ -52,6 +52,7 @@
         <activity android:name=".Home.HomeFragment" />
         <activity android:name=".Home.Search.SearchActivity" />
         <activity android:name=".Home.MyPage.MyPageActivity" />
+        <activity android:name=".Home.MyPage.MyPageInfoSettingActivity" />
         <activity android:name=".MyCourse.MyCourseFragment" />
         <activity android:name=".Follow.FollowFragment" />
         <activity android:name=".Scrap.ScrapFragment" />
