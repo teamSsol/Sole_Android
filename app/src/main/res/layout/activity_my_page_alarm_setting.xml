@@ -74,10 +74,20 @@
             app:layout_constraintStart_toStartOf="@id/alarm_setting_activity_tv" />
 
         <ImageView
-            android:id="@+id/alarm_setting_activity_toggle"
+            android:id="@+id/alarm_setting_activity_toggle_on"
             android:layout_width="50dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_toggle_on"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ImageView
+            android:id="@+id/alarm_setting_activity_toggle_off"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_toggle_off"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -127,7 +137,17 @@
             app:layout_constraintStart_toStartOf="@id/alarm_setting_marketing_tv" />
 
         <ImageView
-            android:id="@+id/alarm_setting_marketing_toggle"
+            android:id="@+id/alarm_setting_marketing_toggle_on"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_toggle_on"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ImageView
+            android:id="@+id/alarm_setting_marketing_toggle_off"
             android:layout_width="50dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_toggle_off"

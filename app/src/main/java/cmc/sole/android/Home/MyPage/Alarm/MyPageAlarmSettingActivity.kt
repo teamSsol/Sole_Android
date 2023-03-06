@@ -1,14 +1,12 @@
 package cmc.sole.android.Home.MyPage.Alarm
 
+import android.view.View
 import androidx.core.content.ContextCompat
 import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivityMyPageAlarmSettingBinding
 
 class MyPageAlarmSettingActivity: BaseActivity<ActivityMyPageAlarmSettingBinding>(ActivityMyPageAlarmSettingBinding::inflate) {
-
-    var activityFlag: Boolean = true
-    var marketingFlag: Boolean = false
 
     override fun initAfterBinding() {
         initClickListener()
@@ -19,25 +17,32 @@ class MyPageAlarmSettingActivity: BaseActivity<ActivityMyPageAlarmSettingBinding
             finish()
         }
 
-        binding.alarmSettingActivityToggle.setOnClickListener {
+        binding.alarmSettingActivityToggleOn.setOnClickListener {
             // UPDATE: 이 부분도 API로 주는 것인지
             // UPDATE: API와 연동
-            if (activityFlag) {
-                binding.alarmSettingActivityToggle.setImageResource(R.drawable.ic_toggle_off)
-            }
-            else binding.alarmSettingActivityToggle.setImageResource(R.drawable.ic_toggle_on)
-
-            activityFlag = !activityFlag
+            binding.alarmSettingActivityToggleOn.visibility = View.GONE
+            binding.alarmSettingActivityToggleOff.visibility = View.VISIBLE
         }
 
-        binding.alarmSettingMarketingToggle.setOnClickListener {
+        binding.alarmSettingActivityToggleOff.setOnClickListener {
             // UPDATE: 이 부분도 API로 주는 것인지
             // UPDATE: API와 연동
-            if (marketingFlag)
-                binding.alarmSettingMarketingToggle.setImageResource(R.drawable.ic_toggle_off)
-            else binding.alarmSettingMarketingToggle.setImageResource(R.drawable.ic_toggle_on)
+            binding.alarmSettingActivityToggleOn.visibility = View.VISIBLE
+            binding.alarmSettingActivityToggleOff.visibility = View.GONE
+        }
 
-            marketingFlag = !marketingFlag
+        binding.alarmSettingMarketingToggleOn.setOnClickListener {
+            // UPDATE: 이 부분도 API로 주는 것인지
+            // UPDATE: API와 연동
+            binding.alarmSettingMarketingToggleOn.visibility = View.GONE
+            binding.alarmSettingMarketingToggleOff.visibility = View.VISIBLE
+        }
+
+        binding.alarmSettingMarketingToggleOff.setOnClickListener {
+            // UPDATE: 이 부분도 API로 주는 것인지
+            // UPDATE: API와 연동
+            binding.alarmSettingMarketingToggleOn.visibility = View.VISIBLE
+            binding.alarmSettingMarketingToggleOff.visibility = View.GONE
         }
     }
 }
