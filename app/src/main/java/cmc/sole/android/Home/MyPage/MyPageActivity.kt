@@ -1,6 +1,9 @@
 package cmc.sole.android.Home.MyPage
 
-import androidx.fragment.app.DialogFragment
+import cmc.sole.android.Home.MyPage.Alarm.MyPageAlarmActivity
+import cmc.sole.android.Home.MyPage.Alarm.MyPageAlarmSettingActivity
+import cmc.sole.android.Home.MyPage.FAQ.MyPageFAQActivity
+import cmc.sole.android.Home.MyPage.Notice.MyPageNoticeActivity
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivityMyPageBinding
 
@@ -14,24 +17,33 @@ class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding:
             finish()
         }
 
+        binding.myPageAlarmIv.setOnClickListener {
+            changeActivity(MyPageAlarmActivity::class.java)
+        }
+
+        // MEMO: 내 정보 수정 페이지
         binding.myPageInfoLayout.setOnClickListener {
+            changeActivity(MyPageInfoSettingActivity::class.java)
+        }
+
+        // MEMO: 내 정보 수정 페이지
+        binding.myPageSettingIv.setOnClickListener {
             changeActivity(MyPageInfoSettingActivity::class.java)
         }
 
         // MEMO: 알림 설정
         binding.myPageOption1.setOnClickListener {
-            changeActivity(ActivityMyPageAlarm::class.java)
-
+            changeActivity(MyPageAlarmSettingActivity::class.java)
         }
 
         // MEMO: 공지사항
         binding.myPageOption2.setOnClickListener {
-            changeActivity(ActivityMyPageNotice::class.java)
+            changeActivity(MyPageNoticeActivity::class.java)
         }
 
         // MEMO: FAQ
         binding.myPageOption3.setOnClickListener {
-            changeActivity(ActivityMyPageFAQ::class.java)
+            changeActivity(MyPageFAQActivity::class.java)
         }
 
         // MEMO: 문의하기

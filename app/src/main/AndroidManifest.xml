@@ -53,6 +53,11 @@
         <activity android:name=".Home.Search.SearchActivity" />
         <activity android:name=".Home.MyPage.MyPageActivity" />
         <activity android:name=".Home.MyPage.MyPageInfoSettingActivity" />
+        <activity android:name=".Home.MyPage.Alarm.MyPageAlarmActivity" />
+        <activity android:name=".Home.MyPage.Alarm.MyPageAlarmSettingActivity" />
+        <activity android:name=".Home.MyPage.Notice.MyPageNoticeActivity" />
+        <activity android:name=".Home.MyPage.Notice.MyPageNoticeContentActivity" />
+        <activity android:name=".Home.MyPage.FAQ.MyPageFAQActivity" />
         <activity android:name=".MyCourse.MyCourseFragment" />
         <activity android:name=".Follow.FollowFragment" />
         <activity android:name=".Scrap.ScrapFragment" />

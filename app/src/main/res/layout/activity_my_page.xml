@@ -81,6 +81,18 @@
             app:layout_constraintTop_toTopOf="@id/my_page_profile_iv"
             app:layout_constraintBottom_toTopOf="@id/my_page_follower_tv"/>
 
+        <ImageView
+            android:id="@+id/my_page_setting_iv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1:1"
+            android:src="@drawable/ic_my_page_edit"
+            android:layout_marginStart="4dp"
+            android:padding="1dp"
+            app:layout_constraintStart_toEndOf="@id/my_page_nickname_tv"
+            app:layout_constraintTop_toTopOf="@id/my_page_nickname_tv"
+            app:layout_constraintBottom_toBottomOf="@id/my_page_nickname_tv" />
+
         <TextView
             android:id="@+id/my_page_follower_tv"
             android:layout_width="wrap_content"
