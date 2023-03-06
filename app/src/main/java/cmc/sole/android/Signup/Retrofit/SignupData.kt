@@ -1,5 +1,29 @@
 package cmc.sole.android.Signup.Retrofit
 
+data class SignupCheckRequest(
+    var accessToken: String,
+    var fcmToken: String
+)
+
+data class SignupCheckResponse(
+    var data: SignupCheckResult,
+    var status: Int,
+    var success: Boolean,
+    var timestamp: String
+)
+
+data class SignupCheckResult(
+    var accessToken: String,
+    var check: Boolean,
+    var memberId: Int,
+    var nickname: String,
+    var profileImgUrl: String?,
+    var refreshToken: String,
+    var role: String,
+    var social: String = "KAKAO",
+    var socialId: String
+)
+
 data class SignupNicknameRequest(
     var nickname: String
 )

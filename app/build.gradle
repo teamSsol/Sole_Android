@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 Properties properties = new Properties()
@@ -66,4 +67,10 @@ dependencies {
 
     // Naver Map
     implementation 'com.naver.maps:map-sdk:3.16.0'
+
+    // FCM
+    implementation 'com.google.firebase:firebase-messaging:23.1.2'
+    // FCM 세팅
+    apply plugin: 'com.google.gms.google-services'
+    implementation platform('com.google.firebase:firebase-bom:31.2.3')
 }

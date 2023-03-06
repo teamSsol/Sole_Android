@@ -171,11 +171,11 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
             var filePart = MultipartBody.Part.createFormData("photo", "photo.jpg", fileBody);
 
             if (binding.signupNicknameEt.length() in 1..10) {
-                signupService.socialLogin("kakao", memberRequestDto, // filePart,
-                    profileImg,
-                    // requestTokenMap
-                    oauthRequest
-                )
+//                signupService.socialLogin("kakao", memberRequestDto, // filePart,
+//                    profileImg,
+//                    // requestTokenMap
+//                    oauthRequest
+//                )
             }
         }
     }
