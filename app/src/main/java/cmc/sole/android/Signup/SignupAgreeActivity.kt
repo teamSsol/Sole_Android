@@ -80,7 +80,6 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
                 intent.putExtra("service", signupVM.getService().toString())
                 intent.putExtra("personal", signupVM.getPersonal().toString())
                 intent.putExtra("marketing", signupVM.getMarketing().toString())
-                showLog("SIGNUP-SERVICE", "all = ${signupVM.getAll()} / service = ${signupVM.getService()} / personal = ${signupVM.getPersonal()} / marketing = ${signupVM.getMarketing()}")
                 startActivity(intent)
             }
         }

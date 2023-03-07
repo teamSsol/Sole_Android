@@ -3,6 +3,7 @@ package cmc.sole.android.Login
 import android.content.Intent
 import android.util.Log
 import cmc.sole.android.*
+import cmc.sole.android.CourseTag.placeCategories
 import cmc.sole.android.Signup.Retrofit.SignupCheckRequest
 import cmc.sole.android.Signup.Retrofit.SignupCheckResponse
 import cmc.sole.android.Signup.Retrofit.SignupCheckView

@@ -15,7 +15,6 @@ import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import cmc.sole.android.*
 import cmc.sole.android.CourseTag.placeCategories
 import cmc.sole.android.CourseTag.transCategories
@@ -25,7 +24,11 @@ import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivitySignupNicknameBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import okhttp3.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
 
 
@@ -66,8 +69,6 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
         personal = intent.getStringExtra("personal").toString()
         marketing = intent.getStringExtra("marketing").toString()
 
-        Log.d("SIGNUP-SERVICE", "all = ${intent.getStringExtra("all").toString()} / service = $service / personal = $personal / marketing = $marketing")
-        Log.d("SIGNUP-SERVICE", getAccessToken().toString() + " " + getFCMToken().toString() + " " + getNickname().toString())
         nicknameListener()
         initClickListener()
     }
@@ -127,33 +128,53 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
             }
 
             saveNickname(binding.signupNicknameEt.text.toString())
-            val memberRequestDto = HashMap<String, RequestBody>()
-            val accessToken = RequestBody.create(MediaType.parse("text/plain"), getAccessToken())
-            val fcmToken = RequestBody.create(MediaType.parse("text/plain"), getFCMToken())
-            val infoAccepted = RequestBody.create(MediaType.parse("text/plain"), personal)
-            val marketingAccepted = RequestBody.create(MediaType.parse("text/plain"), marketing)
-            val nickname = RequestBody.create(MediaType.parse("text/plain"), getNickname())
+
             // UPDATE: 카테고리 선택하는 부분 추가해주기!
             // MEMO: 임의로 Dummy Data 넣기
-            savePlaceCategories(placeCategories.TASTY_PLACE)
-            saveTransCategories(transCategories.WALK)
-            saveWithCategories(withCategories.COUPLE)
-            val placeCategories = RequestBody.create(MediaType.parse("text/plain"), getPlaceCategories())
-            val serviceAccepted = RequestBody.create(MediaType.parse("text/plain"), service)
-            val transCategories = RequestBody.create(MediaType.parse("text/plain"), getTransCategories())
-            val withCategories = RequestBody.create(MediaType.parse("text/plain"), getWithCategories())
-            memberRequestDto["accessToken"] = accessToken
-            memberRequestDto["fcmToken"] = fcmToken
-            memberRequestDto["infoAccepted"] = infoAccepted
-            memberRequestDto["marketingAccepted"] = marketingAccepted
-            memberRequestDto["nickname"] = nickname
-            memberRequestDto["placeCategories"] = placeCategories
-            memberRequestDto["serviceAccepted"] = serviceAccepted
-            memberRequestDto["transCategories"] = transCategories
-            memberRequestDto["withCategories"] = withCategories
+            var placeCategoriesHashSet = HashSet<placeCategories>()
+            placeCategoriesHashSet.add(placeCategories.TASTY_PLACE)
+
+            var transCategoriesHashSet = HashSet<Enum<transCategories>>()
+            transCategoriesHashSet.add(transCategories.WALK)
+            saveTransCategories(transCategoriesHashSet)
+            var withCategoriesHashSet = HashSet<Enum<withCategories>>()
+            withCategoriesHashSet.add(withCategories.COUPLE)
+            saveWithCategories(withCategoriesHashSet)
+
+            var jsonBody = JSONObject()
+            jsonBody.put("accessToken", getAccessToken())
+            jsonBody.put("fcmToken", getFCMToken())
+            jsonBody.put("infoAccepted", personal)
+            jsonBody.put("marketingAccepted", marketing)
+            jsonBody.put("nickname", getNickname())
+
+            val set: MutableSet<String> = HashSet()
+            set.add(placeCategories.TASTY_PLACE.toString())
+            val jsonArray = JSONArray(set.toTypedArray())
+            Log.d("SIGNUP-SERVICE", "jsonBody = $jsonArray")
+
+            val set2: MutableSet<String> = HashSet()
+            set2.add(transCategories.WALK.toString())
+            val jsonArray2 = JSONArray(set2.toTypedArray())
+            Log.d("SIGNUP-SERVICE", "jsonBody = $jsonArray2")
+
+            val set3: MutableSet<String> = HashSet()
+            set3.add(withCategories.COUPLE.toString())
+            val jsonArray3 = JSONArray(set3.toTypedArray())
+            Log.d("SIGNUP-SERVICE", "jsonBody = $jsonArray3")
+
+            jsonBody.put("placeCategories", jsonArray)
+            jsonBody.put("serviceAccepted", service)
+            jsonBody.put("transCategories", jsonArray2)
+            jsonBody.put("withCategories", jsonArray3)
+
+            val body: RequestBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonBody.toString()
+            )
+            var memberRequestDto = MultipartBody.Part.createFormData("memberRequestDto", "memberRequestDto", body)
 
             signupService.socialSignup("kakao", memberRequestDto, multipartFile)
-            Log.d("SIGNUP-SERVICE", "memberRequestDto = ${memberRequestDto["accessToken"].toString()}\nmultipartFile = $multipartFile")
         }
     }
 

@@ -35,6 +35,7 @@ class SignupService {
     fun signupCheck(body: SignupCheckRequest) {
         signupService?.socialCheck("kakao", body)?.enqueue(object: Callback<SignupCheckResponse> {
             override fun onResponse(call: Call<SignupCheckResponse>, response: Response<SignupCheckResponse>) {
+                Log.d("SIGNUP-SERVICE", "response = $response")
                 if (response.code() == 200) {
                     val signupCheckResponse = response.body()
                     if (signupCheckResponse?.success == true) {
@@ -72,14 +73,10 @@ class SignupService {
         })
     }
 
-//    fun socialLogin(provider: String, socialRequest: MultipartBody.Part, multipartFile: MultipartBody.Part?, accessToken: MultipartBody.Part) {
-//    // fun socialLogin(provider: String, socialRequest: HashMap<String, RequestBody>, multipartFile: MultipartBody.Part?, accessToken: HashMap<String, RequestBody>) {
-//    // fun socialLogin(provider: String, socialRequest: HashMap<String, RequestBody>, multipartFile: MultipartBody.Part?, accessToken: SignupSocialAccessToken) {
-//    // fun socialLogin(provider: String, socialRequest: SignupSocialRequest, multipartFile: MultipartBody.Part?, accessToken: SignupSocialAccessToken) {
-    fun socialSignup(provider: String, socialRequest: HashMap<String, RequestBody>, multipartFile: MultipartBody.Part?) {
-        signupService?.socialSignup(provider, socialRequest, multipartFile)?.enqueue(object: Callback<SignupSocialResponse> {
+    // fun socialSignup(provider: String, memberRequestDto: HashMap<String, RequestBody>, multipartFile: MultipartBody.Part?) {
+fun socialSignup(provider: String, memberRequestDto: MultipartBody.Part, multipartFile: MultipartBody.Part?) {
+        signupService?.socialSignup(provider, memberRequestDto, multipartFile)?.enqueue(object: Callback<SignupSocialResponse> {
             override fun onResponse(call: Call<SignupSocialResponse>, response: Response<SignupSocialResponse>) {
-                Log.d("SIGNUP-SERVICE", "provider = $provider, multipartFile = $multipartFile, socialRequest = $socialRequest")
                 Log.d("SIGNUP-SERVICE", "social-response = $response")
                 if (response.code() == 200) {
                     val signupSocialResponse = response.body()

@@ -76,7 +76,7 @@ fun removePlaceCategories() {
     editor.commit()
 }
 
-fun savePlaceCategories(placeCategories: Enum<placeCategories>) {
+fun savePlaceCategories(placeCategories: ArrayList<String>) {
     val editor = mSharedPreferences.edit()
     editor.putString("placeCategories", placeCategories.toString())
     editor.apply()
@@ -88,7 +88,7 @@ fun removeTransCategories() {
     editor.commit()
 }
 
-fun saveTransCategories(transCategories: Enum<transCategories>) {
+fun saveTransCategories(transCategories: HashSet<Enum<transCategories>>) {
     val editor = mSharedPreferences.edit()
     editor.putString("transCategories", transCategories.toString())
     editor.apply()
@@ -100,7 +100,7 @@ fun removeWithCategories() {
     editor.commit()
 }
 
-fun saveWithCategories(withCategories: Enum<withCategories>) {
+fun saveWithCategories(withCategories: HashSet<Enum<withCategories>>) {
     val editor = mSharedPreferences.edit()
     editor.putString("withCategories", withCategories.toString())
     editor.apply()

@@ -33,12 +33,14 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
         binding.homeMyCourseRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         // MEMO: DummyData
+        // CONDITION: 이 주변 인기 코스 7개로 고정
         popularCourseList.add(PopularCourse("image", "테스트1"))
         popularCourseList.add(PopularCourse("image", "테스트2"))
         popularCourseList.add(PopularCourse("image", "테스트3"))
         popularCourseList.add(PopularCourse("image", "테스트4"))
         popularCourseList.add(PopularCourse("image", "테스트5"))
 
+        // CONDITION: 내 취향 코스 5개 + 더 보기 버튼 이용
         myCourseList.add(DefaultCourse("image", "제목제목", false, "서울 종로구1", "1시간 소요", "1.2km", arrayListOf("테스트")))
         myCourseList.add(DefaultCourse("image", "제목제목", true, "서울 종로구2", "2시간 소요", "2.2km", arrayListOf("테스트")))
         myCourseList.add(DefaultCourse("image", "제목제목", false, "서울 종로구3", "3시간 소요", "3.2km", arrayListOf("테스트")))
