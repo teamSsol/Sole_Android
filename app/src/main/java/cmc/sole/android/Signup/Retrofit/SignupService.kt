@@ -76,8 +76,8 @@ class SignupService {
 //    // fun socialLogin(provider: String, socialRequest: HashMap<String, RequestBody>, multipartFile: MultipartBody.Part?, accessToken: HashMap<String, RequestBody>) {
 //    // fun socialLogin(provider: String, socialRequest: HashMap<String, RequestBody>, multipartFile: MultipartBody.Part?, accessToken: SignupSocialAccessToken) {
 //    // fun socialLogin(provider: String, socialRequest: SignupSocialRequest, multipartFile: MultipartBody.Part?, accessToken: SignupSocialAccessToken) {
-    fun socialSignup(provider: String, multipartFile: MultipartBody.Part?, socialRequest: HashMap<String, RequestBody>) {
-        signupService?.socialSignup(provider, multipartFile, socialRequest)?.enqueue(object: Callback<SignupSocialResponse> {
+    fun socialSignup(provider: String, socialRequest: HashMap<String, RequestBody>, multipartFile: MultipartBody.Part?) {
+        signupService?.socialSignup(provider, socialRequest, multipartFile)?.enqueue(object: Callback<SignupSocialResponse> {
             override fun onResponse(call: Call<SignupSocialResponse>, response: Response<SignupSocialResponse>) {
                 Log.d("SIGNUP-SERVICE", "provider = $provider, multipartFile = $multipartFile, socialRequest = $socialRequest")
                 Log.d("SIGNUP-SERVICE", "social-response = $response")

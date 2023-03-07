@@ -27,8 +27,8 @@ interface SignupRetrofitInterface {
     @POST("/api/members/{provider}/signup")
     fun socialSignup(
         @Path("provider") provider: String?,
-        @Part multipartFile: MultipartBody.Part?,
-        @PartMap memberRequestDto: HashMap<String, RequestBody>
+        @PartMap memberRequestDto: HashMap<String, RequestBody>,
+        @Part multipartFile: MultipartBody.Part?
     ): Call<SignupSocialResponse>
 
     /*

@@ -2,6 +2,7 @@ package cmc.sole.android.Signup
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -15,13 +16,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import cmc.sole.android.R
+import cmc.sole.android.*
+import cmc.sole.android.CourseTag.placeCategories
+import cmc.sole.android.CourseTag.transCategories
+import cmc.sole.android.CourseTag.withCategories
 import cmc.sole.android.Signup.Retrofit.*
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivitySignupNicknameBinding
-import cmc.sole.android.getAccessToken
-import cmc.sole.android.getFCMToken
-import cmc.sole.android.getNickname
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import okhttp3.*
@@ -33,7 +34,7 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
 
     lateinit var signupService: SignupService
 
-    private var imageUriString = String()
+    private var imageUri: Uri? = null
 
     var all = String()
     var service = String()
@@ -47,7 +48,7 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
 
     private val imageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
-            val imageUri = result.data?.data
+            imageUri = result.data?.data
             Log.d("EXAMPLE", "imageUri = ${imageUri.toString()}")
             imageUri?.let{
                 Glide.with(this)
@@ -55,6 +56,7 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
                     .apply(RequestOptions().circleCrop().override(130,130))
                     .into(binding.signupNicknameProfileIv)
             }
+            Log.d("EXAMPLE", "imageUri = $imageUri")
         }
     }
 
@@ -111,91 +113,60 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
         }
 
         binding.signupNicknameNextBtn.setOnClickListener {
-            var profileImg: MultipartBody.Part? = null
+            var file: File
+            var requestFile: RequestBody
+            var multipartFile: MultipartBody.Part
 
-//            Log.d("sendImg- editProfile",imageUri.toString())
-//            if(imageUri.toString() != getProfileImgUrl()){ // 프로필 이미지가 변경할게 있다면,
-//                Log.d("sendImg- editProfile?",imageUri.path.toString())
-//                val file = File(absolutelyPath(imageUri))
-//                val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
-//                profileImg = MultipartBody.Part.createFormData("profileImg", file.name, requestFile) //폼데이터
-//            }else{
-//                val file = File(imageUri.toString())
-//                val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
-//                profileImg = MultipartBody.Part.createFormData("profileImg", file.name, requestFile) //폼데이터
-//            }
-//
-//            //나머지 dormitoryId랑 nickname
-//            val mapData = HashMap<String, RequestBody>()
-//            val infoAccepted: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), "true")
-//            val marketingAccepted: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), "true")
-//            val serviceAccepted: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), "true")
-//            mapData.put("infoAccepted", infoAccepted)
-//            mapData.put("marketingAccepted", marketingAccepted)
-//            mapData.put("serviceAccepted", serviceAccepted)
-
-            val requestTokenMap: HashMap<String, RequestBody> = HashMap()
-            val nameBody4 = RequestBody.create(MediaType.parse("text/plain"), getAccessToken())
-            requestTokenMap["accessToken"] = nameBody4
-
-            var imageUri = Uri.parse(imageUriString)
-
-            val file = absolutelyPath(imageUri)?.let { it1 -> File(it1) }
-            Log.d("SIGNUP-SERVICE", "FILE = $file")
-            val requestFile = file?.let { it1 ->
-                RequestBody.create(MediaType.parse("image/*"),
-                    it1
-                )
-            }
-            if (file != null) {
-                profileImg = requestFile?.let { it1 ->
-                    MultipartBody.Part.createFormData("profileImg", file.name,
-                        it1
-                    )
-                }
-            } //폼데이터
-
-//            if (imageUri.toString() != getProfileImgUrl()){ // 프로필 이미지가 변경할게 있다면,
-//                val file = File(absolutelyPath(imageUri))
-//                val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
-//                profileImg = MultipartBody.Part.createFormData("profileImg", file.name, requestFile) //폼데이터
-//            } else {
-//                val file = File(imageUri.toString())
-//                val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
-//                profileImg = MultipartBody.Part.createFormData("profileImg", file.name, requestFile) //폼데이터
-//            }
-
-            var memberRequestDto = MultipartBody.Part.createFormData("memberRequestDto", "{\"infoAccepted\": true,\"marketingAccepted\": true,\"nickname\": \"luna\",\"serviceAccepted\": true}")
-            var oauthRequest = MultipartBody.Part.createFormData("oauthRequest", "{\"accessToken\": \"${getAccessToken()}")
-
-            Log.d("SIGNUP-SERVICE", "memberRequestDto = $memberRequestDto / OauthRequest = $oauthRequest")
-            Log.d("SIGNUP-SERVICE", "memberRequestDto = ${memberRequestDto.body()}")
-
-            // Uri 타입의 파일경로를 가지는 RequestBody 객체 생성
-            var fileBody = RequestBody.create(MediaType.parse("image/jpeg"), imageUriString);
-            // RequestBody로 Multipart.Part 객체 생성
-            var filePart = MultipartBody.Part.createFormData("photo", "photo.jpg", fileBody);
-
-            if (binding.signupNicknameEt.length() in 1..10) {
-//                signupService.socialLogin("kakao", memberRequestDto, // filePart,
-//                    profileImg,
-//                    // requestTokenMap
-//                    oauthRequest
-//                )
+            if (imageUri == null) {
+                requestFile = RequestBody.create(MediaType.parse("image/*"), "")
+                multipartFile = MultipartBody.Part.createFormData("multipartFile", "", requestFile)
+            } else {
+                file = File(absolutelyPath(imageUri, this))
+                requestFile = RequestBody.create(MediaType.parse("image/*"), file)
+                multipartFile = MultipartBody.Part.createFormData("multipartFile", file.name, requestFile)
             }
 
-            // signupService.socialSignup("kakao", )
+            saveNickname(binding.signupNicknameEt.text.toString())
+            val memberRequestDto = HashMap<String, RequestBody>()
+            val accessToken = RequestBody.create(MediaType.parse("text/plain"), getAccessToken())
+            val fcmToken = RequestBody.create(MediaType.parse("text/plain"), getFCMToken())
+            val infoAccepted = RequestBody.create(MediaType.parse("text/plain"), personal)
+            val marketingAccepted = RequestBody.create(MediaType.parse("text/plain"), marketing)
+            val nickname = RequestBody.create(MediaType.parse("text/plain"), getNickname())
+            // UPDATE: 카테고리 선택하는 부분 추가해주기!
+            // MEMO: 임의로 Dummy Data 넣기
+            savePlaceCategories(placeCategories.TASTY_PLACE)
+            saveTransCategories(transCategories.WALK)
+            saveWithCategories(withCategories.COUPLE)
+            val placeCategories = RequestBody.create(MediaType.parse("text/plain"), getPlaceCategories())
+            val serviceAccepted = RequestBody.create(MediaType.parse("text/plain"), service)
+            val transCategories = RequestBody.create(MediaType.parse("text/plain"), getTransCategories())
+            val withCategories = RequestBody.create(MediaType.parse("text/plain"), getWithCategories())
+            memberRequestDto["accessToken"] = accessToken
+            memberRequestDto["fcmToken"] = fcmToken
+            memberRequestDto["infoAccepted"] = infoAccepted
+            memberRequestDto["marketingAccepted"] = marketingAccepted
+            memberRequestDto["nickname"] = nickname
+            memberRequestDto["placeCategories"] = placeCategories
+            memberRequestDto["serviceAccepted"] = serviceAccepted
+            memberRequestDto["transCategories"] = transCategories
+            memberRequestDto["withCategories"] = withCategories
+
+            signupService.socialSignup("kakao", memberRequestDto, multipartFile)
+            Log.d("SIGNUP-SERVICE", "memberRequestDto = ${memberRequestDto["accessToken"].toString()}\nmultipartFile = $multipartFile")
         }
     }
 
     // 절대경로 변환
-    private fun absolutelyPath(path: Uri): String? {
+    private fun absolutelyPath(path: Uri?, context : Context): String {
         var proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
-        var c: Cursor? = contentResolver.query(path, proj, null, null, null)
+        var c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
         var index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
         c?.moveToFirst()
-        var result = index?.let { c?.getString(it) }
-        return result
+
+        var result = c?.getString(index!!)
+
+        return result!!
     }
 
     private fun nicknameOption(option: Int, message: String?) {
@@ -239,6 +210,5 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
 
     override fun signupSocialFailureView() {
         showToast("소셜 로그인 에러")
-        changeActivity(SignupFinishActivity::class.java)
     }
 }
