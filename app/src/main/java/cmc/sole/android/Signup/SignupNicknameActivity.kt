@@ -117,11 +117,10 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
 
             var file: File
             var requestFile: RequestBody
-            var multipartFile: MultipartBody.Part
+            var multipartFile: MultipartBody.Part?
 
             if (imageUri == null) {
-                requestFile = RequestBody.create(MediaType.parse("image/*"), "")
-                multipartFile = MultipartBody.Part.createFormData("multipartFile", "", requestFile)
+                multipartFile = null
             } else {
                 file = File(absolutelyPath(imageUri, this))
                 requestFile = RequestBody.create(MediaType.parse("image/*"), file)
@@ -209,6 +208,8 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
 
     override fun signupSocialSuccessView(result: SignupSocialResponse) {
         Log.d("SIGNUP-SERVICE", result.toString())
+        saveNickname(result.data.nickname)
+        saveProfileImgUrl(result.data.profileImgUrl.toString())
         changeActivity(SignupFinishActivity::class.java)
     }
 
