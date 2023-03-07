@@ -2,9 +2,7 @@ package cmc.sole.android.Login
 
 import android.content.Intent
 import android.util.Log
-import cmc.sole.android.BuildConfig
-import cmc.sole.android.CourseDetailActivity
-import cmc.sole.android.MainActivity
+import cmc.sole.android.*
 import cmc.sole.android.Signup.Retrofit.SignupCheckRequest
 import cmc.sole.android.Signup.Retrofit.SignupCheckResponse
 import cmc.sole.android.Signup.Retrofit.SignupCheckView
@@ -85,19 +83,21 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
         }
     }
 
-    private fun sendAccessToken(accessToken: String) {
-        val intent = Intent(this, SignupAgreeActivity::class.java)
-        intent.putExtra("accessToken", accessToken)
-        startActivity(intent)
-    }
-
     private fun initRetrofitService() {
         signupCheckService = SignupService()
         signupCheckService.setSignupCheckView(this)
     }
 
     override fun signupCheckSuccessView(result: SignupCheckResponse) {
-        Log.d("SIGNUP-SERVICE", result.toString())
+        if (result.data.check) {
+            // MEMO: 가입한 사용자
+            changeActivity(MainActivity::class.java)
+        } else {
+            // MEMO: 가입하지 않은 사용자
+            saveAccessToken(accessToken)
+            saveFCMToken(fcmToken)
+            changeActivity(SignupAgreeActivity::class.java)
+        }
     }
 
     override fun signupCheckFailureView() {

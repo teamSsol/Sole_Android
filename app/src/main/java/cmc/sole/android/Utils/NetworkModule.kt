@@ -1,6 +1,7 @@
 package com.example.geeksasaeng.Utils
 
 import cmc.sole.android.Utils.AuthorizationTokenInterceptor
+import com.sole.android.ApplicationClass
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -14,14 +15,9 @@ class NetworkModule {
         // retrofit 객체를 가져오는 함수
         // 새로 만들지 않아도 된다!!
         fun getInstance(): Retrofit? {
-
             if (retrofit == null) {
                 synchronized(this) {
-                    val client: OkHttpClient = OkHttpClient.Builder()
-/*                        .readTimeout(30000, TimeUnit.MILLISECONDS)
-                        .connectTimeout(30000, TimeUnit.MILLISECONDS)*/
-                        // .addNetworkInterceptor(AuthorizationTokenInterceptor()) // JWT 자동 헤더 전송 ="Bearer getJwt()"
-                        .build()
+                    val client: OkHttpClient = OkHttpClient.Builder().build()
 
                     retrofit = Retrofit.Builder()
                         .baseUrl(ApplicationClass.BASE_URL)

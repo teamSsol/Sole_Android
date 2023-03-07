@@ -3,15 +3,17 @@ package cmc.sole.android.Signup
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SignupViewModel: ViewModel() {
-    var accessToken: MutableLiveData<String?> = MutableLiveData<String?>()
+class SignupAgreeViewModel: ViewModel() {
     var all: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     var service: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     var personal: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     var marketing: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
-    fun setAccessToken(accessTokenValue: String) {
-        this.accessToken.value = accessTokenValue
+    init {
+        all.value = false
+        service.value = false
+        personal.value = false
+        marketing.value = false
     }
 
     fun setAll() {
@@ -28,10 +30,6 @@ class SignupViewModel: ViewModel() {
 
     fun setMarketing() {
         marketing.value = marketing.value != true
-    }
-
-    fun getAccessToken(): String {
-        return accessToken.value.toString()
     }
 
     fun getAll(): Boolean? {

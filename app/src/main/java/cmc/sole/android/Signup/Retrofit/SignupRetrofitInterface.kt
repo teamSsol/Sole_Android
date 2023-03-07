@@ -23,46 +23,54 @@ interface SignupRetrofitInterface {
         @Body nicknameRequest: SignupNicknameRequest
     ): Call<Boolean>
 
-//    @Multipart
-//    @POST("/api/members/{provider}")
-//    fun socialLogin(
-//        @Path("provider") provider: String?,
-//        // @PartMap socialRequest: HashMap<String, RequestBody>,
-//        @Part socialRequest: MultipartBody.Part,
-//        @Part multipartFile: MultipartBody.Part?,
-//        // @Part("accessToken") accessToken: SignupSocialAccessToken
-//        // @PartMap accessToken: HashMap<String, RequestBody>
-//        @Part accessToken: MultipartBody.Part
-//    ): Call<SignupSocialResponse>
-//
-//
-//    @Multipart
-//    @POST("/api/members/{provider}")
-//    fun socialLogin2(
-//        @Path("provider") provider: String?,
-//        @PartMap socialRequest: HashMap<String, RequestBody>,
-//        @Part multipartFile: MultipartBody.Part?,
-//        @PartMap accessToken: HashMap<String, RequestBody>
-//    ): Call<SignupSocialResponse>
-//
-//    @Multipart
-//    @POST("/api/members/{provider}")
-//    fun socialLogin3(
-//        @Path("provider") provider: String?,
-//        @Part socialRequest: MultipartBody.Part,
-//        @Part multipartFile: MultipartBody.Part?,
-//        @Part accessToken: MultipartBody.Part
-//    ): Call<SignupSocialResponse>
+    @Multipart
+    @POST("/api/members/{provider}/signup")
+    fun socialSignup(
+        @Path("provider") provider: String?,
+        @Part multipartFile: MultipartBody.Part?,
+        @PartMap memberRequestDto: HashMap<String, RequestBody>
+    ): Call<SignupSocialResponse>
+
+    /*
+    @Multipart
+    @POST("/api/members/{provider}")
+    fun socialLogin(
+        @Path("provider") provider: String?,
+        // @PartMap socialRequest: HashMap<String, RequestBody>,
+        @Part socialRequest: MultipartBody.Part,
+        @Part multipartFile: MultipartBody.Part?,
+        // @Part("accessToken") accessToken: SignupSocialAccessToken
+        // @PartMap accessToken: HashMap<String, RequestBody>
+        @Part accessToken: MultipartBody.Part
+    ): Call<SignupSocialResponse>
 
 
+    @Multipart
+    @POST("/api/members/{provider}")
+    fun socialLogin2(
+        @Path("provider") provider: String?,
+        @PartMap socialRequest: HashMap<String, RequestBody>,
+        @Part multipartFile: MultipartBody.Part?,
+        @PartMap accessToken: HashMap<String, RequestBody>
+    ): Call<SignupSocialResponse>
 
-//    @Multipart
-//    @POST("/api/members/{provider}")
-//    fun socialLogin(
-//        @Path("provider") provider: String?,
-//        // @PartMap socialRequest: HashMap<String, RequestBody>,
-//        @Part("memberRequestDto") memberRequestDto: SignupSocialRequest,
-//        @Part multipartFile: MultipartBody.Part?,
-//        @Part("accessToken") accessToken: SignupSocialAccessToken
-//    ): Call<SignupSocialResponse>
+    @Multipart
+    @POST("/api/members/{provider}")
+    fun socialLogin3(
+        @Path("provider") provider: String?,
+        @Part socialRequest: MultipartBody.Part,
+        @Part multipartFile: MultipartBody.Part?,
+        @Part accessToken: MultipartBody.Part
+    ): Call<SignupSocialResponse>
+
+    @Multipart
+    @POST("/api/members/{provider}")
+    fun socialLogin(
+        @Path("provider") provider: String?,
+        // @PartMap socialRequest: HashMap<String, RequestBody>,
+        @Part("memberRequestDto") memberRequestDto: SignupSocialRequest,
+        @Part multipartFile: MultipartBody.Part?,
+        @Part("accessToken") accessToken: SignupSocialAccessToken
+    ): Call<SignupSocialResponse>
+     */
 }

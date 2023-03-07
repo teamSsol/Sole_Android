@@ -1,5 +1,9 @@
 package cmc.sole.android.Signup.Retrofit
 
+import cmc.sole.android.CourseTag.placeCategories
+import cmc.sole.android.CourseTag.transCategories
+import cmc.sole.android.CourseTag.withCategories
+
 data class SignupCheckRequest(
     var accessToken: String,
     var fcmToken: String
@@ -29,14 +33,15 @@ data class SignupNicknameRequest(
 )
 
 data class SignupSocialRequest(
+    var accessToken: String,
+    var fcmToken: String,
     var infoAccepted: Boolean,
     var marketingAccepted: Boolean,
     var nickname: String,
-    var serviceAccepted: Boolean
-)
-
-data class SignupSocialAccessToken(
-    var accessToken: String
+    var placeCategories: Enum<placeCategories>,
+    var serviceAccepted: Boolean,
+    var transCategories: Enum<transCategories>,
+    var withCategories: Enum<withCategories>
 )
 
 data class SignupSocialResponse(
@@ -48,10 +53,11 @@ data class SignupSocialResponse(
 
 data class SignupSocialResult(
     var accessToken: String,
-    var email: String,
+    var check: Boolean,
     var memberId: Int,
     var nickname: String,
     var profileImgUrl: String?,
     var refreshToken: String?,
-    var social: String
+    var social: String,
+    var socialId: String
 )

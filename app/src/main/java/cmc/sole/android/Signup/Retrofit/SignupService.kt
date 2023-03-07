@@ -76,22 +76,23 @@ class SignupService {
 //    // fun socialLogin(provider: String, socialRequest: HashMap<String, RequestBody>, multipartFile: MultipartBody.Part?, accessToken: HashMap<String, RequestBody>) {
 //    // fun socialLogin(provider: String, socialRequest: HashMap<String, RequestBody>, multipartFile: MultipartBody.Part?, accessToken: SignupSocialAccessToken) {
 //    // fun socialLogin(provider: String, socialRequest: SignupSocialRequest, multipartFile: MultipartBody.Part?, accessToken: SignupSocialAccessToken) {
-//        signupService?.socialLogin(provider, socialRequest, multipartFile, accessToken)?.enqueue(object: Callback<SignupSocialResponse> {
-//            override fun onResponse(call: Call<SignupSocialResponse>, response: Response<SignupSocialResponse>) {
-//                Log.d("SIGNUP-SERVICE", "provider = $provider, socialRequest = $socialRequest, multipartFile = $multipartFile, accessToken = $accessToken")
-//                Log.d("SIGNUP-SERVICE", "social-response = $response")
-//                if (response.code() == 200) {
-//                    val signupSocialResponse = response.body()
-//                    if (signupSocialResponse != null) {
-//                        signupSocialView.signupSocialSuccessView(signupSocialResponse)
-//                    }
-//                } else {
-//                    signupSocialView.signupSocialFailureView()
-//                }
-//            }
-//            override fun onFailure(call: Call<SignupSocialResponse>, t: Throwable) {
-//                Log.e("SIGNUP-SERVICE", "SignupService-SocialLogin-onFailure", t)
-//            }
-//        })
-//    }
+    fun socialSignup(provider: String, multipartFile: MultipartBody.Part?, socialRequest: HashMap<String, RequestBody>) {
+        signupService?.socialSignup(provider, multipartFile, socialRequest)?.enqueue(object: Callback<SignupSocialResponse> {
+            override fun onResponse(call: Call<SignupSocialResponse>, response: Response<SignupSocialResponse>) {
+                Log.d("SIGNUP-SERVICE", "provider = $provider, multipartFile = $multipartFile, socialRequest = $socialRequest")
+                Log.d("SIGNUP-SERVICE", "social-response = $response")
+                if (response.code() == 200) {
+                    val signupSocialResponse = response.body()
+                    if (signupSocialResponse != null) {
+                        signupSocialView.signupSocialSuccessView(signupSocialResponse)
+                    }
+                } else {
+                    signupSocialView.signupSocialFailureView()
+                }
+            }
+            override fun onFailure(call: Call<SignupSocialResponse>, t: Throwable) {
+                Log.e("SIGNUP-SERVICE", "SignupService-SocialLogin-onFailure", t)
+            }
+        })
+    }
 }

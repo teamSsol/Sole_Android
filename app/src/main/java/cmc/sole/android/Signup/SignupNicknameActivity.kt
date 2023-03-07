@@ -19,23 +19,26 @@ import cmc.sole.android.R
 import cmc.sole.android.Signup.Retrofit.*
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivitySignupNicknameBinding
+import cmc.sole.android.getAccessToken
+import cmc.sole.android.getFCMToken
+import cmc.sole.android.getNickname
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import okhttp3.*
-import retrofit2.http.Multipart
 import java.io.File
 
 
 class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(ActivitySignupNicknameBinding::inflate),
     SignupNicknameView, SignupSocialView {
 
-    private var signupVM = SignupViewModel()
     lateinit var signupService: SignupService
 
     private var imageUriString = String()
-    // private lateinit var imageUri: Uri
 
-    lateinit var accessToken: String
+    var all = String()
+    var service = String()
+    var personal = String()
+    var marketing = String()
 
     companion object{
         // 갤러리 권한 요청
@@ -56,10 +59,13 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
     }
 
     override fun initAfterBinding() {
-        signupVM = ViewModelProvider(this)[SignupViewModel::class.java]
+        all = intent.getStringExtra("all").toString()
+        service = intent.getStringExtra("service").toString()
+        personal = intent.getStringExtra("personal").toString()
+        marketing = intent.getStringExtra("marketing").toString()
 
-        accessToken = intent.getStringExtra("accessToken").toString()
-
+        Log.d("SIGNUP-SERVICE", "all = ${intent.getStringExtra("all").toString()} / service = $service / personal = $personal / marketing = $marketing")
+        Log.d("SIGNUP-SERVICE", getAccessToken().toString() + " " + getFCMToken().toString() + " " + getNickname().toString())
         nicknameListener()
         initClickListener()
     }
@@ -129,7 +135,7 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
 //            mapData.put("serviceAccepted", serviceAccepted)
 
             val requestTokenMap: HashMap<String, RequestBody> = HashMap()
-            val nameBody4 = RequestBody.create(MediaType.parse("text/plain"), accessToken)
+            val nameBody4 = RequestBody.create(MediaType.parse("text/plain"), getAccessToken())
             requestTokenMap["accessToken"] = nameBody4
 
             var imageUri = Uri.parse(imageUriString)
@@ -160,7 +166,7 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
 //            }
 
             var memberRequestDto = MultipartBody.Part.createFormData("memberRequestDto", "{\"infoAccepted\": true,\"marketingAccepted\": true,\"nickname\": \"luna\",\"serviceAccepted\": true}")
-            var oauthRequest = MultipartBody.Part.createFormData("oauthRequest", "{\"accessToken\": \"$accessToken")
+            var oauthRequest = MultipartBody.Part.createFormData("oauthRequest", "{\"accessToken\": \"${getAccessToken()}")
 
             Log.d("SIGNUP-SERVICE", "memberRequestDto = $memberRequestDto / OauthRequest = $oauthRequest")
             Log.d("SIGNUP-SERVICE", "memberRequestDto = ${memberRequestDto.body()}")
@@ -177,6 +183,8 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
 //                    oauthRequest
 //                )
             }
+
+            // signupService.socialSignup("kakao", )
         }
     }
 

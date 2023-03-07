@@ -3,20 +3,19 @@ package cmc.sole.android.Signup
 import android.content.Intent
 import android.graphics.Color
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivitySignupAgreeBinding
+import cmc.sole.android.getAccessToken
+import cmc.sole.android.saveAccessToken
 
 class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySignupAgreeBinding::inflate) {
 
-    private lateinit var signupVM: SignupViewModel
-
+    private lateinit var signupVM: SignupAgreeViewModel
     override fun initAfterBinding() {
-        signupVM = ViewModelProvider(this)[SignupViewModel::class.java]
-        signupVM.setAccessToken(intent.getStringExtra("accessToken").toString())
-
-        showLog("SIGNUP-SERVICE", "accessToken = ${signupVM.getAccessToken()}")
+        signupVM = ViewModelProvider(this)[SignupAgreeViewModel::class.java]
 
         initRadioSetting()
         initClickListener()
@@ -77,9 +76,12 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
         binding.signupAgreeNextBtn.setOnClickListener {
             if ((signupVM.getService() == true) && (signupVM.getPersonal() == true)) {
                 val intent = Intent(this, SignupNicknameActivity::class.java)
-                intent.putExtra("accessToken", signupVM.getAccessToken())
+                intent.putExtra("all", signupVM.getAll().toString())
+                intent.putExtra("service", signupVM.getService().toString())
+                intent.putExtra("personal", signupVM.getPersonal().toString())
+                intent.putExtra("marketing", signupVM.getMarketing().toString())
+                showLog("SIGNUP-SERVICE", "all = ${signupVM.getAll()} / service = ${signupVM.getService()} / personal = ${signupVM.getPersonal()} / marketing = ${signupVM.getMarketing()}")
                 startActivity(intent)
-                // changeActivity(SignupNicknameActivity::class.java)
             }
         }
     }
