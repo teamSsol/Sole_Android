@@ -4,6 +4,8 @@ import android.content.Intent
 import android.util.Log
 import cmc.sole.android.*
 import cmc.sole.android.CourseTag.placeCategories
+import cmc.sole.android.CourseTag.transCategories
+import cmc.sole.android.CourseTag.withCategories
 import cmc.sole.android.Signup.Retrofit.SignupCheckRequest
 import cmc.sole.android.Signup.Retrofit.SignupCheckResponse
 import cmc.sole.android.Signup.Retrofit.SignupCheckView
@@ -15,6 +17,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
+import org.json.JSONArray
 
 class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate),
     SignupCheckView {

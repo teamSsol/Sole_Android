@@ -59,7 +59,6 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
                     .apply(RequestOptions().circleCrop().override(130,130))
                     .into(binding.signupNicknameProfileIv)
             }
-            Log.d("EXAMPLE", "imageUri = $imageUri")
         }
     }
 
@@ -114,6 +113,8 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
         }
 
         binding.signupNicknameNextBtn.setOnClickListener {
+            saveNickname(binding.signupNicknameEt.text.toString())
+
             var file: File
             var requestFile: RequestBody
             var multipartFile: MultipartBody.Part
@@ -127,19 +128,19 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
                 multipartFile = MultipartBody.Part.createFormData("multipartFile", file.name, requestFile)
             }
 
-            saveNickname(binding.signupNicknameEt.text.toString())
-
             // UPDATE: 카테고리 선택하는 부분 추가해주기!
             // MEMO: 임의로 Dummy Data 넣기
-            var placeCategoriesHashSet = HashSet<placeCategories>()
-            placeCategoriesHashSet.add(placeCategories.TASTY_PLACE)
+            val placeCategoriesSet: MutableSet<String> = HashSet()
+            placeCategoriesSet.add(placeCategories.TASTY_PLACE.toString())
+            savePlaceCategories(placeCategoriesSet)
 
-            var transCategoriesHashSet = HashSet<Enum<transCategories>>()
-            transCategoriesHashSet.add(transCategories.WALK)
-            saveTransCategories(transCategoriesHashSet)
-            var withCategoriesHashSet = HashSet<Enum<withCategories>>()
-            withCategoriesHashSet.add(withCategories.COUPLE)
-            saveWithCategories(withCategoriesHashSet)
+            val transCategoriesSet: MutableSet<String> = HashSet()
+            transCategoriesSet.add(transCategories.WALK.toString())
+            saveTransCategories(transCategoriesSet)
+
+            val withCategoriesSet: MutableSet<String> = HashSet()
+            withCategoriesSet.add(withCategories.COUPLE.toString())
+            saveWithCategories(withCategoriesSet)
 
             var jsonBody = JSONObject()
             jsonBody.put("accessToken", getAccessToken())
@@ -147,32 +148,13 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
             jsonBody.put("infoAccepted", personal)
             jsonBody.put("marketingAccepted", marketing)
             jsonBody.put("nickname", getNickname())
-
-            val set: MutableSet<String> = HashSet()
-            set.add(placeCategories.TASTY_PLACE.toString())
-            val jsonArray = JSONArray(set.toTypedArray())
-            Log.d("SIGNUP-SERVICE", "jsonBody = $jsonArray")
-
-            val set2: MutableSet<String> = HashSet()
-            set2.add(transCategories.WALK.toString())
-            val jsonArray2 = JSONArray(set2.toTypedArray())
-            Log.d("SIGNUP-SERVICE", "jsonBody = $jsonArray2")
-
-            val set3: MutableSet<String> = HashSet()
-            set3.add(withCategories.COUPLE.toString())
-            val jsonArray3 = JSONArray(set3.toTypedArray())
-            Log.d("SIGNUP-SERVICE", "jsonBody = $jsonArray3")
-
-            jsonBody.put("placeCategories", jsonArray)
+            jsonBody.put("placeCategories", JSONArray(getPlaceCategories()!!.toTypedArray()))
             jsonBody.put("serviceAccepted", service)
-            jsonBody.put("transCategories", jsonArray2)
-            jsonBody.put("withCategories", jsonArray3)
+            jsonBody.put("transCategories", JSONArray(getTransCategories()!!.toTypedArray()))
+            jsonBody.put("withCategories", JSONArray(getWithCategories()!!.toTypedArray()))
 
-            val body: RequestBody = RequestBody.create(
-                MediaType.parse("application/json; charset=utf-8"),
-                jsonBody.toString()
-            )
-            var memberRequestDto = MultipartBody.Part.createFormData("memberRequestDto", "memberRequestDto", body)
+            val requestBody: RequestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonBody.toString())
+            var memberRequestDto = MultipartBody.Part.createFormData("memberRequestDto", "memberRequestDto", requestBody)
 
             signupService.socialSignup("kakao", memberRequestDto, multipartFile)
         }
@@ -226,6 +208,7 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
     }
 
     override fun signupSocialSuccessView(result: SignupSocialResponse) {
+        Log.d("SIGNUP-SERVICE", result.toString())
         changeActivity(SignupFinishActivity::class.java)
     }
 

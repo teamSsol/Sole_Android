@@ -1,5 +1,6 @@
 package cmc.sole.android
 
+import android.util.Log
 import cmc.sole.android.CourseTag.placeCategories
 import cmc.sole.android.CourseTag.transCategories
 import cmc.sole.android.CourseTag.withCategories
@@ -76,9 +77,9 @@ fun removePlaceCategories() {
     editor.commit()
 }
 
-fun savePlaceCategories(placeCategories: ArrayList<String>) {
+fun savePlaceCategories(placeCategories: MutableSet<String>) {
     val editor = mSharedPreferences.edit()
-    editor.putString("placeCategories", placeCategories.toString())
+    editor.putStringSet("placeCategories", placeCategories)
     editor.apply()
 }
 
@@ -88,9 +89,9 @@ fun removeTransCategories() {
     editor.commit()
 }
 
-fun saveTransCategories(transCategories: HashSet<Enum<transCategories>>) {
+fun saveTransCategories(transCategories: MutableSet<String>) {
     val editor = mSharedPreferences.edit()
-    editor.putString("transCategories", transCategories.toString())
+    editor.putStringSet("transCategories", transCategories)
     editor.apply()
 }
 
@@ -100,9 +101,9 @@ fun removeWithCategories() {
     editor.commit()
 }
 
-fun saveWithCategories(withCategories: HashSet<Enum<withCategories>>) {
+fun saveWithCategories(withCategories: MutableSet<String>) {
     val editor = mSharedPreferences.edit()
-    editor.putString("withCategories", withCategories.toString())
+    editor.putStringSet("withCategories", withCategories)
     editor.apply()
 }
 
@@ -111,6 +112,6 @@ fun getFCMToken(): String? = mSharedPreferences.getString("fcmToken", null)
 fun getNickname(): String? = mSharedPreferences.getString("nickname", null)
 fun getMemberId(): Int = mSharedPreferences.getInt("memberId", 0)
 fun getProfileImgUrl(): String? = mSharedPreferences.getString("profileImgUrl", null)
-fun getPlaceCategories(): String? = mSharedPreferences.getString("placeCategories", null)
-fun getTransCategories(): String? = mSharedPreferences.getString("transCategories", null)
-fun getWithCategories(): String? = mSharedPreferences.getString("withCategories", null)
+fun getPlaceCategories(): MutableSet<String>? = mSharedPreferences.getStringSet("placeCategories", null)
+fun getTransCategories(): MutableSet<String>? = mSharedPreferences.getStringSet("transCategories", null)
+fun getWithCategories(): MutableSet<String>? = mSharedPreferences.getStringSet("withCategories", null)
