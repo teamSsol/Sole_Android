@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="20dp"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/my_page_alarm_list_iv"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@drawable/ic_alarm_follow"
+            app:layout_goneMarginStart="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/my_page_alarm_list_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="닉네임님이 회원님의 발자국을 따라가기 시작했어요."
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/pretendard_regular"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toTopOf="@id/my_page_alarm_list_iv"
+            app:layout_constraintStart_toEndOf="@id/my_page_alarm_list_iv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/my_page_alarm_list_time" />
+
+        <TextView
+            android:id="@+id/my_page_alarm_list_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="0일전"
+            android:textSize="10sp"
+            android:textColor="#999999"
+            android:fontFamily="@font/pretendard_regular"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintTop_toBottomOf="@id/my_page_alarm_list_title"
+            app:layout_constraintBottom_toBottomOf="@id/my_page_alarm_list_iv"
+            app:layout_constraintStart_toEndOf="@id/my_page_alarm_list_iv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EDEDED"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SOLE</string>
+    <string name="logout"><u>로그아웃</u></string>
+    <string name="withdrawal"><u>탈퇴하기</u></string>
+</resources>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "583893813118",
+    "project_id": "sole-6ac7c",
+    "storage_bucket": "sole-6ac7c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583893813118:android:1f8bc552a6b288abf4d52f",
+        "android_client_info": {
+          "package_name": "cmc.sole.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "583893813118-73ijs1tp6q3c168push1criggdg6dsjo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVXbU5vLqTGmO-WmJH4qOhfjUGDh8_dJw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "583893813118-73ijs1tp6q3c168push1criggdg6dsjo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

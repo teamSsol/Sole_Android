@@ -1,0 +1,76 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+android {
+    namespace 'cmc.sole.android'
+    compileSdk 33
+
+    buildFeatures {
+        viewBinding = true
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    defaultConfig {
+        applicationId "cmc.sole.android"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "KAKAO_API_KEY", properties['kakao_api_key']
+        manifestPlaceholders["KAKAO_API_KEY"] = properties['kakao_api_key']
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // 카카오 로그인
+    implementation "com.kakao.sdk:v2-user:2.12.1" // 카카오 로그인
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+
+    // Multipart Converter
+    implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
+
+    // Naver Map
+    implementation 'com.naver.maps:map-sdk:3.16.0'
+
+    // FCM
+    implementation 'com.google.firebase:firebase-messaging:23.1.2'
+    // FCM 세팅
+    apply plugin: 'com.google.gms.google-services'
+    implementation platform('com.google.firebase:firebase-bom:31.2.3')
+}

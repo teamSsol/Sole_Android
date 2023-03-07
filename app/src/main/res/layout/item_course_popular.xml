@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/item_course_popular_cv"
+        android:layout_width="240dp"
+        android:layout_height="120dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="1dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/item_course_popular_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/test_img"
+                android:scaleType="centerCrop"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/item_course_popular_title"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@drawable/home_popular_course_gradient"
+                android:text="따뜻한 3월에 가기 좋은 삼청동 전시 코스"
+                android:textColor="@color/white"
+                android:fontFamily="@font/pretendard_regular"
+                android:textSize="15sp"
+                android:alpha="0.9"
+                android:paddingHorizontal="16dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

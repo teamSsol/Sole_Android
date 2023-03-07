@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottom_home"
+        android:icon="@drawable/bottom_navi_home"
+        android:enabled="true"
+        android:title="홈" />
+    <item
+        android:id="@+id/bottom_my_course"
+        android:icon="@drawable/bottom_navi_my_course"
+        android:enabled="true"
+        android:title="나의 기록" />
+    <item
+        android:id="@+id/bottom_follow"
+        android:icon="@drawable/bottom_navi_follow"
+        android:enabled="true"
+        android:title="팔로잉" />
+    <item
+        android:id="@+id/bottom_scrap"
+        android:icon="@drawable/bottom_navi_scrap"
+        android:enabled="true"
+        android:title="스크랩" />
+</menu>
