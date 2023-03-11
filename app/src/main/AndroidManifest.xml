@@ -51,7 +51,6 @@
         <activity android:name=".Signup.SignupNicknameActivity" />
         <activity android:name=".Signup.SignupFinishActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".Home.HomeFragment" />
         <activity android:name=".Home.Search.SearchActivity" />
         <activity android:name=".Home.MyPage.MyPageActivity" />
         <activity android:name=".Home.MyPage.MyPageInfoSettingActivity" />
@@ -60,9 +59,7 @@
         <activity android:name=".Home.MyPage.Notice.MyPageNoticeActivity" />
         <activity android:name=".Home.MyPage.Notice.MyPageNoticeContentActivity" />
         <activity android:name=".Home.MyPage.FAQ.MyPageFAQActivity" />
-        <activity android:name=".MyCourse.MyCourseFragment" />
-        <activity android:name=".Follow.FollowFragment" />
-        <activity android:name=".Scrap.ScrapFragment" />
+        <activity android:name=".MyCourse.MyCourseWriteActivity" />
 
         <!-- test -->
         <activity android:name=".CourseDetailActivity" />

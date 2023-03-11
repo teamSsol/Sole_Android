@@ -278,4 +278,17 @@
 
     </ScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/my_course_fb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/main"
+        android:src="@drawable/ic_floating_plus"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

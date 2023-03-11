@@ -185,13 +185,15 @@
                 android:id="@+id/home_my_course_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:orientation="vertical"
-                android:layout_marginTop="16dp"
-                tools:listitem="@layout/item_course_default"
+                app:tint="@null"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/home_my_course_content_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/home_my_course_content_tv"
+                tools:listitem="@layout/item_course_default" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -206,8 +208,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
         android:elevation="10dp"
-        app:backgroundTint="@color/main"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

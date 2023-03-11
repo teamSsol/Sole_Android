@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Home.MyPage.MyPageActivity
 import cmc.sole.android.Home.Search.SearchActivity
+import cmc.sole.android.MyCourse.MyCourseWriteActivity
 import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
@@ -55,6 +56,10 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
 
         binding.homeProfileIv.setOnClickListener {
             startActivity(Intent(activity, MyPageActivity::class.java))
+        }
+
+        binding.homeFb.setOnClickListener {
+            startActivity(Intent(activity, MyCourseWriteActivity::class.java))
         }
     }
 }

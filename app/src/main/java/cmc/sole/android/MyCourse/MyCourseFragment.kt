@@ -1,5 +1,6 @@
 package cmc.sole.android.MyCourse
 
+import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.Home.HomeDefaultCourseRVAdapter
@@ -43,6 +44,10 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
         binding.myCourseWithTag.setOnClickListener {
             val myCourseTagBottomFragment = MyCourseTagBottomFragment()
             myCourseTagBottomFragment.show(requireActivity().supportFragmentManager, "myCourseTagBottom")
+        }
+
+        binding.myCourseFb.setOnClickListener {
+            startActivity(Intent(activity, MyCourseWriteActivity::class.java))
         }
     }
 }

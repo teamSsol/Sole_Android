@@ -16,7 +16,7 @@
             android:id="@+id/follow_list_back_iv"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_arrow_left"
+            android:src="@drawable/ic_back"
             android:padding="10dp"
             android:layout_marginStart="14dp"
             app:tint="#404040"
