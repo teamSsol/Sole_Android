@@ -13,6 +13,7 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
 
     override fun initAfterBinding() {
         initAdapter()
+        initClickListener()
     }
 
     private fun initAdapter() {
@@ -26,5 +27,22 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
         myCourseCourseList.add(DefaultCourse("img", "코스3 이름", true, "위치3", "시간3", "거리", arrayListOf("test")))
         myCourseCourseList.add(DefaultCourse("img", "코스4 이름", true, "위치4", "시간4", "거리", arrayListOf("test")))
         myCourseCourseList.add(DefaultCourse("img", "코스5 이름", true, "위치5", "시간5", "거리", arrayListOf("test")))
+    }
+
+    private fun initClickListener() {
+        binding.myCourseLocationTag.setOnClickListener {
+            val myCourseTagBottomFragment = MyCourseTagBottomFragment()
+            myCourseTagBottomFragment.show(requireActivity().supportFragmentManager, "myCourseTagBottom")
+        }
+
+        binding.myCourseTransportTag.setOnClickListener {
+            val myCourseTagBottomFragment = MyCourseTagBottomFragment()
+            myCourseTagBottomFragment.show(requireActivity().supportFragmentManager, "myCourseTagBottom")
+        }
+
+        binding.myCourseWithTag.setOnClickListener {
+            val myCourseTagBottomFragment = MyCourseTagBottomFragment()
+            myCourseTagBottomFragment.show(requireActivity().supportFragmentManager, "myCourseTagBottom")
+        }
     }
 }
