@@ -18,7 +18,7 @@ class MyCourseTagBottomFragment: BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_my_course_tag_bottom, container, false)
+        return inflater.inflate(R.layout.bottom_fragment_my_course_tag, container, false)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

@@ -21,6 +21,10 @@ class ScrapFolderRVAdapter(private val folderList: ArrayList<ScrapFolderData>): 
         itemClickListener = listener
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return folderList[position].viewType
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -44,18 +48,24 @@ class ScrapFolderRVAdapter(private val folderList: ArrayList<ScrapFolderData>): 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (folderList[position].viewType) {
             defaultFolder -> {
-                itemClickListener.onItemClick(folderList[position], position)
-                (holder as DefaultFolderViewHolder).defaultFolderbind(folderList[position])
+                holder.itemView.setOnClickListener {
+                    itemClickListener.onItemClick(folderList[position], position)
+                }
+                (holder as DefaultFolderViewHolder).bind(folderList[position])
                 holder.setIsRecyclable(false)
             }
             addFolder -> {
-                itemClickListener.onItemClick(folderList[position], position)
-                (holder as AddFolderViewHolder).addFolderbind(folderList[position])
+                holder.itemView.setOnClickListener {
+                    itemClickListener.onItemClick(folderList[position], position)
+                }
+                (holder as AddFolderViewHolder).bind(folderList[position])
                 holder.setIsRecyclable(false)
             }
             else -> {
-                itemClickListener.onItemClick(folderList[position], position)
-                (holder as DefaultFolderViewHolder).defaultFolderbind(folderList[position])
+                holder.itemView.setOnClickListener {
+                    itemClickListener.onItemClick(folderList[position], position)
+                }
+                (holder as DefaultFolderViewHolder).bind(folderList[position])
                 holder.setIsRecyclable(false)
             }
         }
@@ -64,7 +74,7 @@ class ScrapFolderRVAdapter(private val folderList: ArrayList<ScrapFolderData>): 
     override fun getItemCount(): Int = folderList.size
 
     inner class DefaultFolderViewHolder(val binding: ItemScrapFolderBinding): RecyclerView.ViewHolder(binding.root) {
-        fun defaultFolderbind(scrapFolder: ScrapFolderData) {
+        fun bind(scrapFolder: ScrapFolderData) {
             // UPDATE: Image 연결
             binding.itemScarpFolderIv.setImageResource(R.drawable.test_img)
             binding.itemScrapFolderTv.text = scrapFolder.title
@@ -72,7 +82,7 @@ class ScrapFolderRVAdapter(private val folderList: ArrayList<ScrapFolderData>): 
     }
 
     inner class AddFolderViewHolder(val binding: ItemScrapFolderAddBinding): RecyclerView.ViewHolder(binding.root) {
-        fun addFolderbind(scrapFolder: ScrapFolderData) {
+        fun bind(scrapFolder: ScrapFolderData) {
             binding.itemScrapFolderAddTv.text = scrapFolder.title
         }
     }

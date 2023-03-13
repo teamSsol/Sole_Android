@@ -1,10 +1,7 @@
 package cmc.sole.android.Scrap
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import cmc.sole.android.Home.MyPage.DialogMyPageLogout
 import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.databinding.FragmentScrapBinding
@@ -12,6 +9,7 @@ import cmc.sole.android.databinding.FragmentScrapBinding
 class ScrapFragment: BaseFragment<FragmentScrapBinding>(FragmentScrapBinding::inflate) {
     lateinit var scrapFolderRVAdapter: ScrapFolderRVAdapter
     private var scrapFolderList = ArrayList<ScrapFolderData>()
+
     override fun initAfterBinding() {
         initAdapter()
     }
@@ -27,11 +25,11 @@ class ScrapFragment: BaseFragment<FragmentScrapBinding>(FragmentScrapBinding::in
                     val scrapFolderNewDialog = DialogScrapFolderNew()
                     scrapFolderNewDialog.show(activity!!.supportFragmentManager, "FolderNewDialog")
                 } else {
-                    val scrapFolderDefaultFragment = ScrapFolderDefaultFragment()
+                    val scrapFolderDetailFragment = ScrapFolderDetailFragment()
                     var bundle = Bundle()
                     bundle.putString("title", scrapFolder.title)
-                    scrapFolderDefaultFragment.arguments = bundle
-                    activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_fl, scrapFolderDefaultFragment)?.addToBackStack("ScrapFolderDetail")?.commit()
+                    scrapFolderDetailFragment.arguments = bundle
+                    activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_fl, scrapFolderDetailFragment)?.addToBackStack("ScrapFolderDetail")?.commit()
                 }
             }
         })

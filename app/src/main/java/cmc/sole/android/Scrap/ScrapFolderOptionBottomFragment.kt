@@ -1,24 +1,36 @@
-package cmc.sole.android.MyCourse
+package cmc.sole.android.Scrap
 
 import android.app.Activity
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import cmc.sole.android.Home.MyPage.DialogMyPageLogout
 import cmc.sole.android.R
+import cmc.sole.android.databinding.BottomFragmentScrapFolderOptionBinding
+import cmc.sole.android.databinding.DialogMyPageLogoutBinding
+import cmc.sole.android.databinding.FragmentScrapFolderDetailBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class MyCourseWriteBottomFragment: BottomSheetDialogFragment() {
+class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
+
+    lateinit var binding: BottomFragmentScrapFolderOptionBinding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.bottom_fragment_my_course_write, container, false)
+        binding = BottomFragmentScrapFolderOptionBinding.inflate(inflater, container, false)
+        initClickListener()
+        return binding.root
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -40,12 +52,24 @@ class MyCourseWriteBottomFragment: BottomSheetDialogFragment() {
     }
 
     private fun getBottomSheetDialogDefaultHeight(): Int {
-        return getWindowHeight() * 55 / 100
+        return getWindowHeight() * 20 / 100
     }
 
     private fun getWindowHeight(): Int {
         val displayMetrics = DisplayMetrics()
         (context as Activity?)!!.windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.heightPixels
+    }
+
+    private fun initClickListener() {
+        binding.scrapFolderOptionEdit.setOnClickListener {
+            val scrapFolderOptionEditDialog = DialogScrapFolderEdit()
+            scrapFolderOptionEditDialog.show(requireActivity().supportFragmentManager, "ScrapFolderEditDialog")
+        }
+
+        binding.scrapFolderOptionDelete.setOnClickListener {
+            val scrapFolderOptionDeleteDialog = DialogScrapFolderDelete()
+            scrapFolderOptionDeleteDialog.show(requireActivity().supportFragmentManager, "ScrapFolderDeleteDialog")
+        }
     }
 }

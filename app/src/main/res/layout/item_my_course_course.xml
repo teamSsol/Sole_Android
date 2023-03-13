@@ -25,6 +25,26 @@
         app:layout_constraintTop_toTopOf="@id/my_course_course_iv"
         app:layout_constraintStart_toEndOf="@id/my_course_course_iv" />
 
+    <ImageView
+        android:id="@+id/my_course_course_uncheck_iv"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/ic_radio_default"
+        android:layout_marginEnd="18dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/my_course_course_title_tv"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/my_course_course_check_iv"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/ic_radio_check"
+        android:layout_marginEnd="18dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/my_course_course_title_tv"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
         android:id="@+id/my_course_course_location_tv"
         android:layout_width="wrap_content"
