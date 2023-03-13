@@ -31,15 +31,29 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         binding = ActivityCourseDetailBinding.inflate(layoutInflater)
 
-        var mapFragment = supportFragmentManager.findFragmentById(R.id.map) as MapFragment?
+        var mapFragment = supportFragmentManager.findFragmentById(R.id.course_detail_map) as MapFragment?
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance()
-            supportFragmentManager.beginTransaction().add(R.id.map, mapFragment).commit()
+            supportFragmentManager.beginTransaction().add(R.id.course_detail_map, mapFragment).commit()
         }
 
         mapFragment!!.getMapAsync(this)
 
+        initClickListener()
+
         setContentView(binding.root)
+    }
+
+    private fun initClickListener() {
+        binding.courseDetailOptionIv.setOnClickListener {
+            val courseDetailOptionBottomFragment = CourseDetailOptionBottomFragment()
+            courseDetailOptionBottomFragment.show(supportFragmentManager, "CourseDetailOptionBottom")
+        }
+
+        binding.courseDetailReportIv.setOnClickListener {
+            val courseDetailReportDialog = DialogCourseDetailReport()
+            courseDetailReportDialog.show(supportFragmentManager, "CourseDetailReportDialog")
+        }
     }
 
     override fun onMapReady(naverMap: NaverMap) {
@@ -47,7 +61,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback {
 
         // MEMO: Polyline 넣기
         // UPDATE: 각 코스 선으로 이어주기!
-        /*
         polyline.coords = listOf(
             LatLng(37.57152, 126.97714),
             LatLng(37.56607, 126.98268),
@@ -58,7 +71,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback {
         polyline.width = 10
         polyline.color = ContextCompat.getColor(this, R.color.main)
         polyline.map = naverMap
-        */
 
         // MEMO: CameraPosition 변경
         // UPDATE: 각 코스마다 특정 CameraPosition 입력해주기
@@ -71,16 +83,13 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback {
         )
         naverMap.cameraPosition = cameraPosition
         */
-        /*
         val location = LatLng(37.5666102, 126.9783881)
         // 카메라 위치와 줌 조절(숫자가 클수록 확대)
-        val cameraPosition = CameraPosition(location, 16.0)
+        val cameraPosition = CameraPosition(location, 14.0)
         naverMap.cameraPosition = cameraPosition
-        */
 
         // MEMO: Marker 모양 변경
         // UPDATE: 특정 위치 좌표를 통해 숫자 입력해주기
-        /*
         val marker1 = Marker()
         marker1.icon = OverlayImage.fromResource(R.drawable.ic_course_no_1)
         marker1.position = LatLng(37.57152, 126.97714)
@@ -100,6 +109,5 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback {
         marker4.icon = OverlayImage.fromResource(R.drawable.ic_course_no_4)
         marker4.position = LatLng(37.55855, 126.97822)
         marker4.map = naverMap
-        */
     }
 }

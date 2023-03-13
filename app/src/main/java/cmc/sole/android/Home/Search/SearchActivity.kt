@@ -1,8 +1,10 @@
 package cmc.sole.android.Home.Search
 
+import android.content.Intent
 import android.view.KeyEvent
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import cmc.sole.android.CourseDetailActivity
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.Home.HomeDefaultCourseRVAdapter
 import cmc.sole.android.Utils.BaseActivity
@@ -40,6 +42,11 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>(ActivitySearchBinding:
         binding.searchResultRv.adapter = searchResultRVAdapter
         binding.searchResultRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 40))
         binding.searchResultRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        searchResultRVAdapter.setOnItemClickListener(object: HomeDefaultCourseRVAdapter.OnItemClickListener {
+            override fun onItemClick(data: DefaultCourse, position: Int) {
+                startActivity(Intent(this@SearchActivity, CourseDetailActivity::class.java))
+            }
+        })
 
         // MEMO: DummyData
         searchResultList.add(DefaultCourse("test", "title", true, "경기 남양주", "5시간 소요", "7.2km", arrayListOf("test")))

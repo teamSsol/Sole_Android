@@ -2,11 +2,23 @@ package cmc.sole.android.Home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemClickListener
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.R
 import cmc.sole.android.databinding.ItemCourseDefaultBinding
 
 class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>): RecyclerView.Adapter<HomeDefaultCourseRVAdapter.ViewHolder>() {
+
+    private lateinit var itemClickListener: OnItemClickListener
+
+    interface OnItemClickListener {
+        fun onItemClick(data: DefaultCourse, position: Int)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -16,6 +28,9 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
     }
 
     override fun onBindViewHolder(holder: HomeDefaultCourseRVAdapter.ViewHolder, position: Int) {
+        holder.itemView.setOnClickListener {
+            itemClickListener.onItemClick(courseList[position], position)
+        }
         holder.bind(courseList[position])
     }
 

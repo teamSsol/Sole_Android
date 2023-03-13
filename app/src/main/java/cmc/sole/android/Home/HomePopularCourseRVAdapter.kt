@@ -6,6 +6,17 @@ import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.databinding.ItemCoursePopularBinding
 
 class HomePopularCourseRVAdapter(private val courseList: ArrayList<PopularCourse>): RecyclerView.Adapter<HomePopularCourseRVAdapter.ViewHolder>() {
+
+    private lateinit var itemClickListener: OnItemClickListener
+
+    interface OnItemClickListener {
+        fun onItemClick(data: PopularCourse, position: Int)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -15,6 +26,9 @@ class HomePopularCourseRVAdapter(private val courseList: ArrayList<PopularCourse
     }
 
     override fun onBindViewHolder(holder: HomePopularCourseRVAdapter.ViewHolder, position: Int) {
+        holder.itemView.setOnClickListener {
+            itemClickListener.onItemClick(courseList[position], position)
+        }
         holder.bind(courseList[position])
     }
 

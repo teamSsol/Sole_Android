@@ -2,6 +2,7 @@ package cmc.sole.android.Home
 
 import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
+import cmc.sole.android.CourseDetailActivity
 import cmc.sole.android.Home.MyPage.MyPageActivity
 import cmc.sole.android.Home.Search.SearchActivity
 import cmc.sole.android.MyCourse.MyCourseWriteActivity
@@ -27,11 +28,21 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
         binding.homePopularCourseRv.adapter = popularCourseRVAdapter
         binding.homePopularCourseRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 20))
         binding.homePopularCourseRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        popularCourseRVAdapter.setOnItemClickListener(object: HomePopularCourseRVAdapter.OnItemClickListener {
+            override fun onItemClick(data: PopularCourse, position: Int) {
+                startActivity(Intent(activity, CourseDetailActivity::class.java))
+            }
+        })
 
         myCourseRVAdapter = HomeDefaultCourseRVAdapter(myCourseList)
         binding.homeMyCourseRv.adapter = myCourseRVAdapter
         binding.homeMyCourseRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 40))
         binding.homeMyCourseRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        myCourseRVAdapter.setOnItemClickListener(object: HomeDefaultCourseRVAdapter.OnItemClickListener {
+            override fun onItemClick(data: DefaultCourse, position: Int) {
+                startActivity(Intent(activity, CourseDetailActivity::class.java))
+            }
+        })
 
         // MEMO: DummyData
         // CONDITION: 이 주변 인기 코스 7개로 고정

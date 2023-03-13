@@ -1,9 +1,11 @@
 package cmc.sole.android.Scrap
 
+import android.content.Intent
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import cmc.sole.android.CourseDetailActivity
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.MainActivity
 import cmc.sole.android.MyCourse.MyCourseCourseRVAdapter
@@ -28,12 +30,11 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
         binding.scrapFolderDetailCourseRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         scrapFolderDetailRVAdapter.setOnItemClickListener(object: MyCourseCourseRVAdapter.OnItemClickListener {
             override fun onItemClick(data: DefaultCourse, position: Int) {
-                showLog("EXAMPLE", "click")
+                startActivity(Intent(activity, CourseDetailActivity::class.java))
             }
         })
         scrapFolderDetailRVAdapter.setOnItemLongClickListener(object: MyCourseCourseRVAdapter.OnItemLongClickListener {
             override fun onItemLongClick(data: DefaultCourse, position: Int) {
-                showLog("EXAMPLE", "long")
                 binding.scrapFolderDetailOptionIv.visibility = View.GONE
                 binding.scrapFolderDetailOkTv.visibility = View.VISIBLE
                 binding.scrapFolderDetailEditCv.visibility = View.GONE

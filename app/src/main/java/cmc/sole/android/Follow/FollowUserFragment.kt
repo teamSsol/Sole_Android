@@ -1,7 +1,9 @@
 package cmc.sole.android.Follow
 
+import android.content.Intent
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import cmc.sole.android.CourseDetailActivity
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.Home.HomeDefaultCourseRVAdapter
 import cmc.sole.android.MainActivity
@@ -29,7 +31,12 @@ class FollowUserFragment: BaseFragment<FragmentFollowUserBinding>(FragmentFollow
         followUserRecentRVAdapter = HomeDefaultCourseRVAdapter(recentCourseList)
         binding.followUserPopularRv.adapter = followUserRecentRVAdapter
         binding.followUserPopularRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        
+        followUserRecentRVAdapter.setOnItemClickListener(object: HomeDefaultCourseRVAdapter.OnItemClickListener {
+            override fun onItemClick(data: DefaultCourse, position: Int) {
+                startActivity(Intent(activity, CourseDetailActivity::class.java))
+            }
+        })
+
         // MEMO: DUMMY DATA
         recentCourseList.add(DefaultCourse("img", "코스1 이름", false, "위치1", "시간1", "거리", arrayListOf("test")))
         recentCourseList.add(DefaultCourse("img", "코스2 이름", true, "위치2", "시간2", "거리", arrayListOf("test")))
