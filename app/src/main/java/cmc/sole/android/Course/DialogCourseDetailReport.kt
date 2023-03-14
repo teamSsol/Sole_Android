@@ -1,4 +1,4 @@
-package cmc.sole.android
+package cmc.sole.android.Course
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -7,18 +7,19 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import cmc.sole.android.databinding.DialogCourseDetailDeleteBinding
+import cmc.sole.android.databinding.DialogCourseDetailReportBinding
 import cmc.sole.android.databinding.DialogScrapFolderNewBinding
 
-class DialogCourseDetailDelete: DialogFragment() {
+class DialogCourseDetailReport: DialogFragment() {
 
-    lateinit var binding: DialogCourseDetailDeleteBinding
+    lateinit var binding: DialogCourseDetailReportBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DialogCourseDetailDeleteBinding.inflate(inflater, container, false)
+        binding = DialogCourseDetailReportBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP)
 
@@ -34,12 +35,12 @@ class DialogCourseDetailDelete: DialogFragment() {
     }
 
     private fun initClickListener() {
-        binding.courseDetailDeleteCancel.setOnClickListener {
+        binding.courseDetailReportCancel.setOnClickListener {
             dismiss()
         }
         
-        binding.courseDetailDeleteBtn.setOnClickListener {
-            Toast.makeText(context, "삭제하기", Toast.LENGTH_SHORT).show()
+        binding.courseDetailReportBtn.setOnClickListener {
+            Toast.makeText(context, "신고하기", Toast.LENGTH_SHORT).show()
         }
     }
 }

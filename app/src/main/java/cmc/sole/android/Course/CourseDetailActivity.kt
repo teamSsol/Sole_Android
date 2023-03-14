@@ -1,9 +1,12 @@
-package cmc.sole.android
+package cmc.sole.android.Course
 
-import android.graphics.PointF
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import cmc.sole.android.Home.DefaultCourse
+import cmc.sole.android.Home.courseDetailNumber
+import cmc.sole.android.R
 import cmc.sole.android.databinding.ActivityCourseDetailBinding
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
@@ -19,6 +22,8 @@ import com.naver.maps.map.overlay.PolylineOverlay
 class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback {
 
     lateinit var binding: ActivityCourseDetailBinding
+    private lateinit var courseDetailCourseRVAdapter: CourseDetailCourseRVAdapter
+    private var courseList = ArrayList<DefaultCourse?>()
 
     // NaverMap
     lateinit var naverMap: NaverMap
@@ -40,6 +45,7 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback {
         mapFragment!!.getMapAsync(this)
 
         initClickListener()
+        initAdapter()
 
         setContentView(binding.root)
     }
@@ -54,6 +60,18 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback {
             val courseDetailReportDialog = DialogCourseDetailReport()
             courseDetailReportDialog.show(supportFragmentManager, "CourseDetailReportDialog")
         }
+    }
+
+    private fun initAdapter() {
+        courseDetailCourseRVAdapter = CourseDetailCourseRVAdapter(courseList)
+        binding.courseDetailCourseRv.adapter = courseDetailCourseRVAdapter
+        binding.courseDetailCourseRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+//        courseList.add(DefaultCourse("image", "제목제목", false, "서울 종로구1", "1시간 소요", "1.2km", arrayListOf("테스트"), courseDetailNumber))
+        courseList.add(null)
+//        courseList.add(DefaultCourse("image", "제목제목", false, "서울 종로구1", "1시간 소요", "1.2km", arrayListOf("테스트"), courseDetailNumber))
+//        courseList.add(null)
+//        courseList.add(DefaultCourse("image", "제목제목", false, "서울 종로구1", "1시간 소요", "1.2km", arrayListOf("테스트"), courseDetailNumber))
     }
 
     override fun onMapReady(naverMap: NaverMap) {

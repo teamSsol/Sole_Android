@@ -12,5 +12,9 @@ data class DefaultCourse(
     var location: String,
     var time: String,
     var distance: String,
-    var tag: ArrayList<String>
+    var tag: ArrayList<String>,
+    var viewType: Int?
 )
+
+const val courseDetailNumber = 1
+const val courseDetailLine = 2

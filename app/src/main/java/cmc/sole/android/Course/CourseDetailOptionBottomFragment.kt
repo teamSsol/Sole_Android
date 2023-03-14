@@ -1,23 +1,15 @@
-package cmc.sole.android
+package cmc.sole.android.Course
 
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import cmc.sole.android.Home.MyPage.DialogMyPageLogout
 import cmc.sole.android.MyCourse.MyCourseWriteActivity
-import cmc.sole.android.R
 import cmc.sole.android.databinding.BottomFragmentCourseDetailOptionBinding
-import cmc.sole.android.databinding.BottomFragmentScrapFolderOptionBinding
-import cmc.sole.android.databinding.DialogMyPageLogoutBinding
-import cmc.sole.android.databinding.FragmentScrapFolderDetailBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

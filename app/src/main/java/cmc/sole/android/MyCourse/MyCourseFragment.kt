@@ -23,11 +23,11 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
         binding.myCourseCourseRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         // MEMO: DUMMY DATA
-        myCourseCourseList.add(DefaultCourse("img", "코스1 이름", false, "위치1", "시간1", "거리", arrayListOf("test")))
-        myCourseCourseList.add(DefaultCourse("img", "코스2 이름", true, "위치2", "시간2", "거리", arrayListOf("test")))
-        myCourseCourseList.add(DefaultCourse("img", "코스3 이름", true, "위치3", "시간3", "거리", arrayListOf("test")))
-        myCourseCourseList.add(DefaultCourse("img", "코스4 이름", true, "위치4", "시간4", "거리", arrayListOf("test")))
-        myCourseCourseList.add(DefaultCourse("img", "코스5 이름", true, "위치5", "시간5", "거리", arrayListOf("test")))
+        myCourseCourseList.add(DefaultCourse("img", "코스1 이름", false, "위치1", "시간1", "거리", arrayListOf("test"), null))
+        myCourseCourseList.add(DefaultCourse("img", "코스2 이름", true, "위치2", "시간2", "거리", arrayListOf("test"), null))
+        myCourseCourseList.add(DefaultCourse("img", "코스3 이름", true, "위치3", "시간3", "거리", arrayListOf("test"), null))
+        myCourseCourseList.add(DefaultCourse("img", "코스4 이름", true, "위치4", "시간4", "거리", arrayListOf("test"), null))
+        myCourseCourseList.add(DefaultCourse("img", "코스5 이름", true, "위치5", "시간5", "거리", arrayListOf("test"), null))
     }
 
     private fun initClickListener() {

@@ -62,7 +62,7 @@
         <activity android:name=".MyCourse.MyCourseWriteActivity" />
 
         <!-- test -->
-        <activity android:name=".CourseDetailActivity" />
+        <activity android:name=".Course.CourseDetailActivity" />
 
         <!-- Naver Map -->
         <meta-data

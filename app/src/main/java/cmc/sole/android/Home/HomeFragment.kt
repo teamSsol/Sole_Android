@@ -2,7 +2,7 @@ package cmc.sole.android.Home
 
 import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
-import cmc.sole.android.CourseDetailActivity
+import cmc.sole.android.Course.CourseDetailActivity
 import cmc.sole.android.Home.MyPage.MyPageActivity
 import cmc.sole.android.Home.Search.SearchActivity
 import cmc.sole.android.MyCourse.MyCourseWriteActivity
@@ -53,11 +53,11 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
         popularCourseList.add(PopularCourse("image", "테스트5"))
 
         // CONDITION: 내 취향 코스 5개 + 더 보기 버튼 이용
-        myCourseList.add(DefaultCourse("image", "제목제목", false, "서울 종로구1", "1시간 소요", "1.2km", arrayListOf("테스트")))
-        myCourseList.add(DefaultCourse("image", "제목제목", true, "서울 종로구2", "2시간 소요", "2.2km", arrayListOf("테스트")))
-        myCourseList.add(DefaultCourse("image", "제목제목", false, "서울 종로구3", "3시간 소요", "3.2km", arrayListOf("테스트")))
-        myCourseList.add(DefaultCourse("image", "제목제목", true, "서울 종로구4", "4시간 소요", "4.2km", arrayListOf("테스트")))
-        myCourseList.add(DefaultCourse("image", "제목제목", true, "서울 종로구5", "5시간 소요", "5.2km", arrayListOf("테스트")))
+        myCourseList.add(DefaultCourse("image", "제목제목", false, "서울 종로구1", "1시간 소요", "1.2km", arrayListOf("테스트"), null))
+        myCourseList.add(DefaultCourse("image", "제목제목", true, "서울 종로구2", "2시간 소요", "2.2km", arrayListOf("테스트"), null))
+        myCourseList.add(DefaultCourse("image", "제목제목", false, "서울 종로구3", "3시간 소요", "3.2km", arrayListOf("테스트"), null))
+        myCourseList.add(DefaultCourse("image", "제목제목", true, "서울 종로구4", "4시간 소요", "4.2km", arrayListOf("테스트"), null))
+        myCourseList.add(DefaultCourse("image", "제목제목", true, "서울 종로구5", "5시간 소요", "5.2km", arrayListOf("테스트"), null))
     }
 
     private fun initClickListener() {
