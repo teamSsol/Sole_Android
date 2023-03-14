@@ -64,10 +64,10 @@ class MyCourseCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>):
 
     inner class ViewHolder(val binding: ItemMyCourseCourseBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(course: DefaultCourse) {
-            binding.myCourseCourseTitleTv.text = course.title
-            binding.myCourseCourseLocationTv.text = course.location
-            binding.myCourseCourseTimeTv.text = course.time
-            binding.myCourseCourseDistanceTv.text = course.distance
+//            binding.myCourseCourseTitleTv.text = course.title
+//            binding.myCourseCourseLocationTv.text = course.location
+//            binding.myCourseCourseTimeTv.text = course.time
+//            binding.myCourseCourseDistanceTv.text = course.distance
             
             // TODO: 태그 추가하기
         }

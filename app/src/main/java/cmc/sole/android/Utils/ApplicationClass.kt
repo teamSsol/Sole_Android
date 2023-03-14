@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit
 
 class ApplicationClass: Application() {
     companion object {
+        const val Authorization_TOKEN: String = "Authorization"
         const val BASE_URL = "https://www.api-teamsole.site"
         const val TAG: String = "sole-pref" // Log, SharedPreference
 
@@ -27,7 +28,7 @@ class ApplicationClass: Application() {
         val client: OkHttpClient = OkHttpClient.Builder()
             .readTimeout(30000, TimeUnit.MILLISECONDS)
             .connectTimeout(30000, TimeUnit.MILLISECONDS)
-            .addNetworkInterceptor(AuthorizationTokenInterceptor()) // JWT 자동 헤더 전송
+            // .addNetworkInterceptor(AuthorizationTokenInterceptor())
             .build()
 
         retrofit = Retrofit.Builder()

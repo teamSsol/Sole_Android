@@ -68,7 +68,7 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback {
         binding.courseDetailCourseRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
 //        courseList.add(DefaultCourse("image", "제목제목", false, "서울 종로구1", "1시간 소요", "1.2km", arrayListOf("테스트"), courseDetailNumber))
-        courseList.add(null)
+//        courseList.add(null)
 //        courseList.add(DefaultCourse("image", "제목제목", false, "서울 종로구1", "1시간 소요", "1.2km", arrayListOf("테스트"), courseDetailNumber))
 //        courseList.add(null)
 //        courseList.add(DefaultCourse("image", "제목제목", false, "서울 종로구1", "1시간 소요", "1.2km", arrayListOf("테스트"), courseDetailNumber))

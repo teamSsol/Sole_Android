@@ -49,11 +49,11 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>(ActivitySearchBinding:
         })
 
         // MEMO: DummyData
-        searchResultList.add(DefaultCourse("test", "title", true, "경기 남양주", "5시간 소요", "7.2km", arrayListOf("test"), null))
-        searchResultList.add(DefaultCourse("test", "title", false, "경기 남양주", "1시간 소요", "2.2km", arrayListOf("test"), null))
-        searchResultList.add(DefaultCourse("test", "title", true, "경기 남양주", "4시간 소요", "1.2km", arrayListOf("test"), null))
-        searchResultList.add(DefaultCourse("test", "title", true, "경기 남양주", "3시간 소요", "4km", arrayListOf("test"), null))
-        searchResultList.add(DefaultCourse("test", "title", false, "경기 남양주", "8시간 소요", "12km", arrayListOf("test"), null))
+//        searchResultList.add(DefaultCourse("test", "title", true, "경기 남양주", "5시간 소요", "7.2km", arrayListOf("test"), null))
+//        searchResultList.add(DefaultCourse("test", "title", false, "경기 남양주", "1시간 소요", "2.2km", arrayListOf("test"), null))
+//        searchResultList.add(DefaultCourse("test", "title", true, "경기 남양주", "4시간 소요", "1.2km", arrayListOf("test"), null))
+//        searchResultList.add(DefaultCourse("test", "title", true, "경기 남양주", "3시간 소요", "4km", arrayListOf("test"), null))
+//        searchResultList.add(DefaultCourse("test", "title", false, "경기 남양주", "8시간 소요", "12km", arrayListOf("test"), null))
     }
 
     private fun initClickListener() {

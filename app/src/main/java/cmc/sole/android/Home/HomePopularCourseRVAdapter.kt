@@ -38,7 +38,7 @@ class HomePopularCourseRVAdapter(private val courseList: ArrayList<PopularCourse
         fun bind(course: PopularCourse) {
             // TODO: 이미지 URI 코드 연결
             // binding.itemCoursePopularIv.setImageResource()
-            binding.itemCoursePopularTitle.text = course.title
+            // binding.itemCoursePopularTitle.text = course.title
         }
     }
 }

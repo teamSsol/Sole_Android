@@ -40,13 +40,13 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
         fun bind(course: DefaultCourse) {
             binding.itemCourseTitleTv.text = course.title
 
-            if (course.scrap)
-                binding.itemCourseHeartIv.setImageResource(R.drawable.ic_heart_color)
-            else binding.itemCourseHeartIv.setImageResource(R.drawable.ic_heart_2)
-
-            binding.itemCourseLocationTv.text = course.location
-            binding.itemCourseTimeTv.text = course.time
-            binding.itemCourseDistanceTv.text = course.distance
+//            if (course.scrap)
+//                binding.itemCourseHeartIv.setImageResource(R.drawable.ic_heart_color)
+//            else binding.itemCourseHeartIv.setImageResource(R.drawable.ic_heart_2)
+//
+//            binding.itemCourseLocationTv.text = course.location
+//            binding.itemCourseTimeTv.text = course.time
+//            binding.itemCourseDistanceTv.text = course.distance
             
             // TODO: 태그 추가하기
         }
