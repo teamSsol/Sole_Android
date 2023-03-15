@@ -1,16 +1,17 @@
 package cmc.sole.android.MyCourse
 
+import android.R
+import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import cmc.sole.android.databinding.DialogDatepickerBinding
-import java.text.SimpleDateFormat
-import java.util.*
+import cmc.sole.android.databinding.DialogTimepickerBinding
 
-class DialogMyCourseWriteDatePicker: DialogFragment() {
+class DialogMyCourseWriteTimePicker: DialogFragment() {
 
-    lateinit var binding: DialogDatepickerBinding
+    lateinit var binding: DialogTimepickerBinding
     private val writeVM: MyCourseWriteViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -18,9 +19,9 @@ class DialogMyCourseWriteDatePicker: DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DialogDatepickerBinding.inflate(inflater, container, false)
+        binding = DialogTimepickerBinding.inflate(inflater, container, false)
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP)
-        binding.myCourseWriteDp.maxDate = System.currentTimeMillis()
+        binding.myCourseWriteTp.setIs24HourView(true)
 
         initClickListener()
 
@@ -34,25 +35,15 @@ class DialogMyCourseWriteDatePicker: DialogFragment() {
     }
 
     private fun initClickListener() {
-        binding.myCourseWriteDpDeleteCancel.setOnClickListener {
-            writeVM.setDate("")
+        binding.myCourseWriteTpDeleteCancel.setOnClickListener {
+            writeVM.setTime("")
             dismiss()
         }
         
-        binding.myCourseWriteDpOkBtn.setOnClickListener {
-            writeVM.setDate(setDateValue())
+        binding.myCourseWriteTpOkBtn.setOnClickListener {
+            var time = binding.myCourseWriteTp.hour.toString() + "시 " + binding.myCourseWriteTp.minute.toString() + "분"
+            writeVM.setTime(time)
             dismiss()
         }
-    }
-
-    private fun setDateValue(): String {
-        var calendar = Calendar.getInstance()
-        calendar.set(
-            binding.myCourseWriteDp.year,
-            binding.myCourseWriteDp.month,
-            binding.myCourseWriteDp.dayOfMonth
-        )
-
-        return SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN).format(Date(calendar.timeInMillis))
     }
 }

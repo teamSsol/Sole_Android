@@ -61,6 +61,9 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         writeVM.date.observe (this, Observer {
             binding.myCourseWriteDateTv.text = writeVM.getDate()
         })
+        writeVM.time.observe (this, Observer {
+            binding.myCourseWriteTimeTv.text = writeVM.getTime()
+        })
     }
 
     private fun initClickListener() {
@@ -101,6 +104,11 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         binding.myCourseWriteSearchBar.setOnClickListener {
             val myCourseWriteBottomFragment = MyCourseWriteBottomFragment()
             myCourseWriteBottomFragment.show(this.supportFragmentManager, "MyCourseWriteBottom")
+        }
+
+        binding.myCourseWriteTimeLayout.setOnClickListener {
+            val timePickerDialog = DialogMyCourseWriteTimePicker()
+            timePickerDialog.show(this.supportFragmentManager, "MyCourseWriteTimePicker")
         }
 
         binding.myCourseWriteUploadBtn.setOnClickListener {

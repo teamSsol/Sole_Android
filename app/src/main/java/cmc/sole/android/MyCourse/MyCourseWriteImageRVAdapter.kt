@@ -24,7 +24,7 @@ class MyCourseWriteImageRVAdapter(private val imgList: ArrayList<String>): Recyc
 
     inner class ViewHolder(val binding: ItemMyCourseWriteLocationImageBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(img: String) {
-
+            // MEMO: 사진 Glide 연결
         }
     }
 }

@@ -338,19 +338,52 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:id="@+id/my_course_write_time_tv"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/my_course_write_time_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="소요 시간"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/pretendard_regular"
-                    android:drawableEnd="@drawable/ic_arrow_right"
-                    android:layout_marginTop="23dp"
-                    android:drawableTint="#999999"
+                    android:layout_marginTop="30dp"
                     app:layout_constraintTop_toBottomOf="@id/my_course_write_search_bar"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        android:id="@+id/my_course_write_time_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="소요 시간"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/pretendard_regular"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/my_course_write_time_iv"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:src="@drawable/ic_arrow_right"
+                        android:padding="1dp"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintTop_toTopOf="@id/my_course_write_time_title"
+                        app:layout_constraintBottom_toBottomOf="@id/my_course_write_time_title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:tint="#999999" />
+
+                    <TextView
+                        android:id="@+id/my_course_write_time_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/main"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/pretendard_regular"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintTop_toTopOf="@id/my_course_write_time_iv"
+                        app:layout_constraintBottom_toBottomOf="@id/my_course_write_time_iv"
+                        app:layout_constraintEnd_toStartOf="@id/my_course_write_time_iv" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     android:id="@+id/my_course_write_time_line"
@@ -358,7 +391,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="16dp"
                     android:background="#D3D4D5"
-                    app:layout_constraintTop_toBottomOf="@id/my_course_write_time_tv" />
+                    app:layout_constraintTop_toBottomOf="@id/my_course_write_time_layout" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/my_course_write_location_iv"
