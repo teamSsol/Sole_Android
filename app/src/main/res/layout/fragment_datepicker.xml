@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <DatePicker
+        android:id="@+id/my_course_write_dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/my_course_write_dp_delete_cancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="취소"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:fontFamily="@font/pretendard_semibold"
+        android:background="@drawable/default_button_x"
+        android:layout_marginEnd="7dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="14dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/my_course_write_dp_ok_btn"
+        app:layout_constraintTop_toBottomOf="@id/my_course_write_dp"
+        app:layout_constraintStart_toStartOf="@id/my_course_write_dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/my_course_write_dp_ok_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/default_button_o"
+        android:fontFamily="@font/pretendard_semibold"
+        android:text="완료"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toBottomOf="@id/my_course_write_dp_delete_cancel"
+        app:layout_constraintEnd_toEndOf="@id/my_course_write_dp"
+        app:layout_constraintStart_toEndOf="@id/my_course_write_dp_delete_cancel"
+        app:layout_constraintTop_toTopOf="@id/my_course_write_dp_delete_cancel"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

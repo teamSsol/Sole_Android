@@ -56,12 +56,6 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
     }
 
     private fun initClickListener() {
-        // MEMO: 홈으로 가기 위해 임시로 넣은 부분
-        binding.splashLogoIv.setOnClickListener {
-            changeActivity(MainActivity::class.java)
-            finish()
-        }
-
         binding.loginKakaoCv.setOnClickListener {
             if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
                 UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->

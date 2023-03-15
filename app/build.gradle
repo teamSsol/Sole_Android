@@ -73,4 +73,10 @@ dependencies {
     // FCM 세팅
     apply plugin: 'com.google.gms.google-services'
     implementation platform('com.google.firebase:firebase-bom:31.2.3')
+
+    // Fragment ViewModel
+    implementation 'androidx.fragment:fragment-ktx:1.5.0'
+
+    // Flexbox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }
