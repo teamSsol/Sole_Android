@@ -3,10 +3,12 @@ package cmc.sole.android.MyCourse
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemClickListener
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.databinding.ItemMyCourseTagBinding
 
 class MyCourseTagRVAdapter(private val tagList: ArrayList<String>): RecyclerView.Adapter<MyCourseTagRVAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

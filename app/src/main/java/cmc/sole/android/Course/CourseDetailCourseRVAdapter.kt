@@ -9,6 +9,10 @@ import cmc.sole.android.databinding.ItemCourseDetailLineBinding
 import cmc.sole.android.databinding.ItemCourseDetailNumberBinding
 
 class CourseDetailCourseRVAdapter(private val courseNameList: ArrayList<DefaultCourse?>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    override fun getItemViewType(position: Int): Int {
+        return courseNameList[position]?.viewType!!
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

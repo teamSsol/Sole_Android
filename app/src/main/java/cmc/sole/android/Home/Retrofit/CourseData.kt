@@ -34,5 +34,13 @@ data class HomePopularResponse(
     var timestamp: String
 )
 
+data class MyCourseWriteImage(
+    var imgUrl: String,
+    var viewType: Int?
+)
+
 const val courseDetailNumber = 1
 const val courseDetailLine = 2
+
+const val locationImage = 1
+const val locationAddImage = 2

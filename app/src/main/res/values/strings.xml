@@ -2,4 +2,29 @@
     <string name="app_name">SOLE</string>
     <string name="logout"><u>로그아웃</u></string>
     <string name="withdrawal"><u>탈퇴하기</u></string>
+
+    <!-- MEMO: 장소 태그 -->
+    <string name="place_tag1">🍚  맛집</string>
+    <string name="place_tag2">☕  카페</string>
+    <string name="place_tag3">🖼  문화·예술</string>
+    <string name="place_tag4">🏄‍♀️ 액티비티</string>
+    <string name="place_tag5">😌  힐링</string>
+    <string name="place_tag6">🌿  자연</string>
+    <string name="place_tag7">🌇  야경</string>
+    <string name="place_tag8">⏳  역사</string>
+    <string name="place_tag9">🎡  테마파크</string>
+
+    <!-- MEMO : 동행 태그 -->
+    <string name="with_tag10">🙋‍♀️혼자서</string>
+    <string name="with_tag11">😎  친구와</string>
+    <string name="with_tag12">💑  연인과</string>
+    <string name="with_tag13">👶  아이와</string>
+    <string name="with_tag14">🐶  반려동물과</string>
+
+    <!-- MEMO: 교통 태그 -->
+    <string name="trans_tag15">👟  걸어서</string>
+    <string name="trans_tag16">🚌  대중교통으로</string>
+    <string name="trans_tag17">🚴‍♀️  자전거로</string>
+    <string name="trans_tag18">🚗  자동차로</string>
+
 </resources>

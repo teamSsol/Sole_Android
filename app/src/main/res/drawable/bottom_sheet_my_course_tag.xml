@@ -3,7 +3,4 @@
     <corners
         android:topLeftRadius="20dp"
         android:topRightRadius="20dp" />
-    <!-- MEMO: 임시 -->
-    <solid
-        android:color="#A8A8A8" />
 </shape>

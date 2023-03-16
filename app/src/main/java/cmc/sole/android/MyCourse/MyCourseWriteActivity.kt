@@ -16,6 +16,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import cmc.sole.android.Home.MyCourseWriteImage
+import cmc.sole.android.Home.locationAddImage
+import cmc.sole.android.Home.locationImage
 import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
@@ -31,23 +35,33 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
     private lateinit var writeVM: MyCourseWriteViewModel
     private lateinit var tagRVAdapter: MyCourseTagRVAdapter
     private var tagList = ArrayList<String>()
+    private lateinit var locationImgRVAdapter: MyCourseWriteLocationImageRVAdapter
+    private var imgList = ArrayList<MyCourseWriteImage>()
 
-    private var imageUri: Uri? = null
+    private var mainImageUri: Uri? = null
+    private var locationImageUri: Uri? = null
 
     companion object{
         const val REQ_GALLERY = 1
     }
 
-    private val imageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val mainImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
-            imageUri = result.data?.data
-            imageUri?.let{
+            mainImageUri = result.data?.data
+            mainImageUri?.let{
                 Glide.with(this)
-                    .load(imageUri).placeholder(R.drawable.ic_profile).fallback(R.drawable.ic_profile).fitCenter()
+                    .load(mainImageUri).placeholder(R.drawable.ic_profile).fallback(R.drawable.ic_profile).fitCenter()
                     .apply(RequestOptions().centerCrop())
                     .into(binding.myCourseWriteMainIv)
             }
         }
+    }
+
+    private val locationImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            locationImageUri = result.data?.data
+        }
+        locationImgRVAdapter.addItem(MyCourseWriteImage(locationImageUri.toString(), locationImage))
     }
 
     override fun initAfterBinding() {
@@ -82,7 +96,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
                 // 권한이 있는 경우 갤러리 실행
                 val intent = Intent(Intent.ACTION_PICK)
                 intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
-                imageResult.launch(intent)
+                mainImageResult.launch(intent)
             }
         }
 
@@ -125,18 +139,34 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         binding.myCourseWriteTagRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 20))
         binding.myCourseWriteTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 20))
 
-        tagList.add("맛집")
-        tagList.add("맛집")
-        tagList.add("맛집")
-        tagList.add("맛집")
-        tagList.add("맛집")
-        tagList.add("맛집")
-        tagList.add("맛집")
-        tagList.add("맛집")
-        tagList.add("맛집")
+        locationImgRVAdapter = MyCourseWriteLocationImageRVAdapter(imgList)
+        binding.myCourseWriteLocationRv.adapter = locationImgRVAdapter
+        binding.myCourseWriteLocationRv.layoutManager = LinearLayoutManager(parent, LinearLayoutManager.HORIZONTAL, false)
+        binding.myCourseWriteLocationRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
+        locationImgRVAdapter.setOnItemClickListener(object: MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
+            override fun onItemClick(data: MyCourseWriteImage, position: Int) {
+                if (data.imgUrl == "") {
+                    val writePermission = ContextCompat.checkSelfPermission(this@MyCourseWriteActivity, WRITE_EXTERNAL_STORAGE)
+                    val readPermission = ContextCompat.checkSelfPermission(this@MyCourseWriteActivity, READ_EXTERNAL_STORAGE)
+
+                    if (writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
+                        ActivityCompat.requestPermissions(this@MyCourseWriteActivity, arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), REQ_GALLERY)
+                    } else {
+                        val intent = Intent(Intent.ACTION_PICK)
+                        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+                        locationImageResult.launch(intent)
+                    }
+                } else {
+                    locationImgRVAdapter.removeItem(position)
+                }
+            }
+        })
+
         tagList.add("맛집")
         // MEMO: 마지막 아이템 간격 문제 때문에 필요
         tagList.add("")
+
+        imgList.add(MyCourseWriteImage("", locationAddImage))
     }
 
     private fun absolutelyPath(path: Uri?, context : Context): String {
@@ -152,7 +182,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
     override fun onResume() {
         super.onResume()
 
-        if (imageUri != null) {
+        if (mainImageUri != null) {
             binding.myCourseWriteCourseImageTv.visibility = View.INVISIBLE
             binding.myCourseWriteCourseImageAddIv.visibility = View.INVISIBLE
         } else {
