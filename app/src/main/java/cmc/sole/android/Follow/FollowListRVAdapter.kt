@@ -39,7 +39,7 @@ class FollowListRVAdapter(private val followList: ArrayList<FollowListData>): Re
 
     inner class ViewHolder(private val binding: ItemFollowListBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(followList: FollowListData) {
-            binding.itemFollowListProfileIv.setImageResource(R.drawable.test_img)
+            // binding.itemFollowListProfileIv.setImageResource(R.drawable.test_img)
             binding.itemFollowListNicknameTv.text = followList.nickname
             binding.itemFollowListFollowerTv.text = followList.follower + " 팔로워"
             binding.itemFollowListFollowingTv.text = followList.following + " 팔로잉"

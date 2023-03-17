@@ -18,6 +18,8 @@ class FollowUserFragment: BaseFragment<FragmentFollowUserBinding>(FragmentFollow
         // binding.itemFollowUserProfileIv.setImageResource()
         // arguments?.getString("profileImg")
         binding.itemFollowUserNicknameTv.text = arguments?.getString("nickname")
+        binding.followUserPopularTv.text = arguments?.getString("nickname") + "의 인기 코스"
+        binding.followUserRecentTv.text = arguments?.getString("nickname") + "의 최근 코스"
         binding.itemFollowUserFollowerTv.text = arguments?.getString("follower")
         binding.itemFollowUserFollowingTv.text = arguments?.getString("following")
 
@@ -36,11 +38,11 @@ class FollowUserFragment: BaseFragment<FragmentFollowUserBinding>(FragmentFollow
         })
 
         // MEMO: DUMMY DATA
-//        recentCourseList.add(DefaultCourse("img", "코스1 이름", false, "위치1", "시간1", "거리", arrayListOf("test"), null))
-//        recentCourseList.add(DefaultCourse("img", "코스2 이름", true, "위치2", "시간2", "거리", arrayListOf("test"), null))
-//        recentCourseList.add(DefaultCourse("img", "코스3 이름", true, "위치3", "시간3", "거리", arrayListOf("test"), null))
-//        recentCourseList.add(DefaultCourse("img", "코스4 이름", true, "위치4", "시간4", "거리", arrayListOf("test"), null))
-//        recentCourseList.add(DefaultCourse("img", "코스5 이름", true, "위치5", "시간5", "거리", arrayListOf("test"), null))
+        recentCourseList.add(DefaultCourse("img", "베이커리 맞은 편 일식당", false, "경기 수원", "4시간", "104m", arrayListOf("test"), null))
+        recentCourseList.add(DefaultCourse("img", "발리 다녀와서 파이", true, "서울 마포구", "4시간", "247m", arrayListOf("test"), null))
+        recentCourseList.add(DefaultCourse("img", "관람차로 내다보는 속초 바다", true, "강원 속초시", "30분", "91m", arrayListOf("test"), null))
+        recentCourseList.add(DefaultCourse("img", "행궁동 로컬 추천 코스", true, "경기 수원시", "3시간", "406m", arrayListOf("test"), null))
+        recentCourseList.add(DefaultCourse("img", "물고기, 고기", true, "제주도 서귀포", "5시간", "701m", arrayListOf("test"), null))
     }
 
     private fun initClickListener() {

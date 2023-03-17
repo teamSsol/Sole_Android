@@ -38,6 +38,18 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
 
     inner class ViewHolder(val binding: ItemCourseDefaultBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(course: DefaultCourse) {
+            if (course.title == "베이커리 맞은 편 일식당") {
+                binding.itemCourseImg.setImageResource(R.drawable.test_img_3)
+            } else if (course.title == "발리 다녀와서 파이") {
+                binding.itemCourseImg.setImageResource(R.drawable.test_img_4)
+            } else if (course.title == "관람차로 내다보는 속초 바다") {
+                binding.itemCourseImg.setImageResource(R.drawable.test_img_5)
+            } else if (course.title == "행궁동 로컬 추천 코스") {
+                binding.itemCourseImg.setImageResource(R.drawable.test_img_6)
+            } else if (course.title == "물고기, 고기") {
+                binding.itemCourseImg.setImageResource(R.drawable.test_img_7)
+            }
+
             binding.itemCourseTitleTv.text = course.title
 
 //            if (course.scrap)

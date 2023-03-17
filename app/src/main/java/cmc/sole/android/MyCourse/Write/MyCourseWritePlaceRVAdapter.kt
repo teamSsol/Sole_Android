@@ -79,7 +79,8 @@ class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<PlaceInfo
 
         holder.binding.myCourseWriteSearchBar.setOnClickListener {
             val myCourseWriteSearchBottomFragment = MyCourseWriteSearchBottomFragment()
-            // myCourseWriteSearchBottomFragment.show(holder.itemView.context.supportFragmentManager, "MyCourseWriteSearchBottom")
+//            myCourseWriteSearchBottomFragment.show(holder.itemView.context.supportFragmentManager, "MyCourseWriteSearchBottom")
+            // myCourseWriteSearchBottomFragment.show((context as AppCompatActivity).supportFragmentManager, "MyCourseWriteSearchBottom")
         }
         holder.binding.myCourseWriteTimeLayout.setOnClickListener {
             val timePickerDialog = DialogMyCourseWriteTimePicker()

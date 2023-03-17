@@ -18,7 +18,7 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
 
     private fun initEmailSetting() {
         // UPDATE: 카카오 이메일 불러오기
-        var email = "sole@gmail.com"
+        var email = "wlals2987@naver.com"
         binding.myPageInfoEmailTv.text = email
     }
 

@@ -2,19 +2,12 @@ package cmc.sole.android.Scrap
 
 import android.app.Activity
 import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import cmc.sole.android.Home.MyPage.DialogMyPageLogout
-import cmc.sole.android.R
 import cmc.sole.android.databinding.BottomFragmentScrapFolderOptionBinding
-import cmc.sole.android.databinding.DialogMyPageLogoutBinding
-import cmc.sole.android.databinding.FragmentScrapFolderDetailBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -22,6 +15,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
 
     lateinit var binding: BottomFragmentScrapFolderOptionBinding
+    private lateinit var dialogFinishListener: OnScrapOptionFinishListener
+    var folderEditName: String = ""
+
+    interface OnScrapOptionFinishListener {
+        fun finish(data: String)
+    }
+
+    fun setOnFinishListener(listener: OnScrapOptionFinishListener) {
+        dialogFinishListener = listener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,9 +68,16 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
         binding.scrapFolderOptionEdit.setOnClickListener {
             val scrapFolderOptionEditDialog = DialogScrapFolderEdit()
             scrapFolderOptionEditDialog.show(requireActivity().supportFragmentManager, "ScrapFolderEditDialog")
+            scrapFolderOptionEditDialog.setOnFinishListener(object: DialogScrapFolderEdit.OnFinishListener {
+                override fun finish(data: String) {
+                    folderEditName = data
+                }
+            })
+            dismiss()
         }
 
         binding.scrapFolderOptionDelete.setOnClickListener {
+            // dialogFinishListener.finish(folderEditName)
             val scrapFolderOptionDeleteDialog = DialogScrapFolderDelete()
             scrapFolderOptionDeleteDialog.show(requireActivity().supportFragmentManager, "ScrapFolderDeleteDialog")
         }

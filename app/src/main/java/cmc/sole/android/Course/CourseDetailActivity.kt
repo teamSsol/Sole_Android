@@ -67,11 +67,11 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback {
         binding.courseDetailCourseRv.adapter = courseDetailCourseRVAdapter
         binding.courseDetailCourseRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-//        courseList.add(DefaultCourse("image", "제목제목", false, "서울 종로구1", "1시간 소요", "1.2km", arrayListOf("테스트"), courseDetailNumber))
-//        courseList.add(null)
-//        courseList.add(DefaultCourse("image", "제목제목", false, "서울 종로구1", "1시간 소요", "1.2km", arrayListOf("테스트"), courseDetailNumber))
-//        courseList.add(null)
-//        courseList.add(DefaultCourse("image", "제목제목", false, "서울 종로구1", "1시간 소요", "1.2km", arrayListOf("테스트"), courseDetailNumber))
+        courseList.add(DefaultCourse("img", "베이커리 맞은 편 일식당", false, "경기 수원", "4시간", "104m", arrayListOf("test"), null))
+        courseList.add(null)
+        courseList.add(DefaultCourse("img", "발리 다녀와서 파이", true, "서울 마포구", "4시간", "247m", arrayListOf("test"), null))
+        courseList.add(null)
+        courseList.add(DefaultCourse("img", "관람차로 내다보는 속초 바다", true, "강원 속초시", "30분", "91m", arrayListOf("test"), null))
     }
 
     override fun onMapReady(naverMap: NaverMap) {

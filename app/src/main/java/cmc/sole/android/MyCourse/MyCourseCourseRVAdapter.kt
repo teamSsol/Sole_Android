@@ -9,6 +9,7 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.AdapterView.OnItemLongClickListener
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.Home.DefaultCourse
+import cmc.sole.android.R
 import cmc.sole.android.databinding.ItemMyCourseCourseBinding
 
 class MyCourseCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>): RecyclerView.Adapter<MyCourseCourseRVAdapter.ViewHolder>() {
@@ -64,10 +65,22 @@ class MyCourseCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>):
 
     inner class ViewHolder(val binding: ItemMyCourseCourseBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(course: DefaultCourse) {
-//            binding.myCourseCourseTitleTv.text = course.title
-//            binding.myCourseCourseLocationTv.text = course.location
-//            binding.myCourseCourseTimeTv.text = course.time
-//            binding.myCourseCourseDistanceTv.text = course.distance
+            if (course.title == "베이커리 맞은 편 일식당") {
+                binding.myCourseCourseIv.setImageResource(R.drawable.test_img_3)
+            } else if (course.title == "발리 다녀와서 파이") {
+                binding.myCourseCourseIv.setImageResource(R.drawable.test_img_4)
+            } else if (course.title == "관람차로 내다보는 속초 바다") {
+                binding.myCourseCourseIv.setImageResource(R.drawable.test_img_5)
+            } else if (course.title == "행궁동 로컬 추천 코스") {
+                binding.myCourseCourseIv.setImageResource(R.drawable.test_img_6)
+            } else if (course.title == "물고기, 고기") {
+                binding.myCourseCourseIv.setImageResource(R.drawable.test_img_7)
+            }
+
+            binding.myCourseCourseTitleTv.text = course.title
+            binding.myCourseCourseLocationTv.text = course.location
+            binding.myCourseCourseTimeTv.text = course.time
+            binding.myCourseCourseDistanceTv.text = course.distance
             
             // TODO: 태그 추가하기
         }

@@ -60,7 +60,7 @@
                     android:id="@+id/my_course_nickname_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="닉네임님의 발자국"
+                    android:text="루나님의 발자국"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:fontFamily="@font/pretendard_semibold"
@@ -72,7 +72,7 @@
                     android:id="@+id/my_course_info_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="지금까지 00 일간 00 곳의 장소를 방문하며,\n번달 총 00 개의 코스를 기록했어요"
+                    android:text="지금까지 3일간 5곳의 장소를 방문하며,\n이번달 총 5개의 코스를 기록했어요"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:fontFamily="@font/pretendard_regular"
@@ -81,18 +81,18 @@
                     app:layout_constraintTop_toBottomOf="@id/my_course_nickname_tv"
                     app:layout_constraintStart_toStartOf="@id/my_course_nickname_tv" />
 
-                <TextView
-                    android:id="@+id/my_course_info_tag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="가장 많이 방문한 지역은 지역명이고\n👟 걸어서 🚌 대중교통으로 이동해서\n☕ 카페 🖼️ 문화·예술 🍚 맛집 을 다녔어요."
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/pretendard_regular"
-                    android:layout_marginTop="16dp"
-                    android:lineHeight="19.6dp"
-                    app:layout_constraintTop_toBottomOf="@id/my_course_info_content"
-                    app:layout_constraintStart_toStartOf="@id/my_course_nickname_tv" />
+<!--                <TextView-->
+<!--                    android:id="@+id/my_course_info_tag"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="가장 많이 방문한 지역은 지역명이고\n👟 걸어서 🚌 대중교통으로 이동해서\n☕ 카페 🖼️ 문화·예술 🍚 맛집 을 다녔어요."-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="14sp"-->
+<!--                    android:fontFamily="@font/pretendard_regular"-->
+<!--                    android:layout_marginTop="16dp"-->
+<!--                    android:lineHeight="19.6dp"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/my_course_info_content"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/my_course_nickname_tv" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

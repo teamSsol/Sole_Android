@@ -9,14 +9,23 @@ data class PopularCourse(
 )
 
 data class DefaultCourse(
-    var address: String,
-    var categories: Set<Categories>,
-    var courseId: Int,
-    var distance: Int,
-    var duration: Int,
-    var like: Boolean,
-    var thumbnailImg: String,
+//    var address: String,
+//    var categories: Set<Categories>,
+//    var courseId: Int,
+//    var distance: Int,
+//    var duration: Int,
+//    var like: Boolean,
+//    var thumbnailImg: String,
+//    var title: String,
+//    var viewType: Int?
+// MEMO: 수정 필요
+    var img: String?,
     var title: String,
+    var heart: Boolean,
+    var location: String?,
+    var time: String?,
+    var distance: String?,
+    var tag: ArrayList<String>?,
     var viewType: Int?
 )
 

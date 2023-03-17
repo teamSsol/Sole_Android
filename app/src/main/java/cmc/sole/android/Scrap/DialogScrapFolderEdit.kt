@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import cmc.sole.android.databinding.DialogScrapFolderEditBinding
 import cmc.sole.android.databinding.DialogScrapFolderNewBinding
@@ -12,14 +11,14 @@ import cmc.sole.android.databinding.DialogScrapFolderNewBinding
 class DialogScrapFolderEdit: DialogFragment() {
 
     lateinit var binding: DialogScrapFolderEditBinding
-    private lateinit var itemClickListener: OnItemClickListener
+    private lateinit var dialogFinishListener: OnFinishListener
 
-    interface OnItemClickListener {
-        fun itemClick(data: String)
+    interface OnFinishListener {
+        fun finish(data: String)
     }
 
-    fun setOnClickListener(listener: OnItemClickListener) {
-        itemClickListener = listener
+    fun setOnFinishListener(listener: OnFinishListener) {
+        dialogFinishListener = listener
     }
 
     override fun onCreateView(
@@ -49,7 +48,7 @@ class DialogScrapFolderEdit: DialogFragment() {
         
         // UPDATE: 폴더 추가
         binding.scrapFolderEditBtn.setOnClickListener {
-            itemClickListener.itemClick(binding.scrapFolderEditNameEt.text.toString())
+            dialogFinishListener.finish(binding.scrapFolderEditNameEt.text.toString())
             dismiss()
         }
     }

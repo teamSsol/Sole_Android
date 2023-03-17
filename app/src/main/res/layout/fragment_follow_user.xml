@@ -375,7 +375,7 @@
                 android:id="@+id/follow_user_recent_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="닉네임의 인기 코스"
+                android:text="닉네임의 최근 코스"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:fontFamily="@font/pretendard_semibold"

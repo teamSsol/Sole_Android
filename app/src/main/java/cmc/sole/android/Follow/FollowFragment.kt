@@ -22,12 +22,8 @@ class FollowFragment: BaseFragment<FragmentFollowBinding>(FragmentFollowBinding:
         binding.followActivityRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         // MEMO: DUMMY DATA
-        followActivityList.add(FollowActivityData("프로필", "닉네임 1", true, "테스트 이미지", "코스 이름 1", "안녕"))
-        followActivityList.add(FollowActivityData("프로필", "닉네임 2", false, "테스트 이미지", "코스 이름 2", "안녕녕"))
-        followActivityList.add(FollowActivityData("프로필", "닉네임 3", true, "테스트 이미지", "코스 이름 3", "안안녕"))
-        followActivityList.add(FollowActivityData("프로필", "닉네임 4", true, "테스트 이미지", "코스 이름 4", "녕안녕"))
-        followActivityList.add(FollowActivityData("프로필", "닉네임 5", false, "테스트 이미지", "코스 이름 5", "안녕안녕"))
-        followActivityList.add(FollowActivityData("프로필", "닉네임 6", false, "테스트 이미지", "코스 이름 6", "안녕안녕"))
+        followActivityList.add(FollowActivityData("프로필", "밍밍", true, "테스트 이미지", "행궁동 로컬 추천 코스", "안녕"))
+        followActivityList.add(FollowActivityData("프로필", "제이", false, "테스트 이미지", "물고기, 고기", "안녕녕"))
     }
 
     private fun initClickListener() {

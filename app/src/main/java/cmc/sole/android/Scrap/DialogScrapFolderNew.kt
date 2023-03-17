@@ -6,13 +6,20 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
-import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
 import cmc.sole.android.databinding.DialogScrapFolderNewBinding
 
 class DialogScrapFolderNew: DialogFragment() {
 
     lateinit var binding: DialogScrapFolderNewBinding
+    private lateinit var itemClickListener: OnItemClickListener
+
+    interface OnItemClickListener {
+        fun itemClick(data: ScrapFolderData)
+    }
+
+    fun setOnClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +48,7 @@ class DialogScrapFolderNew: DialogFragment() {
         
         // UPDATE: 폴더 추가
         binding.scrapFolderNewBtn.setOnClickListener {
+            itemClickListener.itemClick(ScrapFolderData(binding.scrapFolderNewNameEt.text.toString(), 1))
             dismiss()
         }
     }

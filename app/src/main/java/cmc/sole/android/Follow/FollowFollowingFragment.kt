@@ -38,11 +38,7 @@ class FollowFollowingFragment: BaseFragment<FragmentFollowerFollowingBinding>(Fr
         })
 
         // MEMO: DUMMY DATA
-        followList.add(FollowListData("프로필", "닉네임 1", "1", "6", true))
-        followList.add(FollowListData("프로필", "닉네임 2", "2", "2", true))
-        followList.add(FollowListData("프로필", "닉네임 3", "3", "5", true))
-        followList.add(FollowListData("프로필", "닉네임 4", "4", "4", true))
-        followList.add(FollowListData("프로필", "닉네임 5", "5", "2", true))
-        followList.add(FollowListData("프로필", "닉네임 6", "6", "22", true))
+        followList.add(FollowListData("프로필", "밍밍", "2", "1", true))
+        followList.add(FollowListData("프로필", "지미", "2", "2", true))
     }
 }
