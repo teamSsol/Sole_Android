@@ -31,6 +31,13 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
         holder.itemView.setOnClickListener {
             itemClickListener.onItemClick(courseList[position], position)
         }
+        holder.binding.itemCourseHeartIv.setOnClickListener {
+            if (courseList[position].like)
+                holder.binding.itemCourseHeartIv.setImageResource(R.drawable.ic_heart_empty)
+            else holder.binding.itemCourseHeartIv.setImageResource(R.drawable.ic_heart_color)
+
+            courseList[position].like = !courseList[position].like
+        }
         holder.bind(courseList[position])
     }
 

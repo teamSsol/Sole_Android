@@ -1,9 +1,6 @@
 package cmc.sole.android.MyCourse.Write
 
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
@@ -91,8 +88,8 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
             }
         })
         writeVM.placeInfo.observe(this, Observer {
-             if (writeVM.getPlaceInfo() != null)
-                 binding.myCourseWriteTextEt.text = writeVM.getPlaceInfo()!!.title
+//             if (writeVM.getPlaceInfo() != null)
+//                 binding.myCourseWriteTextEt.text = writeVM.getPlaceInfo()!!.title
         })
     }
 
@@ -101,20 +98,20 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
             finish()
         }
 
-        binding.myCourseWriteCourseImageCv.setOnClickListener {
-            val writePermission = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE)
-            val readPermission = ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE)
-
-            if (writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
-                // 권한 요청
-                ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), REQ_GALLERY)
-            } else {
-                // 권한이 있는 경우 갤러리 실행
-                val intent = Intent(Intent.ACTION_PICK)
-                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
-                mainImageResult.launch(intent)
-            }
-        }
+//        binding.myCourseWriteCourseImageCv.setOnClickListener {
+//            val writePermission = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE)
+//            val readPermission = ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE)
+//
+//            if (writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
+//                // 권한 요청
+//                ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), REQ_GALLERY)
+//            } else {
+//                // 권한이 있는 경우 갤러리 실행
+//                val intent = Intent(Intent.ACTION_PICK)
+//                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+//                mainImageResult.launch(intent)
+//            }
+//        }
 
         binding.myCourseWriteDateLayout.setOnClickListener {
             val datePickerDialog = DialogMyCourseWriteDatePicker()
@@ -126,15 +123,15 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
             myCourseTagBottomFragment.show(supportFragmentManager, "myCourseTagBottom")
         }
 
-        binding.myCourseWriteSearchBar.setOnClickListener {
-            val myCourseWriteSearchBottomFragment = MyCourseWriteSearchBottomFragment()
-            myCourseWriteSearchBottomFragment.show(this.supportFragmentManager, "MyCourseWriteSearchBottom")
-        }
-
-        binding.myCourseWriteTimeLayout.setOnClickListener {
-            val timePickerDialog = DialogMyCourseWriteTimePicker()
-            timePickerDialog.show(this.supportFragmentManager, "MyCourseWriteTimePicker")
-        }
+//        binding.myCourseWriteSearchBar.setOnClickListener {
+//            val myCourseWriteSearchBottomFragment = MyCourseWriteSearchBottomFragment()
+//            myCourseWriteSearchBottomFragment.show(this.supportFragmentManager, "MyCourseWriteSearchBottom")
+//        }
+//
+//        binding.myCourseWriteTimeLayout.setOnClickListener {
+//            val timePickerDialog = DialogMyCourseWriteTimePicker()
+//            timePickerDialog.show(this.supportFragmentManager, "MyCourseWriteTimePicker")
+//        }
 
         binding.myCourseWriteLocationAddCv.setOnClickListener {
             placeRVAdapter.addItem(PlaceInfoData(null, null, null, null, null, null))
@@ -155,36 +152,38 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         binding.myCourseWriteTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 20))
         tagRVAdapter.clearItems()
 
-        locationImgRVAdapter = MyCourseWriteLocationImageRVAdapter(imgList)
-        binding.myCourseWriteLocationRv.adapter = locationImgRVAdapter
-        binding.myCourseWriteLocationRv.layoutManager = LinearLayoutManager(parent, LinearLayoutManager.HORIZONTAL, false)
-        binding.myCourseWriteLocationRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
-        locationImgRVAdapter.setOnItemClickListener(object:
-            MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
-            override fun onItemClick(data: MyCourseWriteImage, position: Int) {
-                if (data.imgUrl == "") {
-                    val writePermission = ContextCompat.checkSelfPermission(this@MyCourseWriteActivity, WRITE_EXTERNAL_STORAGE)
-                    val readPermission = ContextCompat.checkSelfPermission(this@MyCourseWriteActivity, READ_EXTERNAL_STORAGE)
+//        locationImgRVAdapter = MyCourseWriteLocationImageRVAdapter(imgList)
+//        binding.myCourseWriteLocationRv.adapter = locationImgRVAdapter
+//        binding.myCourseWriteLocationRv.layoutManager = LinearLayoutManager(parent, LinearLayoutManager.HORIZONTAL, false)
+//        binding.myCourseWriteLocationRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
+//        locationImgRVAdapter.setOnItemClickListener(object:
+//            MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
+//            override fun onItemClick(data: MyCourseWriteImage, position: Int) {
+//                if (data.imgUrl == "") {
+//                    val writePermission = ContextCompat.checkSelfPermission(this@MyCourseWriteActivity, WRITE_EXTERNAL_STORAGE)
+//                    val readPermission = ContextCompat.checkSelfPermission(this@MyCourseWriteActivity, READ_EXTERNAL_STORAGE)
+//
+//                    if (writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
+//                        ActivityCompat.requestPermissions(this@MyCourseWriteActivity, arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), REQ_GALLERY)
+//                    } else {
+//                        val intent = Intent(Intent.ACTION_PICK)
+//                        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+//                        locationImageResult.launch(intent)
+//                    }
+//                } else {
+//                    locationImgRVAdapter.removeItem(position)
+//                }
+//            }
+//        })
+//
+//        imgList.add(MyCourseWriteImage("", locationAddImage))
 
-                    if (writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
-                        ActivityCompat.requestPermissions(this@MyCourseWriteActivity, arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), REQ_GALLERY)
-                    } else {
-                        val intent = Intent(Intent.ACTION_PICK)
-                        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
-                        locationImageResult.launch(intent)
-                    }
-                } else {
-                    locationImgRVAdapter.removeItem(position)
-                }
-            }
-        })
+        placeRVAdapter = MyCourseWritePlaceRVAdapter(placeList)
+        binding.myCourseWritePlaceRv.adapter = placeRVAdapter
+        binding.myCourseWritePlaceRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.myCourseWritePlaceRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 30))
 
-        imgList.add(MyCourseWriteImage("", locationAddImage))
-
-//        placeRVAdapter = MyCourseWritePlaceRVAdapter(placeList)
-//        binding.myCourseWritePlaceRv.adapter = placeRVAdapter
-//        binding.myCourseWritePlaceRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-//        placeList.add(PlaceInfoData(null, null, null, null, null, null))
+        placeList.add(PlaceInfoData(null, null, null, null, null, null))
     }
 
     private fun absolutelyPath(path: Uri?, context : Context): String {
