@@ -13,12 +13,12 @@ data class SearchNaverData(
 
 data class SearchResultData(
     var title: String,
-    var link: String,
-    var category: String,
-    var description: String,
-    var telephone: String,
+    var link: String?,
+    var category: String?,
+    var description: String?,
+    var telephone: String?,
     var address: String,
     var roadAddress: String,
     var mapx: String,
-    var mapy: String,
+    var mapy: String
 )

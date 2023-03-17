@@ -3,12 +3,14 @@ package cmc.sole.android.MyCourse.Write
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import cmc.sole.android.MyCourse.TagButton
+import cmc.sole.android.MyCourse.Write.Search.SearchResultData
 
 class MyCourseWriteViewModel: ViewModel() {
     var date: MutableLiveData<String> = MutableLiveData<String>()
     var time: MutableLiveData<String> = MutableLiveData<String>()
     var tag: MutableLiveData<List<TagButton>> = MutableLiveData<List<TagButton>>()
     var checkTag: MutableList<Boolean> = mutableListOf()
+    var placeInfo: MutableLiveData<SearchResultData> = MutableLiveData<SearchResultData>()
 
     init {
         date.value = ""
@@ -49,6 +51,11 @@ class MyCourseWriteViewModel: ViewModel() {
         checkTag[position] = !checkTag[position]
     }
 
+    fun setPlaceInfo(placeInfo: SearchResultData) {
+        this.placeInfo.value = SearchResultData(placeInfo.title, null, null, null,
+            null, placeInfo.address, placeInfo.roadAddress, placeInfo.mapx, placeInfo.mapy)
+    }
+
     fun getDate(): String {
         return date.value.toString()
     }
@@ -67,5 +74,9 @@ class MyCourseWriteViewModel: ViewModel() {
 
     fun getCheckTag(position: Int): Boolean {
         return checkTag[position]
+    }
+
+    fun getPlaceInfo(): SearchResultData? {
+        return placeInfo.value
     }
 }

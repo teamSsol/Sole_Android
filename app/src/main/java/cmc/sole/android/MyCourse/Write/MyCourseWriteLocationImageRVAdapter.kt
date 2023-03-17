@@ -79,12 +79,15 @@ class MyCourseWriteLocationImageRVAdapter(private val imgList: ArrayList<MyCours
     }
 
     fun addItem(item: MyCourseWriteImage) {
-        imgList.removeAt(imgList.size - 1)
-        imgList.add(item)
+        if (item.imgUrl != "") {
+            imgList.removeAt(imgList.size - 1)
+            imgList.add(item)
 
-        if (imgList.size < 4) {
-            imgList.add(MyCourseWriteImage("", locationAddImage))
+            if (imgList.size < 4) {
+                imgList.add(MyCourseWriteImage("", locationAddImage))
+            }
         }
+        else imgList.add(item)
         this.notifyDataSetChanged()
     }
 

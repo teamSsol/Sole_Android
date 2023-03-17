@@ -2,12 +2,19 @@ package cmc.sole.android.MyCourse.Write.Search
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
 import cmc.sole.android.R
 import cmc.sole.android.databinding.BottomFragmentMyCourseWriteSearchBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -27,6 +34,10 @@ import java.net.URLEncoder
 
 class MyCourseWriteSearchBottomFragment: BottomSheetDialogFragment() {
     private lateinit var binding: BottomFragmentMyCourseWriteSearchBinding
+    private lateinit var searchResultRVAdapter: MyCourseSearchResultRVAdapter
+    private var searchResultList = ArrayList<SearchResultData>()
+
+    private val writeVM: MyCourseWriteViewModel by activityViewModels()
 
     lateinit var sb: StringBuilder
     private val display = 5 // 검색결과갯수. 최대100개
@@ -36,46 +47,21 @@ class MyCourseWriteSearchBottomFragment: BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // FIX: 태그 여러 개로 다시 나오는 오류 수정 필요!!
         binding = BottomFragmentMyCourseWriteSearchBinding.inflate(inflater, container, false)
-        searchKeyword("은행")
-//        Thread {
-//            try {
-//                val text: String = URLEncoder.encode("아트메가128", "utf-8")
-//                val apiURL = "https://openapi.naver.com/v1/search/blog.json?query=$text&display=$display&"
-//                val url = URL(apiURL)
-//                val con: HttpURLConnection = url.openConnection() as HttpURLConnection
-//                con.setRequestMethod("GET")
-//                con.setRequestProperty("X-Naver-Client-Id", resources.getString(R.string.naver_client_id))
-//                con.setRequestProperty("X-Naver-Client-Secret", resources.getString(R.string.naver_client_secret))
-//                val responseCode: Int = con.getResponseCode()
-//                val br: BufferedReader
-//                if (responseCode == 200) {
-//                    br = BufferedReader(InputStreamReader(con.getInputStream()))
-//                } else {
-//                    br = BufferedReader(InputStreamReader(con.getErrorStream()))
-//                }
-//                sb = StringBuilder()
-//                var line: String
-//                while (br.readLine().also { line = it } != null) {
-//                    sb.append(
-//                        """
-//                $line
-//
-//                """.trimIndent()
-//                    )
-//                }
-//                br.close()
-//                con.disconnect()
-//                Log.d("WRITE-TEST", "${sb.toString()}")
-//
-//            } catch (e: Exception) {
-//                Log.d("WRITE-TEST", e.toString())
-//            }
-//        }.start()
-
-
+        initSearchListener()
+        initAdapter()
         return binding.root
+    }
+
+    private fun initAdapter() {
+        searchResultRVAdapter = MyCourseSearchResultRVAdapter(searchResultList)
+        binding.myCourseWriteSearchResultRv.adapter = searchResultRVAdapter
+        binding.myCourseWriteSearchResultRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        searchResultRVAdapter.setOnItemClickListener(object: MyCourseSearchResultRVAdapter.OnItemClickListener {
+            override fun onItemClick(data: SearchResultData, position: Int) {
+                writeVM.setPlaceInfo(data)
+            }
+        })
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -106,16 +92,29 @@ class MyCourseWriteSearchBottomFragment: BottomSheetDialogFragment() {
         return displayMetrics.heightPixels
     }
 
+    private fun initSearchListener() {
+        binding.myCourseWriteSearchBottomTextEt.setOnEditorActionListener { _, actionId, _ ->
+            var handled = false
+
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                searchKeyword(binding.myCourseWriteSearchBottomTextEt.text.toString())
+                val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(binding.myCourseWriteSearchBottomTextEt.windowToken, 0)
+                handled = true
+            }
+            handled
+        }
+    }
+
     // 키워드 검색 함수
     private fun searchKeyword(keyword: String) {
-        val retrofit = Retrofit.Builder()   // Retrofit 구성
+        val retrofit = Retrofit.Builder()
             .baseUrl("https://openapi.naver.com/v1/").addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val api = retrofit.create(NaverSearchAPI::class.java)   // 통신 인터페이스를 객체로 생성
         val call = api.searchKeyword(resources.getString(R.string.naver_client_id2),
-            resources.getString(R.string.naver_client_secret2),
-            "local.json", keyword, 5)   // 검색 조건 입력
+            resources.getString(R.string.naver_client_secret2), "local.json", keyword, 5)   // 검색 조건 입력
 
         // API 서버에 요청
         call.enqueue(object: Callback<SearchNaverData> {
@@ -123,12 +122,11 @@ class MyCourseWriteSearchBottomFragment: BottomSheetDialogFragment() {
                 call: Call<SearchNaverData>,
                 response: Response<SearchNaverData>
             ) {
-                // 통신 성공 (검색 결과는 response.body()에 담겨있음)
-                Log.d("API-TEST", "Raw: ${response.raw()}")
-                Log.d("API-TEST", "Body: ${response.body()?.items}")
+                if (response.body()?.items != null) {
+                    searchResultRVAdapter.addAllItems(response.body()?.items!! as ArrayList<SearchResultData>)
+                }
             }
             override fun onFailure(call: Call<SearchNaverData>, t: Throwable) {
-                // 통신 실패
                 Log.w("API-TEST", "통신 실패: ${t.message}")
             }
         })

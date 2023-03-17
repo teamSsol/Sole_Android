@@ -20,7 +20,7 @@
         android:requestLegacyExternalStorage="true">
         <!-- UPDATE: 시작 Splash 로 바꾸기 -->
         <activity
-            android:name=".MyCourse.Write.MyCourseWriteActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,7 +60,7 @@
         <activity android:name=".Home.MyPage.Notice.MyPageNoticeActivity" />
         <activity android:name=".Home.MyPage.Notice.MyPageNoticeContentActivity" />
         <activity android:name=".Home.MyPage.FAQ.MyPageFAQActivity" />
-<!--        <activity android:name=".MyCourse.MyCourseWriteActivity" />-->
+        <activity android:name=".MyCourse.MyCourseWriteActivity" />
 
         <!-- test -->
         <activity android:name=".Course.CourseDetailActivity" />
