@@ -2,14 +2,12 @@ package cmc.sole.android.MyCourse
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -78,6 +76,14 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         writeVM.time.observe (this, Observer {
             binding.myCourseWriteTimeTv.text = writeVM.getTime()
         })
+        writeVM.tag.observe(this, Observer {
+            if (writeVM.getTag() != null) {
+                var tagResult = writeVM.getTag()
+                for (i in 0 until writeVM.getTag()!!.size) {
+                    tagResult?.get(i)?.let { it1 -> tagRVAdapter.addItem(it1.title) }
+                }
+            }
+        })
     }
 
     private fun initClickListener() {
@@ -110,14 +116,9 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
             myCourseTagBottomFragment.show(supportFragmentManager, "myCourseTagBottom")
         }
 
-        binding.myCourseWriteTagRv.setOnClickListener {
-            val myCourseTagBottomFragment = MyCourseTagBottomFragment()
-            myCourseTagBottomFragment.show(supportFragmentManager, "myCourseTagBottom")
-        }
-
         binding.myCourseWriteSearchBar.setOnClickListener {
-            val myCourseWriteBottomFragment = MyCourseWriteBottomFragment()
-            myCourseWriteBottomFragment.show(this.supportFragmentManager, "MyCourseWriteBottom")
+            val myCourseWriteSearchBottomFragment = MyCourseWriteSearchBottomFragment()
+            myCourseWriteSearchBottomFragment.show(this.supportFragmentManager, "MyCourseWriteBottom")
         }
 
         binding.myCourseWriteTimeLayout.setOnClickListener {
@@ -138,6 +139,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         binding.myCourseWriteTagRv.layoutManager = layoutManager
         binding.myCourseWriteTagRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 20))
         binding.myCourseWriteTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 20))
+        tagRVAdapter.clearItems()
 
         locationImgRVAdapter = MyCourseWriteLocationImageRVAdapter(imgList)
         binding.myCourseWriteLocationRv.adapter = locationImgRVAdapter
@@ -161,10 +163,6 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
                 }
             }
         })
-
-        tagList.add("맛집")
-        // MEMO: 마지막 아이템 간격 문제 때문에 필요
-        tagList.add("")
 
         imgList.add(MyCourseWriteImage("", locationAddImage))
     }

@@ -4,17 +4,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemClickListener
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.R
-import cmc.sole.android.databinding.ItemMyCourseTagBinding
 import cmc.sole.android.databinding.ItemMyCourseTagButtonBinding
 
 class MyCourseTagButtonRVAdapter(private val tagList: ArrayList<TagButton>): RecyclerView.Adapter<MyCourseTagButtonRVAdapter.ViewHolder>() {
 
     private lateinit var itemClickListener: OnItemClickListener
-
     interface OnItemClickListener {
         fun onItemClick(data: TagButton, position: Int)
     }
@@ -32,18 +29,16 @@ class MyCourseTagButtonRVAdapter(private val tagList: ArrayList<TagButton>): Rec
     }
 
     override fun onBindViewHolder(holder: MyCourseTagButtonRVAdapter.ViewHolder, position: Int) {
-        holder.itemView.setOnClickListener {
+        holder.binding.itemMyCourseTagBtn.setOnClickListener {
+            if  (tagList[position].isChecked) {
+                holder.binding.itemMyCourseTagBtn.setBackgroundResource(R.drawable.tag_x)
+                holder.binding.itemMyCourseTagBtn.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.black))
+            } else {
+                holder.binding.itemMyCourseTagBtn.setBackgroundResource(R.drawable.tag_o)
+                holder.binding.itemMyCourseTagBtn.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.white))
+            }
+            tagList[position].isChecked = !tagList[position].isChecked
             itemClickListener.onItemClick(tagList[position], position)
-            Log.d("WRITE-TEST", "isChecked1 = ${tagList[position].isChecked}")
-//            if  (tagList[position].isChecked) {
-//                holder.binding.itemMyCourseTagBtn.setBackgroundResource(R.drawable.tag_x)
-//                holder.binding.itemMyCourseTagBtn.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.black))
-//            } else {
-//                holder.binding.itemMyCourseTagBtn.setBackgroundResource(R.drawable.tag_o)
-//                holder.binding.itemMyCourseTagBtn.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.white))
-//            }
-//
-//            tagList[position].isChecked = !tagList[position].isChecked
         }
         holder.bind(tagList[position])
     }
@@ -55,6 +50,14 @@ class MyCourseTagButtonRVAdapter(private val tagList: ArrayList<TagButton>): Rec
             if (tag.title == "") {
                 binding.itemMyCourseTagBtn.visibility = View.GONE
             } else binding.itemMyCourseTagBtn.text = tag.title
+
+            if (!tag.isChecked) {
+                binding.itemMyCourseTagBtn.setBackgroundResource(R.drawable.tag_x)
+                binding.itemMyCourseTagBtn.setTextColor(ContextCompat.getColor(binding.root.context, R.color.black))
+            } else {
+                binding.itemMyCourseTagBtn.setBackgroundResource(R.drawable.tag_o)
+                binding.itemMyCourseTagBtn.setTextColor(ContextCompat.getColor(binding.root.context, R.color.white))
+            }
         }
     }
 }
