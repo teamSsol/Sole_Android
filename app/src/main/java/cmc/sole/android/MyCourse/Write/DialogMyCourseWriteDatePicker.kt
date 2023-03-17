@@ -1,9 +1,10 @@
-package cmc.sole.android.MyCourse
+package cmc.sole.android.MyCourse.Write
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
 import cmc.sole.android.databinding.DialogDatepickerBinding
 import java.text.SimpleDateFormat
 import java.util.*

@@ -3,7 +3,7 @@ package cmc.sole.android.MyCourse
 import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Home.DefaultCourse
-import cmc.sole.android.Home.HomeDefaultCourseRVAdapter
+import cmc.sole.android.MyCourse.Write.MyCourseWriteActivity
 import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.databinding.FragmentMyCourseBinding
 

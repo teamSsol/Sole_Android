@@ -1,4 +1,4 @@
-package cmc.sole.android.MyCourse
+package cmc.sole.android.MyCourse.Write
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -18,6 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Home.MyCourseWriteImage
 import cmc.sole.android.Home.locationAddImage
 import cmc.sole.android.Home.locationImage
+import cmc.sole.android.MyCourse.MyCourseTagBottomFragment
+import cmc.sole.android.MyCourse.MyCourseTagRVAdapter
+import cmc.sole.android.MyCourse.Write.Search.MyCourseWriteSearchBottomFragment
 import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
@@ -66,6 +69,10 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         initViewModel()
         initClickListener()
         initAdapter()
+
+
+        val myCourseWriteSearchBottomFragment = MyCourseWriteSearchBottomFragment()
+        myCourseWriteSearchBottomFragment.show(this.supportFragmentManager, "MyCourseWriteSearchBottom")
     }
 
     private fun initViewModel() {
@@ -118,7 +125,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
 
         binding.myCourseWriteSearchBar.setOnClickListener {
             val myCourseWriteSearchBottomFragment = MyCourseWriteSearchBottomFragment()
-            myCourseWriteSearchBottomFragment.show(this.supportFragmentManager, "MyCourseWriteBottom")
+            myCourseWriteSearchBottomFragment.show(this.supportFragmentManager, "MyCourseWriteSearchBottom")
         }
 
         binding.myCourseWriteTimeLayout.setOnClickListener {
@@ -145,7 +152,8 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         binding.myCourseWriteLocationRv.adapter = locationImgRVAdapter
         binding.myCourseWriteLocationRv.layoutManager = LinearLayoutManager(parent, LinearLayoutManager.HORIZONTAL, false)
         binding.myCourseWriteLocationRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
-        locationImgRVAdapter.setOnItemClickListener(object: MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
+        locationImgRVAdapter.setOnItemClickListener(object:
+            MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
             override fun onItemClick(data: MyCourseWriteImage, position: Int) {
                 if (data.imgUrl == "") {
                     val writePermission = ContextCompat.checkSelfPermission(this@MyCourseWriteActivity, WRITE_EXTERNAL_STORAGE)

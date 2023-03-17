@@ -1,8 +1,8 @@
-package cmc.sole.android.MyCourse
+package cmc.sole.android.MyCourse.Write
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import cmc.sole.android.MyCourse.TagButton
 
 class MyCourseWriteViewModel: ViewModel() {
     var date: MutableLiveData<String> = MutableLiveData<String>()

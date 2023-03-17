@@ -8,7 +8,7 @@ import cmc.sole.android.Home.Retrofit.HomeDefaultCourseView
 import cmc.sole.android.Home.Retrofit.HomePopularCourseView
 import cmc.sole.android.Home.Retrofit.HomeService
 import cmc.sole.android.Home.Search.SearchActivity
-import cmc.sole.android.MyCourse.MyCourseWriteActivity
+import cmc.sole.android.MyCourse.Write.MyCourseWriteActivity
 import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration

@@ -1,4 +1,4 @@
-package cmc.sole.android.MyCourse
+package cmc.sole.android.MyCourse.Write
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -49,13 +49,13 @@ class MyCourseWriteLocationImageRVAdapter(private val imgList: ArrayList<MyCours
                 holder.itemView.setOnClickListener {
                     itemClickListener.onItemClick(imgList[position], position)
                 }
-                (holder as MyCourseWriteLocationImageRVAdapter.MyCourseWriteLocationImageViewHolder).bind(imgList[position])
+                (holder as MyCourseWriteLocationImageViewHolder).bind(imgList[position])
                 holder.setIsRecyclable(false)
             } else -> {
                 holder.itemView.setOnClickListener {
                     itemClickListener.onItemClick(imgList[position], position)
                 }
-                (holder as MyCourseWriteLocationImageRVAdapter.MyCourseWriteLocationAddImageViewHolder).bind(imgList[position])
+                (holder as MyCourseWriteLocationAddImageViewHolder).bind(imgList[position])
                 holder.setIsRecyclable(false)
             }
         }

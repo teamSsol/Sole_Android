@@ -1,12 +1,10 @@
-package cmc.sole.android.MyCourse
+package cmc.sole.android.MyCourse.Write
 
-import android.R
-import android.app.TimePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
 import cmc.sole.android.databinding.DialogTimepickerBinding
 
 class DialogMyCourseWriteTimePicker: DialogFragment() {
