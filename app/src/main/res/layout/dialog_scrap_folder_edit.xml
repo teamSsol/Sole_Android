@@ -47,6 +47,7 @@
                 app:layout_constraintTop_toBottomOf="@id/scrap_folder_edit_title_tv">
 
                 <EditText
+                    android:id="@+id/scrap_folder_edit_name_et"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"

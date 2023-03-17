@@ -1,6 +1,7 @@
 package cmc.sole.android.Scrap
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView.OnItemClickListener
 import androidx.recyclerview.widget.RecyclerView
@@ -76,14 +77,23 @@ class ScrapFolderRVAdapter(private val folderList: ArrayList<ScrapFolderData>): 
     inner class DefaultFolderViewHolder(val binding: ItemScrapFolderBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(scrapFolder: ScrapFolderData) {
             // UPDATE: Image 연결
-            binding.itemScarpFolderIv.setImageResource(R.drawable.test_img)
+            if (scrapFolder.title == "가족")
+                binding.itemScarpFolderIv.setImageResource(R.drawable.test_img)
+            else if (scrapFolder.title == "친구")
+                binding.itemScarpFolderIv.setImageResource(R.drawable.test_img_2)
+            else if (scrapFolder.title == "기본 폴더")
+                binding.itemScarpFolderIv.setImageResource(R.drawable.test_img_3)
+
             binding.itemScrapFolderTv.text = scrapFolder.title
         }
     }
 
     inner class AddFolderViewHolder(val binding: ItemScrapFolderAddBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(scrapFolder: ScrapFolderData) {
-            binding.itemScrapFolderAddTv.text = scrapFolder.title
+            if (scrapFolder.title == "") {
+                binding.itemScrapFolderAddLayout.visibility = View.GONE
+                binding.itemScrapFolderTv.visibility = View.GONE
+            }
         }
     }
 }

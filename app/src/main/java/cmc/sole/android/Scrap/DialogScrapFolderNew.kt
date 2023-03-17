@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
+import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
 import cmc.sole.android.databinding.DialogScrapFolderNewBinding
 
 class DialogScrapFolderNew: DialogFragment() {
@@ -39,7 +41,7 @@ class DialogScrapFolderNew: DialogFragment() {
         
         // UPDATE: 폴더 추가
         binding.scrapFolderNewBtn.setOnClickListener {
-            Toast.makeText(context, "폴더 생성", Toast.LENGTH_SHORT).show()
+            dismiss()
         }
     }
 }

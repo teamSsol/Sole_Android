@@ -36,6 +36,29 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
         getFireBaseFCMToken()
         initClickListener()
         initRetrofitService()
+
+        // MEMO: 임시로 넣은 부분
+        if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+            UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
+                if (error != null) Log.e("EXAMPLE", "로그인 실패", error)
+                else if (token != null) {
+                    Log.d("SIGNUP-CHECK", "로그인 성공 ${token.accessToken}")
+                    accessToken = token.accessToken
+                    signupCheckService.signupCheck(SignupCheckRequest(accessToken, fcmToken))
+                    // sendAccessToken(accessToken)
+                }
+            }
+        } else {
+            UserApiClient.instance.loginWithKakaoAccount(this) { token, error ->
+                if (error != null) Log.e("EXAMPLE", "로그인 실패", error)
+                else if (token != null) {
+                    Log.d("SIGNUP-CHECK", "로그인 성공 ${token.accessToken}")
+                    accessToken = token.accessToken
+                    signupCheckService.signupCheck(SignupCheckRequest(accessToken, fcmToken))
+                    // sendAccessToken(accessToken)
+                }
+            }
+        }
     }
 
     private fun getKAKAOKeyHash() {

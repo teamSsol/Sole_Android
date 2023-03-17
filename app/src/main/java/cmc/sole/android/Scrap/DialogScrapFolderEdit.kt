@@ -6,18 +6,28 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import cmc.sole.android.databinding.DialogScrapFolderEditBinding
 import cmc.sole.android.databinding.DialogScrapFolderNewBinding
 
 class DialogScrapFolderEdit: DialogFragment() {
 
-    lateinit var binding: DialogScrapFolderNewBinding
+    lateinit var binding: DialogScrapFolderEditBinding
+    private lateinit var itemClickListener: OnItemClickListener
+
+    interface OnItemClickListener {
+        fun itemClick(data: String)
+    }
+
+    fun setOnClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DialogScrapFolderNewBinding.inflate(inflater, container, false)
+        binding = DialogScrapFolderEditBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP)
 
@@ -33,13 +43,14 @@ class DialogScrapFolderEdit: DialogFragment() {
     }
 
     private fun initClickListener() {
-        binding.scrapFolderNewCancel.setOnClickListener {
+        binding.scrapFolderEditCancel.setOnClickListener {
             dismiss()
         }
         
         // UPDATE: 폴더 추가
-        binding.scrapFolderNewBtn.setOnClickListener {
-            Toast.makeText(context, "폴더 생성", Toast.LENGTH_SHORT).show()
+        binding.scrapFolderEditBtn.setOnClickListener {
+            itemClickListener.itemClick(binding.scrapFolderEditNameEt.text.toString())
+            dismiss()
         }
     }
 }

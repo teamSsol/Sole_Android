@@ -6,18 +6,19 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import cmc.sole.android.databinding.DialogScrapFolderDeleteBinding
 import cmc.sole.android.databinding.DialogScrapFolderNewBinding
 
 class DialogScrapFolderDelete: DialogFragment() {
 
-    lateinit var binding: DialogScrapFolderNewBinding
+    lateinit var binding: DialogScrapFolderDeleteBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DialogScrapFolderNewBinding.inflate(inflater, container, false)
+        binding = DialogScrapFolderDeleteBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP)
 
@@ -33,13 +34,13 @@ class DialogScrapFolderDelete: DialogFragment() {
     }
 
     private fun initClickListener() {
-        binding.scrapFolderNewCancel.setOnClickListener {
+        binding.scrapFolderDeleteCancel.setOnClickListener {
             dismiss()
         }
         
         // UPDATE: 폴더 추가
-        binding.scrapFolderNewBtn.setOnClickListener {
-            Toast.makeText(context, "폴더 생성", Toast.LENGTH_SHORT).show()
+        binding.scrapFolderDeleteBtn.setOnClickListener {
+            dismiss()
         }
     }
 }

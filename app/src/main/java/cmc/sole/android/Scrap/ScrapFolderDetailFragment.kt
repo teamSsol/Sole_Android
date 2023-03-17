@@ -20,8 +20,12 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
     private lateinit var callback: OnBackPressedCallback
 
     override fun initAfterBinding() {
+        binding.scrapFolderDetailTitle.text = arguments?.getString("title")
+
         initAdapter()
         initClickListener()
+
+
     }
 
     private fun initAdapter() {
@@ -68,10 +72,7 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
 
         binding.scrapFolderDetailEditCv.setOnClickListener {
             var scrapFolderOptionBottomFragment = ScrapFolderOptionBottomFragment()
-            scrapFolderOptionBottomFragment.show(
-                requireActivity().supportFragmentManager,
-                "ScrapFolderDetailBottom"
-            )
+            scrapFolderOptionBottomFragment.show(requireActivity().supportFragmentManager, "ScrapFolderDetailBottom")
         }
 
         binding.scrapFolderDetailDeleteCv.setOnClickListener {
