@@ -55,16 +55,16 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
 
         // MEMO: DummyData
         // CONDITION: 이 주변 인기 코스 7개로 고정
-        popularCourseList.add(PopularCourse(0, "베이커리 맞은 편 일식당", "테스트1"))
-        popularCourseList.add(PopularCourse(1, "발리 다녀와서 파이", "테스트1"))
-        popularCourseList.add(PopularCourse(2, "관람차로 내다보는 속초 바다", "테스트1"))
+//        popularCourseList.add(PopularCourse(0, "베이커리 맞은 편 일식당", "테스트1"))
+//        popularCourseList.add(PopularCourse(1, "발리 다녀와서 파이", "테스트1"))
+//        popularCourseList.add(PopularCourse(2, "관람차로 내다보는 속초 바다", "테스트1"))
 
         // CONDITION: 내 취향 코스 5개 + 더 보기 버튼 이용
-        myCourseList.add(DefaultCourse("img", "베이커리 맞은 편 일식당", false, "경기 수원", "4시간", "104m", arrayListOf("test"), null))
-        myCourseList.add(DefaultCourse("img", "발리 다녀와서 파이", true, "서울 마포구", "4시간", "247m", arrayListOf("test"), null))
-        myCourseList.add(DefaultCourse("img", "관람차로 내다보는 속초 바다", true, "강원 속초시", "30분", "91m", arrayListOf("test"), null))
-        myCourseList.add(DefaultCourse("img", "행궁동 로컬 추천 코스", true, "경기 수원시", "3시간", "406m", arrayListOf("test"), null))
-        myCourseList.add(DefaultCourse("img", "물고기, 고기", true, "제주도 서귀포", "5시간", "701m", arrayListOf("test"), null))
+//        myCourseList.add(DefaultCourse("img", "베이커리 맞은 편 일식당", false, "경기 수원", "4시간", "104m", arrayListOf("test"), null))
+//        myCourseList.add(DefaultCourse("img", "발리 다녀와서 파이", true, "서울 마포구", "4시간", "247m", arrayListOf("test"), null))
+//        myCourseList.add(DefaultCourse("img", "관람차로 내다보는 속초 바다", true, "강원 속초시", "30분", "91m", arrayListOf("test"), null))
+//        myCourseList.add(DefaultCourse("img", "행궁동 로컬 추천 코스", true, "경기 수원시", "3시간", "406m", arrayListOf("test"), null))
+//        myCourseList.add(DefaultCourse("img", "물고기, 고기", true, "제주도 서귀포", "5시간", "701m", arrayListOf("test"), null))
     }
 
     private fun initClickListener() {

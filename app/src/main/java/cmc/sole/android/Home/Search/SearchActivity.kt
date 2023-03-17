@@ -49,7 +49,7 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>(ActivitySearchBinding:
         })
 
         // MEMO: DummyData
-        searchResultList.add(DefaultCourse("img", "베이커리 맞은 편 일식당", false, "경기 수원", "4시간", "104m", arrayListOf("test"), null))
+//        searchResultList.add(DefaultCourse("img", "베이커리 맞은 편 일식당", false, "경기 수원", "4시간", "104m", arrayListOf("test"), null))
     }
 
     private fun initClickListener() {

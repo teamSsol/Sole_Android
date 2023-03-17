@@ -114,7 +114,7 @@ class MyCourseWriteSearchBottomFragment: BottomSheetDialogFragment() {
             .build()
         val api = retrofit.create(NaverSearchAPI::class.java)   // 통신 인터페이스를 객체로 생성
         val call = api.searchKeyword(resources.getString(R.string.naver_client_id2),
-            resources.getString(R.string.naver_client_secret2), "local.json", keyword, 5)   // 검색 조건 입력
+            resources.getString(R.string.naver_client_secret2), "local.json", keyword, 3)   // 검색 조건 입력
 
         // API 서버에 요청
         call.enqueue(object: Callback<SearchNaverData> {
