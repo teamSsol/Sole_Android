@@ -2,6 +2,7 @@ package cmc.sole.android.Home.Retrofit
 
 import cmc.sole.android.Home.HomeDefaultResponse
 import cmc.sole.android.Home.HomePopularResponse
+import cmc.sole.android.Home.MyPageInfoResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -16,4 +17,8 @@ interface HomeRetrofitInterface {
         @Query("courseId") courseId: Int,
         @Query("searchWord") searchWord: String
     ): Call<HomeDefaultResponse>
+
+    // MEMO: 마이페이지
+    @GET("/api/mypage")
+    fun getMyPageInfo(): Call<MyPageInfoResponse>
 }

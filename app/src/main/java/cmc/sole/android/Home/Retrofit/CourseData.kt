@@ -1,5 +1,6 @@
 package cmc.sole.android.Home
 
+import android.os.health.TimerStat
 import cmc.sole.android.CourseTag.Categories
 
 data class PopularCourse(
@@ -37,6 +38,24 @@ data class HomePopularResponse(
 data class MyCourseWriteImage(
     var imgUrl: String,
     var viewType: Int?
+)
+
+// MEMO: 마이페이지
+data class MyPageInfoResponse(
+    var data: MyPageInfoResult,
+    var status: Int,
+    var success: Boolean,
+    var timestamp: String
+)
+
+data class MyPageInfoResult(
+    var description: String,
+    var follower: Int,
+    var following: Int,
+    var nickname: String,
+    var profileImgUrl: String,
+    var social: String,
+    var socialId: String
 )
 
 const val courseDetailNumber = 1

@@ -4,12 +4,27 @@ import cmc.sole.android.Home.MyPage.Alarm.MyPageAlarmActivity
 import cmc.sole.android.Home.MyPage.Alarm.MyPageAlarmSettingActivity
 import cmc.sole.android.Home.MyPage.FAQ.MyPageFAQActivity
 import cmc.sole.android.Home.MyPage.Notice.MyPageNoticeActivity
+import cmc.sole.android.Home.MyPageInfoResponse
+import cmc.sole.android.Home.MyPageInfoResult
+import cmc.sole.android.Home.Retrofit.HomeService
+import cmc.sole.android.Home.Retrofit.MyPageInfoView
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivityMyPageBinding
 
-class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding::inflate) {
+class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding::inflate), MyPageInfoView {
+
+    private lateinit var homeService: HomeService
+    private lateinit var myInfo: MyPageInfoResult
+
     override fun initAfterBinding() {
+        initService()
         initClickListener()
+    }
+
+    private fun initService() {
+        homeService = HomeService()
+        homeService.setMyPageInfoView(this)
+        homeService.getMyPageInfo()
     }
 
     private fun initClickListener() {
@@ -68,5 +83,17 @@ class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding:
             val logoutDialog = DialogMyPageLogout()
             logoutDialog.show(supportFragmentManager, "LogoutDialog")
         }
+    }
+
+    override fun myPageInfoSuccessView(myPageInfoResponse: MyPageInfoResponse) {
+        myInfo = myPageInfoResponse.data
+
+        binding.myPageNicknameTv.text = myPageInfoResponse.data.nickname
+        binding.myPageFollowerTv.text = myPageInfoResponse.data.follower.toString()
+        binding.myPageFollowingTv.text = myPageInfoResponse.data.following.toString()
+    }
+
+    override fun myPageInfoFailureView() {
+        showToast("마이페이지 정보 조회 실패")
     }
 }
