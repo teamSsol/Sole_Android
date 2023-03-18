@@ -74,7 +74,7 @@ class SignupService {
     }
 
     // fun socialSignup(provider: String, memberRequestDto: HashMap<String, RequestBody>, multipartFile: MultipartBody.Part?) {
-fun socialSignup(provider: String, memberRequestDto: MultipartBody.Part, multipartFile: MultipartBody.Part?) {
+    fun socialSignup(provider: String, memberRequestDto: MultipartBody.Part, multipartFile: MultipartBody.Part?) {
         signupService?.socialSignup(provider, memberRequestDto, multipartFile)?.enqueue(object: Callback<SignupSocialResponse> {
             override fun onResponse(call: Call<SignupSocialResponse>, response: Response<SignupSocialResponse>) {
                 Log.d("SIGNUP-SERVICE", "social-response = $response")
