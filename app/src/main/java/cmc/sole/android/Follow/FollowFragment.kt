@@ -1,19 +1,30 @@
 package cmc.sole.android.Follow
 
 import androidx.recyclerview.widget.LinearLayoutManager
+import cmc.sole.android.Follow.Retrofit.FollowCourseView
+import cmc.sole.android.Follow.Retrofit.FollowService
 import cmc.sole.android.MainActivity
 import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.databinding.FragmentFollowBinding
 
-class FollowFragment: BaseFragment<FragmentFollowBinding>(FragmentFollowBinding::inflate) {
+class FollowFragment: BaseFragment<FragmentFollowBinding>(FragmentFollowBinding::inflate),
+    FollowCourseView {
 
+    lateinit var followService: FollowService
     lateinit var followActivityRVAdapter: FollowActivityRVAdapter
-    private var followActivityList = ArrayList<FollowActivityData>()
+    private var followActivityList = ArrayList<FollowCourseResult>()
 
     override fun initAfterBinding() {
+        initService()
         initAdapter()
         initClickListener()
+    }
+
+    private fun initService() {
+        followService = FollowService()
+        followService.setFollowCourseView(this)
+        followService.getFollowCourse()
     }
 
     private fun initAdapter() {
@@ -30,5 +41,13 @@ class FollowFragment: BaseFragment<FragmentFollowBinding>(FragmentFollowBinding:
         binding.followFollowIv.setOnClickListener {
             (context as MainActivity).supportFragmentManager.beginTransaction().replace(R.id.main_fl, FollowListFragment()).addToBackStack("FollowList").commit()
         }
+    }
+
+    override fun followCourseSuccessView(followCourse: ArrayList<FollowCourseResult>) {
+        followActivityRVAdapter.addAllItems(followCourse)
+    }
+
+    override fun followCourseFailureView() {
+        showToast("팔로잉 유저 코스 불러오기 실패")
     }
 }

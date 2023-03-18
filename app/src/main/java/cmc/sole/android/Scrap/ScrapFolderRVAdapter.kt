@@ -1,13 +1,8 @@
 package cmc.sole.android.Scrap
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemClickListener
 import androidx.recyclerview.widget.RecyclerView
-import cmc.sole.android.Follow.FollowListData
-import cmc.sole.android.R
 import cmc.sole.android.Scrap.Retrofit.ScrapFolderDataResult
 import cmc.sole.android.Scrap.Retrofit.addFolder
 import cmc.sole.android.Scrap.Retrofit.defaultFolder

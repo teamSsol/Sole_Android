@@ -1,8 +1,7 @@
 package cmc.sole.android.Home
 
-import android.os.health.TimerStat
 import cmc.sole.android.CourseTag.Categories
-import cmc.sole.android.Signup.Retrofit.SignupSocialResult
+import cmc.sole.android.User
 
 data class PopularCourse(
     var courseId: Int,
@@ -124,19 +123,7 @@ data class MyPageNoticeResult(
     var createdAt: String,
     var noticeId: Int,
     var title: String,
-    var writer: MyPageNoticeWriterData
-)
-
-data class MyPageNoticeWriterData(
-    var accessToken: String,
-    var check: Boolean,
-    var memberId: Int,
-    var nickname: String,
-    var profileImgUrl: String?,
-    var refreshToken: String,
-    var role: String,
-    var social: String,
-    var socialId: String
+    var writer: User
 )
 
 data class MyPageNoticeAddRequest(
@@ -146,14 +133,6 @@ data class MyPageNoticeAddRequest(
 
 data class MyPageNoticeAddResponse(
     var data: MyPageNoticeResult,
-    var status: Int,
-    var success: Boolean,
-    var timestamp: String
-)
-
-// MEMO: 회원탈퇴
-data class MyPageMemberQuitResponse(
-    var data: String,
     var status: Int,
     var success: Boolean,
     var timestamp: String

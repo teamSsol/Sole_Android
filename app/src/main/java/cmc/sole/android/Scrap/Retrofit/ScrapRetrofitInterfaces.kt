@@ -1,5 +1,6 @@
 package cmc.sole.android.Scrap.Retrofit
 
+import cmc.sole.android.DefaultResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -25,5 +26,5 @@ interface ScrapRetrofitInterfaces {
     fun deleteScrapCourse(
         @Path("scrapFolderId") scrapFolderId: Int,
         @Path("courseId") courseId: Int
-    ): Call<ScrapCourseDeleteResponse>
+    ): Call<DefaultResponse>
 }

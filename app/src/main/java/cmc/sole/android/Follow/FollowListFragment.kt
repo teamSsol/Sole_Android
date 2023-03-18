@@ -8,7 +8,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class FollowListFragment: BaseFragment<FragmentFollowListBinding>(FragmentFollowListBinding::inflate) {
 
-    private val information = arrayListOf("4 팔로워", "2 팔로잉")
+    private val information = arrayListOf("0 팔로워", "0 팔로잉")
 
     override fun initAfterBinding() {
         val followListVPAdapter = FollowListVPAdapter(this)

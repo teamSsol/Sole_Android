@@ -1,6 +1,7 @@
 package cmc.sole.android.Home.Retrofit
 
 import android.util.Log
+import cmc.sole.android.DefaultResponse
 import cmc.sole.android.Home.*
 import cmc.sole.android.getAccessToken
 import com.example.geeksasaeng.Utils.NetworkModule
@@ -281,10 +282,10 @@ class HomeService {
     }
 
     fun deleteMember() {
-        homeService?.quitMember()?.enqueue(object: Callback<MyPageMemberQuitResponse> {
+        homeService?.quitMember()?.enqueue(object: Callback<DefaultResponse> {
             override fun onResponse(
-                call: Call<MyPageMemberQuitResponse>,
-                response: Response<MyPageMemberQuitResponse>
+                call: Call<DefaultResponse>,
+                response: Response<DefaultResponse>
             ) {
                 Log.d("API-TEST", "quit member response = ${response.body()}")
                 Log.d("API-TEST", "quit member body = ${response.body()?.data}")
@@ -297,7 +298,7 @@ class HomeService {
                     }
                 }
             }
-            override fun onFailure(call: Call<MyPageMemberQuitResponse>, t: Throwable) {
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 Log.e("HOME-SERVICE", "HOME-SERVICE-MY-PAGE-MEMBER-QUIT-FAILURE", t)
             }
         })

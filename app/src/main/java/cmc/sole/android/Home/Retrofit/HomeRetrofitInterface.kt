@@ -1,5 +1,6 @@
 package cmc.sole.android.Home.Retrofit
 
+import cmc.sole.android.DefaultResponse
 import cmc.sole.android.Home.*
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -55,5 +56,5 @@ interface HomeRetrofitInterface {
 
     // MEMO: 회원탈퇴
     @DELETE("api/mypage/quit")
-    fun quitMember(): Call<MyPageMemberQuitResponse>
+    fun quitMember(): Call<DefaultResponse>
 }

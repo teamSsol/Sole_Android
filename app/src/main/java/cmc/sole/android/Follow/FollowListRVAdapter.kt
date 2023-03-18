@@ -5,13 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.databinding.ItemFollowListBinding
+import com.bumptech.glide.Glide
 
-class FollowListRVAdapter(private val followList: ArrayList<FollowListData>): RecyclerView.Adapter<FollowListRVAdapter.ViewHolder>() {
+class FollowListRVAdapter(private val followList: ArrayList<FollowUserDataResult>): RecyclerView.Adapter<FollowListRVAdapter.ViewHolder>() {
 
     private lateinit var itemClickListener: OnItemClickListener
 
     interface OnItemClickListener{
-        fun onItemClick(data: FollowListData, position: Int)
+        fun onItemClick(data: FollowUserDataResult, position: Int)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -27,20 +28,31 @@ class FollowListRVAdapter(private val followList: ArrayList<FollowListData>): Re
         holder.itemView.setOnClickListener {
             itemClickListener.onItemClick(followList[position], position)
         }
+        // TODO: 팔로우 및 언팔로우 API 연동
+        holder.binding.itemFollowFollowBtn.setOnClickListener {
+            itemClickListener.onItemClick(followList[position], position)
+            holder.binding.itemFollowFollowBtn.visibility = View.GONE
+            holder.binding.itemFollowFollowingBtn.visibility = View.VISIBLE
+        }
+        holder.binding.itemFollowFollowingBtn.setOnClickListener {
+            itemClickListener.onItemClick(followList[position], position)
+            holder.binding.itemFollowFollowBtn.visibility = View.VISIBLE
+            holder.binding.itemFollowFollowingBtn.visibility = View.GONE
+        }
 
         holder.bind(followList[position])
     }
 
     override fun getItemCount(): Int = followList.size
 
-    inner class ViewHolder(private val binding: ItemFollowListBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(followList: FollowListData) {
-            // binding.itemFollowListProfileIv.setImageResource(R.drawable.test_img)
-            binding.itemFollowListNicknameTv.text = followList.nickname
-            binding.itemFollowListFollowerTv.text = followList.follower + " 팔로워"
-            binding.itemFollowListFollowingTv.text = followList.following + " 팔로잉"
+    inner class ViewHolder(val binding: ItemFollowListBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(followList: FollowUserDataResult) {
+            Glide.with(binding.root.context).load(followList.member.profileImgUrl).into(binding.itemFollowListProfileIv)
+            binding.itemFollowListNicknameTv.text = followList.member.nickname
+            binding.itemFollowListFollowerTv.text = followList.followerCount.toString() + " 팔로워"
+            binding.itemFollowListFollowingTv.text = followList.followingCount.toString() + " 팔로잉"
 
-            if (followList.followFlag) {
+            if (followList.followStatus == "FOLLOWER") {
                 binding.itemFollowFollowingBtn.visibility = View.VISIBLE
                 binding.itemFollowFollowBtn.visibility = View.GONE
             } else {
@@ -48,5 +60,15 @@ class FollowListRVAdapter(private val followList: ArrayList<FollowListData>): Re
                 binding.itemFollowFollowBtn.visibility = View.VISIBLE
             }
         }
+    }
+
+    fun addItem(item: FollowUserDataResult) {
+        followList.add(item)
+        this.notifyDataSetChanged()
+    }
+
+    fun addAllItems(items: ArrayList<FollowUserDataResult>) {
+        followList.addAll(items)
+        this.notifyDataSetChanged()
     }
 }

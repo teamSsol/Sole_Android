@@ -1,6 +1,7 @@
 package cmc.sole.android.Scrap.Retrofit
 
 import android.util.Log
+import cmc.sole.android.DefaultResponse
 import cmc.sole.android.Home.HomePopularResponse
 import cmc.sole.android.Home.Retrofit.HomeRetrofitInterface
 import com.example.geeksasaeng.Utils.NetworkModule
@@ -95,10 +96,10 @@ class ScrapService {
 
     // MEMO: 테스트 필요!
     fun deleteScrapCourse(scrapFolderId: Int, courseId: Int) {
-        scrapService?.deleteScrapCourse(scrapFolderId, courseId)?.enqueue(object: Callback<ScrapCourseDeleteResponse> {
+        scrapService?.deleteScrapCourse(scrapFolderId, courseId)?.enqueue(object: Callback<DefaultResponse> {
             override fun onResponse(
-                call: Call<ScrapCourseDeleteResponse>,
-                response: Response<ScrapCourseDeleteResponse>
+                call: Call<DefaultResponse>,
+                response: Response<DefaultResponse>
             ) {
                 Log.d("API-TEST", "response.body = ${response.body()}")
                 if (response.code() == 200) {
@@ -110,7 +111,7 @@ class ScrapService {
                     }
                 }
             }
-            override fun onFailure(call: Call<ScrapCourseDeleteResponse>, t: Throwable) {
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 Log.e("SCRAP-SERVICE", "SCRAP-SERVICE-DELETE-SCRAP-COURSE-FAILURE", t)
             }
         })
