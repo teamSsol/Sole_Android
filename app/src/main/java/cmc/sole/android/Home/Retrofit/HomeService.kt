@@ -275,7 +275,7 @@ class HomeService {
                 }
             }
             override fun onFailure(call: Call<MyPageNoticeAddResponse>, t: Throwable) {
-                TODO("Not yet implemented")
+                Log.e("HOME-SERVICE", "HOME-SERVICE-MY-PAGE-NOTICE-UPDATE-FAILURE", t)
             }
         })
     }

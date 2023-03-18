@@ -1,5 +1,6 @@
 package cmc.sole.android.Scrap
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,15 +8,18 @@ import android.widget.AdapterView.OnItemClickListener
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.Follow.FollowListData
 import cmc.sole.android.R
+import cmc.sole.android.Scrap.Retrofit.ScrapFolderDataResult
+import cmc.sole.android.Scrap.Retrofit.addFolder
+import cmc.sole.android.Scrap.Retrofit.defaultFolder
 import cmc.sole.android.databinding.ItemScrapFolderAddBinding
 import cmc.sole.android.databinding.ItemScrapFolderBinding
 
-class ScrapFolderRVAdapter(private val folderList: ArrayList<ScrapFolderData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ScrapFolderRVAdapter(private val folderList: ArrayList<ScrapFolderDataResult>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var itemClickListener: OnItemClickListener
 
     interface OnItemClickListener {
-        fun onItemClick(scrapFolder: ScrapFolderData, position: Int)
+        fun onItemClick(scrapFolder: ScrapFolderDataResult, position: Int)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -75,25 +79,29 @@ class ScrapFolderRVAdapter(private val folderList: ArrayList<ScrapFolderData>): 
     override fun getItemCount(): Int = folderList.size
 
     inner class DefaultFolderViewHolder(val binding: ItemScrapFolderBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(scrapFolder: ScrapFolderData) {
+        fun bind(scrapFolder: ScrapFolderDataResult) {
             // UPDATE: Image 연결
-            if (scrapFolder.title == "가족")
-                binding.itemScarpFolderIv.setImageResource(R.drawable.test_img)
-            else if (scrapFolder.title == "친구")
-                binding.itemScarpFolderIv.setImageResource(R.drawable.test_img_2)
-            else if (scrapFolder.title == "기본 폴더")
-                binding.itemScarpFolderIv.setImageResource(R.drawable.test_img_3)
-
-            binding.itemScrapFolderTv.text = scrapFolder.title
+            // binding.itemScarpFolderIv.setImageResource(R.drawable.test_img)
+            binding.itemScrapFolderTv.text = scrapFolder.scrapFolderName
         }
     }
 
     inner class AddFolderViewHolder(val binding: ItemScrapFolderAddBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(scrapFolder: ScrapFolderData) {
-            if (scrapFolder.title == "") {
-                binding.itemScrapFolderAddLayout.visibility = View.GONE
-                binding.itemScrapFolderTv.visibility = View.GONE
-            }
-        }
+        fun bind(scrapFolder: ScrapFolderDataResult) { }
+    }
+
+    fun addItem(item: ScrapFolderDataResult) {
+        folderList.add(item)
+        this.notifyItemInserted(folderList.size - 1)
+    }
+
+    fun addAllItems(items: ArrayList<ScrapFolderDataResult>) {
+        folderList.addAll(items)
+        this.notifyDataSetChanged()
+    }
+
+    fun clearItems() {
+        folderList.clear()
+        this.notifyDataSetChanged()
     }
 }
