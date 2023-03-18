@@ -3,11 +3,7 @@ package cmc.sole.android.Follow
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemClickListener
 import androidx.recyclerview.widget.RecyclerView
-import cmc.sole.android.Home.MyPage.Notice.MyPageNoticeRVAdapter
-import cmc.sole.android.Home.MyPage.Notice.NoticeData
-import cmc.sole.android.R
 import cmc.sole.android.databinding.ItemFollowListBinding
 
 class FollowListRVAdapter(private val followList: ArrayList<FollowListData>): RecyclerView.Adapter<FollowListRVAdapter.ViewHolder>() {

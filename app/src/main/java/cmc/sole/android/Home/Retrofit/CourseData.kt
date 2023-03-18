@@ -111,6 +111,46 @@ data class MyPageNotificationHistoryResult(
     var type: String
 )
 
+// MEMO: 마이페이지 공지사항
+data class MyPageNoticeResponse(
+    var data: ArrayList<MyPageNoticeResult>,
+    var status: Int,
+    var success: Boolean,
+    var timestamp: String
+)
+
+data class MyPageNoticeResult(
+    var content: String,
+    var createdAt: String,
+    var noticeId: Int,
+    var title: String,
+    var writer: MyPageNoticeWriterData
+)
+
+data class MyPageNoticeWriterData(
+    var accessToken: String,
+    var check: Boolean,
+    var memberId: Int,
+    var nickname: String,
+    var profileImgUrl: String?,
+    var refreshToken: String,
+    var role: String,
+    var social: String,
+    var socialId: String
+)
+
+data class MyPageNoticeAddRequest(
+    var content: String,
+    var title: String
+)
+
+data class MyPageNoticeAddResponse(
+    var data: MyPageNoticeResult,
+    var status: Int,
+    var success: Boolean,
+    var timestamp: String
+)
+
 // MEMO: 회원탈퇴
 data class MyPageMemberQuitResponse(
     var data: String,

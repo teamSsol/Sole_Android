@@ -91,7 +91,7 @@ class MyCourseWriteLocationImageRVAdapter(private val imgList: ArrayList<MyCours
         this.notifyDataSetChanged()
     }
 
-    fun addAllItems(items: java.util.ArrayList<MyCourseWriteImage>) {
+    fun addAllItems(items: ArrayList<MyCourseWriteImage>) {
         imgList.addAll(items)
         this.notifyDataSetChanged()
     }

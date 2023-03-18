@@ -19,6 +19,9 @@ class HomeService {
     private lateinit var myPageNotificationView: MyPageNotificationView
     private lateinit var myPageNotificationUpdateView: MyPageNotificationUpdateView
     private lateinit var myPageNotificationHistoryView: MyPageNotificationHistoryView
+    private lateinit var myPageNoticeView: MyPageNoticeView
+    private lateinit var myPageNoticeAddView: MyPageNoticeAddView
+    private lateinit var myPageNoticeUpdateView: MyPageNoticeUpdateView
     private lateinit var myPageMemberQuitView: MyPageMemberQuitView
 
     fun setHomePopularCourseView(homePopularCourseView: HomePopularCourseView) {
@@ -41,6 +44,15 @@ class HomeService {
     }
     fun setMyPageNotificationHistoryView(myPageNotificationHistoryView: MyPageNotificationHistoryView) {
         this.myPageNotificationHistoryView = myPageNotificationHistoryView
+    }
+    fun setMyPageNoticeView(myPageNoticeView: MyPageNoticeView) {
+        this.myPageNoticeView = myPageNoticeView
+    }
+    fun setMyPageNoticeAddView(myPageNoticeAddView: MyPageNoticeAddView) {
+        this.myPageNoticeAddView = myPageNoticeAddView
+    }
+    fun setMyPageNoticeUpdateView(myPageNoticeUpdateView: MyPageNoticeUpdateView) {
+        this.myPageNoticeUpdateView = myPageNoticeUpdateView
     }
     fun setMyPageMemberQuitView(myPageMemberQuitView: MyPageMemberQuitView) {
         this.myPageMemberQuitView = myPageMemberQuitView
@@ -192,6 +204,78 @@ class HomeService {
             }
             override fun onFailure(call: Call<MyPageNotificationHistoryResponse>, t: Throwable) {
                 Log.e("HOME-SERVICE", "HOME-SERVICE-MY-PAGE-NOTIFICATION-HISTORY-FAILURE", t)
+            }
+        })
+    }
+
+    // MEMO: 마이페이지 공지사항 조회
+    fun getMyPageNotice() {
+        homeService?.getMyPageNotice()?.enqueue(object: Callback<MyPageNoticeResponse> {
+            override fun onResponse(
+                call: Call<MyPageNoticeResponse>,
+                response: Response<MyPageNoticeResponse>
+            ) {
+                if (response.code() == 200) {
+                    val myPageNoticeResponse = response.body()
+                    if (myPageNoticeResponse?.success == true) {
+                        myPageNoticeView.myPageNoticeSuccessView(myPageNoticeResponse.data)
+                    } else {
+                        myPageNoticeView.myPageNoticeFailureView()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<MyPageNoticeResponse>, t: Throwable) {
+                Log.e("HOME-SERVICE", "HOME-SERVICE-MY-PAGE-NOTICE-FAILURE", t)
+            }
+        })
+    }
+
+    // MEMO: 공지사항 등록
+    // MEMO: 필요한 곳에 사용!
+    fun addMyPageNotice(myPageNoticeAddRequest: MyPageNoticeAddRequest) {
+        homeService?.addMyPageNotice(myPageNoticeAddRequest)?.enqueue(object: Callback<MyPageNoticeAddResponse> {
+            override fun onResponse(
+                call: Call<MyPageNoticeAddResponse>,
+                response: Response<MyPageNoticeAddResponse>
+            ) {
+                Log.d("API-TEST", "addMyPage response = ${response.body()}")
+                Log.d("API-TEST", "addMyPage body = ${response.body()?.data}")
+                if (response.code() == 200) {
+                    val myPageNoticeAddResponse = response.body()
+                    if (myPageNoticeAddResponse?.success == true) {
+                        myPageNoticeAddView.myPageNoticeAddSuccessView(myPageNoticeAddResponse.data)
+                    } else {
+                        myPageNoticeAddView.myPageNoticeAddFailureView()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<MyPageNoticeAddResponse>, t: Throwable) {
+                Log.e("HOME-SERVICE", "HOME-SERVICE-MY-PAGE-NOTICE-ADD-FAILURE", t)
+            }
+        })
+    }
+
+    // MEMO: 공지사항 수정
+    // MEMO: 필요한 곳에 사용!
+    fun updateMyPageNotice(noticeId: Int, myPageNoticeUpdateRequest: MyPageNoticeAddRequest) {
+        homeService?.updateMyPageNotice(noticeId, myPageNoticeUpdateRequest)?.enqueue(object: Callback<MyPageNoticeAddResponse> {
+            override fun onResponse(
+                call: Call<MyPageNoticeAddResponse>,
+                response: Response<MyPageNoticeAddResponse>
+            ) {
+                Log.d("API-TEST", "updateMyPage response = ${response.body()}")
+                Log.d("API-TEST", "updateMyPage body = ${response.body()?.data}")
+                if (response.code() == 200) {
+                    val myPageNoticeUpdateResponse = response.body()
+                    if (myPageNoticeUpdateResponse?.success == true) {
+                        myPageNoticeUpdateView.myPageNoticeUpdateSuccessView(myPageNoticeUpdateResponse.data)
+                    } else {
+                        myPageNoticeUpdateView.myPageNoticeUpdateFailureView()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<MyPageNoticeAddResponse>, t: Throwable) {
+                TODO("Not yet implemented")
             }
         })
     }

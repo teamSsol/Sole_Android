@@ -1,13 +1,9 @@
 package cmc.sole.android.Home.MyPage.FAQ
 
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
-import cmc.sole.android.Home.MyPage.Notice.MyPageNoticeRVAdapter
-import cmc.sole.android.Home.MyPage.Notice.NoticeData
 import cmc.sole.android.R
 import cmc.sole.android.databinding.ItemMyPageFaqListBinding
 

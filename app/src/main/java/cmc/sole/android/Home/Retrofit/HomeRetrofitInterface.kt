@@ -38,6 +38,21 @@ interface HomeRetrofitInterface {
     @GET("/api/mypage/notification/histories")
     fun getMyPageNotificationHistory(): Call<MyPageNotificationHistoryResponse>
 
+    // MEMO: 마이페이지 공지사항
+    @GET("/api/notices")
+    fun getMyPageNotice(): Call<MyPageNoticeResponse>
+
+    @POST("/api/notices")
+    fun addMyPageNotice(
+        @Body myPageNoticeAddRequest: MyPageNoticeAddRequest
+    ): Call<MyPageNoticeAddResponse>
+
+    @PUT("/api/notices/{noticeId}")
+    fun updateMyPageNotice(
+        @Path("noticeId") noticeId: Int,
+        @Body myPageNoticeUpdateRequest: MyPageNoticeAddRequest
+    ): Call<MyPageNoticeAddResponse>
+
     // MEMO: 회원탈퇴
     @DELETE("api/mypage/quit")
     fun quitMember(): Call<MyPageMemberQuitResponse>

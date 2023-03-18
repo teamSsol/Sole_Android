@@ -23,7 +23,7 @@ interface MyPageInfoUpdateView {
     fun myPageInfoUpdateFailureView()
 }
 
-// MEMO: 알림
+// MEMO: 마이페이지 알림
 interface MyPageNotificationView {
     fun myPageNotificationSuccessView(myPageNotificationResult: MyPageNotificationResult)
     fun myPageNotificationFailureView()
@@ -37,6 +37,22 @@ interface MyPageNotificationUpdateView {
 interface MyPageNotificationHistoryView {
     fun myPageNotificationHistorySuccessView(myPageNotificationHistoryResult: ArrayList<MyPageNotificationHistoryResult?>)
     fun myPageNotificationHistoryFailureView()
+}
+
+// MEMO: 마이페이지 공지사항
+interface MyPageNoticeView {
+    fun myPageNoticeSuccessView(myPageNoticeResult: ArrayList<MyPageNoticeResult>)
+    fun myPageNoticeFailureView()
+}
+
+interface MyPageNoticeAddView {
+    fun myPageNoticeAddSuccessView(myPageNoticeResult: MyPageNoticeResult)
+    fun myPageNoticeAddFailureView()
+}
+
+interface MyPageNoticeUpdateView {
+    fun myPageNoticeUpdateSuccessView(myPageNoticeResult: MyPageNoticeResult)
+    fun myPageNoticeUpdateFailureView()
 }
 
 // MEMO: 회원탈퇴
