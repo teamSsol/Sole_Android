@@ -198,6 +198,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
+        android:layout_marginTop="12dp"
         tools:listitem="@layout/item_my_course_course"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/scrap_folder_detail_btn_layout"

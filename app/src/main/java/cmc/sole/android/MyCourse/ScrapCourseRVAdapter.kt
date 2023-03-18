@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.Scrap.Retrofit.ScrapCourseResult
 import cmc.sole.android.databinding.ItemMyCourseCourseBinding
 import cmc.sole.android.databinding.ItemMyCourseCourseCheckBinding
+import com.bumptech.glide.Glide
 
 class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseResult>): RecyclerView.Adapter<ScrapCourseRVAdapter.ViewHolder>() {
 
@@ -39,7 +40,7 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
 
     override fun onBindViewHolder(holder: ScrapCourseRVAdapter.ViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
-            itemLongClickListener.onItemLongClick(scrapCourseList[position], position)
+            itemClickListener.onItemClick(scrapCourseList[position], position)
 
             if (holder.binding.myCourseCourseCheckIv.visibility == View.VISIBLE) {
                 holder.binding.myCourseCourseCheckIv.visibility = View.GONE
@@ -54,23 +55,11 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
 
     inner class ViewHolder(val binding: ItemMyCourseCourseBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(scrapCourse: ScrapCourseResult) {
-//            if (course.title == "베이커리 맞은 편 일식당") {
-//                binding.myCourseCourseIv.setImageResource(R.drawable.test_img_3)
-//            } else if (course.title == "발리 다녀와서 파이") {
-//                binding.myCourseCourseIv.setImageResource(R.drawable.test_img_4)
-//            } else if (course.title == "관람차로 내다보는 속초 바다") {
-//                binding.myCourseCourseIv.setImageResource(R.drawable.test_img_5)
-//            } else if (course.title == "행궁동 로컬 추천 코스") {
-//                binding.myCourseCourseIv.setImageResource(R.drawable.test_img_6)
-//            } else if (course.title == "물고기, 고기") {
-//                binding.myCourseCourseIv.setImageResource(R.drawable.test_img_7)
-//            }
-//
-//            binding.myCourseCourseTitleTv.text = course.title
-//            binding.myCourseCourseLocationTv.text = course.location
-//            binding.myCourseCourseTimeTv.text = course.time
-//            binding.myCourseCourseDistanceTv.text = course.distance
-
+            Glide.with(binding.root.context).load(scrapCourse.thumbnailImg).into(binding.myCourseCourseIv)
+            binding.myCourseCourseTitleTv.text = scrapCourse.title
+            binding.myCourseCourseLocationTv.text = scrapCourse.address
+            binding.myCourseCourseTimeTv.text = scrapCourse.duration.toString() + "시간 소요"
+            binding.myCourseCourseDistanceTv.text = scrapCourse.distance.toString() + "km 이동"
             // TODO: 태그 추가하기
         }
     }

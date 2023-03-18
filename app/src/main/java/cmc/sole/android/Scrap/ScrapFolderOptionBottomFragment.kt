@@ -55,7 +55,7 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
     }
 
     private fun getBottomSheetDialogDefaultHeight(): Int {
-        return getWindowHeight() * 20 / 100
+        return getWindowHeight() * 15 / 100
     }
 
     private fun getWindowHeight(): Int {
