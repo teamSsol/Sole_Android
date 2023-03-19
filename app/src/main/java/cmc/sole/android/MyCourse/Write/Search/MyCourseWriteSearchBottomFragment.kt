@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
@@ -26,11 +25,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
-import java.net.URLEncoder
 
 class MyCourseWriteSearchBottomFragment: BottomSheetDialogFragment() {
     private lateinit var binding: BottomFragmentMyCourseWriteSearchBinding
@@ -113,8 +107,8 @@ class MyCourseWriteSearchBottomFragment: BottomSheetDialogFragment() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val api = retrofit.create(NaverSearchAPI::class.java)   // 통신 인터페이스를 객체로 생성
-        val call = api.searchKeyword(resources.getString(R.string.naver_client_id2),
-            resources.getString(R.string.naver_client_secret2), "local.json", keyword, 3)   // 검색 조건 입력
+        val call = api.searchKeyword(resources.getString(R.string.naver_client_id),
+            resources.getString(R.string.naver_client_secret), "local.json", keyword, 3)   // 검색 조건 입력
 
         // API 서버에 요청
         call.enqueue(object: Callback<SearchNaverData> {

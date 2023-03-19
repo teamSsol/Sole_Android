@@ -30,9 +30,6 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
     override fun initAfterBinding() {
         KakaoSdk.init(this, BuildConfig.KAKAO_API_KEY)
 
-        // 카카오 hashKey 를 얻기 위한 코드
-        // getKAKAOKeyHash()
-
         getFireBaseFCMToken()
         initClickListener()
         initRetrofitService()
@@ -59,11 +56,6 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
                 }
             }
         }
-    }
-
-    private fun getKAKAOKeyHash() {
-        var keyHash = Utility.getKeyHash(this)
-        Log.e("EXAMPLE", "해시 키 값 : $keyHash")
     }
 
     private fun getFireBaseFCMToken(){
