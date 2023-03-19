@@ -11,15 +11,17 @@ enum class Categories {
     NIGHT_VIEW,
     HISTORY,
     THEME_PARK,
-    // MEMO: transCategories
-    WALK,
-    BIKE,
-    CAR,
-    PUBLIC_TRANSPORTATION,
+
     // MEMO: withCategories
     ALONE,
     FRIEND,
     COUPLE,
     KID,
-    PET
+    PET,
+
+    // MEMO: transCategories
+    WALK,
+    BIKE,
+    CAR,
+    PUBLIC_TRANSPORTATION
 }

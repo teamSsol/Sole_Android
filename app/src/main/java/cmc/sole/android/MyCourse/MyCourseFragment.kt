@@ -1,21 +1,37 @@
 package cmc.sole.android.MyCourse
 
+import android.app.Activity
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Home.DefaultCourse
+import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryResult
+import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryView
+import cmc.sole.android.MyCourse.Retrofit.MyCourseService
 import cmc.sole.android.MyCourse.Write.MyCourseWriteActivity
 import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
+import cmc.sole.android.Utils.TagTranslator
 import cmc.sole.android.databinding.FragmentMyCourseBinding
+import com.bumptech.glide.Glide
 
-class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBinding::inflate) {
+class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBinding::inflate),
+    MyCourseHistoryView {
 
     lateinit var myCourseCourseRVAdapter: MyCourseCourseRVAdapter
     var myCourseCourseList = ArrayList<DefaultCourse>()
+    lateinit var myCourseService: MyCourseService
 
     override fun initAfterBinding() {
+        initService()
         initAdapter()
         initClickListener()
+    }
+
+    private fun initService() {
+        myCourseService = MyCourseService()
+        myCourseService.setMyCourseHistoryView(this)
+        myCourseService.getMyCourseHistory()
     }
 
     private fun initAdapter() {
@@ -51,5 +67,20 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
         binding.myCourseFb.setOnClickListener {
             startActivity(Intent(activity, MyCourseWriteActivity::class.java))
         }
+    }
+
+    override fun setMyCourseHistorySuccessView(myCourseHistoryResult: MyCourseHistoryResult) {
+        // UPDATE: API 프로필 이미지 추가하면 추가해주기!
+        // Glide.with(this).load(myCourseHistoryResult.profileImg)
+        binding.myCourseNicknameTv.text = myCourseHistoryResult.nickname
+        // UPDATE: Text Span 처리 필요
+        binding.myCourseInfoContent.text = "지금까지 ${myCourseHistoryResult.totalDate}일간 ${myCourseHistoryResult.totalPlaces}곳의 장소를 방문하며,\n이번 달 총 ${myCourseHistoryResult.totalCourses}개의 코스를 기록했어요"
+        binding.myCourseInfoTag.text = "가장 많이 방문한 지역은 ${TagTranslator.tagTranslate(requireActivity() as AppCompatActivity, myCourseHistoryResult.mostRegion)}이고\n" +
+                "${TagTranslator.tagTranslate(requireActivity() as AppCompatActivity, myCourseHistoryResult.mostTransCategories.elementAt(0))} 이동해서" +
+                "${TagTranslator.tagTranslate(requireActivity() as AppCompatActivity, myCourseHistoryResult.mostPlaceCategories.elementAt(0))}을 다녔어요."
+    }
+
+    override fun setMyCourseHistoryFailureView() {
+
     }
 }
