@@ -15,6 +15,7 @@ class ScrapService {
     private lateinit var scrapFolderView: ScrapFolderView
     private lateinit var scrapFolderAddView: ScrapFolderAddView
     private lateinit var scrapFolderDeleteView: ScrapFolderDeleteView
+    private lateinit var scrapFolderNameUpdateView: ScrapFolderNameUpdateView
     private lateinit var scrapCourseView: ScrapCourseView
     private lateinit var scrapCourseDeleteView: ScrapCourseDeleteView
 
@@ -26,6 +27,9 @@ class ScrapService {
     }
     fun setScrapFolderDeleteView(scrapFolderDeleteView: ScrapFolderDeleteView) {
         this.scrapFolderDeleteView = scrapFolderDeleteView
+    }
+    fun setScrapFolderNameUpdateView(scrapFolderNameUpdateView: ScrapFolderNameUpdateView) {
+        this.scrapFolderNameUpdateView = scrapFolderNameUpdateView
     }
     fun setScrapCourseView(scrapCourseView: ScrapCourseView) {
         this.scrapCourseView = scrapCourseView
@@ -90,6 +94,24 @@ class ScrapService {
             }
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.e("SCRAP-SERVICE", "SCRAP-SERVICE-DELETE-SCRAP-FOLDER-FAILURE", t)
+            }
+        })
+    }
+
+    fun updateScrapFolderName(scrapFolderId: Int, scrapFolderName: ScrapFolderNameUpdateRequest) {
+        scrapService?.updateScrapFolderName(scrapFolderId, scrapFolderName)?.enqueue(object: Callback<DefaultResponse> {
+            override fun onResponse(
+                call: Call<DefaultResponse>,
+                response: Response<DefaultResponse>
+            ) {
+                if (response.code() == 200) {
+                    scrapFolderNameUpdateView.scrapFolderNameUpdateSuccessView()
+                } else {
+                    scrapFolderNameUpdateView.scrapFolderNameUpdateFailureView()
+                }
+            }
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                Log.e("SCRAP-SERVICE", "SCRAP-SERVICE-SCRAP-FOLDER-NAME-UPDATE-FAILURE", t)
             }
         })
     }

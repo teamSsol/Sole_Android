@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,12 +22,19 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
     var folderEditName: String = ""
     var scrapFolderId: Int = -1
 
+    private var mode = ""
+
     interface OnScrapOptionFinishListener {
-        fun finish(data: String)
+        fun finish(mode: String, newFolderName: String?)
     }
 
     fun setOnFinishListener(listener: OnScrapOptionFinishListener) {
         dialogFinishListener = listener
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dialogFinishListener.finish(mode, folderEditName)
     }
 
     override fun onCreateView(
@@ -73,13 +81,20 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
     private fun initClickListener() {
         binding.scrapFolderOptionEdit.setOnClickListener {
             val scrapFolderOptionEditDialog = DialogScrapFolderEdit()
+            var bundle = Bundle()
+            bundle.putInt("scrapFolderId", scrapFolderId)
+            scrapFolderOptionEditDialog.arguments = bundle
             scrapFolderOptionEditDialog.show(requireActivity().supportFragmentManager, "ScrapFolderEditDialog")
             scrapFolderOptionEditDialog.setOnFinishListener(object: DialogScrapFolderEdit.OnFinishListener {
-                override fun finish(data: String) {
-                    folderEditName = data
+                override fun finish(dialogMode: String, data: String) {
+                    if (dialogMode == "edit") {
+                        mode = "edit"
+                        Log.d("API-TEST", "2 folderEditName = $folderEditName")
+                        folderEditName = data
+                        dismiss()
+                    }
                 }
             })
-            dismiss()
         }
 
         binding.scrapFolderOptionDelete.setOnClickListener {
@@ -89,6 +104,14 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
             bundle.putInt("scrapFolderId", scrapFolderId)
             scrapFolderOptionDeleteDialog.arguments = bundle
             scrapFolderOptionDeleteDialog.show(requireActivity().supportFragmentManager, "ScrapFolderDeleteDialog")
+            scrapFolderOptionDeleteDialog.setOnFinishListener(object: DialogScrapFolderDelete.OnFinishListener {
+                override fun finish(dialogMode: String) {
+                    if (dialogMode == "delete") {
+                        mode = "delete"
+                        dismiss()
+                    }
+                }
+            })
         }
     }
 }

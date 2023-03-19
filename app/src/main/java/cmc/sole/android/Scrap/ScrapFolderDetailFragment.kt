@@ -23,16 +23,20 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
 
     private lateinit var scrapFolderDetailRVAdapter: ScrapCourseRVAdapter
     private var courseList = ArrayList<ScrapCourseResult>()
+    lateinit var scrapFolderName: String
     var scrapFolderId = 0
     var deleteCourseId = ArrayList<Int>()
 
     private lateinit var callback: OnBackPressedCallback
 
     override fun initAfterBinding() {
+        scrapFolderName = arguments?.getString("title").toString()
         binding.scrapFolderDetailTitle.text = arguments?.getString("title")
         scrapFolderId = requireArguments().getInt("scrapFolderId", -1)
 
-        Log.d("API-TEST", "scrapFolderId = $scrapFolderId")
+        if (scrapFolderName == "기본 폴더") {
+            binding.scrapFolderDetailOptionIv.visibility = View.GONE
+        }
 
         initService()
         initAdapter()
@@ -77,7 +81,7 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
                     binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
                     binding.scrapFolderDetailEditCv.visibility = View.VISIBLE
                     binding.scrapFolderDetailOkTv.visibility = View.GONE
-                    binding.scrapFolderDetailMoveCv.visibility = View.GONE
+//                    binding.scrapFolderDetailMoveCv.visibility = View.GONE
                     binding.scrapFolderDetailDeleteCv.visibility = View.GONE
 
                     for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
@@ -97,13 +101,22 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
             bundle.putInt("scrapFolderId", scrapFolderId)
             scrapFolderOptionBottomFragment.arguments = bundle
             scrapFolderOptionBottomFragment.show(requireActivity().supportFragmentManager, "ScrapFolderDetailBottom")
+            scrapFolderOptionBottomFragment.setOnFinishListener(object: ScrapFolderOptionBottomFragment.OnScrapOptionFinishListener {
+                override fun finish(mode: String, newFolderName: String?) {
+                    if (mode == "delete") {
+                        clearBackStack()
+                    } else if (mode == "edit") binding.scrapFolderDetailTitle.text = newFolderName
+
+                    Log.d("API-TEST", "newFolderName = $newFolderName")
+                }
+            })
         }
 
         binding.scrapFolderDetailEditCv.setOnClickListener {
             binding.scrapFolderDetailOptionIv.visibility = View.GONE
             binding.scrapFolderDetailEditCv.visibility = View.GONE
             binding.scrapFolderDetailOkTv.visibility = View.VISIBLE
-            binding.scrapFolderDetailMoveCv.visibility = View.VISIBLE
+//            binding.scrapFolderDetailMoveCv.visibility = View.VISIBLE
             binding.scrapFolderDetailDeleteCv.visibility = View.VISIBLE
 
             for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
@@ -124,7 +137,7 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
                     binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
                     binding.scrapFolderDetailEditCv.visibility = View.VISIBLE
                     binding.scrapFolderDetailOkTv.visibility = View.GONE
-                    binding.scrapFolderDetailMoveCv.visibility = View.GONE
+//                    binding.scrapFolderDetailMoveCv.visibility = View.GONE
                     binding.scrapFolderDetailDeleteCv.visibility = View.GONE
 
                     for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
@@ -141,7 +154,7 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
                 binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
                 binding.scrapFolderDetailEditCv.visibility = View.VISIBLE
                 binding.scrapFolderDetailOkTv.visibility = View.GONE
-                binding.scrapFolderDetailMoveCv.visibility = View.GONE
+//                binding.scrapFolderDetailMoveCv.visibility = View.GONE
                 binding.scrapFolderDetailDeleteCv.visibility = View.GONE
 
                 for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {

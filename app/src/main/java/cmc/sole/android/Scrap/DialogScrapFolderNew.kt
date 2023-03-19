@@ -79,8 +79,10 @@ class DialogScrapFolderNew: DialogFragment(), ScrapFolderAddView {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
             override fun afterTextChanged(p0: Editable?) {
                 if (binding.scrapFolderNewNameEt.length() > 0) {
-                    binding.scrapFolderNewBtn.setBackgroundResource(R.drawable.default_button_o)
-                    binding.scrapFolderNewBtn.isEnabled = true
+                    if (binding.scrapFolderNewNameEt.text.toString() != "기본 폴더") {
+                        binding.scrapFolderNewBtn.setBackgroundResource(R.drawable.default_button_o)
+                        binding.scrapFolderNewBtn.isEnabled = true
+                    }
                 } else if (binding.scrapFolderNewNameEt.length() == 0) {
                     binding.scrapFolderNewBtn.setBackgroundResource(R.drawable.default_button_x)
                     binding.scrapFolderNewBtn.isEnabled = false

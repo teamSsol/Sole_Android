@@ -5,6 +5,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -19,8 +20,14 @@ interface ScrapRetrofitInterfaces {
 
     @DELETE("/api/scraps/{scrapFolderId}")
     fun deleteScrapFolder(
-        @Path("scrapFolderId") scrapFolderId: Int,
+        @Path("scrapFolderId") scrapFolderId: Int
     ): Call<Void>
+
+    @PATCH("/api/scraps/{scrapFolderId}")
+    fun updateScrapFolderName(
+        @Path("scrapFolderId") scrapFolderId: Int,
+        @Body scrapFolderNameUpdateRequest: ScrapFolderNameUpdateRequest
+    ): Call<DefaultResponse>
 
     @GET("api/scraps/{scrapFolderId}")
     fun getScrapCourse(

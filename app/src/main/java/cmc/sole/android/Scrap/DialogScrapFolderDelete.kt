@@ -19,6 +19,21 @@ class DialogScrapFolderDelete: DialogFragment(),
 
     lateinit var scrapService: ScrapService
     private var scrapFolderId: Int = -1
+    private lateinit var dialogFinishListener: OnFinishListener
+    private var mode = ""
+
+    interface OnFinishListener {
+        fun finish(mode: String)
+    }
+
+    fun setOnFinishListener(listener: OnFinishListener) {
+        dialogFinishListener = listener
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dialogFinishListener.finish(mode)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +45,6 @@ class DialogScrapFolderDelete: DialogFragment(),
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP)
 
         scrapFolderId = requireArguments().getInt("scrapFolderId")
-        Log.d("API-TEST", "scrapFolderId = ${scrapFolderId}")
 
         initService()
         initClickListener()
@@ -56,6 +70,7 @@ class DialogScrapFolderDelete: DialogFragment(),
         
         binding.scrapFolderDeleteBtn.setOnClickListener {
             scrapService.deleteScrapFolder(scrapFolderId)
+            mode = "delete"
         }
     }
 

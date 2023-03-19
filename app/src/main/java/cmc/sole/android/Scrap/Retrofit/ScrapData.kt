@@ -49,14 +49,10 @@ data class ScrapCourseResult(
     var title: String,
     var checkMode: Boolean = false,
     var isChecked: Boolean = false
-    // var viewType: Int?
 )
 
-data class ScrapCourseDeleteResponse(
-    var data: String,
-    var status: Int,
-    var success: Boolean,
-    var timestamp: String
+data class ScrapFolderNameUpdateRequest(
+    var scrapFolderName: String
 )
 
 const val defaultFolder = 1

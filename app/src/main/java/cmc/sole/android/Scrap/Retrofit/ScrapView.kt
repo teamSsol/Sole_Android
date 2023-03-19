@@ -15,6 +15,11 @@ interface ScrapFolderDeleteView {
     fun scrapFolderDeleteFailureView()
 }
 
+interface ScrapFolderNameUpdateView {
+    fun scrapFolderNameUpdateSuccessView()
+    fun scrapFolderNameUpdateFailureView()
+}
+
 interface ScrapCourseView {
     fun scrapCourseSuccessView(scrapCourseResult: ArrayList<ScrapCourseResult>)
     fun scrapCourseFailureView()
