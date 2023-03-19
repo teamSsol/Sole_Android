@@ -17,7 +17,6 @@ class FollowFollowingFragment: BaseFragment<FragmentFollowerFollowingBinding>(Fr
     private lateinit var followListRVAdapter: FollowListRVAdapter
     private var followList = ArrayList<FollowUserDataResult>()
 
-
     override fun initAfterBinding() {
         initService()
         initAdapter()
