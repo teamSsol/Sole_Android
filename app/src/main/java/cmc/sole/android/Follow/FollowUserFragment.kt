@@ -1,53 +1,91 @@
 package cmc.sole.android.Follow
 
 import android.content.Intent
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
+import cmc.sole.android.Follow.Retrofit.FollowService
+import cmc.sole.android.Follow.Retrofit.FollowUserInfoView
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.Home.HomeDefaultCourseRVAdapter
+import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.databinding.FragmentFollowUserBinding
+import com.bumptech.glide.Glide
 
-class FollowUserFragment: BaseFragment<FragmentFollowUserBinding>(FragmentFollowUserBinding::inflate) {
+class FollowUserFragment: BaseFragment<FragmentFollowUserBinding>(FragmentFollowUserBinding::inflate),
+    FollowUserInfoView {
 
+    private lateinit var followService: FollowService
     lateinit var followUserRecentRVAdapter: HomeDefaultCourseRVAdapter
     var recentCourseList = ArrayList<DefaultCourse>()
+    private var followInfoMemberSocialId = -1
+    var courseId = -1
 
+    // UPDATE: courseId 연결해주기!
     override fun initAfterBinding() {
-        // UPDATE: 프로필 부분 연결 필요
-        // binding.itemFollowUserProfileIv.setImageResource()
-        // arguments?.getString("profileImg")
-        binding.itemFollowUserNicknameTv.text = arguments?.getString("nickname")
-        binding.followUserPopularTv.text = arguments?.getString("nickname") + "의 인기 코스"
-        binding.followUserRecentTv.text = arguments?.getString("nickname") + "의 최근 코스"
-        binding.itemFollowUserFollowerTv.text = arguments?.getString("follower") + "팔로워"
-        binding.itemFollowUserFollowingTv.text = arguments?.getString("following") + "팔로잉"
+        followInfoMemberSocialId = requireArguments().getInt("followInfoMemberSocialId")
 
+        initService()
         initAdapter()
         initClickListener()
     }
 
+    private fun initService() {
+        followService = FollowService()
+        followService.setFollowUserInfoView(this)
+        followService.getFollowUserInfo(followInfoMemberSocialId, courseId)
+    }
+
     private fun initAdapter() {
         followUserRecentRVAdapter = HomeDefaultCourseRVAdapter(recentCourseList)
-        binding.followUserPopularRv.adapter = followUserRecentRVAdapter
-        binding.followUserPopularRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.followUserRecentRv.adapter = followUserRecentRVAdapter
+        binding.followUserRecentRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         followUserRecentRVAdapter.setOnItemClickListener(object: HomeDefaultCourseRVAdapter.OnItemClickListener {
             override fun onItemClick(data: DefaultCourse, position: Int) {
                 startActivity(Intent(activity, CourseDetailActivity::class.java))
             }
         })
-
-        // MEMO: DUMMY DATA
-//        recentCourseList.add(DefaultCourse("img", "베이커리 맞은 편 일식당", false, "경기 수원", "4시간", "104m", arrayListOf("test"), null))
-//        recentCourseList.add(DefaultCourse("img", "발리 다녀와서 파이", true, "서울 마포구", "4시간", "247m", arrayListOf("test"), null))
-//        recentCourseList.add(DefaultCourse("img", "관람차로 내다보는 속초 바다", true, "강원 속초시", "30분", "91m", arrayListOf("test"), null))
-//        recentCourseList.add(DefaultCourse("img", "행궁동 로컬 추천 코스", true, "경기 수원시", "3시간", "406m", arrayListOf("test"), null))
-//        recentCourseList.add(DefaultCourse("img", "물고기, 고기", true, "제주도 서귀포", "5시간", "701m", arrayListOf("test"), null))
     }
 
     private fun initClickListener() {
         binding.followUserBackIv.setOnClickListener {
             activity?.supportFragmentManager?.popBackStack()
         }
+    }
+
+    override fun followUserInfoSuccessView(followUserInfo: FollowUserInfoResult) {
+        // UPDATE: View 연결
+        Glide.with(this).load(followUserInfo.profileImg).into(binding.followUserProfileIv)
+        binding.followUserNicknameTv.text = followUserInfo.nickname
+        binding.followUserFollowerTv.text = "팔로워 ${followUserInfo.followerCount}"
+        binding.followUserFollowingTv.text = "팔로잉 ${followUserInfo.followingCount}"
+        binding.followerUserInfoTv.text = followUserInfo.description
+
+        if (followUserInfo.followStatus == "FOLLOWER") {
+            binding.itemFollowFollowBtn.visibility = View.VISIBLE
+            binding.itemFollowFollowingBtn.visibility = View.GONE
+        } else if (followUserInfo.followStatus == "FOLLOWING") {
+            binding.itemFollowFollowBtn.visibility = View.GONE
+            binding.itemFollowFollowingBtn.visibility = View.VISIBLE
+        }
+
+        var popularCourse = followUserInfo.popularCourse
+        Glide.with(this).load(popularCourse.thumbnailImg).into(binding.followUserPopularImg)
+        binding.followUserPopularTitleTv.text = popularCourse.title
+        binding.followUserPopularLocationTv.text = popularCourse.address
+        binding.followUserPopularTimeTv.text = popularCourse.duration.toString() + "시간 소요"
+        binding.followUserPopularDistanceTv.text = popularCourse.distance.toString() + "km 이동"
+
+        if (popularCourse.like)
+            binding.followUserPopularHeartIv.setImageResource(R.drawable.ic_heart_color)
+        else binding.followUserPopularHeartIv.setImageResource(R.drawable.ic_heart_empty)
+
+        // UPDATE: 태그 추가
+        followUserRecentRVAdapter.addAllItems(followUserInfo.recentCourses)
+    }
+
+    override fun followUserInfoFailureView() {
+        showToast("팔로우 유저 정보 불러오기 실패")
     }
 }

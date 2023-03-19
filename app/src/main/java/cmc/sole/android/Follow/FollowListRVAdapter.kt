@@ -1,5 +1,6 @@
 package cmc.sole.android.Follow
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.bumptech.glide.Glide
 class FollowListRVAdapter(private val followList: ArrayList<FollowUserDataResult>): RecyclerView.Adapter<FollowListRVAdapter.ViewHolder>() {
 
     private lateinit var itemClickListener: OnItemClickListener
+    var clickMode = ""
 
     interface OnItemClickListener{
         fun onItemClick(data: FollowUserDataResult, position: Int)
@@ -25,19 +27,26 @@ class FollowListRVAdapter(private val followList: ArrayList<FollowUserDataResult
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.itemView.setOnClickListener {
-            itemClickListener.onItemClick(followList[position], position)
-        }
         // TODO: 팔로우 및 언팔로우 API 연동
         holder.binding.itemFollowFollowBtn.setOnClickListener {
+            Log.d("API-TEST", "followBtn 1")
+            setMode("followBtn")
             itemClickListener.onItemClick(followList[position], position)
             holder.binding.itemFollowFollowBtn.visibility = View.GONE
             holder.binding.itemFollowFollowingBtn.visibility = View.VISIBLE
+            Log.d("API-TEST", "followBtn 2")
         }
         holder.binding.itemFollowFollowingBtn.setOnClickListener {
+            setMode("followBtn")
             itemClickListener.onItemClick(followList[position], position)
             holder.binding.itemFollowFollowBtn.visibility = View.VISIBLE
             holder.binding.itemFollowFollowingBtn.visibility = View.GONE
+            Log.d("API-TEST", "followBtn")
+        }
+        holder.binding.itemFollowListLayout.setOnClickListener {
+            setMode("itemView")
+            itemClickListener.onItemClick(followList[position], position)
+            Log.d("API-TEST", "itemView")
         }
 
         holder.bind(followList[position])
@@ -68,7 +77,18 @@ class FollowListRVAdapter(private val followList: ArrayList<FollowUserDataResult
     }
 
     fun addAllItems(items: ArrayList<FollowUserDataResult>) {
+        followList.clear()
         followList.addAll(items)
         this.notifyDataSetChanged()
+    }
+
+    // UPDATE: 팔로잉 OR 팔로워 확인
+    private fun setMode(mode: String): String {
+        clickMode = mode
+        return mode
+    }
+
+    fun returnMode(): String {
+        return clickMode
     }
 }

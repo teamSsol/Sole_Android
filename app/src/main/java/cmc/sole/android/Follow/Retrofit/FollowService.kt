@@ -4,6 +4,7 @@ import android.util.Log
 import cmc.sole.android.DefaultResponse
 import cmc.sole.android.Follow.FollowCourseResponse
 import cmc.sole.android.Follow.FollowListResponse
+import cmc.sole.android.Follow.FollowUserInfoResponse
 import cmc.sole.android.Scrap.Retrofit.ScrapFolderDataResponse
 import com.example.geeksasaeng.Utils.NetworkModule
 import retrofit2.Call
@@ -16,6 +17,7 @@ class FollowService {
     private lateinit var followCourseView: FollowCourseView
     private lateinit var followListView: FollowListView
     private lateinit var followUnfollowView: FollowUnfollowView
+    private lateinit var followUserInfoView: FollowUserInfoView
 
     fun setFollowCourseView(followCourseView: FollowCourseView) {
         this.followCourseView = followCourseView
@@ -25,6 +27,9 @@ class FollowService {
     }
     fun setFollowUnfollowView(followUnfollowView: FollowUnfollowView) {
         this.followUnfollowView = followUnfollowView
+    }
+    fun setFollowUserInfoView(followUserInfoView: FollowUserInfoView) {
+        this.followUserInfoView = followUserInfoView
     }
 
     fun getFollowCourse() {
@@ -111,6 +116,28 @@ class FollowService {
             }
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 Log.e("FOLLOW-SERVICE", "FOLLOW-SERVICE-FOLLOW-UNFOLLOW-FAILURE", t)
+            }
+        })
+    }
+
+    fun getFollowUserInfo(followInfoMemberSocialId: Int, courseId: Int) {
+        followService?.getFollowUserInfo(followInfoMemberSocialId, courseId)?.enqueue(object: Callback<FollowUserInfoResponse> {
+            override fun onResponse(
+                call: Call<FollowUserInfoResponse>,
+                response: Response<FollowUserInfoResponse>
+            ) {
+                Log.d("API-TEST", "getFollowUserInfo response.code = ${response.code()}\nresponse.body = ${response.body()}")
+                if (response.code() == 200) {
+                    val followUserInfoResponse = response.body()
+                    if (followUserInfoResponse?.success == true) {
+                        followUserInfoView.followUserInfoSuccessView(followUserInfoResponse.data)
+                    } else {
+                        followUserInfoView.followUserInfoFailureView()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<FollowUserInfoResponse>, t: Throwable) {
+                Log.e("FOLLOW-SERVICE", "FOLLOW-SERVICE-GET-FOLLOW-INFO-FAILURE", t)
             }
         })
     }

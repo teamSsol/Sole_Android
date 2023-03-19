@@ -40,7 +40,7 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageView
-                android:id="@+id/item_follow_user_profile_iv"
+                android:id="@+id/follow_user_profile_iv"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_profile"
@@ -50,7 +50,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/item_follow_user_nickname_tv"
+                android:id="@+id/follow_user_nickname_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="닉네임"
@@ -58,20 +58,20 @@
                 android:textSize="14sp"
                 android:fontFamily="@font/pretendard_semibold"
                 android:layout_marginStart="12dp"
-                app:layout_constraintTop_toTopOf="@id/item_follow_user_profile_iv"
-                app:layout_constraintBottom_toTopOf="@id/item_follow_user_info_layout"
-                app:layout_constraintStart_toEndOf="@id/item_follow_user_profile_iv" />
+                app:layout_constraintTop_toTopOf="@id/follow_user_profile_iv"
+                app:layout_constraintBottom_toTopOf="@id/follow_user_info_layout"
+                app:layout_constraintStart_toEndOf="@id/follow_user_profile_iv" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/item_follow_user_info_layout"
+                android:id="@+id/follow_user_info_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/item_follow_user_nickname_tv"
-                app:layout_constraintStart_toStartOf="@id/item_follow_user_nickname_tv"
-                app:layout_constraintBottom_toBottomOf="@id/item_follow_user_profile_iv">
+                app:layout_constraintTop_toBottomOf="@id/follow_user_nickname_tv"
+                app:layout_constraintStart_toStartOf="@id/follow_user_nickname_tv"
+                app:layout_constraintBottom_toBottomOf="@id/follow_user_profile_iv">
 
                 <TextView
-                    android:id="@+id/item_follow_user_follower_tv"
+                    android:id="@+id/follow_user_follower_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="팔로워 00"
@@ -82,7 +82,7 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
-                    android:id="@+id/item_follow_user_line_tv"
+                    android:id="@+id/follow_user_line_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="|"
@@ -90,12 +90,12 @@
                     android:textSize="12sp"
                     android:fontFamily="@font/pretendard_regular"
                     android:layout_marginStart="7dp"
-                    app:layout_constraintStart_toEndOf="@id/item_follow_user_follower_tv"
-                    app:layout_constraintTop_toTopOf="@id/item_follow_user_follower_tv"
-                    app:layout_constraintBottom_toBottomOf="@id/item_follow_user_follower_tv" />
+                    app:layout_constraintStart_toEndOf="@id/follow_user_follower_tv"
+                    app:layout_constraintTop_toTopOf="@id/follow_user_follower_tv"
+                    app:layout_constraintBottom_toBottomOf="@id/follow_user_follower_tv" />
 
                 <TextView
-                    android:id="@+id/item_follow_user_following_tv"
+                    android:id="@+id/follow_user_following_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="팔로잉 00"
@@ -104,7 +104,7 @@
                     android:fontFamily="@font/pretendard_regular"
                     android:layout_marginStart="7dp"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/item_follow_user_line_tv" />
+                    app:layout_constraintStart_toEndOf="@id/follow_user_line_tv" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -123,8 +123,8 @@
                 android:minHeight="0dp"
                 android:minWidth="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/item_follow_user_profile_iv"
-                app:layout_constraintBottom_toBottomOf="@id/item_follow_user_profile_iv" />
+                app:layout_constraintTop_toTopOf="@id/follow_user_profile_iv"
+                app:layout_constraintBottom_toBottomOf="@id/follow_user_profile_iv" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/item_follow_following_btn"
@@ -142,8 +142,8 @@
                 android:visibility="gone"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/item_follow_user_profile_iv"
-                app:layout_constraintBottom_toBottomOf="@id/item_follow_user_profile_iv" />
+                app:layout_constraintTop_toTopOf="@id/follow_user_profile_iv"
+                app:layout_constraintBottom_toBottomOf="@id/follow_user_profile_iv" />
 
             <TextView
                 android:id="@+id/follower_user_info_tv"
@@ -156,7 +156,7 @@
                 android:lineHeight="19.6dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginHorizontal="16dp"
-                app:layout_constraintTop_toBottomOf="@id/item_follow_user_profile_iv"
+                app:layout_constraintTop_toBottomOf="@id/follow_user_profile_iv"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <View
@@ -192,12 +192,12 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/item_course_layout"
+                    android:id="@+id/follow_user_popular_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/item_course_img"
+                        android:id="@+id/follow_user_popular_img"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:src="@drawable/test_img"
@@ -208,7 +208,7 @@
                         app:layout_constraintStart_toStartOf="parent" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/item_course_content_layout"
+                        android:id="@+id/follow_user_popular_content_layout"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:paddingHorizontal="12dp"
@@ -216,10 +216,10 @@
                         app:layout_constraintHeight_default="percent"
                         app:layout_constraintHeight_percent="0.4"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/item_course_img">
+                        app:layout_constraintTop_toBottomOf="@id/follow_user_popular_img">
 
                         <TextView
-                            android:id="@+id/item_course_title_tv"
+                            android:id="@+id/follow_user_popular_title_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="그라운드시소 전시 데이트"
@@ -230,17 +230,17 @@
                             app:layout_constraintStart_toStartOf="parent" />
 
                         <ImageView
-                            android:id="@+id/item_course_heart_iv"
+                            android:id="@+id/follow_user_popular_heart_iv"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
                             android:src="@drawable/ic_heart_empty"
                             app:layout_constraintDimensionRatio="1:1"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/item_course_title_tv"
-                            app:layout_constraintBottom_toBottomOf="@id/item_course_title_tv" />
+                            app:layout_constraintTop_toTopOf="@id/follow_user_popular_title_tv"
+                            app:layout_constraintBottom_toBottomOf="@id/follow_user_popular_title_tv" />
 
                         <TextView
-                            android:id="@+id/item_course_location_tv"
+                            android:id="@+id/follow_user_popular_location_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="서울 종로구"
@@ -251,11 +251,11 @@
                             android:layout_marginTop="10dp"
                             android:gravity="center"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/item_course_dot_1"
-                            app:layout_constraintTop_toBottomOf="@id/item_course_title_tv" />
+                            app:layout_constraintEnd_toStartOf="@id/follow_user_popular_dot_1"
+                            app:layout_constraintTop_toBottomOf="@id/follow_user_popular_title_tv" />
 
                         <TextView
-                            android:id="@+id/item_course_dot_1"
+                            android:id="@+id/follow_user_popular_dot_1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="·"
@@ -265,13 +265,13 @@
                             android:textSize="12sp"
                             android:layout_marginStart="4dp"
                             android:gravity="center"
-                            app:layout_constraintStart_toEndOf="@id/item_course_location_tv"
-                            app:layout_constraintTop_toBottomOf="@id/item_course_title_tv"
-                            app:layout_constraintTop_toTopOf="@id/item_course_location_tv"
-                            app:layout_constraintBottom_toBottomOf="@id/item_course_location_tv" />
+                            app:layout_constraintStart_toEndOf="@id/follow_user_popular_location_tv"
+                            app:layout_constraintTop_toBottomOf="@id/follow_user_popular_title_tv"
+                            app:layout_constraintTop_toTopOf="@id/follow_user_popular_location_tv"
+                            app:layout_constraintBottom_toBottomOf="@id/follow_user_popular_location_tv" />
 
                         <TextView
-                            android:id="@+id/item_course_time_tv"
+                            android:id="@+id/follow_user_popular_time_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5시간 소요"
@@ -281,13 +281,13 @@
                             android:textSize="12sp"
                             android:layout_marginStart="4dp"
                             android:gravity="center"
-                            app:layout_constraintStart_toEndOf="@id/item_course_dot_1"
-                            app:layout_constraintEnd_toStartOf="@id/item_course_dot_2"
-                            app:layout_constraintTop_toTopOf="@id/item_course_location_tv"
-                            app:layout_constraintBottom_toBottomOf="@id/item_course_location_tv" />
+                            app:layout_constraintStart_toEndOf="@id/follow_user_popular_dot_1"
+                            app:layout_constraintEnd_toStartOf="@id/follow_user_popular_dot_2"
+                            app:layout_constraintTop_toTopOf="@id/follow_user_popular_location_tv"
+                            app:layout_constraintBottom_toBottomOf="@id/follow_user_popular_location_tv" />
 
                         <TextView
-                            android:id="@+id/item_course_dot_2"
+                            android:id="@+id/follow_user_popular_dot_2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="·"
@@ -296,12 +296,12 @@
                             android:textSize="12sp"
                             android:layout_marginStart="4dp"
                             android:gravity="center"
-                            app:layout_constraintStart_toEndOf="@id/item_course_time_tv"
-                            app:layout_constraintTop_toTopOf="@id/item_course_location_tv"
-                            app:layout_constraintBottom_toBottomOf="@id/item_course_location_tv" />
+                            app:layout_constraintStart_toEndOf="@id/follow_user_popular_time_tv"
+                            app:layout_constraintTop_toTopOf="@id/follow_user_popular_location_tv"
+                            app:layout_constraintBottom_toBottomOf="@id/follow_user_popular_location_tv" />
 
                         <TextView
-                            android:id="@+id/item_course_distance_tv"
+                            android:id="@+id/follow_user_popular_distance_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="2.2km 이동"
@@ -311,12 +311,12 @@
                             android:textSize="12sp"
                             android:layout_marginStart="4dp"
                             android:gravity="center"
-                            app:layout_constraintStart_toEndOf="@id/item_course_dot_2"
-                            app:layout_constraintTop_toTopOf="@id/item_course_location_tv"
-                            app:layout_constraintBottom_toBottomOf="@id/item_course_location_tv" />
+                            app:layout_constraintStart_toEndOf="@id/follow_user_popular_dot_2"
+                            app:layout_constraintTop_toTopOf="@id/follow_user_popular_location_tv"
+                            app:layout_constraintBottom_toBottomOf="@id/follow_user_popular_location_tv" />
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/item_course_tag_1"
+                            android:id="@+id/follow_user_popular_tag_1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -324,7 +324,7 @@
                             app:cardElevation="0dp"
                             app:cardCornerRadius="4dp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/item_course_location_tv">
+                            app:layout_constraintTop_toBottomOf="@id/follow_user_popular_location_tv">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -340,16 +340,16 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/item_course_tag_2"
+                            android:id="@+id/follow_user_popular_tag_2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             app:cardBackgroundColor="#EDEDED"
                             app:cardElevation="0dp"
                             app:cardCornerRadius="4dp"
-                            app:layout_constraintStart_toEndOf="@id/item_course_tag_1"
-                            app:layout_constraintTop_toTopOf="@id/item_course_tag_1"
-                            app:layout_constraintBottom_toBottomOf="@id/item_course_tag_1" >
+                            app:layout_constraintStart_toEndOf="@id/follow_user_popular_tag_1"
+                            app:layout_constraintTop_toTopOf="@id/follow_user_popular_tag_1"
+                            app:layout_constraintBottom_toBottomOf="@id/follow_user_popular_tag_1" >
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -385,7 +385,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/follow_user_popular_rv"
+                android:id="@+id/follow_user_recent_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

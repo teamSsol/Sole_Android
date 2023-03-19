@@ -70,4 +70,14 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
             // TODO: 태그 추가하기
         }
     }
+
+    fun addItem(item: DefaultCourse) {
+        courseList.add(item)
+        this.notifyDataSetChanged()
+    }
+
+    fun addAllItems(items: ArrayList<DefaultCourse>) {
+        courseList.addAll(items)
+        this.notifyDataSetChanged()
+    }
 }

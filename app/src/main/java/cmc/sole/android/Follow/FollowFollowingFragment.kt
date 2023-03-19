@@ -7,6 +7,7 @@ import cmc.sole.android.Follow.Retrofit.FollowListView
 import cmc.sole.android.Follow.Retrofit.FollowService
 import cmc.sole.android.MainActivity
 import cmc.sole.android.R
+import cmc.sole.android.User
 import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.databinding.FragmentFollowerFollowingBinding
 
@@ -38,27 +39,38 @@ class FollowFollowingFragment: BaseFragment<FragmentFollowerFollowingBinding>(Fr
 
         followListRVAdapter.setOnItemClickListener(object: FollowListRVAdapter.OnItemClickListener {
             override fun onItemClick(data: FollowUserDataResult, position: Int) {
-                (context as MainActivity).supportFragmentManager.beginTransaction().replace(
-                    R.id.main_fl,
-                    FollowUserFragment().apply {
-                        arguments = Bundle().apply {
-                            putString("profileImg", data.member.profileImgUrl)
-                            putString("nickname", data.member.nickname)
-                            putString("follower", data.followerCount.toString())
-                            putString("following", data.followingCount.toString())
+                if (followListRVAdapter.returnMode() == "followBtn") {
+                    followService.followUnfollow(data.member.memberId)
+                } else if (followListRVAdapter.returnMode() == "itemView") {
+                    (context as MainActivity).supportFragmentManager.beginTransaction().replace(
+                        R.id.main_fl,
+                        FollowUserFragment().apply {
+                            arguments = Bundle().apply {
+                                putString("followInfoMemberSocialId", data.member.socialId)
+                            }
                         }
-                    }
-                ).addToBackStack("followingUser").commit()
+                    ).addToBackStack("followerUser").commit()
+                }
             }
         })
-
-        // MEMO: DUMMY DATA
-//        followList.add(FollowListData("프로필", "밍밍", "2", "1", true))
-//        followList.add(FollowListData("프로필", "지미", "2", "2", true))
     }
 
     override fun followListSuccessView(followerResult: ArrayList<FollowUserDataResult>) {
         followListRVAdapter.addAllItems(followerResult)
+
+        // MEMO: 더미데이터
+        followListRVAdapter.addItem(FollowUserDataResult(0, "FOLLOWER", 0, 0,
+            User("", true, 123, "1", "", "asdf", "", "", "")
+        ))
+        followListRVAdapter.addItem(FollowUserDataResult(0, "FOLLOWER", 0, 0,
+            User("", true, 123, "2", "", "asdf", "", "", "")
+        ))
+        followListRVAdapter.addItem(FollowUserDataResult(0, "FOLLOWER", 0, 0,
+            User("", true, 123, "3", "", "asdf", "", "", "")
+        ))
+        followListRVAdapter.addItem(FollowUserDataResult(0, "FOLLOWER", 0, 0,
+            User("", true, 123, "4", "", "asdf", "", "", "")
+        ))
     }
 
     override fun followListFailureView() {

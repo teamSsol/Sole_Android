@@ -18,7 +18,7 @@ data class DefaultCourse(
     var like: Boolean,
     var thumbnailImg: String,
     var title: String,
-    var viewType: Int?
+    var viewType: Int? = null
 )
 
 data class HomeDefaultResponse(

@@ -72,7 +72,6 @@ class DialogScrapFolderEdit: DialogFragment(),
         // UPDATE: 폴더명 수정 API 연동
         binding.scrapFolderEditBtn.setOnClickListener {
             folderEditName = binding.scrapFolderEditNameEt.text.toString()
-            Log.d("API-TEST", "1 folderEditName = $folderEditName")
             scrapService.updateScrapFolderName(scrapFolderId, ScrapFolderNameUpdateRequest(folderEditName))
         }
     }

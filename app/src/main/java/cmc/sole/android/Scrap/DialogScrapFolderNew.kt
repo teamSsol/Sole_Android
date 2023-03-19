@@ -92,7 +92,7 @@ class DialogScrapFolderNew: DialogFragment(), ScrapFolderAddView {
     }
 
     override fun scrapFolderAddSuccessView(scrapFolderAddResult: ScrapFolderAddResult) {
-        Log.d("API-TEST", "scrapFolderAddSuccessView")
+
     }
 
     override fun scrapFolderAddFailureView() {
