@@ -47,33 +47,37 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
         binding.scrapFolderDetailCourseRv.adapter = scrapFolderDetailRVAdapter
         binding.scrapFolderDetailCourseRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.scrapFolderDetailCourseRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 40))
-        if (binding.scrapFolderDetailEditCv.visibility == View.VISIBLE) {
-            showLog("API-TEST", "기본 모드")
-            scrapFolderDetailRVAdapter.setOnItemClickListener(object: ScrapCourseRVAdapter.OnItemClickListener {
-                override fun onItemClick(data: ScrapCourseResult, position: Int) {
-                    if (binding.scrapFolderDetailEditCv.visibility == View.VISIBLE) {
-                        scrapFolderDetailRVAdapter.test(0)
+        scrapFolderDetailRVAdapter.setOnItemClickListener(object: ScrapCourseRVAdapter.OnItemClickListener {
+            override fun onItemClick(data: ScrapCourseResult, position: Int) {
+                if (binding.scrapFolderDetailEditCv.visibility == View.VISIBLE) {
+                    scrapFolderDetailRVAdapter.checkMode(0)
+
+                    val intent = Intent(activity, CourseDetailActivity::class.java)
+                    intent.putExtra("courseId", data.courseId)
+                    startActivity(intent)
+                } else {
+                    scrapFolderDetailRVAdapter.checkMode(1)
+                    Log.d("API-TEST", "isChecked out = ${data.isChecked}")
+                    if (!data.isChecked) {
+                        deleteCourseId.add(position)
+                        Log.d("API-TEST", "deleteCourseId = $deleteCourseId")
                     } else {
-                        scrapFolderDetailRVAdapter.test(1)
-                    }
-//                    if (binding.scrapFolderDetailEditCv.visibility == View.VISIBLE) {
-//                        startActivity(Intent(activity, CourseDetailActivity::class.java))
-//                    }
-//                    if (binding.scrapFolderDetailEditCv.visibility == View.VISIBLE) {
-//
-//                    }
-                }
-            })
-        } else {
-            showLog("API-TEST", "편집 모드")
-            scrapFolderDetailRVAdapter.setOnItemClickListener(object: ScrapCourseRVAdapter.OnItemClickListener {
-                override fun onItemClick(data: ScrapCourseResult, position: Int) {
-                    if (binding.scrapFolderDetailEditCv.visibility == View.VISIBLE) {
-                        // startActivity(Intent(activity, CourseDetailActivity::class.java))
+                        deleteCourseId.remove(position)
+                        Log.d("API-TEST", "deleteCourseId = $deleteCourseId")
                     }
                 }
-            })
-        }
+            }
+        })
+//        if (binding.scrapFolderDetailEditCv.visibility == View.VISIBLE) {
+//        } else {
+//            scrapFolderDetailRVAdapter.setOnItemClickListener(object: ScrapCourseRVAdapter.OnItemClickListener {
+//                override fun onItemClick(data: ScrapCourseResult, position: Int) {
+//                    if (binding.scrapFolderDetailEditCv.visibility == View.VISIBLE) {
+//                        // startActivity(Intent(activity, CourseDetailActivity::class.java))
+//                    }
+//                }
+//            })
+//        }
     }
 
     private fun initClickListener() {
@@ -87,7 +91,7 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
                     binding.scrapFolderDetailDeleteCv.visibility = View.GONE
 
                     for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
-                        scrapFolderDetailRVAdapter.getItems(i).isChecked = false
+                        scrapFolderDetailRVAdapter.getItems(i).checkMode = false
                     }
                     scrapFolderDetailRVAdapter.notifyDataSetChanged()
                 } else {
@@ -103,7 +107,6 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
         }
 
         binding.scrapFolderDetailEditCv.setOnClickListener {
-            showLog("API-TEST", "edit click")
             binding.scrapFolderDetailOptionIv.visibility = View.GONE
             binding.scrapFolderDetailEditCv.visibility = View.GONE
             binding.scrapFolderDetailOkTv.visibility = View.VISIBLE
@@ -111,7 +114,7 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
             binding.scrapFolderDetailDeleteCv.visibility = View.VISIBLE
 
             for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
-                scrapFolderDetailRVAdapter.getItems(i).isChecked = true
+                scrapFolderDetailRVAdapter.getItems(i).checkMode = true
             }
             scrapFolderDetailRVAdapter.notifyDataSetChanged()
         }

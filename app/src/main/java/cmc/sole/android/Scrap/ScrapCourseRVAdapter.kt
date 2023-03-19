@@ -13,6 +13,7 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
 
     private lateinit var itemClickListener: OnItemClickListener
     private lateinit var itemLongClickListener: OnItemLongClickListener
+    private var checkFlag = 0
 
     interface OnItemClickListener {
         fun onItemClick(data: ScrapCourseResult, position: Int)
@@ -41,7 +42,8 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
             itemClickListener.onItemClick(scrapCourseList[position], position)
-            if (flag == 1) { // MEMO: 편집 모드
+            if (checkFlag == 1) { // MEMO: 편집 모드
+                scrapCourseList[position].isChecked = !scrapCourseList[position].isChecked
                 if (holder.binding.myCourseCourseCheckIv.visibility == View.VISIBLE) {
                     holder.binding.myCourseCourseCheckIv.visibility = View.GONE
                 } else {
@@ -52,10 +54,11 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
                 holder.binding.myCourseCourseUncheckIv.visibility = View.GONE
                 
                 for (i in 0 until scrapCourseList.size) {
-                    Log.d("API-TEST", "check")
-                    scrapCourseList[i].isChecked = false
+                    scrapCourseList[i].checkMode = false
+                    scrapCourseList[i].isChecked= false
                 }
             }
+            this.notifyDataSetChanged()
         }
         holder.bind(scrapCourseList[position])
     }
@@ -71,7 +74,7 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
             binding.myCourseCourseDistanceTv.text = scrapCourse.distance.toString() + "km 이동"
             // TODO: 태그 추가하기
 
-            if (scrapCourse.isChecked) {
+            if (scrapCourse.checkMode) {
                 binding.myCourseCourseUncheckIv.visibility = View.VISIBLE
             } else {
                 binding.myCourseCourseUncheckIv.visibility = View.GONE
@@ -86,6 +89,7 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
     }
 
     fun addAllItems(items: ArrayList<ScrapCourseResult>) {
+        scrapCourseList.clear()
         scrapCourseList.addAll(items)
         this.notifyDataSetChanged()
     }
@@ -114,10 +118,8 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
         }
     }
 
-    var flag = 0
-
-    fun test(flag: Int): Int {
-        this.flag = flag
+    fun checkMode(flag: Int): Int {
+        checkFlag = flag
         return flag
     }
 }

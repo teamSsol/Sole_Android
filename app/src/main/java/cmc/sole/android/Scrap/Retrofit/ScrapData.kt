@@ -47,6 +47,7 @@ data class ScrapCourseResult(
     var like: Boolean,
     var thumbnailImg: String,
     var title: String,
+    var checkMode: Boolean = false,
     var isChecked: Boolean = false
     // var viewType: Int?
 )
