@@ -16,6 +16,22 @@ class DialogScrapCourseDelete: DialogFragment(), ScrapCourseDeleteView {
     lateinit var binding: DialogScrapCourseDeleteBinding
 
     lateinit var scrapService: ScrapService
+    private var scrapFolderId: Int = -1
+    private var deleteCourseId = ArrayList<Int>()
+    private lateinit var dialogFinishListener: OnFinishListener
+
+    interface OnFinishListener {
+        fun finish()
+    }
+
+    fun setOnFinishListener(listener: OnFinishListener) {
+        dialogFinishListener = listener
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dialogFinishListener.finish()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,6 +41,9 @@ class DialogScrapCourseDelete: DialogFragment(), ScrapCourseDeleteView {
         binding = DialogScrapCourseDeleteBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP)
+
+        scrapFolderId = requireArguments().getInt("scrapFolderId")
+        arguments?.getIntegerArrayList("courseId")?.let { deleteCourseId.addAll(it) }
 
         initService()
         initClickListener()
@@ -49,8 +68,8 @@ class DialogScrapCourseDelete: DialogFragment(), ScrapCourseDeleteView {
         }
         
         binding.scrapCourseDeleteBtn.setOnClickListener {
-            Toast.makeText(context, "삭제하기", Toast.LENGTH_SHORT).show()
-            // scrapService.deleteScrapCourse()
+            scrapService.deleteScrapCourse(scrapFolderId, deleteCourseId)
+            dismiss()
         }
     }
 

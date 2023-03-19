@@ -1,6 +1,7 @@
 package cmc.sole.android.Scrap
 
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -29,7 +30,9 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
 
     override fun initAfterBinding() {
         binding.scrapFolderDetailTitle.text = arguments?.getString("title")
-        scrapFolderId = requireArguments().getInt("scrapFolderId", 0)
+        scrapFolderId = requireArguments().getInt("scrapFolderId", -1)
+
+        Log.d("API-TEST", "scrapFolderId = $scrapFolderId")
 
         initService()
         initAdapter()
@@ -57,27 +60,14 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
                     startActivity(intent)
                 } else {
                     scrapFolderDetailRVAdapter.checkMode(1)
-                    Log.d("API-TEST", "isChecked out = ${data.isChecked}")
                     if (!data.isChecked) {
-                        deleteCourseId.add(position)
-                        Log.d("API-TEST", "deleteCourseId = $deleteCourseId")
+                        deleteCourseId.add(data.courseId)
                     } else {
-                        deleteCourseId.remove(position)
-                        Log.d("API-TEST", "deleteCourseId = $deleteCourseId")
+                        deleteCourseId.remove(data.courseId)
                     }
                 }
             }
         })
-//        if (binding.scrapFolderDetailEditCv.visibility == View.VISIBLE) {
-//        } else {
-//            scrapFolderDetailRVAdapter.setOnItemClickListener(object: ScrapCourseRVAdapter.OnItemClickListener {
-//                override fun onItemClick(data: ScrapCourseResult, position: Int) {
-//                    if (binding.scrapFolderDetailEditCv.visibility == View.VISIBLE) {
-//                        // startActivity(Intent(activity, CourseDetailActivity::class.java))
-//                    }
-//                }
-//            })
-//        }
     }
 
     private fun initClickListener() {
@@ -121,7 +111,26 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
 
         binding.scrapFolderDetailDeleteCv.setOnClickListener {
             val scrapCourseDeleteDialog = DialogScrapCourseDelete()
+            var bundle = Bundle()
+            bundle.putInt("scrapFolderId", scrapFolderId)
+            bundle.putIntegerArrayList("courseId", deleteCourseId)
+            scrapCourseDeleteDialog.arguments = bundle
             scrapCourseDeleteDialog.show(requireActivity().supportFragmentManager, "ScrapCourseDialog")
+            scrapCourseDeleteDialog.setOnFinishListener(object: DialogScrapCourseDelete.OnFinishListener {
+                override fun finish() {
+                    binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
+                    binding.scrapFolderDetailEditCv.visibility = View.VISIBLE
+                    binding.scrapFolderDetailOkTv.visibility = View.GONE
+                    binding.scrapFolderDetailMoveCv.visibility = View.GONE
+                    binding.scrapFolderDetailDeleteCv.visibility = View.GONE
+
+                    for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
+                        scrapFolderDetailRVAdapter.getItems(i).checkMode = false
+                        scrapFolderDetailRVAdapter.getItems(i).isChecked = false
+                    }
+                    scrapFolderDetailRVAdapter.notifyDataSetChanged()
+                }
+            })
         }
     }
 

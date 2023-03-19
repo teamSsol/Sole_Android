@@ -107,10 +107,8 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
     }
 
     fun removeItem(start: Int, end: Int?) {
-        Log.d("API-TEST", "start = $start, end = $end")
         if (end != null) {
             for (i in start until end) {
-                Log.d("API-TEST", "i = $i")
                 scrapCourseList.removeAt(i)
             }
         } else {

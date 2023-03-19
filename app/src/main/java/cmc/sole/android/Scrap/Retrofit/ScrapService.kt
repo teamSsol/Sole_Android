@@ -95,12 +95,13 @@ class ScrapService {
     }
 
     // MEMO: 테스트 필요!
-    fun deleteScrapCourse(scrapFolderId: Int, courseId: Int) {
+    fun deleteScrapCourse(scrapFolderId: Int, courseId: ArrayList<Int>) {
         scrapService?.deleteScrapCourse(scrapFolderId, courseId)?.enqueue(object: Callback<DefaultResponse> {
             override fun onResponse(
                 call: Call<DefaultResponse>,
                 response: Response<DefaultResponse>
             ) {
+                Log.d("API-TEST", "scrapFolderId = ${scrapFolderId}, courseId = $courseId")
                 Log.d("API-TEST", "response.body = ${response.body()}")
                 if (response.code() == 200) {
                     val scrapCourseDeleteResponse = response.body()
