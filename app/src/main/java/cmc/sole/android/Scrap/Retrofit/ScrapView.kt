@@ -10,6 +10,11 @@ interface ScrapFolderAddView {
     fun scrapFolderAddFailureView()
 }
 
+interface ScrapFolderDeleteView {
+    fun scrapFolderDeleteSuccessView()
+    fun scrapFolderDeleteFailureView()
+}
+
 interface ScrapCourseView {
     fun scrapCourseSuccessView(scrapCourseResult: ArrayList<ScrapCourseResult>)
     fun scrapCourseFailureView()

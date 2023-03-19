@@ -11,7 +11,7 @@ import com.kakao.sdk.common.util.Utility
 class SplashActivity: BaseActivity<ActivitySplashBinding>(ActivitySplashBinding::inflate) {
     override fun initAfterBinding() {
         // 카카오 hashKey 를 얻기 위한 코드
-        getKAKAOKeyHash()
+        // getKAKAOKeyHash()
 
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({

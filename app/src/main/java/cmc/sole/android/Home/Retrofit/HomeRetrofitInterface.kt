@@ -56,5 +56,5 @@ interface HomeRetrofitInterface {
 
     // MEMO: 회원탈퇴
     @DELETE("api/mypage/quit")
-    fun quitMember(): Call<DefaultResponse>
+    fun quitMember(): Call<Void>
 }

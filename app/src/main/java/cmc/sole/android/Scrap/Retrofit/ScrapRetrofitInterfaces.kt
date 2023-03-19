@@ -17,6 +17,11 @@ interface ScrapRetrofitInterfaces {
         @Body scrapFolderAddRequest: ScrapFolderAddRequest
     ): Call<ScrapFolderAddResponse>
 
+    @DELETE("/api/scraps/{scrapFolderId}")
+    fun deleteScrapFolder(
+        @Path("scrapFolderId") scrapFolderId: Int,
+    ): Call<Void>
+
     @GET("api/scraps/{scrapFolderId}")
     fun getScrapCourse(
         @Path("scrapFolderId") scrapFolderId: Int
@@ -26,5 +31,5 @@ interface ScrapRetrofitInterfaces {
     fun deleteScrapCourse(
         @Path("scrapFolderId") scrapFolderId: Int,
         @Path("courseId") courseId: ArrayList<Int>
-    ): Call<DefaultResponse>
+    ): Call<Void>
 }

@@ -3,7 +3,6 @@ package com.sole.android
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import cmc.sole.android.Utils.AuthorizationTokenInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

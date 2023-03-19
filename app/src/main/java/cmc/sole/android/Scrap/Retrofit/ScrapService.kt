@@ -14,6 +14,7 @@ class ScrapService {
 
     private lateinit var scrapFolderView: ScrapFolderView
     private lateinit var scrapFolderAddView: ScrapFolderAddView
+    private lateinit var scrapFolderDeleteView: ScrapFolderDeleteView
     private lateinit var scrapCourseView: ScrapCourseView
     private lateinit var scrapCourseDeleteView: ScrapCourseDeleteView
 
@@ -22,6 +23,9 @@ class ScrapService {
     }
     fun setScrapFolderAddView(scrapFolderAddView: ScrapFolderAddView) {
         this.scrapFolderAddView = scrapFolderAddView
+    }
+    fun setScrapFolderDeleteView(scrapFolderDeleteView: ScrapFolderDeleteView) {
+        this.scrapFolderDeleteView = scrapFolderDeleteView
     }
     fun setScrapCourseView(scrapCourseView: ScrapCourseView) {
         this.scrapCourseView = scrapCourseView
@@ -72,6 +76,24 @@ class ScrapService {
         })
     }
 
+    fun deleteScrapFolder(scrapFolderId: Int) {
+        scrapService?.deleteScrapFolder(scrapFolderId)?.enqueue(object: Callback<Void> {
+            override fun onResponse(
+                call: Call<Void>,
+                response: Response<Void>
+            ) {
+                if (response.code() == 200) {
+                    scrapFolderDeleteView.scrapFolderDeleteSuccessView()
+                } else {
+                    scrapFolderDeleteView.scrapFolderDeleteFailureView()
+                }
+            }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("SCRAP-SERVICE", "SCRAP-SERVICE-DELETE-SCRAP-FOLDER-FAILURE", t)
+            }
+        })
+    }
+
     fun getScrapCourse(scrapFolderId: Int) {
         scrapService?.getScrapCourse(scrapFolderId)?.enqueue(object: Callback<ScrapCourseResponse> {
             override fun onResponse(
@@ -96,23 +118,20 @@ class ScrapService {
 
     // MEMO: 테스트 필요!
     fun deleteScrapCourse(scrapFolderId: Int, courseId: ArrayList<Int>) {
-        scrapService?.deleteScrapCourse(scrapFolderId, courseId)?.enqueue(object: Callback<DefaultResponse> {
+        scrapService?.deleteScrapCourse(scrapFolderId, courseId)?.enqueue(object: Callback<Void> {
             override fun onResponse(
-                call: Call<DefaultResponse>,
-                response: Response<DefaultResponse>
+                call: Call<Void>,
+                response: Response<Void>
             ) {
                 Log.d("API-TEST", "scrapFolderId = ${scrapFolderId}, courseId = $courseId")
                 Log.d("API-TEST", "response.body = ${response.body()}")
                 if (response.code() == 200) {
-                    val scrapCourseDeleteResponse = response.body()
-                    if (scrapCourseDeleteResponse?.success == true) {
-                        scrapCourseDeleteView.scrapCourseDeleteSuccessView()
-                    } else {
-                        scrapCourseDeleteView.scrapCourseDeleteFailureView()
-                    }
+                    scrapCourseDeleteView.scrapCourseDeleteSuccessView()
+                } else {
+                    scrapCourseDeleteView.scrapCourseDeleteFailureView()
                 }
             }
-            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+            override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.e("SCRAP-SERVICE", "SCRAP-SERVICE-DELETE-SCRAP-COURSE-FAILURE", t)
             }
         })

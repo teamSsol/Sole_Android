@@ -93,6 +93,9 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
 
         binding.scrapFolderDetailOptionIv.setOnClickListener {
             var scrapFolderOptionBottomFragment = ScrapFolderOptionBottomFragment()
+            var bundle = Bundle()
+            bundle.putInt("scrapFolderId", scrapFolderId)
+            scrapFolderOptionBottomFragment.arguments = bundle
             scrapFolderOptionBottomFragment.show(requireActivity().supportFragmentManager, "ScrapFolderDetailBottom")
         }
 
@@ -131,6 +134,21 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
                     scrapFolderDetailRVAdapter.notifyDataSetChanged()
                 }
             })
+        }
+
+        binding.scrapFolderDetailOkTv.setOnClickListener {
+            if (binding.scrapFolderDetailOptionIv.visibility == View.GONE) {
+                binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
+                binding.scrapFolderDetailEditCv.visibility = View.VISIBLE
+                binding.scrapFolderDetailOkTv.visibility = View.GONE
+                binding.scrapFolderDetailMoveCv.visibility = View.GONE
+                binding.scrapFolderDetailDeleteCv.visibility = View.GONE
+
+                for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
+                    scrapFolderDetailRVAdapter.getItems(i).checkMode = false
+                }
+                scrapFolderDetailRVAdapter.notifyDataSetChanged()
+            }
         }
     }
 

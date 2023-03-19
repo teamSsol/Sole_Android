@@ -7,6 +7,8 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import cmc.sole.android.Scrap.Retrofit.ScrapFolderDeleteView
+import cmc.sole.android.Scrap.Retrofit.ScrapService
 import cmc.sole.android.databinding.BottomFragmentScrapFolderOptionBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -17,6 +19,7 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
     lateinit var binding: BottomFragmentScrapFolderOptionBinding
     private lateinit var dialogFinishListener: OnScrapOptionFinishListener
     var folderEditName: String = ""
+    var scrapFolderId: Int = -1
 
     interface OnScrapOptionFinishListener {
         fun finish(data: String)
@@ -32,7 +35,10 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = BottomFragmentScrapFolderOptionBinding.inflate(inflater, container, false)
+        scrapFolderId = requireArguments().getInt("scrapFolderId")
+
         initClickListener()
+
         return binding.root
     }
 
@@ -79,6 +85,9 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
         binding.scrapFolderOptionDelete.setOnClickListener {
             // dialogFinishListener.finish(folderEditName)
             val scrapFolderOptionDeleteDialog = DialogScrapFolderDelete()
+            var bundle = Bundle()
+            bundle.putInt("scrapFolderId", scrapFolderId)
+            scrapFolderOptionDeleteDialog.arguments = bundle
             scrapFolderOptionDeleteDialog.show(requireActivity().supportFragmentManager, "ScrapFolderDeleteDialog")
         }
     }

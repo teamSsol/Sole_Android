@@ -282,23 +282,18 @@ class HomeService {
     }
 
     fun deleteMember() {
-        homeService?.quitMember()?.enqueue(object: Callback<DefaultResponse> {
+        homeService?.quitMember()?.enqueue(object: Callback<Void> {
             override fun onResponse(
-                call: Call<DefaultResponse>,
-                response: Response<DefaultResponse>
+                call: Call<Void>,
+                response: Response<Void>
             ) {
-                Log.d("API-TEST", "quit member response = ${response.body()}")
-                Log.d("API-TEST", "quit member body = ${response.body()?.data}")
                 if (response.code() == 200) {
-                    val myPageMemberQuitResponse = response.body()
-                    if (myPageMemberQuitResponse?.success == true) {
-                        myPageMemberQuitView.myPageMemberQuitSuccessView()
-                    } else {
-                        myPageMemberQuitView.myPageMemberQuitFailureView()
-                    }
+                    myPageMemberQuitView.myPageMemberQuitSuccessView()
+                } else {
+                    myPageMemberQuitView.myPageMemberQuitFailureView()
                 }
             }
-            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+            override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.e("HOME-SERVICE", "HOME-SERVICE-MY-PAGE-MEMBER-QUIT-FAILURE", t)
             }
         })
