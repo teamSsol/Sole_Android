@@ -57,6 +57,11 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
         holder.binding.myCourseWriteTimeLayout.setOnClickListener {
             val timePickerDialog = DialogMyCourseWriteTimePicker()
             timePickerDialog.show((holder.binding.root.context as FragmentActivity).supportFragmentManager, "MyCourseWriteTimePicker")
+            timePickerDialog.setOnFinishListener(object: DialogMyCourseWriteTimePicker.OnDialogFragmentFinishListener {
+                override fun finish(time: String) {
+                    holder.binding.myCourseWriteTimeTv.text = time
+                }
+            })
         }
         holder.bind(placeInfoList[position])
     }

@@ -1,6 +1,7 @@
 package cmc.sole.android.MyCourse.Write
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -10,7 +11,21 @@ import cmc.sole.android.databinding.DialogTimepickerBinding
 class DialogMyCourseWriteTimePicker: DialogFragment() {
 
     lateinit var binding: DialogTimepickerBinding
-    private val writeVM: MyCourseWriteViewModel by activityViewModels()
+    private lateinit var dialogFinishListener: OnDialogFragmentFinishListener
+    private var time = ""
+
+    interface OnDialogFragmentFinishListener {
+        fun finish(time: String)
+    }
+
+    fun setOnFinishListener(listener: OnDialogFragmentFinishListener) {
+        dialogFinishListener = listener
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dialogFinishListener.finish(time)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -20,6 +35,8 @@ class DialogMyCourseWriteTimePicker: DialogFragment() {
         binding = DialogTimepickerBinding.inflate(inflater, container, false)
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP)
         binding.myCourseWriteTp.setIs24HourView(true)
+        binding.myCourseWriteTp.hour = 0
+        binding.myCourseWriteTp.minute = 0
 
         initClickListener()
 
@@ -34,13 +51,20 @@ class DialogMyCourseWriteTimePicker: DialogFragment() {
 
     private fun initClickListener() {
         binding.myCourseWriteTpDeleteCancel.setOnClickListener {
-            writeVM.setTime("")
+            time = ""
             dismiss()
         }
         
         binding.myCourseWriteTpOkBtn.setOnClickListener {
-            var time = binding.myCourseWriteTp.hour.toString() + "시 " + binding.myCourseWriteTp.minute.toString() + "분"
-            writeVM.setTime(time)
+            time = if (binding.myCourseWriteTp.minute.toString() == "0") {
+                if (binding.myCourseWriteTp.hour.toString() == "0") ""
+                else binding.myCourseWriteTp.hour.toString() + "시간 "
+            } else if (binding.myCourseWriteTp.hour.toString() == "0") {
+                binding.myCourseWriteTp.minute.toString() + "분"
+            } else {
+                binding.myCourseWriteTp.hour.toString() + "시간 " + binding.myCourseWriteTp.minute.toString() + "분"
+            }
+
             dismiss()
         }
     }
