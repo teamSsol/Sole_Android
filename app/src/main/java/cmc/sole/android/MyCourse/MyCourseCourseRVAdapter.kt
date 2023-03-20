@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.AdapterView.OnItemLongClickListener
 import androidx.recyclerview.widget.RecyclerView
+import cmc.sole.android.Follow.FollowCourseResult
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.R
 import cmc.sole.android.databinding.ItemMyCourseCourseBinding
@@ -84,5 +85,15 @@ class MyCourseCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>):
             
             // TODO: 태그 추가하기
         }
+    }
+
+    fun addItem(item: DefaultCourse) {
+        courseList.add(item)
+        this.notifyDataSetChanged()
+    }
+
+    fun addAllItems(items: ArrayList<DefaultCourse>) {
+        courseList.addAll(items)
+        this.notifyDataSetChanged()
     }
 }

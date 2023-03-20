@@ -1,24 +1,19 @@
 package cmc.sole.android.MyCourse.Write
 
 import android.content.Context
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Home.MyCourseWriteImage
-import cmc.sole.android.Home.locationAddImage
 import cmc.sole.android.Home.locationImage
-import cmc.sole.android.MyCourse.MyCourseTagBottomFragment
+import cmc.sole.android.MyCourse.MyCourseWriteTagBottomFragmentt
 import cmc.sole.android.MyCourse.MyCourseTagRVAdapter
 import cmc.sole.android.MyCourse.PlaceInfoData
-import cmc.sole.android.MyCourse.Write.Search.MyCourseWriteSearchBottomFragment
 import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
@@ -119,8 +114,8 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         }
 
         binding.myCourseWriteTagLayout.setOnClickListener {
-            val myCourseTagBottomFragment = MyCourseTagBottomFragment()
-            myCourseTagBottomFragment.show(supportFragmentManager, "myCourseTagBottom")
+            val myCourseWriteTagBottomFragment = MyCourseWriteTagBottomFragmentt()
+            myCourseWriteTagBottomFragment.show(supportFragmentManager, "myCourseTagBottom")
         }
 
 //        binding.myCourseWriteSearchBar.setOnClickListener {

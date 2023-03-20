@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import cmc.sole.android.R
 
 object TagTranslator {
-    fun tagTranslate(activity: AppCompatActivity, tag: String): String {
+    fun tagEngToKor(activity: AppCompatActivity, tag: String): String {
         return when(tag) {
             "TASTY_PLACE" -> activity.getString(R.string.place_tag1)
             "CAFE" -> activity.getString(R.string.place_tag2)
@@ -26,6 +26,32 @@ object TagTranslator {
             "BIKE" -> activity.getString(R.string.trans_tag16)
             "CAR" -> activity.getString(R.string.trans_tag17)
             "PUBLIC_TRANSPORTATION" -> activity.getString(R.string.trans_tag18)
+            else -> "."
+        }
+    }
+
+    fun tagKorToEng(activity: AppCompatActivity, tag: String): String {
+        return when(tag) {
+            activity.getString(R.string.place_tag1) -> "TASTY_PLACE"
+            activity.getString(R.string.place_tag2) -> "CAFE"
+            activity.getString(R.string.place_tag3) -> "CULTURE_ART"
+            activity.getString(R.string.place_tag4) -> "ACTIVITY"
+            activity.getString(R.string.place_tag5) -> "HEALING"
+            activity.getString(R.string.place_tag6) -> "NATURE"
+            activity.getString(R.string.place_tag7) -> "NIGHT_VIEW"
+            activity.getString(R.string.place_tag8) -> "HISTORY"
+            activity.getString(R.string.place_tag9) -> "THEME_PARK"
+
+            activity.getString(R.string.with_tag10) -> "ALONE"
+            activity.getString(R.string.with_tag11) -> "FRIEND"
+            activity.getString(R.string.with_tag12) -> "COUPLE"
+            activity.getString(R.string.with_tag13) -> "KID"
+            activity.getString(R.string.with_tag14) -> "PET"
+
+            activity.getString(R.string.trans_tag15) -> "WALK"
+            activity.getString(R.string.trans_tag16) -> "BIKE"
+            activity.getString(R.string.trans_tag17) -> "CAR"
+            activity.getString(R.string.trans_tag18) -> "PUBLIC_TRANSPORTATION"
             else -> "."
         }
     }

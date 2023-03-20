@@ -15,6 +15,7 @@ data class DefaultCourse(
     var courseId: Int,
     var distance: Int,
     var duration: Int,
+    var finalPage: Boolean,
     var like: Boolean,
     var thumbnailImg: String,
     var title: String,

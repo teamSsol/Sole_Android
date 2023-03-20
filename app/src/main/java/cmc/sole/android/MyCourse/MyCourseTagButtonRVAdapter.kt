@@ -39,6 +39,8 @@ class MyCourseTagButtonRVAdapter(private val tagList: ArrayList<TagButton>): Rec
             }
             tagList[position].isChecked = !tagList[position].isChecked
             itemClickListener.onItemClick(tagList[position], position)
+
+            Log.d("TAG-TEST", "tag content = ${tagList[position].title}")
         }
         holder.bind(tagList[position])
     }
@@ -59,5 +61,9 @@ class MyCourseTagButtonRVAdapter(private val tagList: ArrayList<TagButton>): Rec
                 binding.itemMyCourseTagBtn.setTextColor(ContextCompat.getColor(binding.root.context, R.color.white))
             }
         }
+    }
+
+    fun getItem(position: Int): TagButton {
+        return tagList[position]
     }
 }
