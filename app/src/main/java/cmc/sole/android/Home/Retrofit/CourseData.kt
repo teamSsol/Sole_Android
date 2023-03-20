@@ -23,7 +23,7 @@ data class DefaultCourse(
 )
 
 data class HomeDefaultResponse(
-    var data: ArrayList<DefaultCourse>?,
+    var data: ArrayList<DefaultCourse>,
     var status: Int,
     var success: Boolean,
     var timestamp: String

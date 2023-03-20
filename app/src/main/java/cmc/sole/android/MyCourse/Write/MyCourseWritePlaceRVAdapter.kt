@@ -45,7 +45,7 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
         holder.binding.myCourseWriteLocationRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
         locationImgRVAdapter.setOnItemClickListener(object: MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
             override fun onItemClick(data: MyCourseWriteImage, position: Int) {
-                Log.d("WRITE-TEST", "imageItemClickTest")
+
             }
         })
         locationImgRVAdapter.addItem(MyCourseWriteImage("", locationAddImage))

@@ -29,24 +29,20 @@ class FollowListRVAdapter(private val followList: ArrayList<FollowUserDataResult
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // TODO: 팔로우 및 언팔로우 API 연동
         holder.binding.itemFollowFollowBtn.setOnClickListener {
-            Log.d("API-TEST", "followBtn 1")
             setMode("followBtn")
             itemClickListener.onItemClick(followList[position], position)
             holder.binding.itemFollowFollowBtn.visibility = View.GONE
             holder.binding.itemFollowFollowingBtn.visibility = View.VISIBLE
-            Log.d("API-TEST", "followBtn 2")
         }
         holder.binding.itemFollowFollowingBtn.setOnClickListener {
             setMode("followBtn")
             itemClickListener.onItemClick(followList[position], position)
             holder.binding.itemFollowFollowBtn.visibility = View.VISIBLE
             holder.binding.itemFollowFollowingBtn.visibility = View.GONE
-            Log.d("API-TEST", "followBtn")
         }
         holder.binding.itemFollowListLayout.setOnClickListener {
             setMode("itemView")
             itemClickListener.onItemClick(followList[position], position)
-            Log.d("API-TEST", "itemView")
         }
 
         holder.bind(followList[position])

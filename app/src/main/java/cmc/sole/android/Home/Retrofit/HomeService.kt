@@ -87,6 +87,9 @@ class HomeService {
                 call: Call<HomeDefaultResponse>,
                 response: Response<HomeDefaultResponse>
             ) {
+                Log.d("API-TEST", "response = $response")
+                Log.d("API-TEST", "response.body = ${response.body()}")
+                Log.d("API-TEST", "response = ${response.body()?.data}")
                 if (response.code() == 200) {
                     val homeDefaultResponse = response.body()
                     if (homeDefaultResponse?.success == true) {

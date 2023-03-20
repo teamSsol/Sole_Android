@@ -206,7 +206,6 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
     }
 
     override fun signupSocialSuccessView(result: SignupSocialResponse) {
-        Log.d("SIGNUP-SERVICE", result.toString())
         saveNickname(result.data.nickname)
         saveProfileImgUrl(result.data.profileImgUrl.toString())
         changeActivity(SignupFinishActivity::class.java)
