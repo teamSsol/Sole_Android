@@ -21,6 +21,8 @@ import cmc.sole.android.Home.locationImage
 import cmc.sole.android.MyCourse.MyCourseWriteTagBottomFragmentt
 import cmc.sole.android.MyCourse.MyCourseTagRVAdapter
 import cmc.sole.android.MyCourse.PlaceInfoData
+import cmc.sole.android.MyCourse.Retrofit.ImageTestView
+import cmc.sole.android.MyCourse.Retrofit.MyCourseService
 import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
@@ -30,8 +32,14 @@ import cmc.sole.android.databinding.ActivityMyCourseWriteBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.flexbox.FlexboxLayoutManager
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import org.json.JSONObject
+import java.io.File
 
-class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(ActivityMyCourseWriteBinding::inflate) {
+class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(ActivityMyCourseWriteBinding::inflate),
+    ImageTestView {
 
     private lateinit var writeVM: MyCourseWriteViewModel
     private lateinit var tagRVAdapter: MyCourseTagRVAdapter
@@ -44,6 +52,8 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
     private var mainImageUri: Uri? = null
     private var locationImageUri: Uri? = null
     var index = 0
+
+    private lateinit var myCourseService: MyCourseService
 
     companion object{
         const val REQ_GALLERY = 1
@@ -70,9 +80,15 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
     }
 
     override fun initAfterBinding() {
+        initService()
         initViewModel()
         initClickListener()
         initAdapter()
+    }
+
+    private fun initService() {
+        myCourseService = MyCourseService()
+        myCourseService.setImageTestView(this)
     }
 
     private fun initViewModel() {
@@ -137,8 +153,24 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         }
 
         binding.myCourseWriteUploadBtn.setOnClickListener {
-            finish()
-            ToastDefault.createToast(this, "코스 기록을 완료했어요 :)")?.show()
+            // finish()
+            // ToastDefault.createToast(this, "코스 기록을 완료했어요 :)")?.show()
+
+            // MEMO: 임시
+            var file: File
+            var requestFile: RequestBody
+            var thumbnailImg: List<MultipartBody.Part?>
+
+            if (locationImageUri == null) {
+                thumbnailImg = emptyList()
+            } else {
+                file = File(absolutelyPath(locationImageUri, this))
+                requestFile = RequestBody.create(MediaType.parse("image/*"), file)
+                thumbnailImg = listOf(MultipartBody.Part.createFormData("thumbnailImg", file.name, requestFile))
+            }
+
+            var thumbnailImgRequest: List<MultipartBody.Part?> = thumbnailImg
+            myCourseService.imageTest(thumbnailImgRequest)
         }
     }
 
@@ -171,7 +203,6 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
                         locationImageResult.launch(intent)
                     }
                     index = position
-                    showLog("WRITE-TEST", "position 3 = $position")
                 }
             }
         })
@@ -200,5 +231,13 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
             binding.myCourseWriteCourseImageTv.visibility = View.VISIBLE
             binding.myCourseWriteCourseImageAddIv.visibility = View.VISIBLE
         }
+    }
+
+    override fun setImageTestSuccessView() {
+
+    }
+
+    override fun setImageTestFailureView() {
+
     }
 }

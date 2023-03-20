@@ -12,3 +12,13 @@ interface MyCourseHistoryView {
     fun setMyCourseHistorySuccessView(myCourseHistoryResult: ArrayList<DefaultCourse>)
     fun setMyCourseHistoryFailureView()
 }
+
+interface MyCourseAddView {
+    fun setMyCourseAddSuccessView()
+    fun setMyCourseAddFailureView()
+}
+
+interface ImageTestView {
+    fun setImageTestSuccessView()
+    fun setImageTestFailureView()
+}

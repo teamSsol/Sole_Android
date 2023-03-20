@@ -1,10 +1,9 @@
 package cmc.sole.android.MyCourse.Retrofit
 
+import cmc.sole.android.Home.MyPageUpdateResponse
+import okhttp3.MultipartBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface MyCourseRetrofitInterfaces {
     @GET("/api/histories")
@@ -15,4 +14,18 @@ interface MyCourseRetrofitInterfaces {
         @Query("courseId") courseId: Int,
         @Body myCourseHistoryRequest: MyCourseHistoryRequest
     ): Call<MyCourseHistoryResponse>
+
+    @Multipart
+    @POST("/api/courses")
+    fun addMyCourses(
+        @Part thumbnailImg: List<MultipartBody.Part?>,
+        @Part courseRequestDto: Map<String, List<MultipartBody.Part?>>
+    )
+
+    @Multipart
+    @POST("/api/courses/imageTest")
+    fun imageTest(
+        // @Part("thumbnailImg") thumbnailImg: Map<String, List<MultipartBody.Part?>>
+        @Part thumbnailImg: List<MultipartBody.Part?>
+    ): Call<String>
 }
