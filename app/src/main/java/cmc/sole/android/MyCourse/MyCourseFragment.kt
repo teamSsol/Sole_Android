@@ -1,19 +1,31 @@
 package cmc.sole.android.MyCourse
 
-import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Typeface
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.BackgroundColorSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.view.RoundedCorner
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryResult
 import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryView
 import cmc.sole.android.MyCourse.Retrofit.MyCourseService
 import cmc.sole.android.MyCourse.Write.MyCourseWriteActivity
+import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseFragment
+import cmc.sole.android.Utils.NewDynamicDrawableSpan
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.Utils.TagTranslator
 import cmc.sole.android.databinding.FragmentMyCourseBinding
-import com.bumptech.glide.Glide
+
 
 class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBinding::inflate),
     MyCourseHistoryView {
@@ -73,14 +85,92 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
         // UPDATE: API 프로필 이미지 추가하면 추가해주기!
         // Glide.with(this).load(myCourseHistoryResult.profileImg)
         binding.myCourseNicknameTv.text = myCourseHistoryResult.nickname
+
         // UPDATE: Text Span 처리 필요
-        binding.myCourseInfoContent.text = "지금까지 ${myCourseHistoryResult.totalDate}일간 ${myCourseHistoryResult.totalPlaces}곳의 장소를 방문하며,\n이번 달 총 ${myCourseHistoryResult.totalCourses}개의 코스를 기록했어요"
-        binding.myCourseInfoTag.text = "가장 많이 방문한 지역은 ${TagTranslator.tagTranslate(requireActivity() as AppCompatActivity, myCourseHistoryResult.mostRegion)}이고\n" +
-                "${TagTranslator.tagTranslate(requireActivity() as AppCompatActivity, myCourseHistoryResult.mostTransCategories.elementAt(0))} 이동해서" +
-                "${TagTranslator.tagTranslate(requireActivity() as AppCompatActivity, myCourseHistoryResult.mostPlaceCategories.elementAt(0))}을 다녔어요."
+        var totalDate = myCourseHistoryResult.totalDate
+        var totalPlaces = myCourseHistoryResult.totalPlaces
+        var totalCourses = myCourseHistoryResult.totalCourses
+        var infoContent = "지금까지 $totalDate 일간 $totalPlaces 곳의 장소를 방문하며,\n이번 달 총 $totalCourses 개의 코스를 기록했어요"
+        binding.myCourseInfoContent.text = setSpannableText(infoContent, "top")
+
+        var mostRegion = TagTranslator.tagTranslate(activity as AppCompatActivity, myCourseHistoryResult.mostRegion)
+        var mostTransCategories = TagTranslator.tagTranslate(activity as AppCompatActivity, myCourseHistoryResult.mostTransCategories.elementAt(0))
+        var mostPlaceCategories = TagTranslator.tagTranslate(activity as AppCompatActivity, myCourseHistoryResult.mostPlaceCategories.elementAt(0))
+
+        if (mostRegion == "." || mostTransCategories == "." || mostPlaceCategories == ".") {
+            binding.myCourseInfoTag1.visibility = View.GONE
+            binding.myCourseInfoTag2.visibility = View.GONE
+        } else {
+            var tagContent1 = "가장 많이 방문한 지역은 $mostRegion 이고"
+            binding.myCourseInfoTag1.text = setSpannableText(tagContent1, "bottom1")
+
+            var tagContent2 = "$mostTransCategories 으로 이동해서 $mostPlaceCategories 을 다녔어요."
+            binding.myCourseInfoTag2.text = setSpannableText(tagContent2, "bottom2")
+        }
     }
 
     override fun setMyCourseHistoryFailureView() {
 
+    }
+
+    private fun setSpannableText(text: String, option: String): SpannableStringBuilder {
+        var textArray = text.split(" ")
+
+        val builder = SpannableStringBuilder(text)
+
+        when (option) {
+            "top" -> {
+                // MEMO: TextSpan 적용 -> [지금까지, ?, 일간, ?, 곳의, 장소를, 방문하며, 이번, 달, 총, ?, 개의, 코스를, 기록했어요]
+                var dateTextLength = returnTextLength(textArray, 1, option)
+                var placeTextLength = returnTextLength(textArray, 3, option)
+                var courseTextLength = returnTextLength(textArray, 9, option)
+
+                builder.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.main)), dateTextLength[0], dateTextLength[1] + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                builder.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.main)), placeTextLength[0], placeTextLength[1] + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                builder.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.main)), courseTextLength[0], courseTextLength[1] + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+                builder.setSpan(StyleSpan(Typeface.BOLD), dateTextLength[0], dateTextLength[1] + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                builder.setSpan(StyleSpan(Typeface.BOLD), placeTextLength[0], placeTextLength[1] + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                builder.setSpan(StyleSpan(Typeface.BOLD), courseTextLength[0], courseTextLength[1] + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+                return builder
+            }
+            "bottom1" -> {
+                // MEMO: TextSpan 적용 -> [가장, 많이, 방문한, 지역은, ?, ?, 이고]
+                var dateTextLength = returnTextLength(textArray, 5, option)
+                builder.setSpan(NewDynamicDrawableSpan(requireContext(), Color.parseColor("#EDEDED"), Color.parseColor("#000000")), dateTextLength[0], dateTextLength[1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+                return builder
+            }
+            else -> {
+                // MEMO: TextSpan 적용 -> [?, ?, 으로, 이동해서, ?, ?, 를, 다녔어요]
+                var placeTextLength = returnTextLength(textArray, 1, option)
+                var courseTextLength = returnTextLength(textArray, 5, option)
+
+                builder.setSpan(NewDynamicDrawableSpan(requireContext(), Color.parseColor("#EDEDED"), Color.parseColor("#000000")), placeTextLength[0], placeTextLength[1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                builder.setSpan(NewDynamicDrawableSpan(requireContext(), Color.parseColor("#EDEDED"), Color.parseColor("#000000")), courseTextLength[0], courseTextLength[1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+                return builder
+            }
+        }
+    }
+
+    private fun returnTextLength(text: List<String>, end: Int, option: String): ArrayList<Int> {
+        var startLength = 0
+        var totalLength = 0
+        return if (option == "top") {
+            for (i in 0..end) {
+                totalLength += text[i].length
+                if (i == end - 1) startLength = totalLength
+            }
+            arrayListOf(startLength + end, totalLength + end)
+        } else {
+            for (i in 0..end) {
+                totalLength += text[i].length + 1
+                if (i == end - 2) startLength = totalLength
+            }
+
+            arrayListOf(startLength, totalLength - 1)
+        }
     }
 }

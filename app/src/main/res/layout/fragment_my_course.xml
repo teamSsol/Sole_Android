@@ -82,17 +82,28 @@
                     app:layout_constraintStart_toStartOf="@id/my_course_nickname_tv" />
 
                 <TextView
-                    android:id="@+id/my_course_info_tag"
+                    android:id="@+id/my_course_info_tag1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="가장 많이 방문한 지역은 지역명이고\n👟 걸어서 🚌 대중교통으로 이동해서\n☕ 카페 🖼️ 문화·예술 🍚 맛집 을 다녔어요."
+                    android:text="가장 많이 방문한 지역은 지역명이고"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:fontFamily="@font/pretendard_regular"
                     android:layout_marginTop="16dp"
-                    android:lineHeight="19.6dp"
                     app:layout_constraintTop_toBottomOf="@id/my_course_info_content"
                     app:layout_constraintStart_toStartOf="@id/my_course_nickname_tv" />
+
+                <TextView
+                    android:id="@+id/my_course_info_tag2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="👟 걸어서 이동해서\n☕ 카페 을 다녔어요."
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/pretendard_regular"
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintTop_toBottomOf="@id/my_course_info_tag1"
+                    app:layout_constraintStart_toStartOf="@id/my_course_info_tag1" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

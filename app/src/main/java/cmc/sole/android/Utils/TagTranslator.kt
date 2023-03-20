@@ -26,7 +26,7 @@ object TagTranslator {
             "BIKE" -> activity.getString(R.string.trans_tag16)
             "CAR" -> activity.getString(R.string.trans_tag17)
             "PUBLIC_TRANSPORTATION" -> activity.getString(R.string.trans_tag18)
-            else -> "알 수 없는 태그"
+            else -> "."
         }
     }
 }
