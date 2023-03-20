@@ -1,15 +1,38 @@
 package cmc.sole.android.Home.MyPage
 
+import android.content.Intent
+import android.net.Uri
 import cmc.sole.android.Home.MyPage.Alarm.MyPageAlarmActivity
 import cmc.sole.android.Home.MyPage.Alarm.MyPageAlarmSettingActivity
 import cmc.sole.android.Home.MyPage.FAQ.MyPageFAQActivity
 import cmc.sole.android.Home.MyPage.Notice.MyPageNoticeActivity
+import cmc.sole.android.Home.MyPageInfoResponse
+import cmc.sole.android.Home.MyPageInfoResult
+import cmc.sole.android.Home.Retrofit.HomeService
+import cmc.sole.android.Home.Retrofit.MyPageInfoView
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivityMyPageBinding
+import com.bumptech.glide.Glide
 
-class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding::inflate) {
+class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding::inflate), MyPageInfoView {
+
+    private lateinit var homeService: HomeService
+    private lateinit var myInfo: MyPageInfoResult
+
+    override fun onResume() {
+        super.onResume()
+        // initService()
+    }
+
     override fun initAfterBinding() {
+        initService()
         initClickListener()
+    }
+
+    private fun initService() {
+        homeService = HomeService()
+        homeService.setMyPageInfoView(this)
+        homeService.getMyPageInfo()
     }
 
     private fun initClickListener() {
@@ -23,12 +46,22 @@ class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding:
 
         // MEMO: 내 정보 수정 페이지
         binding.myPageInfoLayout.setOnClickListener {
-            changeActivity(MyPageInfoSettingActivity::class.java)
+            var intent = Intent(this, MyPageInfoSettingActivity::class.java)
+            intent.putExtra("profileImgUrl", myInfo.profileImgUrl)
+            intent.putExtra("socialId", myInfo.socialId)
+            intent.putExtra("nickname", myInfo.nickname)
+            intent.putExtra("description", myInfo.description)
+            startActivity(intent)
         }
 
         // MEMO: 내 정보 수정 페이지
         binding.myPageSettingIv.setOnClickListener {
-            changeActivity(MyPageInfoSettingActivity::class.java)
+            var intent = Intent(this, MyPageInfoSettingActivity::class.java)
+            intent.putExtra("profileImgUrl", myInfo.profileImgUrl)
+            intent.putExtra("socialId", myInfo.socialId)
+            intent.putExtra("nickname", myInfo.nickname)
+            intent.putExtra("description", myInfo.description)
+            startActivity(intent)
         }
 
         // MEMO: 알림 설정
@@ -68,5 +101,17 @@ class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding:
             val logoutDialog = DialogMyPageLogout()
             logoutDialog.show(supportFragmentManager, "LogoutDialog")
         }
+    }
+
+    override fun myPageInfoSuccessView(myPageInfoResponse: MyPageInfoResult) {
+        myInfo = myPageInfoResponse
+        Glide.with(this).load(myPageInfoResponse.profileImgUrl).into(binding.myPageProfileIv)
+        binding.myPageNicknameTv.text = myPageInfoResponse.nickname
+        binding.myPageFollowerTv.text = "팔로워 " + myPageInfoResponse.follower.toString()
+        binding.myPageFollowingTv.text = "팔로잉 " + myPageInfoResponse.following.toString()
+    }
+
+    override fun myPageInfoFailureView() {
+        showToast("마이페이지 정보 조회 실패")
     }
 }

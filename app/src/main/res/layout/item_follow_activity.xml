@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="12dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_follow_activity_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/item_follow_activity_profile_iv"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/item_follow_activity_nickname_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="닉네임"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:fontFamily="@font/pretendard_regular"
+            android:layout_marginHorizontal="8dp"
+            app:layout_constraintStart_toEndOf="@id/item_follow_activity_profile_iv"
+            app:layout_constraintEnd_toStartOf="@id/item_follow_activity_heart_iv"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+        
+        <ImageView
+            android:id="@+id/item_follow_activity_heart_iv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_heart_empty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/item_follow_activity_iv"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/test_img_2"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toBottomOf="@id/item_follow_activity_toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/item_follow_activity_course_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="코스 이름"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:fontFamily="@font/pretendard_semibold"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/item_follow_activity_iv"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/item_follow_activity_course_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="전시를 관람하다보면 창을 통해 빛이 들어오는 구도까지 생각해서 전시를 기획하는 것 같다는 느낌을 받았어요. 요시고 사진전에 이어서 이번 겨울, 많은 사람들이 사랑할 전시회가 되지 않을까 싶어요. 평일에 방문했더니 관람객이 별로 없어서 웨이팅 없이 여유롭게 전시를 관람할 수 있었어요!"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:fontFamily="@font/pretendard_regular"
+        android:lineHeight="19.5dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@id/item_follow_activity_course_name"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

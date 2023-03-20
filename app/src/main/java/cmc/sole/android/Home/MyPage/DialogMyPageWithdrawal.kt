@@ -1,5 +1,6 @@
 package cmc.sole.android.Home.MyPage
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,11 +11,16 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import cmc.sole.android.Home.Retrofit.HomeService
+import cmc.sole.android.Home.Retrofit.MyPageMemberQuitView
+import cmc.sole.android.Login.LoginActivity
 import cmc.sole.android.databinding.DialogMyPageWithdrawalBinding
 
-class DialogMyPageWithdrawal: DialogFragment() {
+class DialogMyPageWithdrawal: DialogFragment(), MyPageMemberQuitView {
 
     lateinit var binding: DialogMyPageWithdrawalBinding
+
+    private lateinit var homeService: HomeService
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,6 +31,7 @@ class DialogMyPageWithdrawal: DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.setGravity(Gravity.CENTER)
 
+        initService()
         initClickListener()
 
         return binding.root
@@ -36,14 +43,30 @@ class DialogMyPageWithdrawal: DialogFragment() {
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.CENTER_VERTICAL)
     }
 
+    private fun initService() {
+        homeService = HomeService()
+        homeService.setMyPageMemberQuitView(this)
+    }
+
     private fun initClickListener() {
         binding.withdrawalCancel.setOnClickListener {
             dismiss()
         }
 
-        // UPDATE: 회원탈퇴 API 연동해주기
         binding.withdrawalWithdrawal.setOnClickListener {
             Toast.makeText(context, "탈퇴하기", Toast.LENGTH_SHORT).show()
+            // UPDATE: 임시로 주석 처리
+            // homeService.deleteMember()
         }
+    }
+
+    override fun myPageMemberQuitSuccessView() {
+        // UPDATE: 테스트 필요
+        (context as MyPageInfoSettingActivity).finishAffinity()
+        startActivity(Intent(activity, LoginActivity::class.java))
+    }
+
+    override fun myPageMemberQuitFailureView() {
+        Toast.makeText(activity, "회원 탈퇴 실패", Toast.LENGTH_SHORT)
     }
 }

@@ -18,6 +18,7 @@
         android:theme="@style/Theme.Sole"
         tools:targetApi="31"
         android:requestLegacyExternalStorage="true">
+        <!-- UPDATE: 시작 Splash 로 바꾸기 -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -51,7 +52,6 @@
         <activity android:name=".Signup.SignupNicknameActivity" />
         <activity android:name=".Signup.SignupFinishActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".Home.HomeFragment" />
         <activity android:name=".Home.Search.SearchActivity" />
         <activity android:name=".Home.MyPage.MyPageActivity" />
         <activity android:name=".Home.MyPage.MyPageInfoSettingActivity" />
@@ -60,12 +60,10 @@
         <activity android:name=".Home.MyPage.Notice.MyPageNoticeActivity" />
         <activity android:name=".Home.MyPage.Notice.MyPageNoticeContentActivity" />
         <activity android:name=".Home.MyPage.FAQ.MyPageFAQActivity" />
-        <activity android:name=".MyCourse.MyCourseFragment" />
-        <activity android:name=".Follow.FollowFragment" />
-        <activity android:name=".Scrap.ScrapFragment" />
+        <activity android:name=".MyCourse.Write.MyCourseWriteActivity" />
 
         <!-- test -->
-        <activity android:name=".CourseDetailActivity" />
+        <activity android:name=".Course.CourseDetailActivity" />
 
         <!-- Naver Map -->
         <meta-data

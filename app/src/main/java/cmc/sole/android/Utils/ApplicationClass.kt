@@ -3,7 +3,6 @@ package com.sole.android
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import cmc.sole.android.Utils.AuthorizationTokenInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -11,6 +10,7 @@ import java.util.concurrent.TimeUnit
 
 class ApplicationClass: Application() {
     companion object {
+        const val Authorization_TOKEN: String = "Authorization"
         const val BASE_URL = "https://www.api-teamsole.site"
         const val TAG: String = "sole-pref" // Log, SharedPreference
 
@@ -27,7 +27,7 @@ class ApplicationClass: Application() {
         val client: OkHttpClient = OkHttpClient.Builder()
             .readTimeout(30000, TimeUnit.MILLISECONDS)
             .connectTimeout(30000, TimeUnit.MILLISECONDS)
-            .addNetworkInterceptor(AuthorizationTokenInterceptor()) // JWT 자동 헤더 전송
+            // .addNetworkInterceptor(AuthorizationTokenInterceptor())
             .build()
 
         retrofit = Retrofit.Builder()

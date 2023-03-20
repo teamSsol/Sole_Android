@@ -52,7 +52,6 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
     private val imageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             imageUri = result.data?.data
-            Log.d("EXAMPLE", "imageUri = ${imageUri.toString()}")
             imageUri?.let{
                 Glide.with(this)
                     .load(imageUri).placeholder(R.drawable.ic_profile).fallback(R.drawable.ic_profile).fitCenter()
@@ -207,7 +206,6 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
     }
 
     override fun signupSocialSuccessView(result: SignupSocialResponse) {
-        Log.d("SIGNUP-SERVICE", result.toString())
         saveNickname(result.data.nickname)
         saveProfileImgUrl(result.data.profileImgUrl.toString())
         changeActivity(SignupFinishActivity::class.java)

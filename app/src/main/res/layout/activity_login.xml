@@ -70,7 +70,7 @@
         android:id="@+id/login_content2_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="회원 정보 문의: sole.admin@gmail.com"
+        android:text="회원 정보 문의: team.sole12@gmail.com"
         android:textColor="#999999"
         android:textSize="10sp"
         android:layout_marginBottom="36dp"

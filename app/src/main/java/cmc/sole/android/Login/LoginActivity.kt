@@ -30,17 +30,9 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
     override fun initAfterBinding() {
         KakaoSdk.init(this, BuildConfig.KAKAO_API_KEY)
 
-        // 카카오 hashKey 를 얻기 위한 코드
-        // getKAKAOKeyHash()
-
         getFireBaseFCMToken()
         initClickListener()
         initRetrofitService()
-    }
-
-    private fun getKAKAOKeyHash() {
-        var keyHash = Utility.getKeyHash(this)
-        Log.e("EXAMPLE", "해시 키 값 : $keyHash")
     }
 
     private fun getFireBaseFCMToken(){
@@ -56,18 +48,12 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
     }
 
     private fun initClickListener() {
-        // MEMO: 홈으로 가기 위해 임시로 넣은 부분
-        binding.splashLogoIv.setOnClickListener {
-            changeActivity(MainActivity::class.java)
-            finish()
-        }
-
         binding.loginKakaoCv.setOnClickListener {
             if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
                 UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
                     if (error != null) Log.e("EXAMPLE", "로그인 실패", error)
                     else if (token != null) {
-                        Log.d("TOKEN-CHECK", "로그인 성공 ${token.accessToken}")
+                        Log.d("SIGNUP-CHECK", "로그인 성공 ${token.accessToken}")
                         accessToken = token.accessToken
                         signupCheckService.signupCheck(SignupCheckRequest(accessToken, fcmToken))
                         // sendAccessToken(accessToken)
@@ -77,7 +63,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
                 UserApiClient.instance.loginWithKakaoAccount(this) { token, error ->
                     if (error != null) Log.e("EXAMPLE", "로그인 실패", error)
                     else if (token != null) {
-                        Log.d("TOKEN-CHECK", "로그인 성공 ${token.accessToken}")
+                        Log.d("SIGNUP-CHECK", "로그인 성공 ${token.accessToken}")
                         accessToken = token.accessToken
                         signupCheckService.signupCheck(SignupCheckRequest(accessToken, fcmToken))
                         // sendAccessToken(accessToken)
@@ -93,15 +79,17 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
     }
 
     override fun signupCheckSuccessView(result: SignupCheckResponse) {
+        saveAccessToken(result.data.accessToken)
+        saveFCMToken(fcmToken)
+
         if (result.data.check) {
             // MEMO: 가입한 사용자
             changeActivity(MainActivity::class.java)
         } else {
             // MEMO: 가입하지 않은 사용자
-            saveAccessToken(accessToken)
-            saveFCMToken(fcmToken)
             changeActivity(SignupAgreeActivity::class.java)
         }
+        Log.d("API-TEST", getAccessToken().toString())
     }
 
     override fun signupCheckFailureView() {
