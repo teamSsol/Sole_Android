@@ -1,6 +1,5 @@
 package cmc.sole.android.MyCourse.Retrofit
 
-import android.support.v4.os.IResultReceiver.Default
 import cmc.sole.android.Home.DefaultCourse
 
 interface MyCourseHistoryInfoView {
@@ -14,11 +13,16 @@ interface MyCourseHistoryView {
 }
 
 interface MyCourseAddView {
-    fun setMyCourseAddSuccessView()
+    fun setMyCourseAddSuccessView(myCourseAddResult: MyCourseAddResult)
     fun setMyCourseAddFailureView()
 }
 
 interface ImageTestView {
     fun setImageTestSuccessView()
     fun setImageTestFailureView()
+}
+
+interface MyCourseDeleteView {
+    fun setMyCourseDeleteSuccessView()
+    fun setMyCourseDeleteFailureView()
 }

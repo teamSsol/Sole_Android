@@ -1,6 +1,7 @@
 package cmc.sole.android.Home
 
 import android.content.Intent
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
 import cmc.sole.android.Home.MyPage.MyPageActivity
@@ -90,7 +91,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
     }
 
     override fun homePopularCourseSuccessView(homePopularResponse: HomePopularResponse) {
-
+        Log.d("API-TEST", "homePopularResponse = ${homePopularResponse.data}")
     }
 
     override fun homePopularCourseFailureView() {
@@ -98,7 +99,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
     }
 
     override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
-
+        Log.d("API-TEST", "homeDefaultResponse = ${homeDefaultResponse.data}")
     }
 
     override fun homeDefaultCourseFailureView() {

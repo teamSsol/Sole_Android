@@ -1,7 +1,6 @@
 package cmc.sole.android.MyCourse.Retrofit
 
 import android.util.Log
-import cmc.sole.android.DefaultResponse
 import com.example.geeksasaeng.Utils.NetworkModule
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -15,6 +14,7 @@ class MyCourseService {
     private lateinit var myCourseHistoryView: MyCourseHistoryView
     private lateinit var myCourseAddView: MyCourseAddView
     private lateinit var imageTestView: ImageTestView
+    private lateinit var myCourseDeleteView: MyCourseDeleteView
 
     fun setMyCourseHistoryInfoView(myCourseHistoryInfoView: MyCourseHistoryInfoView) {
         this.myCourseHistoryInfoView = myCourseHistoryInfoView
@@ -27,6 +27,9 @@ class MyCourseService {
     }
     fun setImageTestView(imageTestView: ImageTestView) {
         this.imageTestView = imageTestView
+    }
+    fun setMyCourseDeleteView(myCourseDeleteView: MyCourseDeleteView) {
+        this.myCourseDeleteView = myCourseDeleteView
     }
 
     fun getMyCourseHistoryInfo() {
@@ -73,9 +76,28 @@ class MyCourseService {
         })
     }
 
-//    fun addMyCourse(mypageRequestDto: MultipartBody.Part, multipartFile: MultipartBody.Part?) {
-//        myCourseService?.addMyCourses()
-//    }
+    fun addMyCourse(thumbnailImg: List<MultipartBody.Part?>, courseRequestDto: MultipartBody.Part?) {
+        myCourseService?.addMyCourses(thumbnailImg, courseRequestDto)?.enqueue(object: Callback<MyCourseAddResponse> {
+            override fun onResponse(
+                call: Call<MyCourseAddResponse>,
+                response: Response<MyCourseAddResponse>
+            ) {
+                Log.d("WRITE-TEST", "addMyCourse response = $response")
+                Log.d("WRITE-TEST", "addMyCourse response.body = ${response.body()}")
+                if (response.code() == 200) {
+                    val resp = response.body()
+                    if (resp?.success == true) {
+                        myCourseAddView.setMyCourseAddSuccessView(resp.data)
+                    } else {
+                        myCourseAddView.setMyCourseAddFailureView()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<MyCourseAddResponse>, t: Throwable) {
+                Log.e("SCRAP-SERVICE", "MY-COURSE-ADD-COURSE-FAILURE", t)
+            }
+        })
+    }
 
 //    fun imageTest(thumbnailImg: Map<String, List<MultipartBody.Part?>>) {
     fun imageTest(thumbnailImg: List<MultipartBody.Part?>) {
@@ -83,17 +105,24 @@ class MyCourseService {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 Log.d("WRITE-TEST", "img response = $response")
                 Log.d("WRITE-TEST", "img response.body = ${response.body()}")
-//                if (response.code() == 200) {
-//                    val resp = response.body()
-//                    if (resp?.success == true) {
-//                        myCourseHistoryView.setMyCourseHistorySuccessView(resp.data)
-//                    } else {
-//                        myCourseHistoryView.setMyCourseHistoryFailureView()
-//                    }
-//                }
             }
             override fun onFailure(call: Call<String>, t: Throwable) {
                 Log.e("SCRAP-SERVICE", "IMAGE-TEST-FAILURE", t)
+            }
+        })
+    }
+
+    fun deleteTest(courseId: Int) {
+        myCourseService?.deleteMyCourse(courseId)?.enqueue(object: Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.code() == 200) {
+                    myCourseDeleteView.setMyCourseDeleteSuccessView()
+                } else {
+                    myCourseDeleteView.setMyCourseDeleteFailureView()
+                }
+            }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("SCRAP-SERVICE", "MY-COURSE-DELETE-FAILURE", t)
             }
         })
     }

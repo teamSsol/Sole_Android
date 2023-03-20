@@ -16,18 +16,22 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import cmc.sole.android.*
+import cmc.sole.android.CourseTag.Categories
+import cmc.sole.android.CourseTag.placeCategories
+import cmc.sole.android.CourseTag.transCategories
+import cmc.sole.android.CourseTag.withCategories
 import cmc.sole.android.Home.MyCourseWriteImage
-import cmc.sole.android.Home.locationImage
-import cmc.sole.android.MyCourse.MyCourseWriteTagBottomFragmentt
 import cmc.sole.android.MyCourse.MyCourseTagRVAdapter
+import cmc.sole.android.MyCourse.MyCourseWriteTagBottomFragmentt
 import cmc.sole.android.MyCourse.PlaceInfoData
 import cmc.sole.android.MyCourse.Retrofit.ImageTestView
+import cmc.sole.android.MyCourse.Retrofit.MyCourseAddResult
+import cmc.sole.android.MyCourse.Retrofit.MyCourseAddView
 import cmc.sole.android.MyCourse.Retrofit.MyCourseService
-import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
-import cmc.sole.android.Utils.ToastDefault
 import cmc.sole.android.databinding.ActivityMyCourseWriteBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -35,11 +39,12 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 
 class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(ActivityMyCourseWriteBinding::inflate),
-    ImageTestView {
+    ImageTestView, MyCourseAddView {
 
     private lateinit var writeVM: MyCourseWriteViewModel
     private lateinit var tagRVAdapter: MyCourseTagRVAdapter
@@ -89,6 +94,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
     private fun initService() {
         myCourseService = MyCourseService()
         myCourseService.setImageTestView(this)
+        myCourseService.setMyCourseAddView(this)
     }
 
     private fun initViewModel() {
@@ -143,11 +149,6 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
             myCourseWriteTagBottomFragment.show(supportFragmentManager, "myCourseTagBottom")
         }
 
-//        binding.myCourseWriteSearchBar.setOnClickListener {
-//            val myCourseWriteSearchBottomFragment = MyCourseWriteSearchBottomFragment()
-//            myCourseWriteSearchBottomFragment.show(this.supportFragmentManager, "MyCourseWriteSearchBottom")
-//        }
-
         binding.myCourseWriteLocationAddCv.setOnClickListener {
             placeRVAdapter.addItem(PlaceInfoData(null, null, null, null, null, arrayListOf()))
         }
@@ -157,6 +158,22 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
             // ToastDefault.createToast(this, "코스 기록을 완료했어요 :)")?.show()
 
             // MEMO: 임시
+//            var file: File
+//            var requestFile: RequestBody
+//            var thumbnailImg: List<MultipartBody.Part?>
+//
+//            if (locationImageUri == null) {
+//                thumbnailImg = emptyList()
+//            } else {
+//                file = File(absolutelyPath(locationImageUri, this))
+//                requestFile = RequestBody.create(MediaType.parse("image/*"), file)
+//                thumbnailImg = listOf(MultipartBody.Part.createFormData("thumbnailImg", file.name, requestFile))
+//            }
+//
+//            var thumbnailImgRequest: List<MultipartBody.Part?> = thumbnailImg
+//            myCourseService.imageTest(thumbnailImgRequest)
+
+
             var file: File
             var requestFile: RequestBody
             var thumbnailImg: List<MultipartBody.Part?>
@@ -164,13 +181,64 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
             if (locationImageUri == null) {
                 thumbnailImg = emptyList()
             } else {
-                file = File(absolutelyPath(locationImageUri, this))
+                file = File(absolutelyPath(Uri.parse("content://media/external/images/media/22561"), this))
                 requestFile = RequestBody.create(MediaType.parse("image/*"), file)
                 thumbnailImg = listOf(MultipartBody.Part.createFormData("thumbnailImg", file.name, requestFile))
             }
 
+            // UPDATE: 카테고리 선택하는 부분 추가해주기!
+            // MEMO: 임의로 Dummy Data 넣기
+            val placeCategoriesSet: MutableSet<String> = HashSet()
+            placeCategoriesSet.add(placeCategories.TASTY_PLACE.toString())
+            savePlaceCategories(placeCategoriesSet)
+
+            val transCategoriesSet: MutableSet<String> = HashSet()
+            transCategoriesSet.add(transCategories.WALK.toString())
+            saveTransCategories(transCategoriesSet)
+
+            val withCategoriesSet: MutableSet<String> = HashSet()
+            withCategoriesSet.add(withCategories.COUPLE.toString())
+            saveWithCategories(withCategoriesSet)
+
+//            var placeRequestDtos = arrayListOf<JSONObject>()
+//            var jsonObject = JSONObject()
+//            jsonObject.put("address", "서울시 강남구 논현동 217-41")
+//            jsonObject.put("description", "중식집")
+//            jsonObject.put("duration", 80)
+//            jsonObject.put("latitude", 45.43)
+//            jsonObject.put("longitude", 23.22)
+//            jsonObject.put("placeName", "짜장면집")
+//            placeRequestDtos.add(jsonObject)
+
+            // var placeRequestDtos = mutableListOf<PlaceRequestDtos>()
+            var jsonObject = JSONObject()
+            jsonObject.put("placeName", "짜장면집")
+            jsonObject.put("duration", 80)
+            jsonObject.put("description", "중식집")
+            jsonObject.put("address", "서울시 강남구 논현동 217-41")
+            jsonObject.put("latitude", 45.43)
+            jsonObject.put("longitude", 23.22)
+            val placeRequestDtos = JSONArray()
+            placeRequestDtos.put(jsonObject)
+
+            var jsonBody = JSONObject()
+            jsonBody.put("date", "2023-03-02")
+            jsonBody.put("description", "테스트테스트")
+            jsonBody.put("distance", 0)
+            jsonBody.put("placeCategories", JSONArray(mutableSetOf(Categories.TASTY_PLACE.name).toTypedArray()))
+            // var placeRequestDtos = JSONArray(jsonString)
+            // jsonBody.put("placeRequestDtos", arrayListOf(jsonString))
+            jsonBody.put("placeRequestDtos", placeRequestDtos)
+            jsonBody.put("title", "제주도 여행")
+            jsonBody.put("transCategories", JSONArray(mutableSetOf(Categories.WALK.name).toTypedArray()))
+            jsonBody.put("withCategories", JSONArray(mutableSetOf(Categories.ALONE.name).toTypedArray()))
+
+            val requestBody: RequestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonBody.toString())
+            var courseRequestDto = MultipartBody.Part.createFormData("courseRequestDto", "courseRequestDto", requestBody)
             var thumbnailImgRequest: List<MultipartBody.Part?> = thumbnailImg
-            myCourseService.imageTest(thumbnailImgRequest)
+            Log.d("WRITE-TEST", "courseRequestDto = $courseRequestDto")
+            Log.d("WRITE-TEST", "thumbnailImgRequest = $thumbnailImgRequest")
+            myCourseService.addMyCourse(thumbnailImgRequest, courseRequestDto)
         }
     }
 
@@ -239,5 +307,13 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
 
     override fun setImageTestFailureView() {
 
+    }
+
+    override fun setMyCourseAddSuccessView(myCourseAddResult: MyCourseAddResult) {
+        Log.d("WRITE-TEST", "myCourseAddResult = $myCourseAddResult")
+    }
+
+    override fun setMyCourseAddFailureView() {
+        showToast("코스 추가 실패")
     }
 }

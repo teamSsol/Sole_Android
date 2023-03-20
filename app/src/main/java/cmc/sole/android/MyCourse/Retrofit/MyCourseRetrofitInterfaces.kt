@@ -16,16 +16,20 @@ interface MyCourseRetrofitInterfaces {
     ): Call<MyCourseHistoryResponse>
 
     @Multipart
+    @POST("/api/courses/imageTest")
+    fun imageTest(
+        @Part thumbnailImg: List<MultipartBody.Part?>
+    ): Call<String>
+
+    @Multipart
     @POST("/api/courses")
     fun addMyCourses(
         @Part thumbnailImg: List<MultipartBody.Part?>,
-        @Part courseRequestDto: Map<String, List<MultipartBody.Part?>>
-    )
+        @Part courseRequestDto: MultipartBody.Part?
+    ): Call<MyCourseAddResponse>
 
-    @Multipart
-    @POST("/api/courses/imageTest")
-    fun imageTest(
-        // @Part("thumbnailImg") thumbnailImg: Map<String, List<MultipartBody.Part?>>
-        @Part thumbnailImg: List<MultipartBody.Part?>
-    ): Call<String>
+    @DELETE("/api/courses/{courseId}")
+    fun deleteMyCourse(
+        @Path("courseId") courseId: Int
+    ): Call<Void>
 }
