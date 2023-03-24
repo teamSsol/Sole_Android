@@ -1,13 +1,25 @@
 package cmc.sole.android.Scrap.Retrofit
 
+import cmc.sole.android.Home.DefaultCourse
+
 interface ScrapFolderView {
     fun scrapFolderSuccessView(scrapFolderDataResult: ArrayList<ScrapFolderDataResult>)
     fun scrapFolderFailureView()
 }
 
+interface ScrapDefaultFolderView {
+    fun scrapDefaultFolderSuccessView(scrapDefaultFolderList: ArrayList<ScrapCourseResult>)
+    fun scrapDefaultFolderFailureView()
+}
+
 interface ScrapFolderAddView {
     fun scrapFolderAddSuccessView(scrapFolderAddResult: ScrapFolderAddResult)
     fun scrapFolderAddFailureView()
+}
+
+interface ScrapDefaultFolderCourseDeleteView {
+    fun scrapDefaultFolderCourseDeleteSuccessView()
+    fun scrapDefaultFolderCourseDeleteFailureView()
 }
 
 interface ScrapFolderDeleteView {

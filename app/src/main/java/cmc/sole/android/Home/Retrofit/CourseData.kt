@@ -1,7 +1,50 @@
 package cmc.sole.android.Home
 
 import cmc.sole.android.CourseTag.Categories
+import cmc.sole.android.CourseTag.placeCategories
+import cmc.sole.android.CourseTag.transCategories
+import cmc.sole.android.CourseTag.withCategories
 import cmc.sole.android.User
+import com.google.gson.annotations.SerializedName
+
+data class HomeCurrentGPSRequest(
+    var latitude: Double,
+    var longitude: Double
+)
+
+data class HomeCurrentGPSResponse(
+    var data: HomeCurrentGPSResult,
+    var status: Int,
+    var success: Boolean,
+    var timestamp: String
+)
+
+data class HomeCurrentGPSResult(
+    var currentGps: CurrentGpsInfo,
+    var memberId: Int,
+    var nickname: String
+)
+
+data class CurrentGpsInfo(
+    var address: String,
+    var distance: Double,
+    var latitude: Double,
+    var longitude: Double
+)
+data class HomeCategoriesResponse(
+    var data: HomeCategoriesResult,
+    var status: Int,
+    var success: Boolean,
+    var timestamp: String
+)
+
+data class HomeCategoriesResult(
+    var memberId: Int,
+    var nickname: String,
+    var placeCategories: Set<placeCategories?>,
+    var transCategories: Set<transCategories?>,
+    var withCategories: Set<withCategories?>
+)
 
 data class PopularCourse(
     var courseId: Int,
@@ -13,7 +56,7 @@ data class DefaultCourse(
     var address: String,
     var categories: Set<Categories>,
     var courseId: Int,
-    var distance: Int,
+    var distance: Double,
     var duration: Int,
     var finalPage: Boolean,
     var like: Boolean,
@@ -34,6 +77,43 @@ data class HomePopularResponse(
     var status: Int,
     var success: Boolean,
     var timestamp: String
+)
+
+data class HomeCourseDetailResponse(
+    var data: HomeCourseDetailResult,
+    var status: Int,
+    var success: Boolean,
+    var timestamp: String
+)
+
+data class HomeCourseDetailResult(
+    var categories: Set<Categories>,
+    var checkWriter: Boolean,
+    var courseId: Int,
+    var description: String,
+    var distance: Double,
+    var duration: Int,
+    var followStatus: String,
+    var follower: Int,
+    var following: Int,
+    var placeResponseDtos: ArrayList<PlaceResponseDtos>,
+    var scrapCount: Int,
+    var startDate: String,
+    var title: String,
+    @SerializedName("thumbnailUrl") var thumbnailImg: String,
+    var writer: User
+)
+
+data class PlaceResponseDtos(
+    var address: String,
+    var description: String,
+    var duration: Int,
+    var latitude: Double,
+    var longitude: Double,
+    var placeId: Int,
+    var placeImgUrls: ArrayList<String>,
+    var placeName: String,
+    var viewType: Int? = null
 )
 
 data class MyCourseWriteImage(
@@ -144,3 +224,6 @@ const val courseDetailLine = 2
 
 const val locationImage = 1
 const val locationAddImage = 2
+
+const val simpleMode = 1
+const val detailMode = 2

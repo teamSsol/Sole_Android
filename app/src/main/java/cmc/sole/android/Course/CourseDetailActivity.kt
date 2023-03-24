@@ -1,13 +1,30 @@
 package cmc.sole.android.Course
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import cmc.sole.android.Home.DefaultCourse
-import cmc.sole.android.Home.courseDetailNumber
+import cmc.sole.android.Follow.Retrofit.FollowService
+import cmc.sole.android.Follow.Retrofit.FollowUnfollowView
+import cmc.sole.android.Home.*
+import cmc.sole.android.Home.Retrofit.HomeCourseDetailView
+import cmc.sole.android.Home.Retrofit.HomeScrapAddAndCancelView
+import cmc.sole.android.Home.Retrofit.HomeService
+import cmc.sole.android.MyCourse.MyCourseTagRVAdapter
+import cmc.sole.android.MyCourse.Retrofit.MyCourseReportView
+import cmc.sole.android.MyCourse.Retrofit.MyCourseService
+import cmc.sole.android.MyCourse.TagButton
 import cmc.sole.android.R
+import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
+import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
+import cmc.sole.android.Utils.Translator
 import cmc.sole.android.databinding.ActivityCourseDetailBinding
+import com.bumptech.glide.Glide
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.MapFragment
@@ -19,11 +36,22 @@ import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.overlay.PolylineOverlay
 
 
-class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback {
+class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
+    HomeCourseDetailView, MyCourseReportView, HomeScrapAddAndCancelView, FollowUnfollowView {
 
     lateinit var binding: ActivityCourseDetailBinding
     private lateinit var courseDetailCourseRVAdapter: CourseDetailCourseRVAdapter
-    private var courseList = ArrayList<DefaultCourse?>()
+    private var courseList = ArrayList<PlaceResponseDtos>()
+    private lateinit var tagRVAdapter: MyCourseTagRVAdapter
+    private var tagList = ArrayList<String>()
+    lateinit var homeService: HomeService
+    lateinit var myCourseService: MyCourseService
+    lateinit var followService: FollowService
+    var courseId = -1
+    var like = false
+    var followStatus = "FOLLOWER"
+    var memberId = -1
+    var pointList = mutableListOf<LatLng>()
 
     // NaverMap
     lateinit var naverMap: NaverMap
@@ -34,7 +62,17 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityCourseDetailBinding.inflate(layoutInflater)
+
+        courseId = intent.getIntExtra("courseId", -1)
+        like = intent.getBooleanExtra("like", false)
+
+        if (like) {
+            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
+        } else {
+            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_empty)
+        }
 
         var mapFragment = supportFragmentManager.findFragmentById(R.id.course_detail_map) as MapFragment?
         if (mapFragment == null) {
@@ -44,15 +82,36 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback {
 
         mapFragment!!.getMapAsync(this)
 
+        initService(courseId)
         initClickListener()
         initAdapter()
 
         setContentView(binding.root)
     }
 
+    private fun initService(courseId: Int) {
+        homeService = HomeService()
+        homeService.setHomeCourseDetailView(this)
+        homeService.getHomeDetailCourse(courseId)
+        homeService.setHomeScrapAddAndCancelView(this)
+
+        myCourseService = MyCourseService()
+        myCourseService.setMyCourseReportView(this)
+
+        followService = FollowService()
+        followService.setFollowUnfollowView(this)
+    }
+
     private fun initClickListener() {
+        binding.courseDetailBackIv.setOnClickListener {
+            finish()
+        }
+
         binding.courseDetailOptionIv.setOnClickListener {
             val courseDetailOptionBottomFragment = CourseDetailOptionBottomFragment()
+            var bundle = Bundle()
+            bundle.putInt("courseId", courseId)
+            courseDetailOptionBottomFragment.arguments = bundle
             courseDetailOptionBottomFragment.show(supportFragmentManager, "CourseDetailOptionBottom")
         }
 
@@ -60,66 +119,185 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback {
             val courseDetailReportDialog = DialogCourseDetailReport()
             courseDetailReportDialog.show(supportFragmentManager, "CourseDetailReportDialog")
         }
+
+        binding.courseDetailCourseDetailIv.setOnClickListener {
+            if (courseDetailCourseRVAdapter.returnViewType() == simpleMode) {
+                courseDetailCourseRVAdapter.setViewType(detailMode)
+            } else if (courseDetailCourseRVAdapter.returnViewType() == detailMode) {
+                courseDetailCourseRVAdapter.setViewType(simpleMode)
+            }
+        }
+
+        binding.courseDetailReportIv.setOnClickListener {
+            myCourseService.reportCourse(courseId)
+        }
+
+        binding.courseDetailTitleHeartIv.setOnClickListener {
+            homeService.scrapAddAndCancel(courseId)
+        }
+
+        binding.itemFollowFollowBtn.setOnClickListener {
+            followService.followUnfollow(memberId)
+        }
+
+        binding.itemFollowFollowingBtn.setOnClickListener {
+            followService.followUnfollow(memberId)
+        }
     }
 
     private fun initAdapter() {
         courseDetailCourseRVAdapter = CourseDetailCourseRVAdapter(courseList)
         binding.courseDetailCourseRv.adapter = courseDetailCourseRVAdapter
         binding.courseDetailCourseRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.courseDetailCourseRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 40))
+
+        tagRVAdapter = MyCourseTagRVAdapter(tagList)
+        binding.courseDetailTagRv.adapter = tagRVAdapter
+        val layoutManager = FlexboxLayoutManager(this)
+        binding.courseDetailTagRv.layoutManager = layoutManager
+        binding.courseDetailTagRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 20))
+        binding.courseDetailTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 20))
     }
 
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
 
         // MEMO: Polyline 넣기
-        // UPDATE: 각 코스 선으로 이어주기!
-        polyline.coords = listOf(
-            LatLng(37.57152, 126.97714),
-            LatLng(37.56607, 126.98268),
-            LatLng(37.56445, 126.97707),
-            LatLng(37.55855, 126.97822)
-        )
-        polyline.setPattern(10, 5)
-        polyline.width = 10
-        polyline.color = ContextCompat.getColor(this, R.color.main)
-        polyline.map = naverMap
+        Log.d("API-TEST", "polylineSize = ${polyline.coords.size}")
+        if (polyline.coords.size >= 2) {
+            polyline.coords = pointList
+            polyline.setPattern(10, 5)
+            polyline.width = 10
+            polyline.color = ContextCompat.getColor(this, R.color.main)
+            polyline.map = naverMap
+        }
 
         // MEMO: CameraPosition 변경
         // UPDATE: 각 코스마다 특정 CameraPosition 입력해주기
-        /*
-        val cameraPosition = CameraPosition(
-            LatLng(37.5666102, 126.9783881), // 대상 지점
-            16.0, // 줌 레벨
-            20.0, // 기울임 각도
-            180.0 // 베어링 각도
-        )
-        naverMap.cameraPosition = cameraPosition
-        */
-        val location = LatLng(37.5666102, 126.9783881)
-        // 카메라 위치와 줌 조절(숫자가 클수록 확대)
-        val cameraPosition = CameraPosition(location, 14.0)
-        naverMap.cameraPosition = cameraPosition
+        if (pointList.size != 0) {
+            val location = pointList[0]
+            // 카메라 위치와 줌 조절(숫자가 클수록 확대)
+            val cameraPosition = CameraPosition(location, 15.0)
+            naverMap.cameraPosition = cameraPosition
+        }
 
         // MEMO: Marker 모양 변경
         // UPDATE: 특정 위치 좌표를 통해 숫자 입력해주기
-        val marker1 = Marker()
-        marker1.icon = OverlayImage.fromResource(R.drawable.ic_course_no_1)
-        marker1.position = LatLng(37.57152, 126.97714)
-        marker1.map = naverMap
+        for (i in 0 until pointList.size) {
+            val marker = Marker()
+            if (i == 0) {
+                marker.icon = OverlayImage.fromResource(R.drawable.ic_course_no_1)
+            } else if (i == 1) {
+                marker.icon = OverlayImage.fromResource(R.drawable.ic_course_no_2)
+            } else if (i == 2) {
+                marker.icon = OverlayImage.fromResource(R.drawable.ic_course_no_3)
+            } else if (i == 3) {
+                marker.icon = OverlayImage.fromResource(R.drawable.ic_course_no_4)
+            } else {
+                marker.icon = OverlayImage.fromResource(R.drawable.ic_course_no_1)
+            }
+            marker.position = pointList[i]
+            marker.map = naverMap
+        }
+    }
 
-        val marker2 = Marker()
-        marker2.icon = OverlayImage.fromResource(R.drawable.ic_course_no_2)
-        marker2.position = LatLng(37.56607, 126.98268)
-        marker2.map = naverMap
+    override fun homeCourseDetailSuccessView(homeCourseDetailResult: HomeCourseDetailResult) {
+        // TODO: 카테고리 연결
+        for (i in 0 until homeCourseDetailResult.categories.size) {
+            tagRVAdapter.addItem(Translator.tagEngToKor(this, homeCourseDetailResult.categories.elementAt(i).toString()))
+        }
+        tagRVAdapter.addItem("")
 
-        val marker3 = Marker()
-        marker3.icon = OverlayImage.fromResource(R.drawable.ic_course_no_3)
-        marker3.position = LatLng(37.56445, 126.97707)
-        marker3.map = naverMap
+        if (homeCourseDetailResult.checkWriter) {
+            binding.courseDetailOptionIv.visibility = View.VISIBLE
+            binding.courseDetailReportIv.visibility = View.GONE
+        } else {
+            binding.courseDetailOptionIv.visibility = View.GONE
+            binding.courseDetailReportIv.visibility = View.VISIBLE
+        }
 
-        val marker4 = Marker()
-        marker4.icon = OverlayImage.fromResource(R.drawable.ic_course_no_4)
-        marker4.position = LatLng(37.55855, 126.97822)
-        marker4.map = naverMap
+        binding.courseDetailCourseContent.text = homeCourseDetailResult.description
+
+        binding.courseDetailCourseDistanceTv.text = homeCourseDetailResult.distance.toString() + "km 이동"
+        binding.courseDetailCourseTimeTv.text = "${(homeCourseDetailResult.duration.toDouble() / 60).toInt()} 시간 소요"
+
+        Log.d("API-TEST", "${homeCourseDetailResult.followStatus}")
+        if (homeCourseDetailResult.followStatus == "FOLLOWING") {
+            followStatus = "NOT_FOLLOW"
+            binding.itemFollowFollowBtn.visibility = View.GONE
+            binding.itemFollowFollowingBtn.visibility = View.VISIBLE
+        } else {
+            followStatus = "FOLLOWING"
+            binding.itemFollowFollowBtn.visibility = View.VISIBLE
+            binding.itemFollowFollowingBtn.visibility = View.GONE
+        }
+
+        if (homeCourseDetailResult.checkWriter) {
+            binding.itemFollowFollowBtn.visibility = View.GONE
+            binding.itemFollowFollowingBtn.visibility = View.GONE
+        }
+
+        binding.courseDetailFollowerTv.text = "팔로워 " + homeCourseDetailResult.follower.toString()
+        binding.courseDetailFollowingTv.text = "팔로잉 " + homeCourseDetailResult.following.toString()
+
+        binding.courseDetailCourseHeartNumber.text = homeCourseDetailResult.scrapCount.toString()
+        binding.courseDetailCourseWriteDate.text = homeCourseDetailResult.startDate
+        binding.courseDetailCourseName.text = homeCourseDetailResult.title
+        binding.courseDetailNicknameTv.text = homeCourseDetailResult.writer.nickname
+
+        Glide.with(this).load(homeCourseDetailResult.writer.profileImgUrl).circleCrop().centerCrop().into(binding.courseDetailProfileIv)
+
+        courseDetailCourseRVAdapter.addAllItems(homeCourseDetailResult.placeResponseDtos)
+
+        for (i in 0 until homeCourseDetailResult.placeResponseDtos.size) {
+            pointList.add(LatLng(homeCourseDetailResult.placeResponseDtos[i].latitude, homeCourseDetailResult.placeResponseDtos[i].longitude))
+        }
+
+        memberId = homeCourseDetailResult.writer.memberId
+
+        courseDetailCourseRVAdapter.setViewType(simpleMode)
+    }
+
+    override fun homeCourseDetailFailureView() {
+        Log.d("API-TEST", "디테일 실패")
+    }
+
+    override fun setMyCourseReportSuccessView() {
+        Toast.makeText(this, "코스를 정상적으로 신고했습니다", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun setMyCourseReportFailureView() {
+        Toast.makeText(this, "코스 신고하기를 실패했습니다", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun homeScrapAddAndCancelSuccessView() {
+        like = !like
+        if (like) {
+            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
+            binding.courseDetailCourseHeartNumber.text = (binding.courseDetailCourseHeartNumber.toString().toInt() + 1).toString()
+        } else {
+            binding.courseDetailCourseHeartNumber.text = (binding.courseDetailCourseHeartNumber.toString().toInt() - 1).toString()
+            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_empty)
+        }
+    }
+
+    override fun homeScrapAddAndCancelFailureView() {
+        Toast.makeText(this, "스크랩에 실패했습니다", Toast.LENGTH_LONG).show()
+    }
+
+    override fun followUnfollowSuccessView() {
+        if (followStatus == "NOT_FOLLOW") {
+            followStatus = "FOLLOWING"
+            binding.itemFollowFollowBtn.visibility = View.VISIBLE
+            binding.itemFollowFollowingBtn.visibility = View.GONE
+        } else {
+            followStatus = "NOT_FOLLOW"
+            binding.itemFollowFollowBtn.visibility = View.GONE
+            binding.itemFollowFollowingBtn.visibility = View.VISIBLE
+        }
+    }
+
+    override fun followUnfollowFailureView() {
+        Toast.makeText(this, "팔로우/언팔로우 실패", Toast.LENGTH_LONG).show()
     }
 }

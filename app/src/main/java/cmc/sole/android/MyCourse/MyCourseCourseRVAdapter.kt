@@ -7,31 +7,30 @@ import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.AdapterView.OnItemLongClickListener
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.Follow.FollowCourseResult
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.R
+import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
+import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
+import cmc.sole.android.Utils.Translator
 import cmc.sole.android.databinding.ItemMyCourseCourseBinding
+import com.bumptech.glide.Glide
+import com.google.android.flexbox.FlexboxLayoutManager
 
 class MyCourseCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>): RecyclerView.Adapter<MyCourseCourseRVAdapter.ViewHolder>() {
 
     private lateinit var itemClickListener: OnItemClickListener
-    private lateinit var itemLongClickListener: OnItemLongClickListener
+    private lateinit var tagRVAdapter: MyCourseTagRVAdapter
+    private var tagList = ArrayList<String>()
 
     interface OnItemClickListener {
         fun onItemClick(data: DefaultCourse, position: Int)
     }
 
-    interface OnItemLongClickListener {
-        fun onItemLongClick(data: DefaultCourse, position: Int)
-    }
-
     fun setOnItemClickListener(listener: OnItemClickListener) {
         itemClickListener = listener
-    }
-
-    fun setOnItemLongClickListener(listener: OnItemLongClickListener) {
-        itemLongClickListener = listener
     }
 
     override fun onCreateViewHolder(
@@ -39,15 +38,15 @@ class MyCourseCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>):
         viewType: Int
     ): MyCourseCourseRVAdapter.ViewHolder {
         val binding: ItemMyCourseCourseBinding = ItemMyCourseCourseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        tagRVAdapter = MyCourseTagRVAdapter(tagList)
+        binding.myCourseCourseTagRv.adapter = tagRVAdapter
+        binding.myCourseCourseTagRv.layoutManager = FlexboxLayoutManager(binding.root.context)
+        binding.myCourseCourseTagRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 20))
+        binding.myCourseCourseTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 20))
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MyCourseCourseRVAdapter.ViewHolder, position: Int) {
-        holder.itemView.setOnLongClickListener {
-            itemLongClickListener.onItemLongClick(courseList[position], position)
-            holder.binding.myCourseCourseUncheckIv.visibility = View.VISIBLE
-            true
-        }
         holder.itemView.setOnClickListener {
             if (holder.binding.myCourseCourseUncheckIv.visibility == View.VISIBLE) {
                 holder.binding.myCourseCourseUncheckIv.visibility = View.GONE
@@ -66,24 +65,17 @@ class MyCourseCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>):
 
     inner class ViewHolder(val binding: ItemMyCourseCourseBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(course: DefaultCourse) {
-//            if (course.title == "베이커리 맞은 편 일식당") {
-//                binding.myCourseCourseIv.setImageResource(R.drawable.test_img_3)
-//            } else if (course.title == "발리 다녀와서 파이") {
-//                binding.myCourseCourseIv.setImageResource(R.drawable.test_img_4)
-//            } else if (course.title == "관람차로 내다보는 속초 바다") {
-//                binding.myCourseCourseIv.setImageResource(R.drawable.test_img_5)
-//            } else if (course.title == "행궁동 로컬 추천 코스") {
-//                binding.myCourseCourseIv.setImageResource(R.drawable.test_img_6)
-//            } else if (course.title == "물고기, 고기") {
-//                binding.myCourseCourseIv.setImageResource(R.drawable.test_img_7)
-//            }
-//
-//            binding.myCourseCourseTitleTv.text = course.title
-//            binding.myCourseCourseLocationTv.text = course.location
-//            binding.myCourseCourseTimeTv.text = course.time
-//            binding.myCourseCourseDistanceTv.text = course.distance
+            binding.myCourseCourseTitleTv.text = course.title
+            Glide.with(binding.root.context).load(course.thumbnailImg).into(binding.myCourseCourseIv)
+            binding.myCourseCourseLocationTv.text = course.address
+            binding.myCourseCourseTimeTv.text = "${(course.duration.toDouble() / 60).toInt()} 시간 소요"
+            binding.myCourseCourseDistanceTv.text = course.distance.toInt().toString() + "km 이동"
             
-            // TODO: 태그 추가하기
+            tagRVAdapter.clearItems()
+            for (i in 0 until course.categories.size) {
+                tagRVAdapter.addItem(Translator.tagEngToKor(binding.root.context as AppCompatActivity, course.categories.elementAt(i).toString()))
+            }
+            tagRVAdapter.addItem("")
         }
     }
 
@@ -93,6 +85,7 @@ class MyCourseCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>):
     }
 
     fun addAllItems(items: ArrayList<DefaultCourse>) {
+        courseList.clear()
         courseList.addAll(items)
         this.notifyDataSetChanged()
     }

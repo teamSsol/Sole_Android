@@ -10,12 +10,8 @@ import okhttp3.Response
 class AuthorizationTokenInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder: Request.Builder = chain.request().newBuilder()
-
-        val accessToken: String? = getAccessToken()
-        accessToken?.let{
-            builder.addHeader(Authorization_TOKEN, "$accessToken")
-        }
-
+        builder.addHeader(Authorization_TOKEN, "${getAccessToken()}")
+        Log.d("API-TEST", "${getAccessToken()}")
         return chain.proceed(builder.build())
     }
 }

@@ -22,9 +22,9 @@ data class MyCourseHistoryInfoResult(
 )
 
 data class MyCourseHistoryRequest(
-    var placeCategories: Set<String>,
-    var transCategories: Set<String>,
-    var withCategories: Set<String>
+    var placeCategories: Set<String>?,
+    var transCategories: Set<String>?,
+    var withCategories: Set<String>?
 )
 
 data class MyCourseHistoryResponse(
@@ -41,39 +41,11 @@ data class MyCourseAddResponse(
     var timestamp: String
 )
 
-/*
-{
-  "date": "2023-03-02",
-  "description": "제주도로 떠나요~~",
-  "distance": 0,
-  "placeCategories": [
-    "ACTIVITY"
-  ],
-  "placeRequestDtos": [
-    {
-      "address": "서울시 강남구 논현동 217-41",
-      "description": "중식집",
-      "duration": 80,
-      "latitude": 45.43,
-      "longitude": 23.22,
-      "placeName": "짜장면집"
-    }
-  ],
-  "title": "제주도 여행...!",
-  "transCategories": [
-    "BIKE"
-  ],
-  "withCategories": [
-    "ALONE"
-  ]
-}
- */
-
 data class MyCourseAddResult(
     var categories: Set<Categories>,
     var courseId: Int,
     var description: String,
-    var distance: Int,
+    var distance: Double,
     var duration: Int,
     var placeResponseDtos: ArrayList<MyCourseAddPlace>,
     var scrapCount: Int,
@@ -81,6 +53,38 @@ data class MyCourseAddResult(
     var thumbnailUrl: String,
     var title: String,
     var writer: User
+)
+
+data class MyCourseUpdateResponse(
+    var data: ArrayList<DefaultCourse>,
+    var status: Int,
+    var success: Boolean,
+    var timestamp: String
+)
+
+data class MyCourseUpdateResult(
+    var categories: Set<Categories>,
+    var courseId: Int,
+    var description: String,
+    var distance: Double,
+    var duration: Int,
+    var placeResponseDtos: ArrayList<MyCourseAddPlace>,
+    var scrapCount: Int,
+    var startDate: String,
+    var thumbnailUrl: String,
+    var title: String,
+    var writer: User
+)
+
+data class UpdatePlaceResponseDtos(
+    var address: String,
+    var description: String,
+    var duration: Int,
+    var latitude: Double,
+    var longitude: Double,
+    var placeId: Int,
+    var placeImgUrls: ArrayList<String>,
+    var placeName: String
 )
 
 data class MyCourseAddPlace(
@@ -91,7 +95,7 @@ data class MyCourseAddPlace(
     var placeName: String
 )
 
-data class PlaceRequestDtos(
+data class AddPlaceRequestDtos(
     var address: String,
     var description: String,
     var duration: Int,

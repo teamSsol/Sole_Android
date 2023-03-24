@@ -1,5 +1,6 @@
 package cmc.sole.android.MyCourse.Retrofit
 
+import cmc.sole.android.DefaultResponse
 import cmc.sole.android.Home.MyPageUpdateResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -11,8 +12,13 @@ interface MyCourseRetrofitInterfaces {
 
     @POST("/api/histories/courses")
     fun getMyCourseHistory(
-        @Query("courseId") courseId: Int,
+        @Query("courseId") courseId: Int?,
         @Body myCourseHistoryRequest: MyCourseHistoryRequest
+    ): Call<MyCourseHistoryResponse>
+
+    @POST("/api/histories/courses")
+    fun getMyCourseNullTagHistory(
+        @Query("courseId") courseId: Int?
     ): Call<MyCourseHistoryResponse>
 
     @Multipart
@@ -31,5 +37,22 @@ interface MyCourseRetrofitInterfaces {
     @DELETE("/api/courses/{courseId}")
     fun deleteMyCourse(
         @Path("courseId") courseId: Int
+    ): Call<Void>
+
+    @PUT("/api/courses/{courseId}")
+    fun updateMyCourse(
+        @Path("courseId") courseId: Int,
+        @Part thumbnailImg: List<MultipartBody.Part?>,
+        @Part courseUpdateRequestDto: MultipartBody.Part?
+    ): Call<MyCourseUpdateResponse>
+
+    @POST("/api/courses/{courseId}/declare")
+    fun reportCourse(
+        @Path("courseId") courseId: Int
+    ): Call<DefaultResponse>
+
+    @POST("api/courses/{courseId}/scrap")
+    fun scrapCourse(
+        @Path("courseId") course: Int
     ): Call<Void>
 }

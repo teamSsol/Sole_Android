@@ -2,6 +2,26 @@ package cmc.sole.android.Home.Retrofit
 
 import cmc.sole.android.Home.*
 
+interface HomeGetCurrentGPSView {
+    fun homeGetCurrentGPSSuccessView()
+    fun homeGetCurrentGPSFailureView()
+}
+
+interface HomeUpdateCurrentGPSView {
+    fun homeUpdateCurrentGPSSuccessView(homeCurrentGPSResult: HomeCurrentGPSResult)
+    fun homeUpdateCurrentGPSFailureView()
+}
+
+interface HomeCategoriesUpdateView {
+    fun homeCategoriesUpdateSuccessView()
+    fun homeCategoriesUpdateFailureView()
+}
+
+interface HomeGetCategoriesView {
+    fun homeGetCategoriesUpdateSuccessView(data: HomeCategoriesResult)
+    fun homeGetCategoriesUpdateFailureView()
+}
+
 interface HomePopularCourseView {
     fun homePopularCourseSuccessView(homePopularResponse: HomePopularResponse)
     fun homePopularCourseFailureView()
@@ -10,6 +30,16 @@ interface HomePopularCourseView {
 interface HomeDefaultCourseView {
     fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse)
     fun homeDefaultCourseFailureView()
+}
+
+interface HomeCourseDetailView {
+    fun homeCourseDetailSuccessView(homeCourseDetailResult: HomeCourseDetailResult)
+    fun homeCourseDetailFailureView()
+}
+
+interface HomeScrapAddAndCancelView {
+    fun homeScrapAddAndCancelSuccessView()
+    fun homeScrapAddAndCancelFailureView()
 }
 
 // MEMO: 마이페이지

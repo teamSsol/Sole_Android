@@ -1,31 +1,42 @@
 package cmc.sole.android.Home
 
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
+import android.location.LocationRequest
+import android.os.Build
+import android.os.Looper
 import android.util.Log
+import android.view.View
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
 import cmc.sole.android.Home.MyPage.MyPageActivity
-import cmc.sole.android.Home.Retrofit.HomeDefaultCourseView
-import cmc.sole.android.Home.Retrofit.HomePopularCourseView
-import cmc.sole.android.Home.Retrofit.HomeService
+import cmc.sole.android.Home.Retrofit.*
 import cmc.sole.android.Home.Search.SearchActivity
+import cmc.sole.android.MyCourse.MyCourseTagRVAdapter
 import cmc.sole.android.MyCourse.Write.MyCourseWriteActivity
+import cmc.sole.android.StartCourseTagActivity
 import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.databinding.FragmentHomeBinding
 
 class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate),
-    HomePopularCourseView, HomeDefaultCourseView {
+    HomePopularCourseView, HomeDefaultCourseView, HomeGetCurrentGPSView, HomeUpdateCurrentGPSView, HomeScrapAddAndCancelView {
 
     private lateinit var popularCourseRVAdapter: HomePopularCourseRVAdapter
     private lateinit var myCourseRVAdapter: HomeDefaultCourseRVAdapter
     private var popularCourseList = ArrayList<PopularCourse>()
     private var myCourseList = ArrayList<DefaultCourse>()
-
     private lateinit var homeService: HomeService
-    // MEMO: 원하는 만큼 수정
-    var courseId = 5
+    var courseId: Int? = null
 
     override fun initAfterBinding() {
         initAdapter()
@@ -33,39 +44,45 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
         initAPIService()
     }
 
+    override fun onResume() {
+        super.onResume()
+        myCourseRVAdapter.clearItems()
+        homeService.getHomePopularCourse()
+        homeService.getHomeDefaultCourse(courseId, "")
+    }
+
     private fun initAdapter() {
+        // CONDITION: 이 주변 인기 코스 7개로 고정
         popularCourseRVAdapter = HomePopularCourseRVAdapter(popularCourseList)
         binding.homePopularCourseRv.adapter = popularCourseRVAdapter
         binding.homePopularCourseRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 20))
         binding.homePopularCourseRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         popularCourseRVAdapter.setOnItemClickListener(object: HomePopularCourseRVAdapter.OnItemClickListener {
             override fun onItemClick(data: PopularCourse, position: Int) {
-                startActivity(Intent(activity, CourseDetailActivity::class.java))
+                val intent = Intent(activity, CourseDetailActivity::class.java)
+                intent.putExtra("courseId", data.courseId)
+                startActivity(intent)
             }
         })
-
-        myCourseRVAdapter = HomeDefaultCourseRVAdapter(myCourseList)
-        binding.homeMyCourseRv.adapter = myCourseRVAdapter
-        binding.homeMyCourseRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 40))
-        binding.homeMyCourseRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        myCourseRVAdapter.setOnItemClickListener(object: HomeDefaultCourseRVAdapter.OnItemClickListener {
-            override fun onItemClick(data: DefaultCourse, position: Int) {
-                startActivity(Intent(activity, CourseDetailActivity::class.java))
-            }
-        })
-
-        // MEMO: DummyData
-        // CONDITION: 이 주변 인기 코스 7개로 고정
-//        popularCourseList.add(PopularCourse(0, "베이커리 맞은 편 일식당", "테스트1"))
-//        popularCourseList.add(PopularCourse(1, "발리 다녀와서 파이", "테스트1"))
-//        popularCourseList.add(PopularCourse(2, "관람차로 내다보는 속초 바다", "테스트1"))
 
         // CONDITION: 내 취향 코스 5개 + 더 보기 버튼 이용
-//        myCourseList.add(DefaultCourse("img", "베이커리 맞은 편 일식당", false, "경기 수원", "4시간", "104m", arrayListOf("test"), null))
-//        myCourseList.add(DefaultCourse("img", "발리 다녀와서 파이", true, "서울 마포구", "4시간", "247m", arrayListOf("test"), null))
-//        myCourseList.add(DefaultCourse("img", "관람차로 내다보는 속초 바다", true, "강원 속초시", "30분", "91m", arrayListOf("test"), null))
-//        myCourseList.add(DefaultCourse("img", "행궁동 로컬 추천 코스", true, "경기 수원시", "3시간", "406m", arrayListOf("test"), null))
-//        myCourseList.add(DefaultCourse("img", "물고기, 고기", true, "제주도 서귀포", "5시간", "701m", arrayListOf("test"), null))
+        myCourseRVAdapter = HomeDefaultCourseRVAdapter(myCourseList)
+        binding.homeMyCourseRv.adapter = myCourseRVAdapter
+        binding.homeMyCourseRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 15))
+        binding.homeMyCourseRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        myCourseRVAdapter.setOnItemClickListener(object: HomeDefaultCourseRVAdapter.OnItemClickListener {
+            override fun onItemClick(data: DefaultCourse, position: Int, mode: String) {
+                if (mode == "all") {
+                    val intent = Intent(activity, CourseDetailActivity::class.java)
+                    intent.putExtra("courseId", data.courseId)
+                    intent.putExtra("like", data.like)
+                    Log.d("API-TEST", "like out = ${data.like}")
+                    startActivity(intent)
+                } else if (mode == "heart") {
+
+                }
+            }
+        })
     }
 
     private fun initClickListener() {
@@ -80,29 +97,91 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
         binding.homeFb.setOnClickListener {
             startActivity(Intent(activity, MyCourseWriteActivity::class.java))
         }
+
+        binding.homePopularCourseLayout.setOnClickListener {
+            // UPDATE: 현재 위치 변경
+            if (getCurrentLocation() != null)
+                homeService.updateCurrentGPS(getCurrentLocation()!!)
+            popularCourseRVAdapter.clearItems()
+            homeService.getHomePopularCourse()
+        }
+
+        binding.homeMyCourseSettingTv.setOnClickListener {
+            startActivity(Intent(activity, StartCourseTagActivity::class.java))
+        }
+    }
+
+    private fun getCurrentLocation(): HomeCurrentGPSRequest? {
+        val lm = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val isGPSEnabled: Boolean = lm.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val isNetworkEnabled: Boolean = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
+        // MEMO: 매니페스트에 권한이 추가되어 있다해도 한번 더 확인 필요
+        if (ContextCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(ACCESS_FINE_LOCATION), 0)
+        } else {
+            when {
+                // MEMO: 프로바이더 활성화 여부 체크
+                isNetworkEnabled -> {
+                    val location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) //인터넷기반으로 위치를 찾음
+                    return HomeCurrentGPSRequest(location?.latitude!!, location?.longitude!!)
+                }
+                isGPSEnabled -> {
+                    val location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) //GPS 기반으로 위치를 찾음
+                    return HomeCurrentGPSRequest(location?.latitude!!, location?.longitude!!)
+                }
+                else -> { }
+            }
+        }
+
+        return null
     }
 
     private fun initAPIService() {
         homeService = HomeService()
         homeService.setHomePopularCourseView(this)
         homeService.setHomeDefaultCourseView(this)
+        homeService.setHomeGetCurrentGPSView(this)
+        homeService.setHomeUpdateCurrentGPSView(this)
         homeService.getHomePopularCourse()
         homeService.getHomeDefaultCourse(courseId, "")
+        homeService.getCurrentGPS()
     }
 
     override fun homePopularCourseSuccessView(homePopularResponse: HomePopularResponse) {
-        Log.d("API-TEST", "homePopularResponse = ${homePopularResponse.data}")
+        if (homePopularResponse.data?.size == 0) {
+            binding.homePopularCourseEmpty.visibility = View.VISIBLE
+        } else {
+            binding.homePopularCourseEmpty.visibility = View.INVISIBLE
+        }
     }
 
-    override fun homePopularCourseFailureView() {
-
-    }
+    override fun homePopularCourseFailureView() { }
 
     override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
-        Log.d("API-TEST", "homeDefaultResponse = ${homeDefaultResponse.data}")
+        if (homeDefaultResponse.data.size == 0) {
+            binding.homeMyCourseEmpty.visibility = View.VISIBLE
+        } else {
+            binding.homeMyCourseEmpty.visibility = View.INVISIBLE
+        }
+        myCourseRVAdapter.addAllItems(homeDefaultResponse.data)
     }
 
-    override fun homeDefaultCourseFailureView() {
+    override fun homeDefaultCourseFailureView() { }
 
+    override fun homeGetCurrentGPSSuccessView() { }
+
+    override fun homeGetCurrentGPSFailureView() { }
+    override fun homeUpdateCurrentGPSSuccessView(homeCurrentGPSResult: HomeCurrentGPSResult) {
+        binding.homePopularCourseSettingLocationIv.text = homeCurrentGPSResult.currentGps.address
+    }
+
+    override fun homeUpdateCurrentGPSFailureView() { }
+    override fun homeScrapAddAndCancelSuccessView() {
+        TODO("Not yet implemented")
+    }
+
+    override fun homeScrapAddAndCancelFailureView() {
+        TODO("Not yet implemented")
     }
 }

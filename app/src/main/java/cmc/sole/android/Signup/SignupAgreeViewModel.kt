@@ -5,12 +5,14 @@ import androidx.lifecycle.ViewModel
 
 class SignupAgreeViewModel: ViewModel() {
     var all: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    var location: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     var service: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     var personal: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     var marketing: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
     init {
         all.value = false
+        location.value = false
         service.value = false
         personal.value = false
         marketing.value = false
@@ -18,6 +20,10 @@ class SignupAgreeViewModel: ViewModel() {
 
     fun setAll() {
         all.value = all.value == false
+    }
+
+    fun setLocation() {
+        location.value = location.value != true
     }
 
     fun setService() {
@@ -34,6 +40,10 @@ class SignupAgreeViewModel: ViewModel() {
 
     fun getAll(): Boolean? {
         return all.value
+    }
+
+    fun getLocation(): Boolean? {
+        return location.value
     }
 
     fun getService(): Boolean? {

@@ -13,9 +13,11 @@ class DialogMyCourseWriteTimePicker: DialogFragment() {
     lateinit var binding: DialogTimepickerBinding
     private lateinit var dialogFinishListener: OnDialogFragmentFinishListener
     private var time = ""
+    private var hour = ""
+    private var minute = ""
 
     interface OnDialogFragmentFinishListener {
-        fun finish(time: String)
+        fun finish(hour: String, minute: String)
     }
 
     fun setOnFinishListener(listener: OnDialogFragmentFinishListener) {
@@ -24,7 +26,7 @@ class DialogMyCourseWriteTimePicker: DialogFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        dialogFinishListener.finish(time)
+        dialogFinishListener.finish(hour, minute)
     }
 
     override fun onCreateView(
@@ -64,6 +66,9 @@ class DialogMyCourseWriteTimePicker: DialogFragment() {
             } else {
                 binding.myCourseWriteTp.hour.toString() + "시간 " + binding.myCourseWriteTp.minute.toString() + "분"
             }
+
+            hour = binding.myCourseWriteTp.hour.toString()
+            minute = binding.myCourseWriteTp.minute.toString()
 
             dismiss()
         }

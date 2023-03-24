@@ -52,17 +52,17 @@ class FollowListRVAdapter(private val followList: ArrayList<FollowUserDataResult
 
     inner class ViewHolder(val binding: ItemFollowListBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(followList: FollowUserDataResult) {
-            Glide.with(binding.root.context).load(followList.member.profileImgUrl).into(binding.itemFollowListProfileIv)
+            Glide.with(binding.root.context).load(followList.member.profileImgUrl).centerCrop().circleCrop().into(binding.itemFollowListProfileIv)
             binding.itemFollowListNicknameTv.text = followList.member.nickname
             binding.itemFollowListFollowerTv.text = followList.followerCount.toString() + " 팔로워"
             binding.itemFollowListFollowingTv.text = followList.followingCount.toString() + " 팔로잉"
 
             if (followList.followStatus == "FOLLOWER") {
-                binding.itemFollowFollowingBtn.visibility = View.VISIBLE
-                binding.itemFollowFollowBtn.visibility = View.GONE
-            } else {
                 binding.itemFollowFollowingBtn.visibility = View.GONE
                 binding.itemFollowFollowBtn.visibility = View.VISIBLE
+            } else {
+                binding.itemFollowFollowingBtn.visibility = View.VISIBLE
+                binding.itemFollowFollowBtn.visibility = View.GONE
             }
         }
     }

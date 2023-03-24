@@ -13,6 +13,8 @@ class ScrapService {
     private val scrapService = NetworkModule.getInstance()?.create(ScrapRetrofitInterfaces::class.java)
 
     private lateinit var scrapFolderView: ScrapFolderView
+    private lateinit var scrapDefaultFolderView: ScrapDefaultFolderView
+    private lateinit var scrapDefaultFolderDeleteView: ScrapDefaultFolderCourseDeleteView
     private lateinit var scrapFolderAddView: ScrapFolderAddView
     private lateinit var scrapFolderDeleteView: ScrapFolderDeleteView
     private lateinit var scrapFolderNameUpdateView: ScrapFolderNameUpdateView
@@ -21,6 +23,12 @@ class ScrapService {
 
     fun setScrapFolderView(scrapFolderView: ScrapFolderView) {
         this.scrapFolderView = scrapFolderView
+    }
+    fun setScrapDefaultFolderView(scrapDefaultFolderView: ScrapDefaultFolderView) {
+        this.scrapDefaultFolderView = scrapDefaultFolderView
+    }
+    fun setScrapDefaultFolderDeleteView(scrapDefaultFolderDeleteView: ScrapDefaultFolderCourseDeleteView) {
+        this.scrapDefaultFolderDeleteView = scrapDefaultFolderDeleteView
     }
     fun setScrapFolderAddView(scrapFolderAddView: ScrapFolderAddView) {
         this.scrapFolderAddView = scrapFolderAddView
@@ -55,6 +63,42 @@ class ScrapService {
             }
             override fun onFailure(call: Call<ScrapFolderDataResponse>, t: Throwable) {
                 Log.e("SCRAP-SERVICE", "SCRAP-SERVICE-GET-SCRAP-FOLDER-FAILURE", t)
+            }
+        })
+    }
+
+    fun getDefaultFolder() {
+        scrapService?.getDefaultScrapFolder()?.enqueue(object: Callback<ScrapDefaultFolderDataResponse> {
+            override fun onResponse(
+                call: Call<ScrapDefaultFolderDataResponse>,
+                response: Response<ScrapDefaultFolderDataResponse>
+            ) {
+                if (response.code() == 200) {
+                    val scrapDefaultFolderResponse = response.body()
+                    if (scrapDefaultFolderResponse?.success == true) {
+                        scrapDefaultFolderView.scrapDefaultFolderSuccessView(scrapDefaultFolderResponse.data)
+                    } else {
+                        scrapDefaultFolderView.scrapDefaultFolderFailureView()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<ScrapDefaultFolderDataResponse>, t: Throwable) {
+                Log.e("SCRAP-SERVICE", "SCRAP-SERVICE-GET-SCRAP-DEFAULT-FOLDER-FAILURE", t)
+            }
+        })
+    }
+
+    fun deleteScrapDefaultFolderCourse(courseIds: ArrayList<Int>) {
+        scrapService?.deleteDefaultFolder(courseIds)?.enqueue(object: Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.code() == 200) {
+                    scrapDefaultFolderDeleteView.scrapDefaultFolderCourseDeleteSuccessView()
+                } else {
+                    scrapDefaultFolderDeleteView.scrapDefaultFolderCourseDeleteFailureView()
+                }
+            }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("SCRAP-SERVICE", "SCRAP-SERVICE-DELETE-SCRAP-DEFAULT-FOLDER-FAILURE", t)
             }
         })
     }
@@ -146,7 +190,7 @@ class ScrapService {
                 response: Response<Void>
             ) {
                 Log.d("API-TEST", "scrapFolderId = ${scrapFolderId}, courseId = $courseId")
-                Log.d("API-TEST", "response.body = ${response.body()}")
+                Log.d("API-TEST", "response = $response")
                 if (response.code() == 200) {
                     scrapCourseDeleteView.scrapCourseDeleteSuccessView()
                 } else {

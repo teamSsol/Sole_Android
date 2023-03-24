@@ -27,6 +27,8 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
 
     private lateinit var signupCheckService: SignupService
 
+    private var TAG = "API-TEST"
+
     override fun initAfterBinding() {
         KakaoSdk.init(this, BuildConfig.KAKAO_API_KEY)
 
@@ -55,6 +57,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
                     else if (token != null) {
                         Log.d("SIGNUP-CHECK", "로그인 성공 ${token.accessToken}")
                         accessToken = token.accessToken
+                        Log.d("API-TEST", accessToken)
                         signupCheckService.signupCheck(SignupCheckRequest(accessToken, fcmToken))
                         // sendAccessToken(accessToken)
                     }
@@ -79,16 +82,24 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
     }
 
     override fun signupCheckSuccessView(result: SignupCheckResponse) {
-        saveAccessToken(result.data.accessToken)
-        saveFCMToken(fcmToken)
 
         if (result.data.check) {
             // MEMO: 가입한 사용자
-            changeActivity(MainActivity::class.java)
+            saveAccessToken(result.data.accessToken)
+            saveFCMToken(fcmToken)
+            Log.d("API-TEST", "accessToken = ${result.data.accessToken}}")
+
+            if (getAccessToken() != null) changeActivity(MainActivity::class.java)
+            else changeActivity(MainActivity::class.java)
+            finish()
         } else {
             // MEMO: 가입하지 않은 사용자
-            changeActivity(SignupAgreeActivity::class.java)
+            var intent = Intent(this, SignupAgreeActivity::class.java)
+            intent.putExtra("accessToken", accessToken)
+            startActivity(intent)
+//            changeActivity(SignupAgreeActivity::class.java)
         }
+
         Log.d("API-TEST", getAccessToken().toString())
     }
 

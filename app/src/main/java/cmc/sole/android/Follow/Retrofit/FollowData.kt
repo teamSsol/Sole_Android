@@ -12,7 +12,7 @@ data class FollowCourseResponse(
 )
 
 data class FollowCourseResult(
-    var courseId: Int,
+    var courseId: Int?,
     var description: String,
     var like: Boolean,
     var nickname: String,

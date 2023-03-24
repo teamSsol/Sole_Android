@@ -38,7 +38,6 @@ class FollowService {
                 call: Call<FollowCourseResponse>,
                 response: Response<FollowCourseResponse>
             ) {
-                Log.d("API-TEST", "response.code = ${response.code()}\nresponse.body = ${response.body()}")
                 if (response.code() == 200) {
                     val followCourseResponse = response.body()
                     if (followCourseResponse?.success == true) {
@@ -60,7 +59,6 @@ class FollowService {
                 call: Call<FollowListResponse>,
                 response: Response<FollowListResponse>
             ) {
-                Log.d("API-TEST", "getFollowerList response.code = ${response.code()}\nresponse.body = ${response.body()}")
                 if (response.code() == 200) {
                     val followerListResponse = response.body()
                     if (followerListResponse?.success == true) {
@@ -82,7 +80,8 @@ class FollowService {
                 call: Call<FollowListResponse>,
                 response: Response<FollowListResponse>
             ) {
-                Log.d("API-TEST", "getFollowingList response.code = ${response.code()}\nresponse.body = ${response.body()}")
+                Log.d("API-TEST", "getFollowingList response = $response")
+                Log.d("API-TEST", "getFollowingList response = ${response.body()}")
                 if (response.code() == 200) {
                     val followerListResponse = response.body()
                     if (followerListResponse?.success == true) {
@@ -120,13 +119,14 @@ class FollowService {
         })
     }
 
-    fun getFollowUserInfo(followInfoMemberSocialId: Int, courseId: Int) {
+    fun getFollowUserInfo(followInfoMemberSocialId: String, courseId: Int?) {
         followService?.getFollowUserInfo(followInfoMemberSocialId, courseId)?.enqueue(object: Callback<FollowUserInfoResponse> {
             override fun onResponse(
                 call: Call<FollowUserInfoResponse>,
                 response: Response<FollowUserInfoResponse>
             ) {
-                Log.d("API-TEST", "getFollowUserInfo response.code = ${response.code()}\nresponse.body = ${response.body()}")
+                Log.d("API-TEST", "getFollowUserInfo response = $response")
+                Log.d("API-TEST", "getFollowUserInfo response = ${response.body()}")
                 if (response.code() == 200) {
                     val followUserInfoResponse = response.body()
                     if (followUserInfoResponse?.success == true) {

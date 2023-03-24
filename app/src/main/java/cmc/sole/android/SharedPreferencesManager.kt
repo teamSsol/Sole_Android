@@ -13,7 +13,7 @@ fun removeAccessToken() {
     editor.commit()
 }
 
-fun saveAccessToken(url: String) {
+fun saveAccessToken(url: String?) {
     val editor = mSharedPreferences.edit()
     editor.putString("accessToken", url)
     editor.apply()

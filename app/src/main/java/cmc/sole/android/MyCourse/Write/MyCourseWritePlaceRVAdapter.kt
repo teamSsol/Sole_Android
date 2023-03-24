@@ -3,6 +3,7 @@ package cmc.sole.android.MyCourse.Write
 import android.R
 import android.app.Activity
 import android.content.Context
+import android.graphics.Point
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,9 +16,11 @@ import cmc.sole.android.Home.MyCourseWriteImage
 import cmc.sole.android.Home.locationAddImage
 import cmc.sole.android.MyCourse.PlaceInfoData
 import cmc.sole.android.MyCourse.Write.Search.MyCourseWriteSearchBottomFragment
+import cmc.sole.android.MyCourse.Write.Search.SearchResultData
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.databinding.ItemMyCourseWritePlaceBinding
 import com.bumptech.glide.Glide
+import com.naver.maps.geometry.Tm128
 
 public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<PlaceInfoData>): RecyclerView.Adapter<MyCourseWritePlaceRVAdapter.ViewHolder>() {
 
@@ -56,26 +59,56 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
         // locationImgRVAdapter.addItem(MyCourseWriteImage("", locationAddImage))
 
         // UPDATE: RecyclerView로 업데이트 필요
+        // MEMO: 이미지 정보
         holder.binding.myCourseWriteLocationAddImageCv.setOnClickListener {
             checkAlbumMode(true)
             itemClickListener.onItemClick(placeInfoList[position], position)
             checkAlbumMode(false)
         }
+        
+        // MEMO: 장소 정보
         holder.binding.myCourseWriteSearchBar.setOnClickListener {
             val myCourseWriteSearchBottomFragment = MyCourseWriteSearchBottomFragment()
-             myCourseWriteSearchBottomFragment.show((holder.binding.root.context as FragmentActivity).supportFragmentManager, "MyCourseWriteSearchBottom")
+            myCourseWriteSearchBottomFragment.show((holder.binding.root.context as FragmentActivity).supportFragmentManager, "MyCourseWriteSearchBottom")
             checkAlbumMode(false)
+            myCourseWriteSearchBottomFragment.setOnFinishListener(object: MyCourseWriteSearchBottomFragment.OnFinishListener {
+                override fun finish(result: SearchResultData?) {
+                    if (result != null) {
+                        holder.binding.myCourseWriteTextEt.text = result.title
+                        placeInfoList[position].placeName = result.title
+                        placeInfoList[position].description = result.category
+                        placeInfoList[position].address = result.address
+                        var tm128 = Tm128(result.mapx.toDouble(), result.mapy.toDouble())
+                        var point = tm128.toLatLng()
+                        placeInfoList[position].latitude = point.latitude
+                        placeInfoList[position].longitude = point.longitude
+                    }
+                }
+            })
         }
+        
+        // MEMO: 소요 시간
         holder.binding.myCourseWriteTimeLayout.setOnClickListener {
             checkAlbumMode(false)
             val timePickerDialog = DialogMyCourseWriteTimePicker()
             timePickerDialog.show((holder.binding.root.context as FragmentActivity).supportFragmentManager, "MyCourseWriteTimePicker")
             timePickerDialog.setOnFinishListener(object: DialogMyCourseWriteTimePicker.OnDialogFragmentFinishListener {
-                override fun finish(time: String) {
-                    holder.binding.myCourseWriteTimeTv.text = time
+                override fun finish(hour:String, minute: String) {
+                    holder.binding.myCourseWriteTimeTv.text = if (minute == "0") {
+                        if (hour == "0") ""
+                        else hour + "시간 "
+                    } else if (hour == "0") {
+                        minute + "분"
+                    } else {
+                        hour + "시간 " + minute + "분"
+                    }
+
+                    placeInfoList[position].duration = hour.toInt() * 60 + minute.toInt()
+                    Log.d("WRITE-TEST", "placeInfoList = $placeInfoList")
                 }
             })
         }
+        
         holder.bind(placeInfoList[position])
     }
 
@@ -83,13 +116,14 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
 
     inner class ViewHolder(val binding: ItemMyCourseWritePlaceBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(placeInfo: PlaceInfoData) {
-            if (placeInfo.title != null && placeInfo.address != null) {
-                binding.myCourseWriteTextEt.text = placeInfo.title
+            if (placeInfo.placeName != null && placeInfo.address != null) {
+                binding.myCourseWriteTextEt.text = placeInfo.placeName
             }
 
-            Log.d("WRITE-TEST", "1 placeInfo.imgList = ${placeInfo.imgList}")
-            if (placeInfo.imgList.toString() != "[]") {
-                Glide.with(binding.root.context).load(Uri.parse(placeInfo.imgList!![0])).centerCrop().into(binding.myCourseWriteLocationAddImageIv)
+            Log.d("API-TEST", "placeInfoImgUrl = ${placeInfo.imgUrl}")
+            if (placeInfo.imgUrl != null) {
+                if (placeInfo.imgUrl!!.size > 0)
+                    Glide.with(binding.root.context).load(Uri.parse(placeInfo.imgUrl!!.get(0))).centerCrop().into(binding.myCourseWriteLocationAddImageIv)
             }
         }
     }
@@ -108,16 +142,24 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
     }
 
     fun sendImgUrl(imgUrl: Uri, position: Int) {
-        Log.d("WRITE-TEST", "placeInfoList.size = ${placeInfoList.size}")
-        Log.d("WRITE-TEST", "placeInfoList[0] = ${placeInfoList[0].imgList}")
-        Log.d("WRITE-TEST", "placeInfoList[1] = ${placeInfoList[1].imgList}")
+        // placeInfoList[position].imgUrl?.clear()
+        // placeInfoList[position].imgUrl.add(imgUrl.toString())
+        placeInfoList[position].imgUrl = arrayListOf(imgUrl.toString())
 
-        placeInfoList[position].imgList?.clear()
-        placeInfoList[position].imgList?.add(imgUrl.toString())
+        Log.d("WRITE-TEST", "placeInfoList = $placeInfoList")
 
         this.notifyDataSetChanged()
+   }
 
-        Log.d("WRITE-TEST", "placeInfoList[0] = ${placeInfoList[0].imgList}")
-        Log.d("WRITE-TEST", "placeInfoList[1] = ${placeInfoList[1].imgList}")
+    fun getItemSize(): Int {
+        return placeInfoList.size
+    }
+
+    fun getItem(position: Int): PlaceInfoData {
+        return placeInfoList[position]
+    }
+
+    fun returnItems(): ArrayList<PlaceInfoData> {
+        return placeInfoList
     }
 }

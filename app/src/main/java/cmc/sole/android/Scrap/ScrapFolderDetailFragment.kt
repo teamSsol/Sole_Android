@@ -8,16 +8,18 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
+import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.MainActivity
 import cmc.sole.android.Scrap.Retrofit.ScrapCourseResult
 import cmc.sole.android.Scrap.Retrofit.ScrapCourseView
+import cmc.sole.android.Scrap.Retrofit.ScrapDefaultFolderView
 import cmc.sole.android.Scrap.Retrofit.ScrapService
 import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.databinding.FragmentScrapFolderDetailBinding
 
 class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(FragmentScrapFolderDetailBinding::inflate),
-    ScrapCourseView {
+    ScrapCourseView, ScrapDefaultFolderView {
 
     lateinit var scrapService: ScrapService
 
@@ -34,19 +36,21 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
         binding.scrapFolderDetailTitle.text = arguments?.getString("title")
         scrapFolderId = requireArguments().getInt("scrapFolderId", -1)
 
-        if (scrapFolderName == "기본 폴더") {
-            binding.scrapFolderDetailOptionIv.visibility = View.GONE
-        }
-
         initService()
         initAdapter()
+
+        if (scrapFolderName == "기본 폴더") {
+            binding.scrapFolderDetailOptionIv.visibility = View.GONE
+            scrapService.getDefaultFolder()
+        } else scrapService.getScrapCourse(scrapFolderId)
+
         initClickListener()
     }
 
     private fun initService() {
         scrapService = ScrapService()
         scrapService.setScrapCourseView(this)
-        scrapService.getScrapCourse(scrapFolderId)
+        scrapService.setScrapDefaultFolderView(this)
     }
 
     private fun initAdapter() {
@@ -75,9 +79,14 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
     }
 
     private fun initClickListener() {
+        binding.scrapFolderDetailBackIv.setOnClickListener {
+            clearBackStack()
+        }
+
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (binding.scrapFolderDetailOptionIv.visibility == View.GONE) {
+                if (binding.scrapFolderDetailEditCv.visibility != View.VISIBLE) {
+                    binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
                     binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
                     binding.scrapFolderDetailEditCv.visibility = View.VISIBLE
                     binding.scrapFolderDetailOkTv.visibility = View.GONE
@@ -99,6 +108,7 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
             var scrapFolderOptionBottomFragment = ScrapFolderOptionBottomFragment()
             var bundle = Bundle()
             bundle.putInt("scrapFolderId", scrapFolderId)
+            bundle.putIntegerArrayList("deleteCourseId", deleteCourseId)
             scrapFolderOptionBottomFragment.arguments = bundle
             scrapFolderOptionBottomFragment.show(requireActivity().supportFragmentManager, "ScrapFolderDetailBottom")
             scrapFolderOptionBottomFragment.setOnFinishListener(object: ScrapFolderOptionBottomFragment.OnScrapOptionFinishListener {
@@ -106,8 +116,6 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
                     if (mode == "delete") {
                         clearBackStack()
                     } else if (mode == "edit") binding.scrapFolderDetailTitle.text = newFolderName
-
-                    Log.d("API-TEST", "newFolderName = $newFolderName")
                 }
             })
         }
@@ -151,7 +159,6 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
 
         binding.scrapFolderDetailOkTv.setOnClickListener {
             if (binding.scrapFolderDetailOptionIv.visibility == View.GONE) {
-                binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
                 binding.scrapFolderDetailEditCv.visibility = View.VISIBLE
                 binding.scrapFolderDetailOkTv.visibility = View.GONE
 //                binding.scrapFolderDetailMoveCv.visibility = View.GONE
@@ -171,15 +178,33 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
     }
 
     override fun scrapCourseSuccessView(scrapCourseResult: ArrayList<ScrapCourseResult>) {
-        // scrapFolderDetailRVAdapter.addAllItems(scrapCourseResult)
-
-        scrapFolderDetailRVAdapter.addItem(ScrapCourseResult("", setOf(), 0, 0, 0, false, "", "1"))
-        scrapFolderDetailRVAdapter.addItem(ScrapCourseResult("", setOf(), 0, 0, 0, false, "", "2"))
-        scrapFolderDetailRVAdapter.addItem(ScrapCourseResult("", setOf(), 0, 0, 0, false, "", "3"))
-        scrapFolderDetailRVAdapter.addItem(ScrapCourseResult("", setOf(), 0, 0, 0, false, "", "4"))
+        Log.d("API-TEST", "scrapCourseResult = $scrapCourseResult")
+        if (scrapCourseResult.size == 0) {
+            binding.scrapFolderDetailLayout.visibility = View.VISIBLE
+            binding.scrapFolderDetailEditCv.isEnabled = false
+        } else {
+            binding.scrapFolderDetailLayout.visibility = View.GONE
+            binding.scrapFolderDetailEditCv.isEnabled = true
+            scrapFolderDetailRVAdapter.addAllItems(scrapCourseResult)
+        }
     }
 
     override fun scrapCourseFailureView() {
+        showToast("코스 불러오기 실패")
+    }
+
+    override fun scrapDefaultFolderSuccessView(scrapDefaultFolderList: ArrayList<ScrapCourseResult>) {
+        if (scrapDefaultFolderList.size == 0) {
+            binding.scrapFolderDetailLayout.visibility = View.VISIBLE
+            binding.scrapFolderDetailEditCv.isEnabled = false
+        } else {
+            binding.scrapFolderDetailLayout.visibility = View.GONE
+            binding.scrapFolderDetailEditCv.isEnabled = true
+            scrapFolderDetailRVAdapter.addAllItems(scrapDefaultFolderList)
+        }
+    }
+
+    override fun scrapDefaultFolderFailureView() {
         showToast("코스 불러오기 실패")
     }
 }

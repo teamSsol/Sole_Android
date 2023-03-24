@@ -3,8 +3,13 @@ package cmc.sole.android.Home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import cmc.sole.android.Follow.FollowCourseResult
+import cmc.sole.android.Home.Retrofit.HomeScrapAddAndCancelView
+import cmc.sole.android.Home.Retrofit.HomeService
+import cmc.sole.android.MyCourse.MyCourseTagRVAdapter
 import cmc.sole.android.R
 import cmc.sole.android.databinding.ItemCoursePopularBinding
+import com.bumptech.glide.Glide
 
 class HomePopularCourseRVAdapter(private val courseList: ArrayList<PopularCourse>): RecyclerView.Adapter<HomePopularCourseRVAdapter.ViewHolder>() {
 
@@ -37,23 +42,23 @@ class HomePopularCourseRVAdapter(private val courseList: ArrayList<PopularCourse
 
     inner class ViewHolder(val binding: ItemCoursePopularBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(course: PopularCourse) {
-//            if (course.courseName == "베이커리 맞은 편 일식당") {
-//                binding.itemCoursePopularIv.setImageResource(R.drawable.test_img_3)
-//            } else if (course.courseName == "발리 다녀와서 파이") {
-//                binding.itemCoursePopularIv.setImageResource(R.drawable.test_img_4)
-//            } else if (course.courseName == "관람차로 내다보는 속초 바다") {
-//                binding.itemCoursePopularIv.setImageResource(R.drawable.test_img_5)
-//            } else if (course.courseName == "행궁동 로컬 추천 코스") {
-//                binding.itemCoursePopularIv.setImageResource(R.drawable.test_img_6)
-//            } else if (course.courseName == "물고기, 고기") {
-//                binding.itemCoursePopularIv.setImageResource(R.drawable.test_img_7)
-//            }
-//
-//            binding.itemCoursePopularTitle.text = course.courseName
-
-            // TODO: 이미지 URI 코드 연결
-            // binding.itemCoursePopularIv.setImageResource()
-            // binding.itemCoursePopularTitle.text = course.title
+            binding.itemCoursePopularTitle.text = course.courseName
+            Glide.with(binding.root.context).load(course.thumbnailImg).centerCrop().into(binding.itemCoursePopularIv)
         }
+    }
+
+    fun addItem(item: PopularCourse) {
+        courseList.add(item)
+        this.notifyDataSetChanged()
+    }
+
+    fun addAllItems(items: ArrayList<PopularCourse>) {
+        courseList.addAll(items)
+        this.notifyDataSetChanged()
+    }
+
+    fun clearItems() {
+        courseList.clear()
+        this.notifyDataSetChanged()
     }
 }
