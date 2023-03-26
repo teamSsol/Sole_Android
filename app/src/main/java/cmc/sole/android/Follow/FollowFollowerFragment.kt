@@ -63,19 +63,9 @@ class FollowFollowerFragment: BaseFragment<FragmentFollowerFollowerBinding>(Frag
     override fun followListSuccessView(followerResult: ArrayList<FollowUserDataResult>) {
         followListRVAdapter.addAllItems(followerResult)
 
-        // MEMO: 더미데이터
-        followListRVAdapter.addItem(FollowUserDataResult(0, "FOLLOWER", 0, 0,
-            User("", true, 123, "1", "", "asdf", "", "", "")
-        ))
-        followListRVAdapter.addItem(FollowUserDataResult(0, "FOLLOWER", 0, 0,
-            User("", true, 123, "2", "", "asdf", "", "", "")
-        ))
-        followListRVAdapter.addItem(FollowUserDataResult(0, "FOLLOWER", 0, 0,
-            User("", true, 123, "3", "", "asdf", "", "", "")
-        ))
-        followListRVAdapter.addItem(FollowUserDataResult(0, "FOLLOWER", 0, 0,
-            User("", true, 123, "4", "", "asdf", "", "", "")
-        ))
+        if (followerResult.size == 0) {
+            binding.followerFollowerIv.setImageResource(R.drawable.ic_follow_empty_view)
+        }
     }
 
     override fun followListFailureView() {

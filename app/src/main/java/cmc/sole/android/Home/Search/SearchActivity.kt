@@ -22,7 +22,7 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>(ActivitySearchBinding:
     private lateinit var searchResultRVAdapter: HomeDefaultCourseRVAdapter
     private var searchResultList = ArrayList<DefaultCourse>()
     private lateinit var searchService: HomeService
-    var courseId = 0
+    var courseId = 5
 
     override fun initAfterBinding() {
         initService()
@@ -46,7 +46,7 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>(ActivitySearchBinding:
         binding.searchResultRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 40))
         binding.searchResultRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         searchResultRVAdapter.setOnItemClickListener(object: HomeDefaultCourseRVAdapter.OnItemClickListener {
-            override fun onItemClick(data: DefaultCourse, position: Int) {
+            override fun onItemClick(data: DefaultCourse, position: Int, mode: String) {
                 startActivity(Intent(this@SearchActivity, CourseDetailActivity::class.java))
             }
         })

@@ -1,6 +1,7 @@
 package com.example.geeksasaeng.Utils
 
 import cmc.sole.android.Utils.AuthorizationTokenInterceptor
+import com.google.gson.GsonBuilder
 import com.sole.android.ApplicationClass
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -11,6 +12,8 @@ class NetworkModule {
     companion object {
         private var retrofit: Retrofit? = null
 
+        var gson = GsonBuilder().setLenient().create()
+
         fun getInstance(): Retrofit? {
             if (retrofit == null) {
                 synchronized(this) {
@@ -20,7 +23,7 @@ class NetworkModule {
 
                     retrofit = Retrofit.Builder()
                         .baseUrl(ApplicationClass.BASE_URL)
-                        .addConverterFactory(GsonConverterFactory.create())
+                        .addConverterFactory(GsonConverterFactory.create(gson))
                         .addConverterFactory(ScalarsConverterFactory.create())
                         .client(client)
                         .build()

@@ -40,6 +40,7 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
     private var imageUri: Uri? = null
 
     var all = String()
+    var location = String()
     var service = String()
     var personal = String()
     var marketing = String()
@@ -63,9 +64,12 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
 
     override fun initAfterBinding() {
         all = intent.getStringExtra("all").toString()
+        service = intent.getStringExtra("location").toString()
         service = intent.getStringExtra("service").toString()
         personal = intent.getStringExtra("personal").toString()
         marketing = intent.getStringExtra("marketing").toString()
+
+        Log.d("API-TEST", "accessToken = ${intent.getStringExtra("accessToken")}")
 
         nicknameListener()
         initClickListener()
@@ -143,7 +147,9 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
             var jsonBody = JSONObject()
             jsonBody.put("accessToken", getAccessToken())
             jsonBody.put("fcmToken", getFCMToken())
+            Log.d("API-TEST", "accessToken = ${getAccessToken()} / fcmToken = ${getFCMToken()}")
             jsonBody.put("infoAccepted", personal)
+            jsonBody.put("locationAccepted", location)
             jsonBody.put("marketingAccepted", marketing)
             jsonBody.put("nickname", getNickname())
             jsonBody.put("placeCategories", JSONArray(getPlaceCategories()!!.toTypedArray()))
@@ -206,6 +212,7 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
     }
 
     override fun signupSocialSuccessView(result: SignupSocialResponse) {
+        saveAccessToken(getAccessToken())
         saveNickname(result.data.nickname)
         saveProfileImgUrl(result.data.profileImgUrl.toString())
         changeActivity(SignupFinishActivity::class.java)

@@ -36,6 +36,24 @@ class MyCourseWriteSearchBottomFragment: BottomSheetDialogFragment() {
     lateinit var sb: StringBuilder
     private val display = 5 // 검색결과갯수. 최대100개
 
+    private var searchResult = arrayListOf<SearchResultData>()
+    private lateinit var dialogFinishListener: OnFinishListener
+
+    private var selectResult: SearchResultData? = null
+
+    interface OnFinishListener {
+        fun finish(result: SearchResultData?)
+    }
+
+    fun setOnFinishListener(listener: OnFinishListener) {
+        dialogFinishListener = listener
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dialogFinishListener.finish(selectResult)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,7 +71,8 @@ class MyCourseWriteSearchBottomFragment: BottomSheetDialogFragment() {
         binding.myCourseWriteSearchResultRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         searchResultRVAdapter.setOnItemClickListener(object: MyCourseSearchResultRVAdapter.OnItemClickListener {
             override fun onItemClick(data: SearchResultData, position: Int) {
-                writeVM.setPlaceInfo(data)
+                selectResult = data
+                dismiss()
             }
         })
     }
@@ -70,7 +89,7 @@ class MyCourseWriteSearchBottomFragment: BottomSheetDialogFragment() {
     private fun setupRatio(bottomSheetDialog: BottomSheetDialog) {
         val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as View
         val behavior = BottomSheetBehavior.from<View>(bottomSheet)
-        val layoutParams = bottomSheet!!.layoutParams
+        val layoutParams = bottomSheet.layoutParams
         layoutParams.height = getBottomSheetDialogDefaultHeight()
         bottomSheet.layoutParams = layoutParams
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -107,8 +126,8 @@ class MyCourseWriteSearchBottomFragment: BottomSheetDialogFragment() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val api = retrofit.create(NaverSearchAPI::class.java)   // 통신 인터페이스를 객체로 생성
-        val call = api.searchKeyword(resources.getString(R.string.naver_client_id),
-            resources.getString(R.string.naver_client_secret), "local.json", keyword, 3)   // 검색 조건 입력
+        val call = api.searchKeyword(resources.getString(R.string.naver_client_id2),
+            resources.getString(R.string.naver_client_secret2), "local.json", keyword, 3)   // 검색 조건 입력
 
         // API 서버에 요청
         call.enqueue(object: Callback<SearchNaverData> {
@@ -117,6 +136,11 @@ class MyCourseWriteSearchBottomFragment: BottomSheetDialogFragment() {
                 response: Response<SearchNaverData>
             ) {
                 if (response.body()?.items != null) {
+                    searchResult = response.body()?.items!! as ArrayList<SearchResultData>
+                    for (i in 0 until searchResult.size) {
+                        searchResult[i].title = searchResult[i].title.replace("<b>", "")
+                        searchResult[i].title = searchResult[i].title.replace("</b>", "")
+                    }
                     searchResultRVAdapter.addAllItems(response.body()?.items!! as ArrayList<SearchResultData>)
                 }
             }

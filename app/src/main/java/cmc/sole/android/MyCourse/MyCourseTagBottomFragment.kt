@@ -4,18 +4,15 @@ import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.activityViewModels
 import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryRequest
-import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
 import cmc.sole.android.R
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
-import cmc.sole.android.Utils.TagTranslator
+import cmc.sole.android.Utils.Translator
 import cmc.sole.android.databinding.BottomFragmentMyCourseTagBinding
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -170,19 +167,19 @@ class MyCourseTagBottomFragment: BottomSheetDialogFragment() {
             "place" -> {
                 for (i in 0..8) {
                     if (myCourseTagBottomPlaceRVAdapter.getItem(i).isChecked)
-                        resultTagSet.add(TagTranslator.tagKorToEng(activity as AppCompatActivity, myCourseTagBottomPlaceRVAdapter.getItem(i).title))
+                        resultTagSet.add(Translator.tagKorToEng(activity as AppCompatActivity, myCourseTagBottomPlaceRVAdapter.getItem(i).title))
                 }
             }
             "with" -> {
                 for (i in 0..4) {
                     if (myCourseTagBottomWithRVAdapter.getItem(i).isChecked)
-                        resultTagSet.add(TagTranslator.tagKorToEng(activity as AppCompatActivity, myCourseTagBottomWithRVAdapter.getItem(i).title))
+                        resultTagSet.add(Translator.tagKorToEng(activity as AppCompatActivity, myCourseTagBottomWithRVAdapter.getItem(i).title))
                 }
             }
             else -> {
                 for (i in 0..3) {
                     if (myCourseTagBottomTransRVAdapter.getItem(i).isChecked)
-                        resultTagSet.add(TagTranslator.tagKorToEng(activity as AppCompatActivity, myCourseTagBottomTransRVAdapter.getItem(i).title))
+                        resultTagSet.add(Translator.tagKorToEng(activity as AppCompatActivity, myCourseTagBottomTransRVAdapter.getItem(i).title))
                 }
             }
         }

@@ -2,6 +2,7 @@ package cmc.sole.android.Signup
 
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,8 +15,12 @@ import cmc.sole.android.saveAccessToken
 class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySignupAgreeBinding::inflate) {
 
     private lateinit var signupVM: SignupAgreeViewModel
+    var accessToken = ""
     override fun initAfterBinding() {
         signupVM = ViewModelProvider(this)[SignupAgreeViewModel::class.java]
+
+        accessToken = intent.getStringExtra("accessToken").toString()
+        Log.d("API-TEST", "accessToken = ${intent.getStringExtra("accessToken")}")
 
         initRadioSetting()
         initClickListener()
@@ -23,9 +28,10 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
 
     private fun initRadioSetting() {
         checkOption(0, signupVM.getAll())
-        checkOption(1, signupVM.getService())
-        checkOption(2, signupVM.getPersonal())
-        checkOption(3, signupVM.getMarketing())
+        checkOption(1, signupVM.getLocation())
+        checkOption(2, signupVM.getService())
+        checkOption(3, signupVM.getPersonal())
+        checkOption(4, signupVM.getMarketing())
     }
 
     private fun initClickListener() {
@@ -35,6 +41,18 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
 
         binding.signupAgreeAllTv.setOnClickListener {
             checkEvent("all")
+        }
+
+        binding.signupAgreeLocationIv.setOnClickListener {
+            checkEvent("location")
+        }
+
+        binding.signupAgreeLocationTv.setOnClickListener {
+            checkEvent("location")
+        }
+
+        binding.signupAgreeServiceArrow.setOnClickListener {
+            changeActivity(SignupAgreeServiceActivity::class.java)
         }
 
         binding.signupAgreeServiceIv.setOnClickListener {
@@ -77,9 +95,11 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
             if ((signupVM.getService() == true) && (signupVM.getPersonal() == true)) {
                 val intent = Intent(this, SignupNicknameActivity::class.java)
                 intent.putExtra("all", signupVM.getAll().toString())
+                intent.putExtra("location", signupVM.getLocation().toString())
                 intent.putExtra("service", signupVM.getService().toString())
                 intent.putExtra("personal", signupVM.getPersonal().toString())
                 intent.putExtra("marketing", signupVM.getMarketing().toString())
+                intent.putExtra("accessToken", accessToken)
                 startActivity(intent)
             }
         }
@@ -94,44 +114,56 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
                     checkOption(0, true)
 
                     checkOption(1, true)
-                    if (signupVM.getService() != true) signupVM.setService()
+                    if (signupVM.getLocation() != true) signupVM.setLocation()
 
                     checkOption(2, true)
-                    if (signupVM.getPersonal() != true) signupVM.setPersonal()
+                    if (signupVM.getService() != true) signupVM.setService()
 
                     checkOption(3, true)
+                    if (signupVM.getPersonal() != true) signupVM.setPersonal()
+
+                    checkOption(4, true)
                     if (signupVM.getMarketing() != true) signupVM.setMarketing()
 
                 } else {
                     checkOption(0, false)
 
                     checkOption(1, false)
-                    if (signupVM.getService() == true) signupVM.setService()
+                    if (signupVM.getLocation() == true) signupVM.setLocation()
 
                     checkOption(2, false)
-                    if (signupVM.getPersonal() == true) signupVM.setPersonal()
+                    if (signupVM.getService() == true) signupVM.setService()
 
                     checkOption(3, false)
+                    if (signupVM.getPersonal() == true) signupVM.setPersonal()
+
+                    checkOption(4, false)
                     if (signupVM.getMarketing() == true) signupVM.setMarketing()
                 }
 
                 checkNext()
             }
+            "location" -> {
+                signupVM.setLocation()
+                checkOption(1, signupVM.getLocation())
+                checkAll()
+                checkNext()
+            }
             "service" -> {
                 signupVM.setService()
-                checkOption(1, signupVM.getService())
+                checkOption(2, signupVM.getService())
                 checkAll()
                 checkNext()
             }
             "personal" -> {
                 signupVM.setPersonal()
-                checkOption(2, signupVM.getPersonal())
+                checkOption(3, signupVM.getPersonal())
                 checkAll()
                 checkNext()
             }
             else -> {
                 signupVM.setMarketing()
-                checkOption(3, signupVM.getMarketing())
+                checkOption(4, signupVM.getMarketing())
                 checkAll()
             }
         }
@@ -143,12 +175,15 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
             if (option == true) binding.signupAgreeAllIv.setImageResource(R.drawable.ic_radio_check)
             else binding.signupAgreeAllIv.setImageResource(R.drawable.ic_radio_default)
         } else if (order == 1) {
+            if (option == true) binding.signupAgreeLocationIv.setImageResource(R.drawable.ic_radio_check)
+            else binding.signupAgreeLocationIv.setImageResource(R.drawable.ic_radio_default)
+        } else if (order == 2) {
             if (option == true) binding.signupAgreeServiceIv.setImageResource(R.drawable.ic_radio_check)
             else binding.signupAgreeServiceIv.setImageResource(R.drawable.ic_radio_default)
-        } else if (order == 2) {
+        } else if (order == 3) {
             if (option == true) binding.signupAgreePersonalIv.setImageResource(R.drawable.ic_radio_check)
             else binding.signupAgreePersonalIv.setImageResource(R.drawable.ic_radio_default)
-        } else if (order == 3) {
+        } else if (order == 4) {
             if (option == true) binding.signupAgreeMarketingIv.setImageResource(R.drawable.ic_radio_check)
             else binding.signupAgreeMarketingIv.setImageResource(R.drawable.ic_radio_default)
         }

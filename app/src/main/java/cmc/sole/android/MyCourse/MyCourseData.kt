@@ -7,10 +7,17 @@ data class TagButton(
 )
 
 data class PlaceInfoData(
-    var title: String?,
     var address: String?,
-    var roadAddress: String?,
-    var mapx: String?,
-    var mapy: String?,
-    var imgList: ArrayList<String>?
+    var description: String?,
+    var duration: Int?,
+    var latitude: Double?,
+    var longitude: Double?,
+    var placeName: String?,
+    var imgUrl: ArrayList<String>?
+//    var title: String?,
+//    var address: String?,
+//    var roadAddress: String?,
+//    var mapx: String?,
+//    var mapy: String?,
+//    var imgList: ArrayList<String>?
 )

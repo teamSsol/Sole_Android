@@ -13,4 +13,9 @@
         tools:listitem="@layout/item_follow_list"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
+    <ImageView
+        android:id="@+id/follower_following_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,7 @@ package cmc.sole.android.Home.Retrofit
 import android.util.Log
 import cmc.sole.android.DefaultResponse
 import cmc.sole.android.Home.*
-import cmc.sole.android.getAccessToken
+import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryRequest
 import com.example.geeksasaeng.Utils.NetworkModule
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -13,8 +13,14 @@ import retrofit2.Response
 class HomeService {
     private val homeService = NetworkModule.getInstance()?.create(HomeRetrofitInterface::class.java)
 
+    private lateinit var homeGetCurrentGPSView: HomeGetCurrentGPSView
+    private lateinit var homeUpdateCurrentGPSView: HomeUpdateCurrentGPSView
+    private lateinit var homeCategoriesUpdateView: HomeCategoriesUpdateView
+    private lateinit var homeGetCategoriesView: HomeGetCategoriesView
     private lateinit var homePopularCourseView: HomePopularCourseView
     private lateinit var homeDefaultCourseView: HomeDefaultCourseView
+    private lateinit var homeCourseDetailView: HomeCourseDetailView
+    private lateinit var homeScrapAddAndCancelView: HomeScrapAddAndCancelView
     private lateinit var myPageInfoView: MyPageInfoView
     private lateinit var myPageInfoUpdateView: MyPageInfoUpdateView
     private lateinit var myPageNotificationView: MyPageNotificationView
@@ -25,11 +31,29 @@ class HomeService {
     private lateinit var myPageNoticeUpdateView: MyPageNoticeUpdateView
     private lateinit var myPageMemberQuitView: MyPageMemberQuitView
 
+    fun setHomeGetCurrentGPSView(homeGetCurrentGPSView: HomeGetCurrentGPSView) {
+        this.homeGetCurrentGPSView = homeGetCurrentGPSView
+    }
+    fun setHomeUpdateCurrentGPSView(homeUpdateCurrentGPSView: HomeUpdateCurrentGPSView) {
+        this.homeUpdateCurrentGPSView = homeUpdateCurrentGPSView
+    }
+    fun setHomeCategoriesUpdateView(homeCategoriesUpdateView: HomeCategoriesUpdateView) {
+        this.homeCategoriesUpdateView = homeCategoriesUpdateView
+    }
+    fun setHomeGetCategoriesView(homeGetCategoriesView: HomeGetCategoriesView) {
+        this.homeGetCategoriesView = homeGetCategoriesView
+    }
     fun setHomePopularCourseView(homePopularCourseView: HomePopularCourseView) {
         this.homePopularCourseView = homePopularCourseView
     }
     fun setHomeDefaultCourseView(homeDefaultCourseView: HomeDefaultCourseView) {
         this.homeDefaultCourseView = homeDefaultCourseView
+    }
+    fun setHomeCourseDetailView(homeCourseDetailView: HomeCourseDetailView) {
+        this.homeCourseDetailView = homeCourseDetailView
+    }
+    fun setHomeScrapAddAndCancelView(homeScrapAddAndCancelView: HomeScrapAddAndCancelView) {
+        this.homeScrapAddAndCancelView = homeScrapAddAndCancelView
     }
     fun setMyPageInfoView(myPageInfoView: MyPageInfoView) {
         this.myPageInfoView = myPageInfoView
@@ -59,12 +83,104 @@ class HomeService {
         this.myPageMemberQuitView = myPageMemberQuitView
     }
 
+    fun getCurrentGPS() {
+        homeService?.getMyCurrentGPS()?.enqueue(object: Callback<DefaultResponse> {
+            override fun onResponse(
+                call: Call<DefaultResponse>,
+                response: Response<DefaultResponse>
+            ) {
+                if (response.code() == 200) {
+                    val resp = response.body()
+                    if (resp?.success == true) {
+                        homeGetCurrentGPSView.homeGetCurrentGPSSuccessView()
+                    } else {
+                        homeGetCurrentGPSView.homeGetCurrentGPSFailureView()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                Log.e("HOME-SERVICE", "HOME-SERVICE-GET-CURRENT-GPS-FAILURE", t)
+            }
+        })
+    }
+
+    fun updateCurrentGPS(homeCurrentGPSRequest: HomeCurrentGPSRequest) {
+        homeService?.updateMyCurrentGPS(homeCurrentGPSRequest)?.enqueue(object: Callback<HomeCurrentGPSResponse> {
+            override fun onResponse(
+                call: Call<HomeCurrentGPSResponse>,
+                response: Response<HomeCurrentGPSResponse>
+            ) {
+                Log.d("API-TEST", "updateCurrentGPS response = ${response}")
+                Log.d("API-TEST", "updateCurrentGPS response.body = ${response.body()}")
+                if (response.code() == 200) {
+                    val resp = response.body()
+                    if (resp?.success == true) {
+                        homeUpdateCurrentGPSView.homeUpdateCurrentGPSSuccessView(resp.data)
+                    } else {
+                        homeUpdateCurrentGPSView.homeUpdateCurrentGPSFailureView()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<HomeCurrentGPSResponse>, t: Throwable) {
+                Log.e("HOME-SERVICE", "HOME-SERVICE-UPDATE-CURRENT-GPS-FAILURE", t)
+            }
+        })
+    }
+
+    fun updateCategories(myCourseHistoryRequest: MyCourseHistoryRequest) {
+        homeService?.updateCategories(myCourseHistoryRequest)?.enqueue(object: Callback<HomeCategoriesResponse> {
+            override fun onResponse(
+                call: Call<HomeCategoriesResponse>,
+                response: Response<HomeCategoriesResponse>
+            ) {
+                Log.d("API-TEST", "response = ${response}")
+                Log.d("API-TEST", "response = ${response.body()}")
+                if (response.code() == 200) {
+                    val resp = response.body()
+                    if (resp?.success == true) {
+                        homeCategoriesUpdateView.homeCategoriesUpdateSuccessView()
+                    } else {
+                        homeCategoriesUpdateView.homeCategoriesUpdateFailureView()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<HomeCategoriesResponse>, t: Throwable) {
+                Log.e("HOME-SERVICE", "HOME-SERVICE-UPDATE-CATEGORIES-FAILURE", t)
+            }
+        })
+    }
+
+    fun getCategories() {
+        homeService?.getCategories()?.enqueue(object: Callback<HomeCategoriesResponse> {
+            override fun onResponse(
+                call: Call<HomeCategoriesResponse>,
+                response: Response<HomeCategoriesResponse>
+            ) {
+                Log.d("API-TEST", "response = ${response}")
+                Log.d("API-TEST", "response = ${response.body()}")
+                if (response.code() == 200) {
+                    val resp = response.body()
+                    if (resp?.success == true) {
+                        homeGetCategoriesView.homeGetCategoriesUpdateSuccessView(response.body()!!.data)
+                    } else {
+                        homeGetCategoriesView.homeGetCategoriesUpdateFailureView()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<HomeCategoriesResponse>, t: Throwable) {
+                Log.e("HOME-SERVICE", "HOME-SERVICE-GET-CATEGORIES-FAILURE", t)
+            }
+        })
+    }
+
     fun getHomePopularCourse() {
         homeService?.getHomePopularCourse()?.enqueue(object: Callback<HomePopularResponse> {
             override fun onResponse(
                 call: Call<HomePopularResponse>,
                 response: Response<HomePopularResponse>
             ) {
+                Log.d("API-TEST", "getHomePopularCourse.response = $response")
+                Log.d("API-TEST", "getHomePopularCourse.responseBody = ${response.body()}")
                 if (response.code() == 200) {
                     val homePopularResponse = response.body()
                     if (homePopularResponse?.success == true) {
@@ -81,15 +197,14 @@ class HomeService {
         })
     }
 
-    fun getHomeDefaultCourse(courseId: Int, searchWord: String) {
+    fun getHomeDefaultCourse(courseId: Int?, searchWord: String) {
         homeService?.getHomeDefaultCourse(courseId, searchWord)?.enqueue(object: Callback<HomeDefaultResponse> {
             override fun onResponse(
                 call: Call<HomeDefaultResponse>,
                 response: Response<HomeDefaultResponse>
             ) {
-                Log.d("API-TEST", "response = $response")
-                Log.d("API-TEST", "response.body = ${response.body()}")
-                Log.d("API-TEST", "response = ${response.body()?.data}")
+                Log.d("API-TEST", "getHomeDefaultCourse.response = $response")
+                Log.d("API-TEST", "getHomeDefaultCourse.responseBody = ${response.body()}")
                 if (response.code() == 200) {
                     val homeDefaultResponse = response.body()
                     if (homeDefaultResponse?.success == true) {
@@ -101,6 +216,47 @@ class HomeService {
             }
             override fun onFailure(call: Call<HomeDefaultResponse>, t: Throwable) {
                 Log.e("HOME-SERVICE", "HOME-SERVICE-GET-DEFAULT-FAILURE", t)
+            }
+        })
+    }
+
+    fun getHomeDetailCourse(courseId: Int?) {
+        homeService?.getHomeDetailCourse(courseId)?.enqueue(object: Callback<HomeCourseDetailResponse> {
+            override fun onResponse(
+                call: Call<HomeCourseDetailResponse>,
+                response: Response<HomeCourseDetailResponse>
+            ) {
+                Log.d("API-TEST", "getHomeDetailCourse.response = $response")
+                Log.d("API-TEST", "getHomeDetailCourse.responseBody = ${response.body()}")
+                if (response.code() == 200) {
+                    val homeDetailResponse = response.body()
+                    if (homeDetailResponse?.success == true) {
+                        homeCourseDetailView.homeCourseDetailSuccessView(homeDetailResponse.data)
+                    } else {
+                        homeCourseDetailView.homeCourseDetailFailureView()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<HomeCourseDetailResponse>, t: Throwable) {
+                Log.e("HOME-SERVICE", "HOME-SERVICE-GET-COURSE-DETAIL-FAILURE", t)
+            }
+        })
+    }
+
+    fun scrapAddAndCancel(courseId: Int) {
+        homeService?.scrapAddAndCancel(courseId)?.enqueue(object: Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                Log.d("API-TEST", "scrapAddAndCancel response = $response")
+                Log.d("API-TEST", "scrapAddAndCancel response = ${response.body()}")
+                if (response.code() == 200) {
+                    homeScrapAddAndCancelView.homeScrapAddAndCancelSuccessView()
+                } else {
+                    homeScrapAddAndCancelView.homeScrapAddAndCancelFailureView()
+                }
+            }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("API-TEST", "HOME-SERVICE-SCRAP-FAILURE", t)
             }
         })
     }
@@ -132,6 +288,8 @@ class HomeService {
                 call: Call<MyPageUpdateResponse>,
                 response: Response<MyPageUpdateResponse>
             ) {
+                Log.d("API-TEST", "myPageInfoUpdate response = $response")
+                Log.d("API-TEST", "myPageInfoUpdate response = ${response.body()}")
                 if (response.code() == 200) {
                     val myPageUpdateResponse = response.body()
                     if (myPageUpdateResponse?.success == true) {
@@ -195,8 +353,6 @@ class HomeService {
                 call: Call<MyPageNotificationHistoryResponse>,
                 response: Response<MyPageNotificationHistoryResponse>
             ) {
-                Log.d("API-TEST", "notification history response = ${response.body()}")
-                Log.d("API-TEST", "notification history body = ${response.body()?.data}")
                 if (response.code() == 200) {
                     val myPageNotificationHistoryResponse = response.body()
                     if (myPageNotificationHistoryResponse?.success == true) {
@@ -219,6 +375,8 @@ class HomeService {
                 call: Call<MyPageNoticeResponse>,
                 response: Response<MyPageNoticeResponse>
             ) {
+                Log.d("API-TEST", "getMyPageNotice response = $response")
+                Log.d("API-TEST", "getMyPageNotice response = ${response.body()}")
                 if (response.code() == 200) {
                     val myPageNoticeResponse = response.body()
                     if (myPageNoticeResponse?.success == true) {
@@ -242,8 +400,6 @@ class HomeService {
                 call: Call<MyPageNoticeAddResponse>,
                 response: Response<MyPageNoticeAddResponse>
             ) {
-                Log.d("API-TEST", "addMyPage response = ${response.body()}")
-                Log.d("API-TEST", "addMyPage body = ${response.body()?.data}")
                 if (response.code() == 200) {
                     val myPageNoticeAddResponse = response.body()
                     if (myPageNoticeAddResponse?.success == true) {
@@ -267,8 +423,6 @@ class HomeService {
                 call: Call<MyPageNoticeAddResponse>,
                 response: Response<MyPageNoticeAddResponse>
             ) {
-                Log.d("API-TEST", "updateMyPage response = ${response.body()}")
-                Log.d("API-TEST", "updateMyPage body = ${response.body()?.data}")
                 if (response.code() == 200) {
                     val myPageNoticeUpdateResponse = response.body()
                     if (myPageNoticeUpdateResponse?.success == true) {

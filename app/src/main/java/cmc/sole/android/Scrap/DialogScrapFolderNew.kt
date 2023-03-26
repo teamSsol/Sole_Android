@@ -18,7 +18,6 @@ class DialogScrapFolderNew: DialogFragment(), ScrapFolderAddView {
 
     lateinit var binding: DialogScrapFolderNewBinding
     private lateinit var dialogFinishListener: OnFinishListener
-
     private lateinit var scrapService: ScrapService
 
     interface OnFinishListener {

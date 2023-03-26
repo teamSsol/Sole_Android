@@ -18,6 +18,14 @@ interface ScrapRetrofitInterfaces {
         @Body scrapFolderAddRequest: ScrapFolderAddRequest
     ): Call<ScrapFolderAddResponse>
 
+    @GET("/api/scraps/default")
+    fun getDefaultScrapFolder(): Call<ScrapDefaultFolderDataResponse>
+
+    @DELETE("/api/scraps/default/{courseIds}")
+    fun deleteDefaultFolder(
+        @Path("courseIds") courseIds: ArrayList<Int>
+    ): Call<Void>
+
     @DELETE("/api/scraps/{scrapFolderId}")
     fun deleteScrapFolder(
         @Path("scrapFolderId") scrapFolderId: Int

@@ -2,19 +2,46 @@ package cmc.sole.android.Home.Retrofit
 
 import cmc.sole.android.DefaultResponse
 import cmc.sole.android.Home.*
+import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryRequest
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
 interface HomeRetrofitInterface {
+    @GET("/api/courses/currentGps")
+    fun getMyCurrentGPS(): Call<DefaultResponse>
+
+    @PATCH("/api/courses/currentGps")
+    fun updateMyCurrentGPS(
+        @Body homeCurrentGPSRequest: HomeCurrentGPSRequest
+    ): Call<HomeCurrentGPSResponse>
+
+    @PATCH("/api/courses/favCategory")
+    fun updateCategories(
+        @Body myCourseHistoryRequest: MyCourseHistoryRequest
+    ): Call<HomeCategoriesResponse>
+
+    @GET("/api/courses/favCategory")
+    fun getCategories(): Call<HomeCategoriesResponse>
+
     @GET("/api/courses/recommend")
     fun getHomePopularCourse(): Call<HomePopularResponse>
 
     @GET("/api/courses")
     fun getHomeDefaultCourse(
-        @Query("courseId") courseId: Int,
+        @Query("courseId") courseId: Int?,
         @Query("searchWord") searchWord: String
     ): Call<HomeDefaultResponse>
+
+    @GET("/api/courses/{courseId}")
+    fun getHomeDetailCourse(
+        @Path("courseId") courseId: Int?
+    ): Call<HomeCourseDetailResponse>
+
+    @POST("/api/courses/{courseId}/scrap")
+    fun scrapAddAndCancel(
+        @Path("courseId") courseId: Int
+    ): Call<Void>
 
     // MEMO: 마이페이지
     @GET("/api/mypage")

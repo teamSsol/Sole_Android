@@ -1,13 +1,27 @@
 package cmc.sole.android.Follow
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.Follow.Retrofit.FollowCourseView
+import cmc.sole.android.Home.MyPage.FAQ.FAQData
 import cmc.sole.android.R
 import cmc.sole.android.databinding.ItemFollowActivityBinding
+import com.bumptech.glide.Glide
 
 class FollowActivityRVAdapter(private val followActivityList: ArrayList<FollowCourseResult>): RecyclerView.Adapter<FollowActivityRVAdapter.ViewHolder>() {
+
+    private lateinit var itemClickListener: OnItemClickListener
+
+    interface OnItemClickListener {
+        fun onItemClick(data: FollowCourseResult, position: Int)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -17,31 +31,33 @@ class FollowActivityRVAdapter(private val followActivityList: ArrayList<FollowCo
     }
 
     override fun onBindViewHolder(holder: FollowActivityRVAdapter.ViewHolder, position: Int) {
+        holder.binding.itemFollowActivityHeartIv.setOnClickListener {
+            Log.d("API-TEST", "heart = ${followActivityList[position].like}")
+            followActivityList[position].like = !followActivityList[position].like
+            Log.d("API-TEST", "heart = ${followActivityList[position].like}")
+            itemClickListener.onItemClick(followActivityList[position], position)
+            Log.d("API-TEST", "heart = ${followActivityList[position].like}")
+            this.notifyDataSetChanged()
+            Log.d("API-TEST", "heart = ${followActivityList[position].like}")
+        }
         holder.bind(followActivityList[position])
     }
 
     override fun getItemCount(): Int = followActivityList.size
 
-    inner class ViewHolder(private val binding: ItemFollowActivityBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: ItemFollowActivityBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(followActivity: FollowCourseResult) {
-//            // UPDATE: 이미지 데이터 받으면 연결해주기
-//            // binding.itemFollowActivityProfileIv.setImageResource(R.drawable.test_img)
-////            if (followActivity.courseName == "행궁동 로컬 추천 코스")
-////                binding.itemFollowActivityIv.setImageResource(R.drawable.test_img_6)
-////            else if (followActivity.courseName == "물고기, 고기")
-////                binding.itemFollowActivityIv.setImageResource(R.drawable.test_img_7)
-//
-//            binding.itemFollowActivityNicknameTv.text = followActivity.nickname
-//            // UPDATE: 이미지 데이터 받으면 연결해주기
-//            // binding.itemFollowActivityIv.setImageResource(R.drawable.test_img_2)
-//            binding.itemFollowActivityCourseName.text = followActivity.courseName
-//            binding.itemFollowActivityCourseContent.text = followActivity.courseContent
-//
-//            if (followActivity.heart) {
-//                binding.itemFollowActivityHeartIv.setImageResource(R.drawable.ic_heart_color)
-//            } else {
-//                binding.itemFollowActivityHeartIv.setImageResource(R.drawable.ic_heart_empty)
-//            }
+            Glide.with(binding.root.context).load(followActivity.profileImg).centerCrop().circleCrop().into(binding.itemFollowActivityProfileIv)
+            binding.itemFollowActivityNicknameTv.text = followActivity.nickname
+            Glide.with(binding.root.context).load(followActivity.thumbnailImg).centerCrop().into(binding.itemFollowActivityIv)
+            binding.itemFollowActivityCourseName.text = followActivity.title
+            binding.itemFollowActivityCourseContent.text = followActivity.description
+
+            if (followActivity.like) {
+                binding.itemFollowActivityHeartIv.setImageResource(R.drawable.ic_heart_color)
+            } else {
+                binding.itemFollowActivityHeartIv.setImageResource(R.drawable.ic_heart_empty)
+            }
         }
     }
 

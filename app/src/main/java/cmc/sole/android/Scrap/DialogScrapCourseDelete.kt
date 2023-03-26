@@ -7,11 +7,12 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import cmc.sole.android.Scrap.Retrofit.ScrapCourseDeleteView
+import cmc.sole.android.Scrap.Retrofit.ScrapDefaultFolderCourseDeleteView
 import cmc.sole.android.Scrap.Retrofit.ScrapService
 import cmc.sole.android.databinding.DialogScrapCourseDeleteBinding
 import cmc.sole.android.databinding.DialogScrapFolderNewBinding
 
-class DialogScrapCourseDelete: DialogFragment(), ScrapCourseDeleteView {
+class DialogScrapCourseDelete: DialogFragment(), ScrapCourseDeleteView, ScrapDefaultFolderCourseDeleteView {
 
     lateinit var binding: DialogScrapCourseDeleteBinding
 
@@ -54,6 +55,7 @@ class DialogScrapCourseDelete: DialogFragment(), ScrapCourseDeleteView {
     private fun initService() {
         scrapService = ScrapService()
         scrapService.setScrapCourseDeleteView(this)
+        scrapService.setScrapDefaultFolderDeleteView(this)
     }
 
     override fun onResume() {
@@ -68,16 +70,24 @@ class DialogScrapCourseDelete: DialogFragment(), ScrapCourseDeleteView {
         }
         
         binding.scrapCourseDeleteBtn.setOnClickListener {
-            scrapService.deleteScrapCourse(scrapFolderId, deleteCourseId)
+            // scrapService.deleteScrapCourse(scrapFolderId, deleteCourseId)
             dismiss()
         }
     }
 
     override fun scrapCourseDeleteSuccessView() {
-        TODO("Not yet implemented")
+        Toast.makeText(context, "삭제 완료", Toast.LENGTH_LONG).show()
     }
 
     override fun scrapCourseDeleteFailureView() {
-        TODO("Not yet implemented")
+        Toast.makeText(context, "삭제 실패", Toast.LENGTH_LONG).show()
+    }
+
+    override fun scrapDefaultFolderCourseDeleteSuccessView() {
+        Toast.makeText(context, "삭제 완료", Toast.LENGTH_LONG).show()
+    }
+
+    override fun scrapDefaultFolderCourseDeleteFailureView() {
+        Toast.makeText(context, "삭제 실패", Toast.LENGTH_LONG).show()
     }
 }

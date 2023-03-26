@@ -8,10 +8,12 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import cmc.sole.android.Course.CourseDetailActivity
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.MyCourse.Retrofit.*
 import cmc.sole.android.MyCourse.Write.MyCourseWriteActivity
@@ -19,18 +21,24 @@ import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.Utils.NewDynamicDrawableSpan
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
-import cmc.sole.android.Utils.TagTranslator
+import cmc.sole.android.Utils.Translator
 import cmc.sole.android.databinding.FragmentMyCourseBinding
 
 
 class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBinding::inflate),
-    MyCourseHistoryInfoView, MyCourseHistoryView {
+    MyCourseHistoryInfoView, MyCourseHistoryView, MyCourseNullTagHistoryView {
 
     lateinit var myCourseCourseRVAdapter: MyCourseCourseRVAdapter
     var myCourseCourseList = ArrayList<DefaultCourse>()
     private var checkTagList = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
     lateinit var myCourseService: MyCourseService
-    var courseId = 5
+    var courseId: Int? = null
+    var detailCourseId = 0
+
+    override fun onResume() {
+        super.onResume()
+        myCourseService.getMyCourseNullTagHistory(courseId)
+    }
 
     override fun initAfterBinding() {
         initService()
@@ -42,62 +50,76 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
         myCourseService = MyCourseService()
         myCourseService.setMyCourseHistoryInfoView(this)
         myCourseService.setMyCourseHistoryView(this)
+        myCourseService.setMyCourseNullTagView(this)
         myCourseService.getMyCourseHistoryInfo()
-        myCourseService.getMyCourseHistory(courseId, MyCourseHistoryRequest(setOf(), setOf(), setOf()))
+        myCourseService.getMyCourseNullTagHistory(courseId)
     }
 
     private fun initAdapter() {
         myCourseCourseRVAdapter = MyCourseCourseRVAdapter(myCourseCourseList)
         binding.myCourseCourseRv.adapter = myCourseCourseRVAdapter
         binding.myCourseCourseRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.myCourseCourseRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 20))
+        binding.myCourseCourseRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 40))
+        myCourseCourseRVAdapter.setOnItemClickListener(object: MyCourseCourseRVAdapter.OnItemClickListener {
+            override fun onItemClick(data: DefaultCourse, position: Int) {
+                // API: 코스 상세보기 연결
+                detailCourseId = data.courseId
+                var intent = Intent(activity, CourseDetailActivity::class.java)
+                intent.putExtra("courseId", detailCourseId)
+                Log.d("API-TEST", "detailCourseId = $detailCourseId")
+                startActivity(intent)
+            }
+        })
     }
 
     private fun initClickListener() {
-        binding.myCourseLocationTag.setOnClickListener {
-            val myCourseTagBottomFragment = MyCourseTagBottomFragment()
-            var bundle = Bundle()
-            bundle.putBooleanArray("checkTagList", checkTagList)
-            myCourseTagBottomFragment.arguments = bundle
-            myCourseTagBottomFragment.show(requireActivity().supportFragmentManager, "myCourseTagBottom")
-            myCourseTagBottomFragment.setOnFinishListener(object: MyCourseTagBottomFragment.OnTagFragmentFinishListener {
-                override fun finish(checkTagList: BooleanArray, myCourseHistoryRequest: MyCourseHistoryRequest) {
-                    this@MyCourseFragment.checkTagList = checkTagList
-                    checkOptionTag()
-                    myCourseService.getMyCourseHistory(courseId, myCourseHistoryRequest)
-                }
-            })
-        }
-
-        binding.myCourseWithTag.setOnClickListener {
-            val myCourseTagBottomFragment = MyCourseTagBottomFragment()
-            var bundle = Bundle()
-            bundle.putBooleanArray("checkTagList", checkTagList)
-            myCourseTagBottomFragment.arguments = bundle
-            myCourseTagBottomFragment.show(requireActivity().supportFragmentManager, "myCourseTagBottom")
-            myCourseTagBottomFragment.setOnFinishListener(object: MyCourseTagBottomFragment.OnTagFragmentFinishListener {
-                override fun finish(checkTagList: BooleanArray, myCourseHistoryRequest: MyCourseHistoryRequest) {
-                    this@MyCourseFragment.checkTagList = checkTagList
-                    checkOptionTag()
-                    myCourseService.getMyCourseHistory(courseId, myCourseHistoryRequest)
-                }
-            })
-        }
-
-        binding.myCourseTransportTag.setOnClickListener {
-            val myCourseTagBottomFragment = MyCourseTagBottomFragment()
-            var bundle = Bundle()
-            bundle.putBooleanArray("checkTagList", checkTagList)
-            myCourseTagBottomFragment.arguments = bundle
-            myCourseTagBottomFragment.show(requireActivity().supportFragmentManager, "myCourseTagBottom")
-            myCourseTagBottomFragment.setOnFinishListener(object: MyCourseTagBottomFragment.OnTagFragmentFinishListener {
-                override fun finish(checkTagList: BooleanArray, myCourseHistoryRequest: MyCourseHistoryRequest) {
-                    this@MyCourseFragment.checkTagList = checkTagList
-                    checkOptionTag()
-                    myCourseService.getMyCourseHistory(courseId, myCourseHistoryRequest)
-                }
-            })
-        }
+//        binding.myCourseLocationTag.setOnClickListener {
+//            val myCourseTagBottomFragment = MyCourseTagBottomFragment()
+//            var bundle = Bundle()
+//            bundle.putBooleanArray("checkTagList", checkTagList)
+//            myCourseTagBottomFragment.arguments = bundle
+//            myCourseTagBottomFragment.show(requireActivity().supportFragmentManager, "myCourseTagBottom")
+//            myCourseTagBottomFragment.setOnFinishListener(object: MyCourseTagBottomFragment.OnTagFragmentFinishListener {
+//                override fun finish(checkTagList: BooleanArray, myCourseHistoryRequest: MyCourseHistoryRequest) {
+//                    this@MyCourseFragment.checkTagList = checkTagList
+//                    checkOptionTag()
+//                    myCourseService.getMyCourseHistory(courseId, myCourseHistoryRequest)
+//                }
+//            })
+//        }
+//
+//        binding.myCourseWithTag.setOnClickListener {
+//            val myCourseTagBottomFragment = MyCourseTagBottomFragment()
+//            var bundle = Bundle()
+//            bundle.putBooleanArray("checkTagList", checkTagList)
+//            myCourseTagBottomFragment.arguments = bundle
+//            myCourseTagBottomFragment.show(requireActivity().supportFragmentManager, "myCourseTagBottom")
+//            myCourseTagBottomFragment.setOnFinishListener(object: MyCourseTagBottomFragment.OnTagFragmentFinishListener {
+//                override fun finish(checkTagList: BooleanArray, myCourseHistoryRequest: MyCourseHistoryRequest) {
+//                    this@MyCourseFragment.checkTagList = checkTagList
+//                    checkOptionTag()
+//
+//                    if (myCourseHistoryRequest.placeCategories!!.isEmpty() && myCourseHistoryRequest.transCategories!!.isEmpty() && myCourseHistoryRequest.withCategories!!.isEmpty())
+//                        myCourseService.getMyCourseNullTagHistory(courseId)
+//                    else myCourseService.getMyCourseHistory(courseId, myCourseHistoryRequest)
+//                }
+//            })
+//        }
+//
+//        binding.myCourseTransportTag.setOnClickListener {
+//            val myCourseTagBottomFragment = MyCourseTagBottomFragment()
+//            var bundle = Bundle()
+//            bundle.putBooleanArray("checkTagList", checkTagList)
+//            myCourseTagBottomFragment.arguments = bundle
+//            myCourseTagBottomFragment.show(requireActivity().supportFragmentManager, "myCourseTagBottom")
+//            myCourseTagBottomFragment.setOnFinishListener(object: MyCourseTagBottomFragment.OnTagFragmentFinishListener {
+//                override fun finish(checkTagList: BooleanArray, myCourseHistoryRequest: MyCourseHistoryRequest) {
+//                    this@MyCourseFragment.checkTagList = checkTagList
+//                    checkOptionTag()
+//                    myCourseService.getMyCourseHistory(courseId, myCourseHistoryRequest)
+//                }
+//            })
+//        }
 
         binding.myCourseFb.setOnClickListener {
             startActivity(Intent(activity, MyCourseWriteActivity::class.java))
@@ -116,11 +138,17 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
         var infoContent = "지금까지 $totalDate 일간 $totalPlaces 곳의 장소를 방문하며,\n이번 달 총 $totalCourses 개의 코스를 기록했어요"
         binding.myCourseInfoContent.text = setSpannableText(infoContent, "top")
 
-        var mostRegion = TagTranslator.tagEngToKor(activity as AppCompatActivity, myCourseHistoryResult.mostRegion)
-        var mostTransCategories = TagTranslator.tagEngToKor(activity as AppCompatActivity, myCourseHistoryResult.mostTransCategories.elementAt(0))
-        var mostPlaceCategories = TagTranslator.tagEngToKor(activity as AppCompatActivity, myCourseHistoryResult.mostPlaceCategories.elementAt(0))
+        var mostRegion = myCourseHistoryResult.mostRegion
 
-        if (mostRegion == "." || mostTransCategories == "." || mostPlaceCategories == ".") {
+        var mostTransCategories = "."
+        var mostPlaceCategories = "."
+        if (myCourseHistoryResult.mostTransCategories.isNotEmpty())
+            mostTransCategories = Translator.tagEngToKor(activity as AppCompatActivity, myCourseHistoryResult.mostTransCategories.elementAt(0))
+        if (myCourseHistoryResult.mostTransCategories.isNotEmpty())
+            mostPlaceCategories = Translator.tagEngToKor(activity as AppCompatActivity, myCourseHistoryResult.mostPlaceCategories.elementAt(0))
+
+        Log.d("WRITE-TEST", "mostRegion = $mostRegion / mostTrans = $mostTransCategories / mostPlace = $mostPlaceCategories")
+        if (mostRegion == "" || mostTransCategories == "." || mostPlaceCategories == ".") {
             binding.myCourseInfoTag1.visibility = View.GONE
             binding.myCourseInfoTag2.visibility = View.GONE
         } else {
@@ -205,32 +233,40 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
         }
     }
 
-    private fun checkOptionTag() {
-        for (i in 0..8) {
-            if (checkTagList[i]) {
-                binding.myCourseLocationTag.strokeColor = ContextCompat.getColor(requireContext(), R.color.main)
-                break
-            } else if (i == 8) {
-                binding.myCourseLocationTag.strokeColor = Color.parseColor("#D3D4D5")
-            }
-        }
+//    private fun checkOptionTag() {
+//        for (i in 0..8) {
+//            if (checkTagList[i]) {
+//                binding.myCourseLocationTag.strokeColor = ContextCompat.getColor(requireContext(), R.color.main)
+//                break
+//            } else if (i == 8) {
+//                binding.myCourseLocationTag.strokeColor = Color.parseColor("#D3D4D5")
+//            }
+//        }
+//
+//        for (i in 9..13) {
+//            if (checkTagList[i]) {
+//                binding.myCourseWithTag.strokeColor = ContextCompat.getColor(requireContext(), R.color.main)
+//                break
+//            } else if (i == 13) {
+//                binding.myCourseWithTag.strokeColor = Color.parseColor("#D3D4D5")
+//            }
+//        }
+//
+//        for (i in 14..17) {
+//            if (checkTagList[i]) {
+//                binding.myCourseTransportTag.strokeColor = ContextCompat.getColor(requireContext(), R.color.main)
+//                break
+//            } else if (i == 17) {
+//                binding.myCourseTransportTag.strokeColor = Color.parseColor("#D3D4D5")
+//            }
+//        }
+//    }
 
-        for (i in 9..13) {
-            if (checkTagList[i]) {
-                binding.myCourseWithTag.strokeColor = ContextCompat.getColor(requireContext(), R.color.main)
-                break
-            } else if (i == 13) {
-                binding.myCourseWithTag.strokeColor = Color.parseColor("#D3D4D5")
-            }
-        }
+    override fun setMyCourseNullTagHistorySuccessView(myCourseHistoryResult: ArrayList<DefaultCourse>) {
+        myCourseCourseRVAdapter.addAllItems(myCourseHistoryResult)
+    }
 
-        for (i in 14..17) {
-            if (checkTagList[i]) {
-                binding.myCourseTransportTag.strokeColor = ContextCompat.getColor(requireContext(), R.color.main)
-                break
-            } else if (i == 17) {
-                binding.myCourseTransportTag.strokeColor = Color.parseColor("#D3D4D5")
-            }
-        }
+    override fun setMyCourseNullTagHistoryFailureView() {
+        showToast("나의 기록 가져오기 실패")
     }
 }

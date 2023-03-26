@@ -27,7 +27,7 @@ interface FollowRetrofitInterfaces {
 
     @GET("/api/follows/{followInfoMemberSocialId}")
     fun getFollowUserInfo(
-        @Path("followInfoMemberSocialId") followInfoMemberSocialId: Int,
-        @Query("courseId") courseId: Int
+        @Path("followInfoMemberSocialId") followInfoMemberSocialId: String,
+        @Query("courseId") courseId: Int?
     ): Call<FollowUserInfoResponse>
 }

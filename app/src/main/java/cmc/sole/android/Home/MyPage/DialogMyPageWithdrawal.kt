@@ -54,9 +54,8 @@ class DialogMyPageWithdrawal: DialogFragment(), MyPageMemberQuitView {
         }
 
         binding.withdrawalWithdrawal.setOnClickListener {
-            Toast.makeText(context, "탈퇴하기", Toast.LENGTH_SHORT).show()
             // UPDATE: 임시로 주석 처리
-            // homeService.deleteMember()
+            homeService.deleteMember()
         }
     }
 

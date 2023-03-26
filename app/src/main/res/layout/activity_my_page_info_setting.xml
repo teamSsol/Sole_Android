@@ -54,6 +54,7 @@
             android:id="@+id/signup_nickname_profile_iv"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_profile" />
 
     </androidx.cardview.widget.CardView>

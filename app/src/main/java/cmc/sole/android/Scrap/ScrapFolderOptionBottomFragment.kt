@@ -21,6 +21,7 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
     private lateinit var dialogFinishListener: OnScrapOptionFinishListener
     var folderEditName: String = ""
     var scrapFolderId: Int = -1
+    private var deleteCourseId = ArrayList<Int>()
 
     private var mode = ""
 
@@ -44,6 +45,7 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
     ): View? {
         binding = BottomFragmentScrapFolderOptionBinding.inflate(inflater, container, false)
         scrapFolderId = requireArguments().getInt("scrapFolderId")
+        deleteCourseId = requireArguments().getIntegerArrayList("deleteCourseId") as ArrayList<Int>
 
         initClickListener()
 
@@ -89,7 +91,6 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
                 override fun finish(dialogMode: String, data: String) {
                     if (dialogMode == "edit") {
                         mode = "edit"
-                        Log.d("API-TEST", "2 folderEditName = $folderEditName")
                         folderEditName = data
                         dismiss()
                     }
@@ -102,6 +103,7 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
             val scrapFolderOptionDeleteDialog = DialogScrapFolderDelete()
             var bundle = Bundle()
             bundle.putInt("scrapFolderId", scrapFolderId)
+            bundle.putIntegerArrayList("deleteCourseId", deleteCourseId)
             scrapFolderOptionDeleteDialog.arguments = bundle
             scrapFolderOptionDeleteDialog.show(requireActivity().supportFragmentManager, "ScrapFolderDeleteDialog")
             scrapFolderOptionDeleteDialog.setOnFinishListener(object: DialogScrapFolderDelete.OnFinishListener {

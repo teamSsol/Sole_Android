@@ -1,6 +1,7 @@
 package cmc.sole.android.Scrap.Retrofit
 
 import cmc.sole.android.CourseTag.Categories
+import cmc.sole.android.Home.DefaultCourse
 
 data class ScrapFolderDataResponse(
     var data: ArrayList<ScrapFolderDataResult>,
@@ -13,6 +14,13 @@ data class ScrapFolderDataResult(
     var scrapFolderId: Int,
     var scrapFolderName: String,
     var viewType: Int = 0
+)
+
+data class ScrapDefaultFolderDataResponse(
+    var data: ArrayList<ScrapCourseResult>,
+    var status: Int,
+    var success: Boolean,
+    var timestamp: String
 )
 
 data class ScrapFolderAddRequest(
@@ -42,7 +50,7 @@ data class ScrapCourseResult(
     var address: String,
     var categories: Set<Categories>,
     var courseId: Int,
-    var distance: Int,
+    var distance: Double,
     var duration: Int,
     var like: Boolean,
     var thumbnailImg: String,

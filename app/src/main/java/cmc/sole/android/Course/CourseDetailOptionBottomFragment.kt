@@ -17,13 +17,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class CourseDetailOptionBottomFragment: BottomSheetDialogFragment() {
 
     lateinit var binding: BottomFragmentCourseDetailOptionBinding
-
+    var courseId = -1
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = BottomFragmentCourseDetailOptionBinding.inflate(inflater, container, false)
+        courseId = requireArguments().getInt("courseId", -1)
         initClickListener()
         return binding.root
     }
@@ -58,12 +59,18 @@ class CourseDetailOptionBottomFragment: BottomSheetDialogFragment() {
 
     private fun initClickListener() {
         binding.courseDetailOptionEdit.setOnClickListener {
-            startActivity(Intent(activity, MyCourseWriteActivity::class.java))
+            val intent = Intent(activity, MyCourseWriteActivity::class.java)
+            intent.putExtra("courseId", courseId)
+            startActivity(intent)
         }
 
         binding.courseDetailOptionDelete.setOnClickListener {
             val courseDetailDeleteDialog = DialogCourseDetailDelete()
+            var bundle = Bundle()
+            bundle.putInt("courseId", courseId)
+            courseDetailDeleteDialog.arguments = bundle
             courseDetailDeleteDialog.show(requireActivity().supportFragmentManager, "CourseDetailDeleteDialog")
+            dismiss()
         }
     }
 }

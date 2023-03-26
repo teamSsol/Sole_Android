@@ -14,11 +14,10 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 
 class SignupService {
-    private val TAG = "SIGNUP-SERVICE"
-
     private lateinit var signupCheckView: SignupCheckView
     private lateinit var signupNicknameView: SignupNicknameView
     private lateinit var signupSocialView: SignupSocialView
+    private lateinit var logoutView: LogoutView
 
     private val signupService = NetworkModule.getInstance()?.create(SignupRetrofitInterface::class.java)
 
@@ -32,10 +31,13 @@ class SignupService {
         this.signupSocialView = signupSocialView
     }
 
+    fun setLogoutView(logoutView: LogoutView) {
+        this.logoutView = logoutView
+    }
+
     fun signupCheck(body: SignupCheckRequest) {
         signupService?.socialCheck("kakao", body)?.enqueue(object: Callback<SignupCheckResponse> {
             override fun onResponse(call: Call<SignupCheckResponse>, response: Response<SignupCheckResponse>) {
-                Log.d("SIGNUP-SERVICE", "response = $response")
                 if (response.code() == 200) {
                     val signupCheckResponse = response.body()
                     if (signupCheckResponse?.success == true) {
@@ -73,11 +75,11 @@ class SignupService {
         })
     }
 
-    // fun socialSignup(provider: String, memberRequestDto: HashMap<String, RequestBody>, multipartFile: MultipartBody.Part?) {
-    fun socialSignup(provider: String, memberRequestDto: MultipartBody.Part, multipartFile: MultipartBody.Part?) {
+    fun socialSignup(provider: String?, memberRequestDto: MultipartBody.Part, multipartFile: MultipartBody.Part?) {
         signupService?.socialSignup(provider, memberRequestDto, multipartFile)?.enqueue(object: Callback<SignupSocialResponse> {
             override fun onResponse(call: Call<SignupSocialResponse>, response: Response<SignupSocialResponse>) {
-                Log.d("SIGNUP-SERVICE", "social-response = $response")
+                Log.d("API-TEST", "response = $response")
+                Log.d("API-TEST", "response.body = ${response.body()}")
                 if (response.code() == 200) {
                     val signupSocialResponse = response.body()
                     if (signupSocialResponse != null) {
@@ -88,7 +90,23 @@ class SignupService {
                 }
             }
             override fun onFailure(call: Call<SignupSocialResponse>, t: Throwable) {
-                Log.e("SIGNUP-SERVICE", "SignupService-SocialLogin-onFailure", t)
+                Log.e("API-TEST", "SignupService-SocialLogin-onFailure", t)
+            }
+        })
+    }
+
+    fun logout() {
+        signupService?.logout()?.enqueue(object: Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.code() == 200) {
+                    logoutView.setLogoutSuccessView()
+                } else {
+                    logoutView.setLogoutFailureView()
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("SIGNUP-SERVICE", "SignupService-logout-onFailure", t)
             }
         })
     }

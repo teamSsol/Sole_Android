@@ -14,3 +14,8 @@ interface SignupSocialView {
     fun signupSocialSuccessView(result: SignupSocialResponse)
     fun signupSocialFailureView()
 }
+
+interface LogoutView {
+    fun setLogoutSuccessView()
+    fun setLogoutFailureView()
+}

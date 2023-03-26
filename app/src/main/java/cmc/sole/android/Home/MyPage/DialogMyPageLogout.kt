@@ -1,17 +1,40 @@
 package cmc.sole.android.Home.MyPage
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import cmc.sole.android.CourseTag.Categories
+import cmc.sole.android.Login.LoginActivity
+import cmc.sole.android.Signup.Retrofit.LogoutView
+import cmc.sole.android.Signup.Retrofit.SignupService
 import cmc.sole.android.databinding.DialogMyPageLogoutBinding
 
 
-class DialogMyPageLogout: DialogFragment() {
+class DialogMyPageLogout: DialogFragment(),
+    LogoutView {
 
     lateinit var binding: DialogMyPageLogoutBinding
+    private lateinit var signupService: SignupService
+    private lateinit var dialogFinishListener: OnFinishListener
+    var result = false
+
+    interface OnFinishListener {
+        fun finish(result: Boolean)
+    }
+
+    fun setOnFinishListener(listener: OnFinishListener) {
+        dialogFinishListener = listener
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dialogFinishListener.finish(result)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,9 +45,15 @@ class DialogMyPageLogout: DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP)
 
+        initService()
         initClickListener()
 
         return binding.root
+    }
+
+    private fun initService() {
+        signupService = SignupService()
+        signupService.setLogoutView(this)
     }
 
     override fun onResume() {
@@ -37,10 +66,20 @@ class DialogMyPageLogout: DialogFragment() {
         binding.logoutCancel.setOnClickListener {
             dismiss()
         }
-        
-        // UPDATE: 로그아웃 API 연동해주기
+
         binding.logoutLogout.setOnClickListener {
-            Toast.makeText(context, "로그아웃", Toast.LENGTH_SHORT).show()
+            signupService.logout()
         }
+    }
+
+    override fun setLogoutSuccessView() {
+        Log.d("API-TEST", "logout-success")
+        result = true
+        dismiss()
+    }
+
+    override fun setLogoutFailureView() {
+        result = false
+        Toast.makeText(context, "로그아웃 실패", Toast.LENGTH_SHORT).show()
     }
 }

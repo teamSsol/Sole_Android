@@ -2,6 +2,7 @@ package cmc.sole.android.Home.MyPage
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import cmc.sole.android.Home.MyPage.Alarm.MyPageAlarmActivity
 import cmc.sole.android.Home.MyPage.Alarm.MyPageAlarmSettingActivity
 import cmc.sole.android.Home.MyPage.FAQ.MyPageFAQActivity
@@ -10,6 +11,7 @@ import cmc.sole.android.Home.MyPageInfoResponse
 import cmc.sole.android.Home.MyPageInfoResult
 import cmc.sole.android.Home.Retrofit.HomeService
 import cmc.sole.android.Home.Retrofit.MyPageInfoView
+import cmc.sole.android.Login.LoginActivity
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivityMyPageBinding
 import com.bumptech.glide.Glide
@@ -21,7 +23,7 @@ class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding:
 
     override fun onResume() {
         super.onResume()
-        // initService()
+        homeService.getMyPageInfo()
     }
 
     override fun initAfterBinding() {
@@ -88,23 +90,33 @@ class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding:
         // MEMO: 이용약관
         // UPDATE: 이용약관 연결
         binding.myPageOption5.setOnClickListener {
-
+            changeActivity(MyPageServiceInfoActivity::class.java)
         }
 
         // MEMO: 개인정보 처리방침
         // UPDATE: 개인정보 처리방침 연결
         binding.myPageOption6.setOnClickListener {
-
+            changeActivity(MyPagePersonalInfoActivity::class.java)
         }
 
         binding.myPageLogoutTv.setOnClickListener {
             val logoutDialog = DialogMyPageLogout()
             logoutDialog.show(supportFragmentManager, "LogoutDialog")
+            logoutDialog.setOnFinishListener(object: DialogMyPageLogout.OnFinishListener {
+                override fun finish(result: Boolean) {
+                    Log.d("API-TEST", "result = $result")
+                    if (result) {
+                        startActivity(Intent(this@MyPageActivity, LoginActivity::class.java))
+                        finishAffinity()
+                    }
+                }
+            })
         }
     }
 
     override fun myPageInfoSuccessView(myPageInfoResponse: MyPageInfoResult) {
         myInfo = myPageInfoResponse
+        Log.d("API-TEST", "myPageInfoSuccessView = $myPageInfoResponse")
         Glide.with(this).load(myPageInfoResponse.profileImgUrl).into(binding.myPageProfileIv)
         binding.myPageNicknameTv.text = myPageInfoResponse.nickname
         binding.myPageFollowerTv.text = "팔로워 " + myPageInfoResponse.follower.toString()

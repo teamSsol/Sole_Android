@@ -7,13 +7,13 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import cmc.sole.android.Scrap.Retrofit.ScrapDefaultFolderCourseDeleteView
 import cmc.sole.android.Scrap.Retrofit.ScrapFolderDeleteView
 import cmc.sole.android.Scrap.Retrofit.ScrapService
 import cmc.sole.android.databinding.DialogScrapFolderDeleteBinding
 import cmc.sole.android.databinding.DialogScrapFolderNewBinding
 
-class DialogScrapFolderDelete: DialogFragment(),
-    ScrapFolderDeleteView {
+class DialogScrapFolderDelete: DialogFragment(), ScrapFolderDeleteView {
 
     lateinit var binding: DialogScrapFolderDeleteBinding
 
@@ -21,6 +21,7 @@ class DialogScrapFolderDelete: DialogFragment(),
     private var scrapFolderId: Int = -1
     private lateinit var dialogFinishListener: OnFinishListener
     private var mode = ""
+    private var deleteCourseId = ArrayList<Int>()
 
     interface OnFinishListener {
         fun finish(mode: String)
@@ -45,6 +46,7 @@ class DialogScrapFolderDelete: DialogFragment(),
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP)
 
         scrapFolderId = requireArguments().getInt("scrapFolderId")
+        deleteCourseId = requireArguments().getIntegerArrayList("deleteCourseId") as ArrayList<Int>
 
         initService()
         initClickListener()
