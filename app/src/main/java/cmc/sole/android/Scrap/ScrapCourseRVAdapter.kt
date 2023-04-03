@@ -14,6 +14,7 @@ import cmc.sole.android.Utils.Translator
 import cmc.sole.android.databinding.ItemMyCourseCourseBinding
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexboxLayoutManager
+import kotlin.math.roundToInt
 
 class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseResult>): RecyclerView.Adapter<ScrapCourseRVAdapter.ViewHolder>() {
 
@@ -84,7 +85,8 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
             binding.myCourseCourseTitleTv.text = scrapCourse.title
             binding.myCourseCourseLocationTv.text = scrapCourse.address
             binding.myCourseCourseTimeTv.text = "${(scrapCourse.duration.toDouble() / 60).toInt()} 시간 소요"
-            binding.myCourseCourseDistanceTv.text = scrapCourse.distance.toString() + "km 이동"
+            binding.myCourseCourseDistanceTv.text = ((scrapCourse.distance * 100.0).roundToInt() / 100.0).toString() + "km 이동"
+
 
             if (scrapCourse.checkMode) {
                 binding.myCourseCourseUncheckIv.visibility = View.VISIBLE
@@ -94,9 +96,12 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
             }
 
             tagRVAdapter.clearItems()
+
             for (i in 0 until scrapCourse.categories.size) {
                 tagRVAdapter.addItem(Translator.tagEngToKor(binding.root.context as AppCompatActivity, scrapCourse.categories.elementAt(i).toString()))
+                if (i == 2) break
             }
+
             tagRVAdapter.addItem("")
         }
     }

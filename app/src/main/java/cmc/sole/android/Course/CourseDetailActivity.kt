@@ -34,10 +34,11 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.overlay.PolylineOverlay
+import kotlin.math.roundToInt
 
 
 class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
-    HomeCourseDetailView, MyCourseReportView, HomeScrapAddAndCancelView, FollowUnfollowView {
+    HomeCourseDetailView, HomeScrapAddAndCancelView, FollowUnfollowView {
 
     lateinit var binding: ActivityCourseDetailBinding
     private lateinit var courseDetailCourseRVAdapter: CourseDetailCourseRVAdapter
@@ -45,7 +46,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
     private lateinit var tagRVAdapter: MyCourseTagRVAdapter
     private var tagList = ArrayList<String>()
     lateinit var homeService: HomeService
-    lateinit var myCourseService: MyCourseService
     lateinit var followService: FollowService
     var courseId = -1
     var like = false
@@ -95,9 +95,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         homeService.getHomeDetailCourse(courseId)
         homeService.setHomeScrapAddAndCancelView(this)
 
-        myCourseService = MyCourseService()
-        myCourseService.setMyCourseReportView(this)
-
         followService = FollowService()
         followService.setFollowUnfollowView(this)
     }
@@ -115,11 +112,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
             courseDetailOptionBottomFragment.show(supportFragmentManager, "CourseDetailOptionBottom")
         }
 
-        binding.courseDetailReportIv.setOnClickListener {
-            val courseDetailReportDialog = DialogCourseDetailReport()
-            courseDetailReportDialog.show(supportFragmentManager, "CourseDetailReportDialog")
-        }
-
         binding.courseDetailCourseDetailIv.setOnClickListener {
             if (courseDetailCourseRVAdapter.returnViewType() == simpleMode) {
                 courseDetailCourseRVAdapter.setViewType(detailMode)
@@ -129,7 +121,11 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         }
 
         binding.courseDetailReportIv.setOnClickListener {
-            myCourseService.reportCourse(courseId)
+            val courseDetailReportDialog = DialogCourseDetailReport()
+            var bundle = Bundle()
+            bundle.putInt("courseId", courseId)
+            courseDetailReportDialog.arguments = bundle
+            courseDetailReportDialog.show(supportFragmentManager, "CourseDetailReportDialog")
         }
 
         binding.courseDetailTitleHeartIv.setOnClickListener {
@@ -218,7 +214,7 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
 
         binding.courseDetailCourseContent.text = homeCourseDetailResult.description
 
-        binding.courseDetailCourseDistanceTv.text = homeCourseDetailResult.distance.toString() + "km 이동"
+        binding.courseDetailCourseDistanceTv.text = ((homeCourseDetailResult.distance * 100.0).roundToInt() / 100.0).toString() + "km 이동"
         binding.courseDetailCourseTimeTv.text = "${(homeCourseDetailResult.duration.toDouble() / 60).toInt()} 시간 소요"
 
         Log.d("API-TEST", "${homeCourseDetailResult.followStatus}")
@@ -260,14 +256,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
 
     override fun homeCourseDetailFailureView() {
         Log.d("API-TEST", "디테일 실패")
-    }
-
-    override fun setMyCourseReportSuccessView() {
-        Toast.makeText(this, "코스를 정상적으로 신고했습니다", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun setMyCourseReportFailureView() {
-        Toast.makeText(this, "코스 신고하기를 실패했습니다", Toast.LENGTH_SHORT).show()
     }
 
     override fun homeScrapAddAndCancelSuccessView() {
