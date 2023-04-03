@@ -8,7 +8,6 @@
         android:id="@+id/my_course_course_iv"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/test_img"
         android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

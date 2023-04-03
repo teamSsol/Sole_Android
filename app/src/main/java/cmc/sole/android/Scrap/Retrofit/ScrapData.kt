@@ -63,6 +63,18 @@ data class ScrapFolderNameUpdateRequest(
     var scrapFolderName: String
 )
 
+data class ScrapFolderCourseMoveResponse(
+    var data: ScrapCourseMoveResult,
+    var status: Int,
+    var success: Boolean,
+    var timestamp: String
+)
+
+data class ScrapCourseMoveResult(
+    var courseTitles: ArrayList<String>,
+    var scrapFolderName: String
+)
+
 const val defaultFolder = 1
 const val addFolder = 2
 

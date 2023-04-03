@@ -9,9 +9,12 @@ import android.location.Location
 import android.location.LocationManager
 import android.location.LocationRequest
 import android.os.Build
+import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -27,6 +30,7 @@ import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.databinding.FragmentHomeBinding
+import com.google.android.gms.location.FusedLocationProviderClient
 
 class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate),
     HomePopularCourseView, HomeDefaultCourseView, HomeGetCurrentGPSView, HomeUpdateCurrentGPSView, HomeScrapAddAndCancelView {
@@ -37,6 +41,8 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
     private var myCourseList = ArrayList<DefaultCourse>()
     private lateinit var homeService: HomeService
     var courseId: Int? = null
+    var popularAPIFlag = false
+    var tasteAPIFlag = false
 
     override fun initAfterBinding() {
         initAdapter()
@@ -46,6 +52,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
 
     override fun onResume() {
         super.onResume()
+        Log.d("TEMP-TEST", "onResume")
         myCourseRVAdapter.clearItems()
         homeService.getHomePopularCourse()
         homeService.getHomeDefaultCourse(courseId, "")

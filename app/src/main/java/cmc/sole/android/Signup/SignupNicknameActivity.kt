@@ -25,8 +25,11 @@ import cmc.sole.android.databinding.ActivitySignupNicknameBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -126,7 +129,7 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
                 multipartFile = null
             } else {
                 file = File(absolutelyPath(imageUri, this))
-                requestFile = RequestBody.create(MediaType.parse("image/*"), file)
+                requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
                 multipartFile = MultipartBody.Part.createFormData("multipartFile", file.name, requestFile)
             }
 
@@ -157,7 +160,7 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
             jsonBody.put("transCategories", JSONArray(getTransCategories()!!.toTypedArray()))
             jsonBody.put("withCategories", JSONArray(getWithCategories()!!.toTypedArray()))
 
-            val requestBody: RequestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonBody.toString())
+            val requestBody: RequestBody = jsonBody.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
             var memberRequestDto = MultipartBody.Part.createFormData("memberRequestDto", "memberRequestDto", requestBody)
 
             signupService.socialSignup("kakao", memberRequestDto, multipartFile)

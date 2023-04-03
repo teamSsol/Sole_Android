@@ -63,7 +63,7 @@ class CourseDetailCourseRVAdapter(private val courseList: ArrayList<PlaceRespons
             binding.courseDetailAddressTv.text = course.address
 
             if (course.placeImgUrls.size > 0)
-                Glide.with(binding.root.context).load(course.placeImgUrls[0]).centerCrop().placeholder(R.drawable.test_img).into(binding.courseDetailThumbnailImg)
+                Glide.with(binding.root.context).load(course.placeImgUrls[0]).centerCrop().into(binding.courseDetailThumbnailImg)
         }
     }
 

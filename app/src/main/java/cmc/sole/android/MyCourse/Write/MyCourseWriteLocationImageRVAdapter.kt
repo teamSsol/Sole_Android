@@ -69,8 +69,6 @@ class MyCourseWriteLocationImageRVAdapter(private val imgList: ArrayList<MyCours
                 .load(img.imgUrl).fitCenter()
                 .apply(RequestOptions().centerCrop())
                 .into(binding.myCourseWriteLocationImageIv)
-
-            binding.myCourseWriteLocationImageIv.setImageResource(R.drawable.test_img)
         }
     }
 

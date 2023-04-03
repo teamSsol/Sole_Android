@@ -25,8 +25,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.File
 
@@ -149,7 +152,7 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
                 multipartFile = null
             } else {
                 file = File(absolutelyPath(imageUri, this))
-                requestFile = RequestBody.create(MediaType.parse("image/*"), file)
+                requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
                 multipartFile = MultipartBody.Part.createFormData("multipartFile", file.name, requestFile)
             }
 
@@ -157,7 +160,7 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
             jsonBody.put("description", binding.myPageInfoIntroEt.text)
             jsonBody.put("nickname", binding.myPageInfoNicknameEt.text)
 
-            val requestBody: RequestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonBody.toString())
+            val requestBody: RequestBody = jsonBody.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
             var mypageRequestDto = MultipartBody.Part.createFormData("mypageRequestDto", "mypageRequestDto", requestBody)
 
             homeService.myPageInfoUpdate(mypageRequestDto, multipartFile)

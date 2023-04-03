@@ -20,6 +20,7 @@ class ScrapService {
     private lateinit var scrapFolderNameUpdateView: ScrapFolderNameUpdateView
     private lateinit var scrapCourseView: ScrapCourseView
     private lateinit var scrapCourseDeleteView: ScrapCourseDeleteView
+    private lateinit var scrapCourseMoveView: ScrapCourseMoveView
 
     fun setScrapFolderView(scrapFolderView: ScrapFolderView) {
         this.scrapFolderView = scrapFolderView
@@ -44,6 +45,9 @@ class ScrapService {
     }
     fun setScrapCourseDeleteView(scrapCourseDeleteView: ScrapCourseDeleteView) {
         this.scrapCourseDeleteView = scrapCourseDeleteView
+    }
+    fun setScrapCourseMoveView(scrapCourseMoveView: ScrapCourseMoveView) {
+        this.scrapCourseMoveView = scrapCourseMoveView
     }
 
     fun getScrapFolder() {
@@ -199,6 +203,29 @@ class ScrapService {
             }
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.e("SCRAP-SERVICE", "SCRAP-SERVICE-DELETE-SCRAP-COURSE-FAILURE", t)
+            }
+        })
+    }
+
+    fun moveScrapCourse(scrapFolderId: Int, courseIds: ArrayList<Int>) {
+        scrapService?.moveScrapFolder(scrapFolderId, courseIds)?.enqueue(object: Callback<ScrapFolderCourseMoveResponse> {
+            override fun onResponse(
+                call: Call<ScrapFolderCourseMoveResponse>,
+                response: Response<ScrapFolderCourseMoveResponse>
+            ) {
+                Log.d("API-TEST", "scrapFolderId = ${scrapFolderId}, courseId = $courseIds")
+                Log.d("API-TEST", "response = $response")
+                if (response.code() == 200) {
+                    val scrapCourseMoveResponse = response.body()
+                    if (scrapCourseMoveResponse?.success == true) {
+                        scrapCourseMoveView.scrapCourseMoveSuccessView(scrapCourseMoveResponse.data)
+                    } else {
+                        scrapCourseMoveView.scrapCourseMoveFailureView()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<ScrapFolderCourseMoveResponse>, t: Throwable) {
+                Log.e("SCRAP-SERVICE", "SCRAP-SERVICE-MOVE-SCRAP-COURSE-FAILURE", t)
             }
         })
     }
