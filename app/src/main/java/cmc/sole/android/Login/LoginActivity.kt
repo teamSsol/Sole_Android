@@ -30,7 +30,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
     private var TAG = "API-TEST"
 
     override fun initAfterBinding() {
-        KakaoSdk.init(this, BuildConfig.KAKAO_API_KEY)
+        KakaoSdk.init(this, getString(R.string.kakao_api_key))
 
         getFireBaseFCMToken()
         initClickListener()
