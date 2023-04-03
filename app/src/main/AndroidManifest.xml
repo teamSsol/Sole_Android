@@ -44,7 +44,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:host="oauth"
-                    android:scheme="kakao${KAKAO_API_KEY}" />
+                    android:scheme="@string/kakao_kakao_api_key" />
             </intent-filter>
         </activity>
         <activity android:name=".Signup.SignupAgreeActivity" />
