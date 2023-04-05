@@ -75,7 +75,8 @@ class FollowUserFragment: BaseFragment<FragmentFollowUserBinding>(FragmentFollow
     }
 
     override fun followUserInfoSuccessView(followUserInfo: FollowUserInfoResult) {
-        Glide.with(this).load(followUserInfo.profileImg).centerCrop().circleCrop().into(binding.followUserProfileIv)
+        Glide.with(this).load(followUserInfo.profileImg)
+            .placeholder(R.drawable.ic_profile).centerCrop().circleCrop().into(binding.followUserProfileIv)
         binding.followUserNicknameTv.text = followUserInfo.nickname
         binding.followUserPopularTitleTv.text = "${followUserInfo.nickname}님의 인기 코스"
         binding.followUserRecentTv.text = "${followUserInfo.nickname}님의 최근 코스"

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import cmc.sole.android.R
 import cmc.sole.android.databinding.ItemFollowListBinding
 import com.bumptech.glide.Glide
 
@@ -52,7 +53,8 @@ class FollowListRVAdapter(private val followList: ArrayList<FollowUserDataResult
 
     inner class ViewHolder(val binding: ItemFollowListBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(followList: FollowUserDataResult) {
-            Glide.with(binding.root.context).load(followList.member.profileImgUrl).centerCrop().circleCrop().into(binding.itemFollowListProfileIv)
+            Glide.with(binding.root.context).load(followList.member.profileImgUrl)
+                .placeholder(R.drawable.ic_profile).centerCrop().circleCrop().into(binding.itemFollowListProfileIv)
             binding.itemFollowListNicknameTv.text = followList.member.nickname
             binding.itemFollowListFollowerTv.text = followList.followerCount.toString() + " 팔로워"
             binding.itemFollowListFollowingTv.text = followList.followingCount.toString() + " 팔로잉"

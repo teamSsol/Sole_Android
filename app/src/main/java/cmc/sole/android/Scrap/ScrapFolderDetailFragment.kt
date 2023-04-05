@@ -85,8 +85,7 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
 
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (binding.scrapFolderDetailEditCv.visibility != View.VISIBLE) {
-                    binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
+                if (binding.scrapFolderDetailEditCv.visibility == View.GONE) {
                     binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
                     binding.scrapFolderDetailEditCv.visibility = View.VISIBLE
                     binding.scrapFolderDetailOkTv.visibility = View.GONE
@@ -95,8 +94,8 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
 
                     for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
                         scrapFolderDetailRVAdapter.getItems(i).checkMode = false
+                        scrapFolderDetailRVAdapter.notifyItemChanged(i)
                     }
-                    scrapFolderDetailRVAdapter.notifyDataSetChanged()
                 } else {
                     clearBackStack()
                 }
@@ -129,8 +128,8 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
 
             for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
                 scrapFolderDetailRVAdapter.getItems(i).checkMode = true
+                scrapFolderDetailRVAdapter.notifyItemChanged(i)
             }
-            scrapFolderDetailRVAdapter.notifyDataSetChanged()
         }
 
         binding.scrapFolderDetailMoveCv.setOnClickListener {
@@ -160,8 +159,8 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
                     for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
                         scrapFolderDetailRVAdapter.getItems(i).checkMode = false
                         scrapFolderDetailRVAdapter.getItems(i).isChecked = false
+                        scrapFolderDetailRVAdapter.notifyItemChanged(i)
                     }
-                    scrapFolderDetailRVAdapter.notifyDataSetChanged()
                 }
             })
         }
@@ -175,8 +174,8 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
 
                 for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
                     scrapFolderDetailRVAdapter.getItems(i).checkMode = false
+                    scrapFolderDetailRVAdapter.notifyItemChanged(i)
                 }
-                scrapFolderDetailRVAdapter.notifyDataSetChanged()
             }
         }
     }

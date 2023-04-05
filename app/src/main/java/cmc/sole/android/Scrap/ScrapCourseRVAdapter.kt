@@ -19,7 +19,6 @@ import kotlin.math.roundToInt
 class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseResult>): RecyclerView.Adapter<ScrapCourseRVAdapter.ViewHolder>() {
 
     private lateinit var itemClickListener: OnItemClickListener
-    private lateinit var itemLongClickListener: OnItemLongClickListener
     private var checkFlag = 0
     private lateinit var tagRVAdapter: MyCourseTagRVAdapter
     private var tagList = ArrayList<String>()
@@ -28,16 +27,8 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
         fun onItemClick(data: ScrapCourseResult, position: Int)
     }
 
-    interface OnItemLongClickListener {
-        fun onItemLongClick(data: ScrapCourseResult, position: Int)
-    }
-
     fun setOnItemClickListener(listener: OnItemClickListener) {
         itemClickListener = listener
-    }
-
-    fun setOnItemLongClickListener(listener: OnItemLongClickListener) {
-        itemLongClickListener = listener
     }
 
     override fun onCreateViewHolder(
@@ -69,7 +60,7 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
                 
                 for (i in 0 until scrapCourseList.size) {
                     scrapCourseList[i].checkMode = false
-                    scrapCourseList[i].isChecked= false
+                    scrapCourseList[i].isChecked = false
                 }
             }
             this.notifyDataSetChanged()
@@ -86,7 +77,6 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
             binding.myCourseCourseLocationTv.text = scrapCourse.address
             binding.myCourseCourseTimeTv.text = "${(scrapCourse.duration.toDouble() / 60).toInt()} 시간 소요"
             binding.myCourseCourseDistanceTv.text = ((scrapCourse.distance * 100.0).roundToInt() / 100.0).toString() + "km 이동"
-
 
             if (scrapCourse.checkMode) {
                 binding.myCourseCourseUncheckIv.visibility = View.VISIBLE

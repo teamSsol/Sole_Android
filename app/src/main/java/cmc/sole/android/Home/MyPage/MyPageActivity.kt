@@ -12,6 +12,7 @@ import cmc.sole.android.Home.MyPageInfoResult
 import cmc.sole.android.Home.Retrofit.HomeService
 import cmc.sole.android.Home.Retrofit.MyPageInfoView
 import cmc.sole.android.Login.LoginActivity
+import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivityMyPageBinding
 import com.bumptech.glide.Glide
@@ -117,7 +118,8 @@ class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding:
     override fun myPageInfoSuccessView(myPageInfoResponse: MyPageInfoResult) {
         myInfo = myPageInfoResponse
         Log.d("API-TEST", "myPageInfoSuccessView = $myPageInfoResponse")
-        Glide.with(this).load(myPageInfoResponse.profileImgUrl).into(binding.myPageProfileIv)
+        Glide.with(this).load(myPageInfoResponse.profileImgUrl)
+            .placeholder(R.drawable.ic_profile).centerCrop().circleCrop().into(binding.myPageProfileIv)
         binding.myPageNicknameTv.text = myPageInfoResponse.nickname
         binding.myPageFollowerTv.text = "팔로워 " + myPageInfoResponse.follower.toString()
         binding.myPageFollowingTv.text = "팔로잉 " + myPageInfoResponse.following.toString()

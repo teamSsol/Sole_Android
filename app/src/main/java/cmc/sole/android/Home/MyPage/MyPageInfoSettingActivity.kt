@@ -58,7 +58,8 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
     }
 
     override fun initAfterBinding() {
-        Glide.with(this).load(intent.getStringExtra("profileImgUrl")).into(binding.signupNicknameProfileIv)
+        Glide.with(this).load(intent.getStringExtra("profileImgUrl")).placeholder(R.drawable.ic_profile)
+            .circleCrop().centerCrop().into(binding.signupNicknameProfileIv)
         binding.myPageInfoEmailTv.text = intent.getStringExtra("socialId")
         binding.myPageInfoNicknameEt.setText(intent.getStringExtra("nickname"))
         binding.myPageInfoIntroEt.setText(intent.getStringExtra("description"))
@@ -187,7 +188,8 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
     }
 
     override fun myPageInfoUpdateSuccessView(myPageInfoResult: MyPageInfoResult) {
-        Glide.with(this).load(myPageInfoResult.profileImgUrl).into(binding.signupNicknameProfileIv)
+        Glide.with(this).load(myPageInfoResult.profileImgUrl)
+            .placeholder(R.drawable.ic_profile).centerCrop().circleCrop().into(binding.signupNicknameProfileIv)
         binding.myPageInfoEmailTv.text = myPageInfoResult.socialId
         binding.myPageInfoNicknameEt.setText(myPageInfoResult.nickname)
         binding.myPageInfoIntroEt.setText(myPageInfoResult.description)

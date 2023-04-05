@@ -241,7 +241,8 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         binding.courseDetailCourseName.text = homeCourseDetailResult.title
         binding.courseDetailNicknameTv.text = homeCourseDetailResult.writer.nickname
 
-        Glide.with(this).load(homeCourseDetailResult.writer.profileImgUrl).circleCrop().centerCrop().into(binding.courseDetailProfileIv)
+        Glide.with(this).load(homeCourseDetailResult.writer.profileImgUrl).placeholder(R.drawable.ic_profile)
+            .circleCrop().centerCrop().into(binding.courseDetailProfileIv)
 
         courseDetailCourseRVAdapter.addAllItems(homeCourseDetailResult.placeResponseDtos)
 
