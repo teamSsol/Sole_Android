@@ -11,7 +11,6 @@ class AuthorizationTokenInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder: Request.Builder = chain.request().newBuilder()
         builder.addHeader(Authorization_TOKEN, "${getAccessToken()}")
-        Log.d("API-TEST", "${getAccessToken()}")
         return chain.proceed(builder.build())
     }
 }

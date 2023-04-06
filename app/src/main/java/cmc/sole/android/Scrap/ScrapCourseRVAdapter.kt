@@ -49,21 +49,16 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
             itemClickListener.onItemClick(scrapCourseList[position], position)
             if (checkFlag == 1) { // MEMO: 편집 모드
                 scrapCourseList[position].isChecked = !scrapCourseList[position].isChecked
-                if (holder.binding.myCourseCourseCheckIv.visibility == View.VISIBLE) {
-                    holder.binding.myCourseCourseCheckIv.visibility = View.GONE
-                } else {
-                    holder.binding.myCourseCourseCheckIv.visibility = View.VISIBLE
-                }
-            } else { // MEMO: 기본 모드
-                holder.binding.myCourseCourseCheckIv.visibility = View.GONE
-                holder.binding.myCourseCourseUncheckIv.visibility = View.GONE
-                
-                for (i in 0 until scrapCourseList.size) {
-                    scrapCourseList[i].checkMode = false
-                    scrapCourseList[i].isChecked = false
-                }
+                this.notifyItemChanged(position)
             }
-            this.notifyDataSetChanged()
+//            else { // MEMO: 기본 모드
+//                for (i in 0 until scrapCourseList.size) {
+//                    scrapCourseList[i].checkMode = false
+//                    scrapCourseList[i].isChecked = false
+//                    this.notifyItemChanged(position)
+//                }
+//                this.notifyDataSetChanged()
+//            }
         }
         holder.bind(scrapCourseList[position])
     }
@@ -79,7 +74,13 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
             binding.myCourseCourseDistanceTv.text = ((scrapCourse.distance * 100.0).roundToInt() / 100.0).toString() + "km 이동"
 
             if (scrapCourse.checkMode) {
-                binding.myCourseCourseUncheckIv.visibility = View.VISIBLE
+                if (scrapCourse.isChecked) {
+                    binding.myCourseCourseCheckIv.visibility = View.VISIBLE
+                    binding.myCourseCourseUncheckIv.visibility = View.GONE
+                } else {
+                    binding.myCourseCourseCheckIv.visibility = View.GONE
+                    binding.myCourseCourseUncheckIv.visibility = View.VISIBLE
+                }
             } else {
                 binding.myCourseCourseUncheckIv.visibility = View.GONE
                 binding.myCourseCourseCheckIv.visibility = View.GONE
