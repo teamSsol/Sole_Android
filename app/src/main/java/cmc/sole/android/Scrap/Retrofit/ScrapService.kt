@@ -208,7 +208,7 @@ class ScrapService {
     }
 
     fun moveScrapCourse(scrapFolderId: Int, courseIds: ArrayList<Int>) {
-        scrapService?.moveScrapFolder(scrapFolderId, courseIds)?.enqueue(object: Callback<ScrapFolderCourseMoveResponse> {
+        scrapService?.moveDefaultScrapFolder(scrapFolderId, courseIds)?.enqueue(object: Callback<ScrapFolderCourseMoveResponse> {
             override fun onResponse(
                 call: Call<ScrapFolderCourseMoveResponse>,
                 response: Response<ScrapFolderCourseMoveResponse>

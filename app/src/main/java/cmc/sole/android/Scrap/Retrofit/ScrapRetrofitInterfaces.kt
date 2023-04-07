@@ -49,7 +49,7 @@ interface ScrapRetrofitInterfaces {
     ): Call<Void>
 
     @POST("/api/scraps/default/{scrapFolderId}")
-    fun moveScrapFolder(
+    fun moveDefaultScrapFolder(
         @Path("scrapFolderId") scrapFolderId: Int,
         @Body courseIds: ArrayList<Int>
     ): Call<ScrapFolderCourseMoveResponse>

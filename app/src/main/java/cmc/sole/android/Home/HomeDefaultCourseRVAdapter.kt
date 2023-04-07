@@ -3,7 +3,6 @@ package cmc.sole.android.Home
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemClickListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.Home.Retrofit.HomeScrapAddAndCancelView
@@ -14,10 +13,12 @@ import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecor
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.Utils.Translator
 import cmc.sole.android.databinding.ItemCourseDefaultBinding
+import cmc.sole.android.databinding.ItemCourseMoreBinding
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexboxLayoutManager
 
-class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>): RecyclerView.Adapter<cmc.sole.android.Home.HomeDefaultCourseRVAdapter.ViewHolder>(),
+// UPDATE: viewType 제거하고 업데이트 필요
+class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>): RecyclerView.Adapter<RecyclerView.ViewHolder>(),
     HomeScrapAddAndCancelView {
 
     private lateinit var itemClickListener: OnItemClickListener
@@ -36,39 +37,54 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): HomeDefaultCourseRVAdapter.ViewHolder {
-        val binding: ItemCourseDefaultBinding = ItemCourseDefaultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        tagRVAdapter = MyCourseTagRVAdapter(tagList)
-        binding.courseDefaultTagRv.adapter = tagRVAdapter
-        binding.courseDefaultTagRv.layoutManager = FlexboxLayoutManager(binding.root.context)
-        binding.courseDefaultTagRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 20))
-        binding.courseDefaultTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 20))
+    ): RecyclerView.ViewHolder {
+        return when (viewType) {
+            courseMoreItem -> {
+                val binding: ItemCourseMoreBinding = ItemCourseMoreBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                CourseMoreItemViewHolder(binding)
+            } else -> {
+                val binding: ItemCourseDefaultBinding = ItemCourseDefaultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                tagRVAdapter = MyCourseTagRVAdapter(tagList)
+                binding.courseDefaultTagRv.adapter = tagRVAdapter
+                binding.courseDefaultTagRv.layoutManager = FlexboxLayoutManager(binding.root.context)
+                binding.courseDefaultTagRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 20))
+                binding.courseDefaultTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 20))
 
-        homeService = HomeService()
-        homeService.setHomeScrapAddAndCancelView(this)
-        return ViewHolder(binding)
+                homeService = HomeService()
+                homeService.setHomeScrapAddAndCancelView(this)
+                CourseItemViewHolder(binding)
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: HomeDefaultCourseRVAdapter.ViewHolder, position: Int) {
-        holder.itemView.setOnClickListener {
-            itemClickListener.onItemClick(courseList[position], position, "all")
-        }
-        holder.binding.itemCourseHeartIv.setOnClickListener {
-            if (courseList[position].like)
-                holder.binding.itemCourseHeartIv.setImageResource(R.drawable.ic_heart_empty)
-            else holder.binding.itemCourseHeartIv.setImageResource(R.drawable.ic_heart_color)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (courseList[position].viewType) {
+            courseMoreItem -> {
+                (holder as CourseMoreItemViewHolder).bind(courseList[position])
+                holder.setIsRecyclable(false)
+            } else -> {
+                (holder as CourseItemViewHolder).itemView.setOnClickListener {
+                    itemClickListener.onItemClick(courseList[position], position, "all")
+                }
+                holder.binding.itemCourseHeartIv.setOnClickListener {
+                    if (courseList[position].like)
+                        holder.binding.itemCourseHeartIv.setImageResource(R.drawable.ic_heart_empty)
+                    else holder.binding.itemCourseHeartIv.setImageResource(R.drawable.ic_heart_color)
 
-            homeService.scrapAddAndCancel(courseList[position].courseId)
-            courseList[position].like = !courseList[position].like
+                    homeService.scrapAddAndCancel(courseList[position].courseId)
+                    courseList[position].like = !courseList[position].like
 
-            Log.d("API-TEST", "LIKE = ${courseList[position].like}")
+                    Log.d("API-TEST", "LIKE = ${courseList[position].like}")
+                }
+                holder.bind(courseList[position])
+                holder.setIsRecyclable(false)
+            }
         }
-        holder.bind(courseList[position])
     }
 
     override fun getItemCount(): Int = courseList.size
 
-    inner class ViewHolder(val binding: ItemCourseDefaultBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class CourseItemViewHolder(val binding: ItemCourseDefaultBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(course: DefaultCourse) {
             binding.itemCourseTitleTv.text = course.title
             Glide.with(binding.root.context).load(course.thumbnailImg).into(binding.itemCourseImg)
@@ -91,15 +107,22 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
         }
     }
 
+    inner class CourseMoreItemViewHolder(val binding: ItemCourseMoreBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(course: DefaultCourse) { }
+    }
+
     fun addItem(item: DefaultCourse) {
         courseList.add(item)
         this.notifyDataSetChanged()
     }
 
     fun addAllItems(items: ArrayList<DefaultCourse>) {
-        courseList.clear()
         courseList.addAll(items)
         this.notifyDataSetChanged()
+    }
+
+    fun returnAllItems(): ArrayList<DefaultCourse> {
+        return courseList
     }
 
     fun clearItems() {

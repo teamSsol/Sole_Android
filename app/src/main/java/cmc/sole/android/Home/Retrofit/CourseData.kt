@@ -62,7 +62,7 @@ data class DefaultCourse(
     var like: Boolean,
     var thumbnailImg: String,
     var title: String,
-    var viewType: Int? = null
+    var viewType: Int?
 )
 
 data class HomeDefaultResponse(
@@ -218,6 +218,9 @@ data class MyPageNoticeAddResponse(
     var success: Boolean,
     var timestamp: String
 )
+
+const val courseItem = 1
+const val courseMoreItem = 2
 
 const val courseDetailNumber = 1
 const val courseDetailLine = 2

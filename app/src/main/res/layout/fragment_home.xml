@@ -204,6 +204,7 @@
                 android:layout_marginTop="12dp"
                 android:orientation="vertical"
                 android:nestedScrollingEnabled="false"
+                tools:itemCount="2"
                 app:tint="@null"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -246,6 +247,55 @@
 <!--                    android:layout_marginVertical="13dp" />-->
 
 <!--            </com.google.android.material.card.MaterialCardView>-->
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/course_more_cv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                app:cardCornerRadius="8dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#EDEDED"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_my_course_rv">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/item_course_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingVertical="13dp">
+
+                    <TextView
+                        android:id="@+id/course_more_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="더 보기"
+                        android:textSize="14sp"
+                        android:textColor="#404040"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/course_more_iv"/>
+
+                    <ImageView
+                        android:id="@+id/course_more_iv"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:src="@drawable/ic_course_more"
+                        android:padding="2dp"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintTop_toTopOf="@id/course_more_tv"
+                        app:layout_constraintBottom_toBottomOf="@id/course_more_tv"
+                        app:layout_constraintStart_toEndOf="@id/course_more_tv"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:tint="#404040" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

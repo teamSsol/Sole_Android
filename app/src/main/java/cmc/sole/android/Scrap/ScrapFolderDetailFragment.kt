@@ -121,6 +121,7 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
             var bundle = Bundle()
             bundle.putInt("scrapFolderId", scrapFolderId)
             bundle.putIntegerArrayList("courseId", deleteCourseId)
+            bundle.putString("scrapFolderName", scrapFolderName)
             scrapCourseMoveDialog.arguments = bundle
             scrapCourseMoveDialog.show(requireActivity().supportFragmentManager, "ScrapCourseMoveDialog")
         }
@@ -130,6 +131,7 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
             var bundle = Bundle()
             bundle.putInt("scrapFolderId", scrapFolderId)
             bundle.putIntegerArrayList("courseId", deleteCourseId)
+            bundle.putString("scrapFolderName", scrapFolderName)
             scrapCourseDeleteDialog.arguments = bundle
             scrapCourseDeleteDialog.show(requireActivity().supportFragmentManager, "ScrapCourseDeleteDialog")
             scrapCourseDeleteDialog.setOnFinishListener(object: DialogScrapCourseDelete.OnFinishListener {

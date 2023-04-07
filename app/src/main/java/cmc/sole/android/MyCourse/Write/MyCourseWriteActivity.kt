@@ -145,7 +145,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
             if (writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
                 ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), REQ_GALLERY)
             } else {
-                val intent = Intent(Intent.ACTION_PICK)
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
                 intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
                 thumbnailImgResult.launch(intent)
             }
@@ -241,7 +241,13 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         var multipartFile: MultipartBody.Part?
 
         if (mainImageUri != null) {
+//            val resolver = applicationContext.contentResolver
+//            resolver.openInputStream(mainImageUri!!).use { stream ->
+//
+//            }
             file = File(mainImageUri.toString())
+            Log.d("API-TEST", "mainImageUri = $mainImageUri")
+            Log.d("API-TEST", "mainImageUri = ${mainImageUri.toString()}")
             requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
             multipartFile = MultipartBody.Part.createFormData("thumbnailImg", file.name, requestFile)
             thumbnailImg.add(multipartFile)
@@ -387,7 +393,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
                         ActivityCompat.requestPermissions(this@MyCourseWriteActivity, arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), REQ_GALLERY)
                     } else {
                         // 권한이 있는 경우 갤러리 실행
-                        val intent = Intent(Intent.ACTION_PICK)
+                        val intent = Intent(Intent.ACTION_GET_CONTENT)
                         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
                         locationImageResult.launch(intent)
                     }

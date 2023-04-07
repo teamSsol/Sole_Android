@@ -45,7 +45,7 @@ class DialogScrapCourseMove: DialogFragment(), ScrapCourseMoveView, ScrapFolderV
         scrapCourseMoveRVAdapter.setOnItemClickListener(object: ScrapCourseMoveRVAdapter.OnItemClickListener {
             override fun onItemClick(data: ScrapFolderDataResult, position: Int) {
                 Log.d("API-TEST", "data.scrapFolderId = ${data.scrapFolderId}, moveCourseId = $moveCourseId")
-                // scrapService.moveScrapCourse(data.scrapFolderId, moveCourseId)
+                scrapService.moveScrapCourse(data.scrapFolderId, moveCourseId)
             }
         })
     }
