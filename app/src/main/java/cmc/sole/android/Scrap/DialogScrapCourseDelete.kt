@@ -3,6 +3,7 @@ package cmc.sole.android.Scrap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
@@ -19,6 +20,7 @@ class DialogScrapCourseDelete: DialogFragment(), ScrapCourseDeleteView, ScrapDef
     lateinit var scrapService: ScrapService
     private var scrapFolderId: Int = -1
     private var deleteCourseId = ArrayList<Int>()
+    private var scrapFolderName = ""
     private lateinit var dialogFinishListener: OnFinishListener
 
     interface OnFinishListener {
@@ -45,6 +47,9 @@ class DialogScrapCourseDelete: DialogFragment(), ScrapCourseDeleteView, ScrapDef
 
         scrapFolderId = requireArguments().getInt("scrapFolderId")
         arguments?.getIntegerArrayList("courseId")?.let { deleteCourseId.addAll(it) }
+        scrapFolderName = requireArguments().getString("scrapFolderName").toString()
+
+        Log.d("API-TEST", "scrapFolderId = $scrapFolderId / deleteCourseId = $deleteCourseId")
 
         initService()
         initClickListener()
@@ -70,7 +75,11 @@ class DialogScrapCourseDelete: DialogFragment(), ScrapCourseDeleteView, ScrapDef
         }
         
         binding.scrapCourseDeleteBtn.setOnClickListener {
-            // scrapService.deleteScrapCourse(scrapFolderId, deleteCourseId)
+            if (scrapFolderName == "기본 폴더") {
+                scrapService.deleteScrapDefaultFolderCourse(deleteCourseId)
+            } else {
+                scrapService.deleteScrapCourse(scrapFolderId, deleteCourseId)
+            }
             dismiss()
         }
     }

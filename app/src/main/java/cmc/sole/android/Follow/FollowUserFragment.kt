@@ -20,6 +20,7 @@ import cmc.sole.android.Utils.Translator
 import cmc.sole.android.databinding.FragmentFollowUserBinding
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexboxLayoutManager
+import kotlin.math.roundToInt
 
 class FollowUserFragment: BaseFragment<FragmentFollowUserBinding>(FragmentFollowUserBinding::inflate),
     FollowUserInfoView {
@@ -74,7 +75,8 @@ class FollowUserFragment: BaseFragment<FragmentFollowUserBinding>(FragmentFollow
     }
 
     override fun followUserInfoSuccessView(followUserInfo: FollowUserInfoResult) {
-        Glide.with(this).load(followUserInfo.profileImg).centerCrop().circleCrop().into(binding.followUserProfileIv)
+        Glide.with(this).load(followUserInfo.profileImg)
+            .placeholder(R.drawable.ic_profile).centerCrop().circleCrop().into(binding.followUserProfileIv)
         binding.followUserNicknameTv.text = followUserInfo.nickname
         binding.followUserPopularTitleTv.text = "${followUserInfo.nickname}님의 인기 코스"
         binding.followUserRecentTv.text = "${followUserInfo.nickname}님의 최근 코스"
@@ -95,7 +97,8 @@ class FollowUserFragment: BaseFragment<FragmentFollowUserBinding>(FragmentFollow
         binding.followUserPopularTitleTv.text = popularCourse.title
         binding.followUserPopularLocationTv.text = popularCourse.address
         binding.followUserPopularTimeTv.text = "${(popularCourse.duration.toDouble() / 60).toInt()} 시간 소요"
-        binding.followUserPopularDistanceTv.text = popularCourse.distance.toString() + "km 이동"
+        binding.followUserPopularDistanceTv.text = ((popularCourse.distance * 100.0).roundToInt() / 100.0).toString() + "km 이동"
+
         for (i in 0 until popularCourse.categories.size) {
             tagRVAdapter.addItem(Translator.tagEngToKor(activity as AppCompatActivity, popularCourse.categories.elementAt(i).toString()))
         }

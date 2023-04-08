@@ -62,7 +62,6 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
             override fun onItemClick(data: ScrapCourseResult, position: Int) {
                 if (binding.scrapFolderDetailEditCv.visibility == View.VISIBLE) {
                     scrapFolderDetailRVAdapter.checkMode(0)
-
                     val intent = Intent(activity, CourseDetailActivity::class.java)
                     intent.putExtra("courseId", data.courseId)
                     startActivity(intent)
@@ -70,6 +69,7 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
                     scrapFolderDetailRVAdapter.checkMode(1)
                     if (!data.isChecked) {
                         deleteCourseId.add(data.courseId)
+                        scrapFolderDetailRVAdapter.notifyItemChanged(position)
                     } else {
                         deleteCourseId.remove(data.courseId)
                     }
@@ -83,20 +83,12 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
             clearBackStack()
         }
 
+        // MEMO: 뒤로가기 눌렀을 때
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (binding.scrapFolderDetailEditCv.visibility != View.VISIBLE) {
+                if (binding.scrapFolderDetailEditCv.visibility == View.GONE) {
                     binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
-                    binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
-                    binding.scrapFolderDetailEditCv.visibility = View.VISIBLE
-                    binding.scrapFolderDetailOkTv.visibility = View.GONE
-//                    binding.scrapFolderDetailMoveCv.visibility = View.GONE
-                    binding.scrapFolderDetailDeleteCv.visibility = View.GONE
-
-                    for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
-                        scrapFolderDetailRVAdapter.getItems(i).checkMode = false
-                    }
-                    scrapFolderDetailRVAdapter.notifyDataSetChanged()
+                    defaultMode()
                 } else {
                     clearBackStack()
                 }
@@ -121,16 +113,17 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
         }
 
         binding.scrapFolderDetailEditCv.setOnClickListener {
-            binding.scrapFolderDetailOptionIv.visibility = View.GONE
-            binding.scrapFolderDetailEditCv.visibility = View.GONE
-            binding.scrapFolderDetailOkTv.visibility = View.VISIBLE
-//            binding.scrapFolderDetailMoveCv.visibility = View.VISIBLE
-            binding.scrapFolderDetailDeleteCv.visibility = View.VISIBLE
+            editMode()
+        }
 
-            for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
-                scrapFolderDetailRVAdapter.getItems(i).checkMode = true
-            }
-            scrapFolderDetailRVAdapter.notifyDataSetChanged()
+        binding.scrapFolderDetailMoveCv.setOnClickListener {
+            val scrapCourseMoveDialog = DialogScrapCourseMove()
+            var bundle = Bundle()
+            bundle.putInt("scrapFolderId", scrapFolderId)
+            bundle.putIntegerArrayList("courseId", deleteCourseId)
+            bundle.putString("scrapFolderName", scrapFolderName)
+            scrapCourseMoveDialog.arguments = bundle
+            scrapCourseMoveDialog.show(requireActivity().supportFragmentManager, "ScrapCourseMoveDialog")
         }
 
         binding.scrapFolderDetailDeleteCv.setOnClickListener {
@@ -138,36 +131,20 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
             var bundle = Bundle()
             bundle.putInt("scrapFolderId", scrapFolderId)
             bundle.putIntegerArrayList("courseId", deleteCourseId)
+            bundle.putString("scrapFolderName", scrapFolderName)
             scrapCourseDeleteDialog.arguments = bundle
-            scrapCourseDeleteDialog.show(requireActivity().supportFragmentManager, "ScrapCourseDialog")
+            scrapCourseDeleteDialog.show(requireActivity().supportFragmentManager, "ScrapCourseDeleteDialog")
             scrapCourseDeleteDialog.setOnFinishListener(object: DialogScrapCourseDelete.OnFinishListener {
                 override fun finish() {
                     binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
-                    binding.scrapFolderDetailEditCv.visibility = View.VISIBLE
-                    binding.scrapFolderDetailOkTv.visibility = View.GONE
-//                    binding.scrapFolderDetailMoveCv.visibility = View.GONE
-                    binding.scrapFolderDetailDeleteCv.visibility = View.GONE
-
-                    for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
-                        scrapFolderDetailRVAdapter.getItems(i).checkMode = false
-                        scrapFolderDetailRVAdapter.getItems(i).isChecked = false
-                    }
-                    scrapFolderDetailRVAdapter.notifyDataSetChanged()
+                    defaultMode()
                 }
             })
         }
 
         binding.scrapFolderDetailOkTv.setOnClickListener {
             if (binding.scrapFolderDetailOptionIv.visibility == View.GONE) {
-                binding.scrapFolderDetailEditCv.visibility = View.VISIBLE
-                binding.scrapFolderDetailOkTv.visibility = View.GONE
-//                binding.scrapFolderDetailMoveCv.visibility = View.GONE
-                binding.scrapFolderDetailDeleteCv.visibility = View.GONE
-
-                for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
-                    scrapFolderDetailRVAdapter.getItems(i).checkMode = false
-                }
-                scrapFolderDetailRVAdapter.notifyDataSetChanged()
+                defaultMode()
             }
         }
     }
@@ -175,6 +152,32 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
     fun clearBackStack() {
         val fragmentManager: FragmentManager = (context as MainActivity).supportFragmentManager
         fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    fun editMode() {
+        binding.scrapFolderDetailOptionIv.visibility = View.GONE
+        binding.scrapFolderDetailEditCv.visibility = View.GONE
+        binding.scrapFolderDetailOkTv.visibility = View.VISIBLE
+        binding.scrapFolderDetailMoveCv.visibility = View.VISIBLE
+        binding.scrapFolderDetailDeleteCv.visibility = View.VISIBLE
+
+        for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
+            scrapFolderDetailRVAdapter.getItems(i).checkMode = true
+            scrapFolderDetailRVAdapter.notifyItemChanged(i)
+        }
+    }
+
+    fun defaultMode() {
+        binding.scrapFolderDetailEditCv.visibility = View.VISIBLE
+        binding.scrapFolderDetailOkTv.visibility = View.GONE
+        binding.scrapFolderDetailMoveCv.visibility = View.GONE
+        binding.scrapFolderDetailDeleteCv.visibility = View.GONE
+
+        for (i in 0 until scrapFolderDetailRVAdapter.getAllItems().size) {
+            scrapFolderDetailRVAdapter.getItems(i).checkMode = false
+            scrapFolderDetailRVAdapter.getItems(i).isChecked = false
+            scrapFolderDetailRVAdapter.notifyItemChanged(i)
+        }
     }
 
     override fun scrapCourseSuccessView(scrapCourseResult: ArrayList<ScrapCourseResult>) {

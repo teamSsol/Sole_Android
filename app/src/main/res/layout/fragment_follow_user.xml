@@ -200,7 +200,6 @@
                         android:id="@+id/follow_user_popular_img"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:src="@drawable/test_img"
                         android:scaleType="centerCrop"
                         app:layout_constraintHeight_default="percent"
                         app:layout_constraintHeight_percent="0.55"

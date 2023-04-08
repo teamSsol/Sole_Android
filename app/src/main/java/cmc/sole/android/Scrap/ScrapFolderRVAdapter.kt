@@ -76,7 +76,6 @@ class ScrapFolderRVAdapter(private val folderList: ArrayList<ScrapFolderDataResu
     inner class DefaultFolderViewHolder(val binding: ItemScrapFolderBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(scrapFolder: ScrapFolderDataResult) {
             // UPDATE: Image 연결
-            // binding.itemScarpFolderIv.setImageResource(R.drawable.test_img)
             binding.itemScrapFolderTv.text = scrapFolder.scrapFolderName
         }
     }

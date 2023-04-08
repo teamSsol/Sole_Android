@@ -47,7 +47,8 @@ class FollowActivityRVAdapter(private val followActivityList: ArrayList<FollowCo
 
     inner class ViewHolder(val binding: ItemFollowActivityBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(followActivity: FollowCourseResult) {
-            Glide.with(binding.root.context).load(followActivity.profileImg).centerCrop().circleCrop().into(binding.itemFollowActivityProfileIv)
+            Glide.with(binding.root.context).load(followActivity.profileImg)
+                .placeholder(R.drawable.ic_profile).centerCrop().circleCrop().into(binding.itemFollowActivityProfileIv)
             binding.itemFollowActivityNicknameTv.text = followActivity.nickname
             Glide.with(binding.root.context).load(followActivity.thumbnailImg).centerCrop().into(binding.itemFollowActivityIv)
             binding.itemFollowActivityCourseName.text = followActivity.title

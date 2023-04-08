@@ -9,9 +9,12 @@ import android.location.Location
 import android.location.LocationManager
 import android.location.LocationRequest
 import android.os.Build
+import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -27,6 +30,7 @@ import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.databinding.FragmentHomeBinding
+import com.google.android.gms.location.FusedLocationProviderClient
 
 class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate),
     HomePopularCourseView, HomeDefaultCourseView, HomeGetCurrentGPSView, HomeUpdateCurrentGPSView, HomeScrapAddAndCancelView {
@@ -37,6 +41,10 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
     private var myCourseList = ArrayList<DefaultCourse>()
     private lateinit var homeService: HomeService
     var courseId: Int? = null
+    var popularAPIFlag = false
+    var tasteAPIFlag = false
+
+    var lastCourseId: Int? = null
 
     override fun initAfterBinding() {
         initAdapter()
@@ -46,6 +54,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
 
     override fun onResume() {
         super.onResume()
+        Log.d("TEMP-TEST", "onResume")
         myCourseRVAdapter.clearItems()
         homeService.getHomePopularCourse()
         homeService.getHomeDefaultCourse(courseId, "")
@@ -109,6 +118,10 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
         binding.homeMyCourseSettingTv.setOnClickListener {
             startActivity(Intent(activity, StartCourseTagActivity::class.java))
         }
+
+        binding.courseMoreCv.setOnClickListener {
+            homeService.getHomeDefaultCourse(lastCourseId, "")
+        }
     }
 
     private fun getCurrentLocation(): HomeCurrentGPSRequest? {
@@ -144,7 +157,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
         homeService.setHomeGetCurrentGPSView(this)
         homeService.setHomeUpdateCurrentGPSView(this)
         homeService.getHomePopularCourse()
-        homeService.getHomeDefaultCourse(courseId, "")
         homeService.getCurrentGPS()
     }
 
@@ -159,11 +171,26 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
     override fun homePopularCourseFailureView() { }
 
     override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
+        Log.d("API-TEST", "SUCCESS")
         if (homeDefaultResponse.data.size == 0) {
             binding.homeMyCourseEmpty.visibility = View.VISIBLE
         } else {
             binding.homeMyCourseEmpty.visibility = View.INVISIBLE
         }
+
+        if (homeDefaultResponse.data.size != 0) {
+            // MEMO: 마지막 페이지가 아니라면 더 보기 버튼 보여주기
+            var lastCourse = homeDefaultResponse.data[homeDefaultResponse.data.size - 1]
+            if (!lastCourse.finalPage) {
+                lastCourseId = lastCourse.courseId
+                binding.courseMoreCv.visibility = View.VISIBLE
+            } else binding.courseMoreCv.visibility = View.GONE
+        }
+
+        if (lastCourseId == null) {
+            myCourseRVAdapter.clearItems()
+        }
+
         myCourseRVAdapter.addAllItems(homeDefaultResponse.data)
     }
 

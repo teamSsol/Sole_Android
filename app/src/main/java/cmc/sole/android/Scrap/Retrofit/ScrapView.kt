@@ -41,3 +41,8 @@ interface ScrapCourseDeleteView {
     fun scrapCourseDeleteSuccessView()
     fun scrapCourseDeleteFailureView()
 }
+
+interface ScrapCourseMoveView {
+    fun scrapCourseMoveSuccessView(scrapCourseMoveResult: ScrapCourseMoveResult)
+    fun scrapCourseMoveFailureView()
+}

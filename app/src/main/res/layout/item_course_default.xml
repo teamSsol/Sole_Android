@@ -10,7 +10,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/item_course_cv"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="12dp"
         app:strokeWidth="1dp"
         app:strokeColor="#EDEDED"
@@ -26,20 +26,17 @@
                 android:id="@+id/item_course_img"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:src="@drawable/test_img"
                 android:scaleType="centerCrop"
-                app:layout_constraintHeight_default="percent"
-                app:layout_constraintHeight_percent="0.55"
+                app:layout_constraintDimensionRatio="1.84:1"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/item_course_content_layout"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:paddingHorizontal="12dp"
-                app:layout_constraintHeight_default="percent"
-                app:layout_constraintHeight_percent="0.45"
+                android:paddingVertical="12dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/item_course_img">
 
@@ -148,7 +145,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="6dp"
                     tools:listitem="@layout/item_my_course_tag"
                     app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
                     app:layout_constraintStart_toStartOf="parent"

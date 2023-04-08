@@ -25,8 +25,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.File
 
@@ -55,7 +58,8 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
     }
 
     override fun initAfterBinding() {
-        Glide.with(this).load(intent.getStringExtra("profileImgUrl")).into(binding.signupNicknameProfileIv)
+        Glide.with(this).load(intent.getStringExtra("profileImgUrl")).placeholder(R.drawable.ic_profile)
+            .circleCrop().centerCrop().into(binding.signupNicknameProfileIv)
         binding.myPageInfoEmailTv.text = intent.getStringExtra("socialId")
         binding.myPageInfoNicknameEt.setText(intent.getStringExtra("nickname"))
         binding.myPageInfoIntroEt.setText(intent.getStringExtra("description"))
@@ -149,7 +153,7 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
                 multipartFile = null
             } else {
                 file = File(absolutelyPath(imageUri, this))
-                requestFile = RequestBody.create(MediaType.parse("image/*"), file)
+                requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
                 multipartFile = MultipartBody.Part.createFormData("multipartFile", file.name, requestFile)
             }
 
@@ -157,7 +161,7 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
             jsonBody.put("description", binding.myPageInfoIntroEt.text)
             jsonBody.put("nickname", binding.myPageInfoNicknameEt.text)
 
-            val requestBody: RequestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonBody.toString())
+            val requestBody: RequestBody = jsonBody.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
             var mypageRequestDto = MultipartBody.Part.createFormData("mypageRequestDto", "mypageRequestDto", requestBody)
 
             homeService.myPageInfoUpdate(mypageRequestDto, multipartFile)
@@ -184,7 +188,8 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
     }
 
     override fun myPageInfoUpdateSuccessView(myPageInfoResult: MyPageInfoResult) {
-        Glide.with(this).load(myPageInfoResult.profileImgUrl).into(binding.signupNicknameProfileIv)
+        Glide.with(this).load(myPageInfoResult.profileImgUrl)
+            .placeholder(R.drawable.ic_profile).centerCrop().circleCrop().into(binding.signupNicknameProfileIv)
         binding.myPageInfoEmailTv.text = myPageInfoResult.socialId
         binding.myPageInfoNicknameEt.setText(myPageInfoResult.nickname)
         binding.myPageInfoIntroEt.setText(myPageInfoResult.description)

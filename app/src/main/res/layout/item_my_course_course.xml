@@ -9,7 +9,6 @@
         android:id="@+id/my_course_course_iv"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/test_img"
         android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -130,6 +129,7 @@
         android:layout_marginTop="7dp"
         android:layout_marginEnd="16dp"
         tools:listitem="@layout/item_my_course_tag"
+        tools:itemCount="3"
         app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
         app:layout_constraintStart_toStartOf="@id/my_course_course_title_tv"
         app:layout_constraintEnd_toEndOf="parent"

@@ -14,11 +14,11 @@ import cmc.sole.android.Utils.Translator
 import cmc.sole.android.databinding.ItemMyCourseCourseBinding
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexboxLayoutManager
+import kotlin.math.roundToInt
 
 class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseResult>): RecyclerView.Adapter<ScrapCourseRVAdapter.ViewHolder>() {
 
     private lateinit var itemClickListener: OnItemClickListener
-    private lateinit var itemLongClickListener: OnItemLongClickListener
     private var checkFlag = 0
     private lateinit var tagRVAdapter: MyCourseTagRVAdapter
     private var tagList = ArrayList<String>()
@@ -27,16 +27,8 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
         fun onItemClick(data: ScrapCourseResult, position: Int)
     }
 
-    interface OnItemLongClickListener {
-        fun onItemLongClick(data: ScrapCourseResult, position: Int)
-    }
-
     fun setOnItemClickListener(listener: OnItemClickListener) {
         itemClickListener = listener
-    }
-
-    fun setOnItemLongClickListener(listener: OnItemLongClickListener) {
-        itemLongClickListener = listener
     }
 
     override fun onCreateViewHolder(
@@ -57,21 +49,16 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
             itemClickListener.onItemClick(scrapCourseList[position], position)
             if (checkFlag == 1) { // MEMO: 편집 모드
                 scrapCourseList[position].isChecked = !scrapCourseList[position].isChecked
-                if (holder.binding.myCourseCourseCheckIv.visibility == View.VISIBLE) {
-                    holder.binding.myCourseCourseCheckIv.visibility = View.GONE
-                } else {
-                    holder.binding.myCourseCourseCheckIv.visibility = View.VISIBLE
-                }
-            } else { // MEMO: 기본 모드
-                holder.binding.myCourseCourseCheckIv.visibility = View.GONE
-                holder.binding.myCourseCourseUncheckIv.visibility = View.GONE
-                
-                for (i in 0 until scrapCourseList.size) {
-                    scrapCourseList[i].checkMode = false
-                    scrapCourseList[i].isChecked= false
-                }
+                this.notifyItemChanged(position)
             }
-            this.notifyDataSetChanged()
+//            else { // MEMO: 기본 모드
+//                for (i in 0 until scrapCourseList.size) {
+//                    scrapCourseList[i].checkMode = false
+//                    scrapCourseList[i].isChecked = false
+//                    this.notifyItemChanged(position)
+//                }
+//                this.notifyDataSetChanged()
+//            }
         }
         holder.bind(scrapCourseList[position])
     }
@@ -84,19 +71,28 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
             binding.myCourseCourseTitleTv.text = scrapCourse.title
             binding.myCourseCourseLocationTv.text = scrapCourse.address
             binding.myCourseCourseTimeTv.text = "${(scrapCourse.duration.toDouble() / 60).toInt()} 시간 소요"
-            binding.myCourseCourseDistanceTv.text = scrapCourse.distance.toString() + "km 이동"
+            binding.myCourseCourseDistanceTv.text = ((scrapCourse.distance * 100.0).roundToInt() / 100.0).toString() + "km 이동"
 
             if (scrapCourse.checkMode) {
-                binding.myCourseCourseUncheckIv.visibility = View.VISIBLE
+                if (scrapCourse.isChecked) {
+                    binding.myCourseCourseCheckIv.visibility = View.VISIBLE
+                    binding.myCourseCourseUncheckIv.visibility = View.GONE
+                } else {
+                    binding.myCourseCourseCheckIv.visibility = View.GONE
+                    binding.myCourseCourseUncheckIv.visibility = View.VISIBLE
+                }
             } else {
                 binding.myCourseCourseUncheckIv.visibility = View.GONE
                 binding.myCourseCourseCheckIv.visibility = View.GONE
             }
 
             tagRVAdapter.clearItems()
+
             for (i in 0 until scrapCourse.categories.size) {
                 tagRVAdapter.addItem(Translator.tagEngToKor(binding.root.context as AppCompatActivity, scrapCourse.categories.elementAt(i).toString()))
+                if (i == 2) break
             }
+
             tagRVAdapter.addItem("")
         }
     }
