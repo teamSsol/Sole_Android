@@ -3,6 +3,7 @@ package cmc.sole.android.Home.Search
 import android.content.Intent
 import android.view.KeyEvent
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
 import cmc.sole.android.Home.DefaultCourse
@@ -23,6 +24,7 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>(ActivitySearchBinding:
     private var searchResultList = ArrayList<DefaultCourse>()
     private lateinit var searchService: HomeService
     var courseId = 5
+    private lateinit var callback: OnBackPressedCallback
 
     override fun initAfterBinding() {
         initService()
@@ -57,22 +59,38 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>(ActivitySearchBinding:
             finish()
         }
 
+        binding.searchTextEt.setOnClickListener {
+            binding.searchTextEt.setText(binding.searchTextEt.text.toString() + " dd")
+            binding.searchTextEt.setSelection(binding.searchTextEt.length() - 1)
+        }
+
         binding.searchTextEt.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             when (keyCode) {
                 KeyEvent.KEYCODE_ENTER -> {
                     binding.searchDefaultLayout.visibility = View.GONE
                     binding.searchResultRv.visibility = View.VISIBLE
 
+                    binding.searchTextEt.isFocusable = false
+                    binding.searchTextEt.isFocusableInTouchMode = false
+
                     var searchWord = binding.searchTextEt.text.toString()
+                    showLog("API-TEST", "searchWord = $searchWord")
                     searchService.getHomeDefaultCourse(courseId, searchWord)
                 }
             }
             true
         })
+
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        }
     }
 
     override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
-         searchResultRVAdapter.addAllItems(homeDefaultResponse.data)
+        showLog("API-TEST", "searchResult = $homeDefaultResponse")
+        searchResultRVAdapter.addAllItems(homeDefaultResponse.data)
     }
 
     override fun homeDefaultCourseFailureView() {
