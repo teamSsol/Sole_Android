@@ -5,7 +5,8 @@ import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -14,6 +15,7 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,7 +39,6 @@ import cmc.sole.android.databinding.ActivityMyCourseWriteBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.flexbox.FlexboxLayoutManager
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -45,7 +46,11 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.BufferedInputStream
 import java.io.File
+import java.io.FileOutputStream
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(ActivityMyCourseWriteBinding::inflate),
     HomeCourseDetailView, ImageTestView, MyCourseAddView, MyCourseUpdateView {
@@ -196,42 +201,49 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         }
     }
 
-//    @SuppressLint("Range", "Recycle")
-//    private fun findImageFileNameFromUri(tempUri: Uri): Boolean {
-//        var flag = false
-//        //실제 Image 파일이 위치하는 곳(절대디렉토리)
-//        val imageDBColumn = arrayOf("_data")
-//        val cursor: Cursor?
-//        //Primary Key 값을 추출
-//        val imagePK = ContentUris.parseId(tempUri).toString()
-//        //Image DB에 쿼리를 날린다.
-//        cursor = requireActivity().contentResolver.query(
-//            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-//            imageDBColumn,
-//            MediaStore.Images.Media._ID + "=?", arrayOf(imagePK),
-//            null, null
-//        )
-//        cursor?.let {
-//            it.moveToFirst()
-//            FileUpLoad.setFileToUpLoad(it.getString(it.getColumnIndex("_data")))
-//            var exif: ExifInterface? = null
-//            try {
-//                exif = ExifInterface(it.getString(it.getColumnIndex("_data")))
-//            } catch (e: IOException) {
-//                e.printStackTrace()
-//            }
-//            if (exif != null) {
-//                IMAGE_ORIENTATION = exif.getAttributeInt(
-//                    ExifInterface.TAG_ORIENTATION,
-//                    ExifInterface.ORIENTATION_UNDEFINED
-//                )
-//            }
-//            flag = true
-//        } ?: run {
-//            flag = false
-//        }
-//        return flag
-//    }
+    private fun optimizeBitmap(context: Context, uri: Uri): String? {
+        try {
+            val storage = context.cacheDir
+            val fileName = String.format("%s.%s", UUID.randomUUID(), "jpg")
+
+            val tempFile = File(storage, fileName)
+            tempFile.createNewFile()
+
+            val fos = FileOutputStream(tempFile)
+
+            decodeBitmapFromUri(uri, context)?.apply {
+                compress(Bitmap.CompressFormat.JPEG, 50, fos)
+                recycle()
+            } ?: throw NullPointerException()
+
+            fos.flush()
+            fos.close()
+
+            return tempFile.absolutePath
+        } catch (e: Exception) {
+            Log.e("이미지 생성 실패", "${e.message}")
+        }
+
+        return null
+    }
+
+    private fun decodeBitmapFromUri(uri: Uri, context: Context): Bitmap? {
+        val input = BufferedInputStream(context.contentResolver.openInputStream(uri))
+        input.mark(input.available()) // 입력 스트림의 특정 위치를 기억
+
+        var bitmap: Bitmap?
+        BitmapFactory.Options().run {
+            inJustDecodeBounds = true
+            bitmap = BitmapFactory.decodeStream(input, null, this)
+            input.reset()
+            inJustDecodeBounds = false
+            bitmap = BitmapFactory.decodeStream(input, null, this)
+        }
+
+        input.close()
+
+        return bitmap
+    }
 
     private fun addCourse() {
         var thumbnailImg = mutableListOf<MultipartBody.Part?>()
@@ -241,13 +253,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         var multipartFile: MultipartBody.Part?
 
         if (mainImageUri != null) {
-//            val resolver = applicationContext.contentResolver
-//            resolver.openInputStream(mainImageUri!!).use { stream ->
-//
-//            }
-            file = File(mainImageUri.toString())
-            Log.d("API-TEST", "mainImageUri = $mainImageUri")
-            Log.d("API-TEST", "mainImageUri = ${mainImageUri.toString()}")
+            file = File(optimizeBitmap(this, mainImageUri!!))
             requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
             multipartFile = MultipartBody.Part.createFormData("thumbnailImg", file.name, requestFile)
             thumbnailImg.add(multipartFile)
@@ -266,7 +272,10 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
             var placeMultipartFile: MultipartBody.Part?
 
             // MEMO: 이미지 주소 연결
-            var placeFile = File(placeRVAdapter.getItem(i).imgUrl.toString())
+//            for (i in 0 until placeRVAdapter.getItem(i).imgUrl!!.size) {
+//
+//            }
+            var placeFile = File(optimizeBitmap(this, placeRVAdapter.getItem(i).imgUrl!![0].toUri()))
             var placeRequestFile: RequestBody = placeFile.asRequestBody("image/*".toMediaTypeOrNull())
             placeMultipartFile = MultipartBody.Part.createFormData(placeRVAdapter.getItem(i).placeName.toString(), placeFile.name, placeRequestFile)
             thumbnailImg.add(placeMultipartFile)
@@ -344,6 +353,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
     private fun returnCategories(option: String): MutableSet<String> {
         var returnCategoriesArray = mutableSetOf<String>()
         Log.d("WRITE-TEST", "option = $option")
+
         when(option) {
             "PLACE" -> {
                 for (i in 0..8) {
@@ -351,7 +361,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
                         returnCategoriesArray.add(Translator.returnTagEngStr(i + 1).name)
                     }
                 }
-            } "TRANS" -> {
+            } "WITH" -> {
                 for (i in 9..13) {
                     if (tagFlagList[i]) {
                         returnCategoriesArray.add(Translator.returnTagEngStr(i + 1).name)

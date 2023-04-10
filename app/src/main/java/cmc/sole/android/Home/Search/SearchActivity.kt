@@ -60,7 +60,7 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>(ActivitySearchBinding:
         }
 
         binding.searchTextEt.setOnClickListener {
-            binding.searchTextEt.setText(binding.searchTextEt.text.toString() + " dd")
+            // binding.searchTextEt.setText(binding.searchTextEt.text.toString() + " dd")
             binding.searchTextEt.setSelection(binding.searchTextEt.length() - 1)
         }
 
