@@ -15,6 +15,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
 
     private fun initBottomNavi() {
+        binding.mainBottomNavi.itemIconTintList = null
         binding.mainBottomNavi.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.bottom_home -> {

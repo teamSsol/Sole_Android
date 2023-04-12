@@ -31,6 +31,7 @@ import cmc.sole.android.MyCourse.Retrofit.*
 import cmc.sole.android.MyCourse.TagButton
 import cmc.sole.android.R
 import cmc.sole.android.Utils.BaseActivity
+import cmc.sole.android.Utils.ImageTranslator
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.Utils.ToastDefault
@@ -201,50 +202,6 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         }
     }
 
-    private fun optimizeBitmap(context: Context, uri: Uri): String? {
-        try {
-            val storage = context.cacheDir
-            val fileName = String.format("%s.%s", UUID.randomUUID(), "jpg")
-
-            val tempFile = File(storage, fileName)
-            tempFile.createNewFile()
-
-            val fos = FileOutputStream(tempFile)
-
-            decodeBitmapFromUri(uri, context)?.apply {
-                compress(Bitmap.CompressFormat.JPEG, 50, fos)
-                recycle()
-            } ?: throw NullPointerException()
-
-            fos.flush()
-            fos.close()
-
-            return tempFile.absolutePath
-        } catch (e: Exception) {
-            Log.e("이미지 생성 실패", "${e.message}")
-        }
-
-        return null
-    }
-
-    private fun decodeBitmapFromUri(uri: Uri, context: Context): Bitmap? {
-        val input = BufferedInputStream(context.contentResolver.openInputStream(uri))
-        input.mark(input.available()) // 입력 스트림의 특정 위치를 기억
-
-        var bitmap: Bitmap?
-        BitmapFactory.Options().run {
-            inJustDecodeBounds = true
-            bitmap = BitmapFactory.decodeStream(input, null, this)
-            input.reset()
-            inJustDecodeBounds = false
-            bitmap = BitmapFactory.decodeStream(input, null, this)
-        }
-
-        input.close()
-
-        return bitmap
-    }
-
     private fun addCourse() {
         var thumbnailImg = mutableListOf<MultipartBody.Part?>()
 
@@ -253,7 +210,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         var multipartFile: MultipartBody.Part?
 
         if (mainImageUri != null) {
-            file = File(optimizeBitmap(this, mainImageUri!!))
+            file = File(ImageTranslator.optimizeBitmap(this, mainImageUri!!))
             requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
             multipartFile = MultipartBody.Part.createFormData("thumbnailImg", file.name, requestFile)
             thumbnailImg.add(multipartFile)
@@ -275,7 +232,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
 //            for (i in 0 until placeRVAdapter.getItem(i).imgUrl!!.size) {
 //
 //            }
-            var placeFile = File(optimizeBitmap(this, placeRVAdapter.getItem(i).imgUrl!![0].toUri()))
+            var placeFile = File(ImageTranslator.optimizeBitmap(this, placeRVAdapter.getItem(i).imgUrl!![0].toUri()))
             var placeRequestFile: RequestBody = placeFile.asRequestBody("image/*".toMediaTypeOrNull())
             placeMultipartFile = MultipartBody.Part.createFormData(placeRVAdapter.getItem(i).placeName.toString(), placeFile.name, placeRequestFile)
             thumbnailImg.add(placeMultipartFile)
