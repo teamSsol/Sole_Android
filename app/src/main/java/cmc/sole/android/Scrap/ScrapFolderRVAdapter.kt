@@ -3,11 +3,13 @@ package cmc.sole.android.Scrap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import cmc.sole.android.R
 import cmc.sole.android.Scrap.Retrofit.ScrapFolderDataResult
 import cmc.sole.android.Scrap.Retrofit.addFolder
 import cmc.sole.android.Scrap.Retrofit.defaultFolder
 import cmc.sole.android.databinding.ItemScrapFolderAddBinding
 import cmc.sole.android.databinding.ItemScrapFolderBinding
+import com.bumptech.glide.Glide
 
 class ScrapFolderRVAdapter(private val folderList: ArrayList<ScrapFolderDataResult>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -75,7 +77,8 @@ class ScrapFolderRVAdapter(private val folderList: ArrayList<ScrapFolderDataResu
 
     inner class DefaultFolderViewHolder(val binding: ItemScrapFolderBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(scrapFolder: ScrapFolderDataResult) {
-            // UPDATE: Image 연결
+            Glide.with(binding.root.context).load(scrapFolder.scrapFolderImg)
+                .placeholder(R.drawable.ic_default_folder_img).centerCrop().into(binding.itemScarpFolderIv)
             binding.itemScrapFolderTv.text = scrapFolder.scrapFolderName
         }
     }
