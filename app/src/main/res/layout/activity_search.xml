@@ -79,27 +79,28 @@
         app:layout_constraintTop_toBottomOf="@id/search_top_bar"
         app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:id="@+id/search_recent_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="최근 검색"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:fontFamily="@font/pretendard_semibold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        <!-- UPDATE: 최근 검색어 기능 개발 후 주석 풀기 -->
+<!--        <TextView-->
+<!--            android:id="@+id/search_recent_title"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="최근 검색"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="14sp"-->
+<!--            android:fontFamily="@font/pretendard_semibold"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="전체 삭제"
-            android:textColor="#0996F6"
-            android:textSize="12sp"
-            android:fontFamily="@font/pretendard_regular"
-            app:layout_constraintTop_toTopOf="@id/search_recent_title"
-            app:layout_constraintBottom_toBottomOf="@id/search_recent_title"
-            app:layout_constraintEnd_toEndOf="parent" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="전체 삭제"-->
+<!--            android:textColor="#0996F6"-->
+<!--            android:textSize="12sp"-->
+<!--            android:fontFamily="@font/pretendard_regular"-->
+<!--            app:layout_constraintTop_toTopOf="@id/search_recent_title"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/search_recent_title"-->
+<!--            app:layout_constraintEnd_toEndOf="parent" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_rv"
@@ -107,19 +108,83 @@
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             tools:listitem="@layout/item_search"
-            app:layout_constraintTop_toBottomOf="@id/search_recent_title"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+<!--        app:layout_constraintTop_toBottomOf="@id/search_recent_title"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_result_rv"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:visibility="gone"
-        tools:listitem="@layout/item_course_default"
         app:layout_constraintTop_toBottomOf="@id/search_top_bar"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_result_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                tools:listitem="@layout/item_course_default"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/course_more_cv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                app:cardCornerRadius="8dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#EDEDED"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/search_result_rv">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/item_course_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingVertical="13dp">
+
+                    <TextView
+                        android:id="@+id/course_more_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="더 보기"
+                        android:textSize="14sp"
+                        android:textColor="#404040"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/course_more_iv"/>
+
+                    <ImageView
+                        android:id="@+id/course_more_iv"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:src="@drawable/ic_course_more"
+                        android:padding="2dp"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintTop_toTopOf="@id/course_more_tv"
+                        app:layout_constraintBottom_toBottomOf="@id/course_more_tv"
+                        app:layout_constraintStart_toEndOf="@id/course_more_tv"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:tint="#404040" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

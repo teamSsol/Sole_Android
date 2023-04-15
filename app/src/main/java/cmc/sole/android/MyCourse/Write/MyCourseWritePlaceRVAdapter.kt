@@ -53,10 +53,15 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
 //        locationImgRVAdapter.setOnItemClickListener(object: MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
 //            override fun onItemClick(data: MyCourseWriteImage, position: Int) {
 //                // 여기서 연결 필요
-//                setAlbumMode()
+//                // setAlbumMode()
+//                checkAlbumMode(true)
+//                itemClickListener.onItemClick(placeInfoList[position], position)
+//                checkAlbumMode(false)
 //            }
 //        })
-        // locationImgRVAdapter.addItem(MyCourseWriteImage("", locationAddImage))
+//        if (imgList.size == 0) {
+//            locationImgRVAdapter.addItem(MyCourseWriteImage("", locationAddImage))
+//        }
 
         // UPDATE: RecyclerView로 업데이트 필요
         // MEMO: 이미지 정보
@@ -120,6 +125,7 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
                 binding.myCourseWriteTextEt.text = placeInfo.placeName
             }
 
+            // MEMO: 이미지 한장일 떄
             Log.d("API-TEST", "placeInfoImgUrl = ${placeInfo.imgUrl}")
             if (placeInfo.imgUrl != null) {
                 if (placeInfo.imgUrl!!.size > 0)
@@ -141,6 +147,18 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
         return albumMode
     }
 
+    // UPDATE: 사진 여러 장으로 수정
+//    fun sendImgUrl(imgUrl: Uri, position: Int) {
+//        // placeInfoList[position].imgUrl?.clear()
+//        // placeInfoList[position].imgUrl.add(imgUrl.toString())
+//        var tempImgList = placeInfoList[position].imgUrl
+//        tempImgList!!.add(imgUrl.toString())
+//        placeInfoList[position].imgUrl = arrayListOf(imgUrl.toString())
+//        Log.d("WRITE-TEST", "placeInfoList = $placeInfoList")
+//
+//        this.notifyItemChanged(position)
+//   }
+
     fun sendImgUrl(imgUrl: Uri, position: Int) {
         // placeInfoList[position].imgUrl?.clear()
         // placeInfoList[position].imgUrl.add(imgUrl.toString())
@@ -149,7 +167,7 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
         Log.d("WRITE-TEST", "placeInfoList = $placeInfoList")
 
         this.notifyDataSetChanged()
-   }
+    }
 
     fun getItemSize(): Int {
         return placeInfoList.size

@@ -23,6 +23,7 @@
         app:labelVisibilityMode="labeled"
         app:menu="@menu/main_bottom_navi"
         app:itemIconSize="28dp"
+        app:itemIconTint="@color/main"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

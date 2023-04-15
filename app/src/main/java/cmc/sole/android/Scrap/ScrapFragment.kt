@@ -10,6 +10,7 @@ import cmc.sole.android.R
 import cmc.sole.android.Scrap.Retrofit.ScrapFolderDataResult
 import cmc.sole.android.Scrap.Retrofit.ScrapFolderView
 import cmc.sole.android.Scrap.Retrofit.ScrapService
+import cmc.sole.android.Scrap.Retrofit.addFolder
 import cmc.sole.android.Utils.BaseFragment
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
@@ -64,7 +65,7 @@ class ScrapFragment: BaseFragment<FragmentScrapBinding>(FragmentScrapBinding::in
     override fun scrapFolderSuccessView(scrapFolderDataResult: ArrayList<ScrapFolderDataResult>) {
         scrapFolderRVAdapter.clearItems()
         scrapFolderRVAdapter.addAllItems(scrapFolderDataResult)
-        scrapFolderRVAdapter.addItem(ScrapFolderDataResult(-1, "", 2))
+        scrapFolderRVAdapter.addItem(ScrapFolderDataResult(0, -1, "", "", addFolder))
     }
 
     override fun scrapFolderFailureView() {

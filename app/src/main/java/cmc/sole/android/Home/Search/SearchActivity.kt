@@ -3,6 +3,7 @@ package cmc.sole.android.Home.Search
 import android.content.Intent
 import android.view.KeyEvent
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
 import cmc.sole.android.Home.DefaultCourse
@@ -22,7 +23,10 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>(ActivitySearchBinding:
     private lateinit var searchResultRVAdapter: HomeDefaultCourseRVAdapter
     private var searchResultList = ArrayList<DefaultCourse>()
     private lateinit var searchService: HomeService
-    var courseId = 5
+    var courseId: Int? = null
+    var lastCourseId: Int? = null
+    private var searchWord = ""
+    private lateinit var callback: OnBackPressedCallback
 
     override fun initAfterBinding() {
         initService()
@@ -57,22 +61,52 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>(ActivitySearchBinding:
             finish()
         }
 
+        binding.searchTextEt.setOnClickListener {
+            // binding.searchTextEt.setText(binding.searchTextEt.text.toString() + " dd")
+            binding.searchTextEt.setSelection(binding.searchTextEt.length() - 1)
+        }
+
         binding.searchTextEt.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             when (keyCode) {
                 KeyEvent.KEYCODE_ENTER -> {
                     binding.searchDefaultLayout.visibility = View.GONE
                     binding.searchResultRv.visibility = View.VISIBLE
 
-                    var searchWord = binding.searchTextEt.text.toString()
+                    binding.searchTextEt.isFocusable = false
+                    binding.searchTextEt.isFocusableInTouchMode = false
+
+                    searchWord = binding.searchTextEt.text.toString()
                     searchService.getHomeDefaultCourse(courseId, searchWord)
                 }
             }
             true
         })
+
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        }
+
+        binding.courseMoreCv.setOnClickListener {
+            searchService.getHomeDefaultCourse(lastCourseId, searchWord)
+        }
     }
 
     override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
-         searchResultRVAdapter.addAllItems(homeDefaultResponse.data)
+        binding.searchRv.visibility = View.VISIBLE
+        binding.searchDefaultLayout.visibility = View.GONE
+
+        if (homeDefaultResponse.data.size != 0) {
+            // MEMO: 마지막 페이지가 아니라면 더 보기 버튼 보여주기
+            var lastCourse = homeDefaultResponse.data[homeDefaultResponse.data.size - 1]
+            if (!lastCourse.finalPage) {
+                lastCourseId = lastCourse.courseId
+                binding.courseMoreCv.visibility = View.VISIBLE
+            } else binding.courseMoreCv.visibility = View.GONE
+        }
+
+        searchResultRVAdapter.addAllItems(homeDefaultResponse.data)
     }
 
     override fun homeDefaultCourseFailureView() {

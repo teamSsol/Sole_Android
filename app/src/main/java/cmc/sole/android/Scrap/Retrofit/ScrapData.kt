@@ -11,7 +11,9 @@ data class ScrapFolderDataResponse(
 )
 
 data class ScrapFolderDataResult(
+    var scrapCount: Int,
     var scrapFolderId: Int,
+    var scrapFolderImg: String,
     var scrapFolderName: String,
     var viewType: Int = 0
 )
