@@ -1,13 +1,21 @@
 package cmc.sole.android.MyCourse.Write
 
+import android.Manifest
 import android.R
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Point
 import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,31 +53,41 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
         return ViewHolder(binding)
     }
 
+    private val locationImageResult = MyCourseWriteActivity().registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == AppCompatActivity.RESULT_OK) {
+            // locationImageUri = result.data?.data
+            // placeRVAdapter.sendImgUrl(locationImageUri!!, index)
+            Log.d("WRITE-TEST", "${result.data?.data}")
+        }
+        // locationImgRVAdapter.addItem(MyCourseWriteImage(locationImageUri.toString(), locationImage))
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        var locationImgRVAdapter = MyCourseWriteLocationImageRVAdapter(imgList)
-//        holder.binding.myCourseWriteLocationRv.adapter = locationImgRVAdapter
-//        holder.binding.myCourseWriteLocationRv.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
-//        holder.binding.myCourseWriteLocationRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
-//        locationImgRVAdapter.setOnItemClickListener(object: MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
-//            override fun onItemClick(data: MyCourseWriteImage, position: Int) {
-//                // 여기서 연결 필요
-//                // setAlbumMode()
-//                checkAlbumMode(true)
-//                itemClickListener.onItemClick(placeInfoList[position], position)
-//                checkAlbumMode(false)
-//            }
-//        })
-//        if (imgList.size == 0) {
-//            locationImgRVAdapter.addItem(MyCourseWriteImage("", locationAddImage))
-//        }
+        var locationImgRVAdapter = MyCourseWriteLocationImageRVAdapter(imgList)
+        holder.binding.myCourseWriteLocationRv.adapter = locationImgRVAdapter
+        holder.binding.myCourseWriteLocationRv.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
+        holder.binding.myCourseWriteLocationRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
+        locationImgRVAdapter.setOnItemClickListener(object: MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
+            override fun onItemClick(data: MyCourseWriteImage, position: Int) {
+                // 여기서 연결 필요
+                // setAlbumMode()
+                // checkAlbumMode(true)
+                // itemClickListener.onItemClick(placeInfoList[position], position)
+                // checkAlbumMode(false)
+                Log.d("WRITE-TEST", "이미지 클릭")
+            }
+        })
+        if (imgList.size == 0) {
+            locationImgRVAdapter.addItem(MyCourseWriteImage("", locationAddImage))
+        }
 
         // UPDATE: RecyclerView로 업데이트 필요
         // MEMO: 이미지 정보
-        holder.binding.myCourseWriteLocationAddImageCv.setOnClickListener {
-            checkAlbumMode(true)
-            itemClickListener.onItemClick(placeInfoList[position], position)
-            checkAlbumMode(false)
-        }
+//        holder.binding.myCourseWriteLocationAddImageCv.setOnClickListener {
+//            checkAlbumMode(true)
+//            itemClickListener.onItemClick(placeInfoList[position], position)
+//            checkAlbumMode(false)
+//        }
         
         // MEMO: 장소 정보
         holder.binding.myCourseWriteSearchBar.setOnClickListener {
@@ -126,11 +144,11 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
             }
 
             // MEMO: 이미지 한장일 떄
-            Log.d("API-TEST", "placeInfoImgUrl = ${placeInfo.imgUrl}")
-            if (placeInfo.imgUrl != null) {
-                if (placeInfo.imgUrl!!.size > 0)
-                    Glide.with(binding.root.context).load(Uri.parse(placeInfo.imgUrl!!.get(0))).centerCrop().into(binding.myCourseWriteLocationAddImageIv)
-            }
+//            Log.d("API-TEST", "placeInfoImgUrl = ${placeInfo.imgUrl}")
+//            if (placeInfo.imgUrl != null) {
+//                if (placeInfo.imgUrl!!.size > 0)
+//                    Glide.with(binding.root.context).load(Uri.parse(placeInfo.imgUrl!!.get(0))).centerCrop().into(binding.myCourseWriteLocationAddImageIv)
+//            }
         }
     }
 
@@ -159,6 +177,7 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
 //        this.notifyItemChanged(position)
 //   }
 
+    // MEMO: 사진 한장일 때
     fun sendImgUrl(imgUrl: Uri, position: Int) {
         // placeInfoList[position].imgUrl?.clear()
         // placeInfoList[position].imgUrl.add(imgUrl.toString())

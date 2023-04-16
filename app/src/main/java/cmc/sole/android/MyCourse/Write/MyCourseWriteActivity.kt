@@ -196,9 +196,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         binding.myCourseWriteUploadBtn.setOnClickListener {
             Log.d("WRITE-TEST", "courseId = $courseId")
             if (courseId == -1) addCourse()
-            // else updateCourse()
-
-            // addCourse()
+            else updateCourse()
         }
     }
 
@@ -258,54 +256,62 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         myCourseService.addMyCourse(thumbnailImgRequest, courseRequestDto)
     }
 
-//    private fun updateCourse() {
-//        var thumbnailImg = mutableListOf<MultipartBody.Part?>()
-//
-//        if (mainImageUri != null) {
-//            var file = File(absolutelyPath(Uri.parse(mainImageUri.toString()), this))
-//            var requestFile = RequestBody.create(MediaType.parse("image/*"), file)
-//            thumbnailImg.add(MultipartBody.Part.createFormData("thumbnailImg", file.name, requestFile))
-//        }
-//
-//        val placeUpdateRequestDtos = JSONArray()
-//        for (i in 0 until placeRVAdapter.getItemSize()) {
-//            var jsonObject = JSONObject()
-//            jsonObject.put("address", placeRVAdapter.getItem(i).address)
-//            jsonObject.put("description", placeRVAdapter.getItem(i).description)
-//            jsonObject.put("duration", placeRVAdapter.getItem(i).duration)
-//            jsonObject.put("latitude", placeRVAdapter.getItem(i).latitude)
-//            jsonObject.put("longitude", placeRVAdapter.getItem(i).longitude)
-//            jsonObject.put("placeId", placeInfoList[i].placeId)
-//            jsonObject.put("placeId", placeInfoList[i].placeImgUrls)
-//            jsonObject.put("placeName", placeRVAdapter.getItem(i).placeName)
-//
-//            // MEMO: 이미지 주소 연결
-//            var file = File(absolutelyPath(Uri.parse(placeRVAdapter.getItem(i).imgUrl.toString()), this))
-//            var requestFile = RequestBody.create(MediaType.parse("image/*"), file)
-//            thumbnailImg.add(MultipartBody.Part.createFormData(placeRVAdapter.getItem(i).placeName.toString(), file.name, requestFile))
-//
-//            placeUpdateRequestDtos.put(jsonObject)
-//        }
-//
-//        var jsonBody = JSONObject()
-//        jsonBody.put("description", binding.myCourseWriteReviewEt.text)
-//        jsonBody.put("placeCategories", JSONArray(placeCategories.toTypedArray()))
-//        jsonBody.put("placeUpdateRequestDtos", placeUpdateRequestDtos)
-//        jsonBody.put("startDate", binding.myCourseWriteDateTv.text.substring(0, 4) + "-" + binding.myCourseWriteDateTv.text.substring(5, 7) + "-" + binding.myCourseWriteDateTv.text.substring(8))
-//        jsonBody.put("title", binding.myCourseWriteTitleEt.text)
-//        jsonBody.put("transCategories", JSONArray(transCategories.toTypedArray()))
-//        jsonBody.put("withCategories", JSONArray(withCategories.toTypedArray()))
-//
-//        val requestBody: RequestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonBody.toString())
-//        var courseUpdateRequestDto = MultipartBody.Part.createFormData("courseUpdateRequestDto", "courseRequestDto", requestBody)
-//        var thumbnailImgRequest: List<MultipartBody.Part?> = thumbnailImg
-//
-//        Log.d("WRITE-TEST", "jsonBody = $jsonBody")
-//
-//        // var courseImgRequest: List<MultipartBody.Part?> = courseImg
-//        // MEMO: 코스 수정
-//        myCourseService.updateMyCourse(courseId, thumbnailImgRequest, courseUpdateRequestDto)
-//    }
+    private fun updateCourse() {
+        var thumbnailImg = mutableListOf<MultipartBody.Part?>()
+
+        var file: File
+        var requestFile: RequestBody
+        var multipartFile: MultipartBody.Part?
+
+        if (mainImageUri != null) {
+            file = File(ImageTranslator.optimizeBitmap(this, mainImageUri!!))
+            requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+            multipartFile = MultipartBody.Part.createFormData("thumbnailImg", file.name, requestFile)
+            thumbnailImg.add(multipartFile)
+        }
+
+        val placeUpdateRequestDtos = JSONArray()
+        for (i in 0 until placeRVAdapter.getItemSize()) {
+            var jsonObject = JSONObject()
+            jsonObject.put("address", placeRVAdapter.getItem(i).address)
+            jsonObject.put("description", placeRVAdapter.getItem(i).description)
+            jsonObject.put("duration", placeRVAdapter.getItem(i).duration)
+            jsonObject.put("latitude", placeRVAdapter.getItem(i).latitude)
+            jsonObject.put("longitude", placeRVAdapter.getItem(i).longitude)
+            jsonObject.put("placeId", placeInfoList[i].placeId)
+            jsonObject.put("placeId", placeInfoList[i].placeImgUrls)
+            jsonObject.put("placeName", placeRVAdapter.getItem(i).placeName)
+
+            var placeMultipartFile: MultipartBody.Part?
+
+            // MEMO: 이미지 주소 연결
+            var placeFile = File(ImageTranslator.optimizeBitmap(this, placeRVAdapter.getItem(i).imgUrl!![0].toUri()))
+            var placeRequestFile: RequestBody = placeFile.asRequestBody("image/*".toMediaTypeOrNull())
+            placeMultipartFile = MultipartBody.Part.createFormData(placeRVAdapter.getItem(i).placeName.toString(), placeFile.name, placeRequestFile)
+            thumbnailImg.add(placeMultipartFile)
+
+            placeUpdateRequestDtos.put(jsonObject)
+        }
+
+        var jsonBody = JSONObject()
+        jsonBody.put("description", binding.myCourseWriteReviewEt.text)
+        jsonBody.put("placeCategories", JSONArray(placeCategories.toTypedArray()))
+        jsonBody.put("placeUpdateRequestDtos", placeUpdateRequestDtos)
+        jsonBody.put("startDate", binding.myCourseWriteDateTv.text.substring(0, 4) + "-" + binding.myCourseWriteDateTv.text.substring(5, 7) + "-" + binding.myCourseWriteDateTv.text.substring(8))
+        jsonBody.put("title", binding.myCourseWriteTitleEt.text)
+        jsonBody.put("transCategories", JSONArray(transCategories.toTypedArray()))
+        jsonBody.put("withCategories", JSONArray(withCategories.toTypedArray()))
+
+        val requestBody: RequestBody = jsonBody.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+        var courseUpdateRequestDto = MultipartBody.Part.createFormData("courseUpdateRequestDto", "courseRequestDto", requestBody)
+        var thumbnailImgRequest: List<MultipartBody.Part?> = thumbnailImg
+
+        Log.d("WRITE-TEST", "jsonBody = $jsonBody")
+
+        // var courseImgRequest: List<MultipartBody.Part?> = courseImg
+        // MEMO: 코스 수정
+        myCourseService.updateMyCourse(courseId, thumbnailImgRequest, courseUpdateRequestDto)
+    }
 
     private fun returnCategories(option: String): MutableSet<String> {
         var returnCategoriesArray = mutableSetOf<String>()
