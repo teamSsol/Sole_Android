@@ -2,6 +2,7 @@ package cmc.sole.android.MyCourse.Write
 
 import android.Manifest
 import android.R
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.Home.MyCourseWriteImage
 import cmc.sole.android.Home.locationAddImage
+import cmc.sole.android.Home.locationImage
 import cmc.sole.android.MyCourse.PlaceInfoData
 import cmc.sole.android.MyCourse.Write.Search.MyCourseWriteSearchBottomFragment
 import cmc.sole.android.MyCourse.Write.Search.SearchResultData
@@ -36,9 +38,10 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
     var imgList = ArrayList<MyCourseWriteImage>()
     var albumMode = false
     var placeImg: Uri? = null
+    private lateinit var locationImgRVAdapter: MyCourseWriteLocationImageRVAdapter
 
     interface OnItemClickListener {
-        fun onItemClick(data: PlaceInfoData, position: Int)
+        fun onItemClick(data: MyCourseWriteImage, position: Int)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -62,19 +65,19 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
         // locationImgRVAdapter.addItem(MyCourseWriteImage(locationImageUri.toString(), locationImage))
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var locationImgRVAdapter = MyCourseWriteLocationImageRVAdapter(imgList)
+    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
+        locationImgRVAdapter = MyCourseWriteLocationImageRVAdapter(imgList)
         holder.binding.myCourseWriteLocationRv.adapter = locationImgRVAdapter
         holder.binding.myCourseWriteLocationRv.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
         holder.binding.myCourseWriteLocationRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
         locationImgRVAdapter.setOnItemClickListener(object: MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
-            override fun onItemClick(data: MyCourseWriteImage, position: Int) {
+            override fun onItemClick(data: MyCourseWriteImage, imgPosition: Int) {
                 // 여기서 연결 필요
                 // setAlbumMode()
-                // checkAlbumMode(true)
-                // itemClickListener.onItemClick(placeInfoList[position], position)
-                // checkAlbumMode(false)
-                Log.d("WRITE-TEST", "이미지 클릭")
+                checkAlbumMode(true)
+                itemClickListener.onItemClick(imgList[imgPosition], position)
+                checkAlbumMode(false)
+                locationImgRVAdapter.notifyDataSetChanged()
             }
         })
         if (imgList.size == 0) {
@@ -183,7 +186,11 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
         // placeInfoList[position].imgUrl.add(imgUrl.toString())
         placeInfoList[position].imgUrl = arrayListOf(imgUrl.toString())
 
-        Log.d("WRITE-TEST", "placeInfoList = $placeInfoList")
+        locationImgRVAdapter.addImgItem()
+        imgList.add(MyCourseWriteImage(imgUrl.toString(), locationImage))
+        imgList.add(MyCourseWriteImage("", locationAddImage))
+
+        Log.d("WRITE-TEST", "imgUrl = ${placeInfoList[position].imgUrl}")
 
         this.notifyDataSetChanged()
     }

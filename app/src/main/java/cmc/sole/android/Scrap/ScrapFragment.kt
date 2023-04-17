@@ -66,6 +66,7 @@ class ScrapFragment: BaseFragment<FragmentScrapBinding>(FragmentScrapBinding::in
         scrapFolderRVAdapter.clearItems()
         scrapFolderRVAdapter.addAllItems(scrapFolderDataResult)
         scrapFolderRVAdapter.addItem(ScrapFolderDataResult(0, -1, "", "", addFolder))
+        Log.d("API-TEST", "scrapFolderDataResult = ${scrapFolderDataResult}")
     }
 
     override fun scrapFolderFailureView() {

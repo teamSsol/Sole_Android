@@ -101,4 +101,8 @@ class MyCourseWriteLocationImageRVAdapter(private val imgList: ArrayList<MyCours
         }
         this.notifyDataSetChanged()
     }
+
+    fun addImgItem() {
+        imgList.removeAt(imgList.size - 1)
+    }
 }

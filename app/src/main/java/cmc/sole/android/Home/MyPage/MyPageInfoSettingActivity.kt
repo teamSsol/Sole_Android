@@ -172,8 +172,6 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
             val dialogWithdrawal = DialogMyPageWithdrawal()
             dialogWithdrawal.show(supportFragmentManager, "WithdrawalDialog")
         }
-
-        binding
     }
 
     // 절대경로 변환
