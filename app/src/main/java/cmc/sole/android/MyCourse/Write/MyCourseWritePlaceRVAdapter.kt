@@ -34,11 +34,10 @@ import com.naver.maps.geometry.Tm128
 
 public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<PlaceInfoData>): RecyclerView.Adapter<MyCourseWritePlaceRVAdapter.ViewHolder>() {
 
-    private lateinit var itemClickListener: OnItemClickListener
-    var imgList = ArrayList<MyCourseWriteImage>()
-    var albumMode = false
-    var placeImg: Uri? = null
+    // MEMO: 여러 장의 장소 이미지를 위한 Adapter
     private lateinit var locationImgRVAdapter: MyCourseWriteLocationImageRVAdapter
+    private lateinit var itemClickListener: OnItemClickListener
+    var albumMode = false
 
     interface OnItemClickListener {
         fun onItemClick(data: MyCourseWriteImage, position: Int)
@@ -57,24 +56,17 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
     }
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
-        locationImgRVAdapter = MyCourseWriteLocationImageRVAdapter(imgList)
+        locationImgRVAdapter = MyCourseWriteLocationImageRVAdapter(placeInfoList[position].imgUrl)
         holder.binding.myCourseWriteLocationRv.adapter = locationImgRVAdapter
         holder.binding.myCourseWriteLocationRv.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
         // holder.binding.myCourseWriteLocationRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
         locationImgRVAdapter.setOnItemClickListener(object: MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
             override fun onItemClick(data: MyCourseWriteImage, imgPosition: Int) {
-                // 여기서 연결 필요
-                // setAlbumMode()
                 checkAlbumMode(true)
-                itemClickListener.onItemClick(imgList[imgPosition], position)
+                itemClickListener.onItemClick(placeInfoList[position].imgUrl[imgPosition], position)
                 checkAlbumMode(false)
-                locationImgRVAdapter.notifyDataSetChanged()
             }
         })
-        if (imgList.size == 0) {
-            imgList.add(MyCourseWriteImage("", locationAddImage))
-            locationImgRVAdapter.notifyDataSetChanged()
-        }
         
         // MEMO: 장소 정보
         holder.binding.myCourseWriteSearchBar.setOnClickListener {
@@ -114,7 +106,6 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
                     }
 
                     placeInfoList[position].duration = hour.toInt() * 60 + minute.toInt()
-                    Log.d("WRITE-TEST", "placeInfoList = $placeInfoList")
                 }
             })
         }
@@ -145,21 +136,14 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
         return albumMode
     }
 
-    // MEMO: 사진 한장일 때
     fun sendImgUrl(imgUrl: Uri, position: Int) {
-        if (placeInfoList[position].imgUrl != null) {
-            placeInfoList[position].imgUrl!!.add(MyCourseWriteImage(imgUrl.toString(), locationImage))
-        } else {
-            placeInfoList[position].imgUrl = arrayListOf(MyCourseWriteImage(imgUrl.toString(), locationImage))
-        }
+        // MEMO: 사진 추가 이미지를 제일 뒤로 보내기 위함
+        placeInfoList[position].imgUrl.removeAt(placeInfoList[position].imgUrl.size - 1)
+        placeInfoList[position].imgUrl.add(MyCourseWriteImage(imgUrl.toString(), locationImage))
+        placeInfoList[position].imgUrl.add(MyCourseWriteImage("", locationAddImage))
 
-        imgList.add(MyCourseWriteImage(imgUrl.toString(), locationImage))
-        locationImgRVAdapter.addImgItem()
-
+        locationImgRVAdapter.notifyDataSetChanged()
         this.notifyDataSetChanged()
-
-        Log.d("WRITE-TEST", "placeInfoList[0].imgUrl = ${placeInfoList[0].imgUrl}")
-        Log.d("WRITE-TEST", "placeInfoList[1].imgUrl = ${placeInfoList[1].imgUrl}")
     }
 
     fun getItemSize(): Int {

@@ -15,7 +15,7 @@ data class PlaceInfoData(
     var latitude: Double?,
     var longitude: Double?,
     var placeName: String?,
-    var imgUrl: ArrayList<MyCourseWriteImage>?
+    var imgUrl: ArrayList<MyCourseWriteImage>
 //    var title: String?,
 //    var address: String?,
 //    var roadAddress: String?,

@@ -73,7 +73,9 @@ class MyCourseWriteLocationImageRVAdapter(private val imgList: ArrayList<MyCours
     }
 
     inner class MyCourseWriteLocationAddImageViewHolder(val binding: ItemMyCourseWriteLocationAddImageBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(img: MyCourseWriteImage) { }
+        fun bind(img: MyCourseWriteImage) {
+            binding.myCourseWriteLocationAddImageNumberTv.text = "${imgList.size - 1}/4"
+        }
     }
 
     fun addItem(item: MyCourseWriteImage) {

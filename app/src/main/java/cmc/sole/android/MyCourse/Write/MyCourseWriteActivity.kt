@@ -24,6 +24,7 @@ import cmc.sole.android.Home.MyCourseWriteImage
 import cmc.sole.android.Home.PlaceResponseDtos
 import cmc.sole.android.Home.Retrofit.HomeCourseDetailView
 import cmc.sole.android.Home.Retrofit.HomeService
+import cmc.sole.android.Home.locationAddImage
 import cmc.sole.android.MyCourse.MyCourseTagRVAdapter
 import cmc.sole.android.MyCourse.MyCourseWriteTagBottomFragment
 import cmc.sole.android.MyCourse.PlaceInfoData
@@ -190,7 +191,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         }
 
         binding.myCourseWriteLocationAddCv.setOnClickListener {
-            placeRVAdapter.addItem(PlaceInfoData(null, null, null, null, null, null, null))
+            placeRVAdapter.addItem(PlaceInfoData(null, null, null, null, null, null, arrayListOf(MyCourseWriteImage("", locationAddImage))))
         }
 
         binding.myCourseWriteUploadBtn.setOnClickListener {
@@ -376,8 +377,8 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         })
 
         if (courseId == -1) {
-            placeList.add(PlaceInfoData(null, null, null, null, null, null, null))
-            placeList.add(PlaceInfoData(null, null, null, null, null, null, null))
+            placeList.add(PlaceInfoData(null, null, null, null, null, null, arrayListOf(MyCourseWriteImage("", locationAddImage))))
+            placeList.add(PlaceInfoData(null, null, null, null, null, null, arrayListOf(MyCourseWriteImage("", locationAddImage))))
         }
     }
 
