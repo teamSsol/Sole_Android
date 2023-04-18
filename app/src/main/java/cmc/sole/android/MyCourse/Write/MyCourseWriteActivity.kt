@@ -230,7 +230,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
 //            for (i in 0 until placeRVAdapter.getItem(i).imgUrl!!.size) {
 //
 //            }
-            var placeFile = File(ImageTranslator.optimizeBitmap(this, placeRVAdapter.getItem(i).imgUrl!![0].toUri()))
+            var placeFile = File(ImageTranslator.optimizeBitmap(this, placeRVAdapter.getItem(i).imgUrl!![0].imgUrl.toUri()))
             var placeRequestFile: RequestBody = placeFile.asRequestBody("image/*".toMediaTypeOrNull())
             placeMultipartFile = MultipartBody.Part.createFormData(placeRVAdapter.getItem(i).placeName.toString(), placeFile.name, placeRequestFile)
             thumbnailImg.add(placeMultipartFile)
@@ -285,7 +285,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
             var placeMultipartFile: MultipartBody.Part?
 
             // MEMO: 이미지 주소 연결
-            var placeFile = File(ImageTranslator.optimizeBitmap(this, placeRVAdapter.getItem(i).imgUrl!![0].toUri()))
+            var placeFile = File(ImageTranslator.optimizeBitmap(this, placeRVAdapter.getItem(i).imgUrl!![0].imgUrl.toUri()))
             var placeRequestFile: RequestBody = placeFile.asRequestBody("image/*".toMediaTypeOrNull())
             placeMultipartFile = MultipartBody.Part.createFormData(placeRVAdapter.getItem(i).placeName.toString(), placeFile.name, placeRequestFile)
             thumbnailImg.add(placeMultipartFile)

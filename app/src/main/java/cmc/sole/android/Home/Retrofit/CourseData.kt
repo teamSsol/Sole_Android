@@ -111,7 +111,7 @@ data class PlaceResponseDtos(
     var latitude: Double,
     var longitude: Double,
     var placeId: Int,
-    var placeImgUrls: ArrayList<String>,
+    var placeImgUrls: ArrayList<MyCourseWriteImage>,
     var placeName: String,
     var viewType: Int? = null
 )
