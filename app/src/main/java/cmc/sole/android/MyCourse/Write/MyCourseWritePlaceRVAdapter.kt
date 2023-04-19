@@ -61,7 +61,11 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
         holder.binding.myCourseWriteLocationRv.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
         // holder.binding.myCourseWriteLocationRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
         locationImgRVAdapter.setOnItemClickListener(object: MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
-            override fun onItemClick(data: MyCourseWriteImage, imgPosition: Int) {
+            override fun onLocationItemClick(data: MyCourseWriteImage, imgPosition: Int) {
+                removeImage(position, imgPosition)
+            }
+
+            override fun onLocationAddItemClick(data: MyCourseWriteImage, imgPosition: Int) {
                 checkAlbumMode(true)
                 itemClickListener.onItemClick(placeInfoList[position].imgUrl[imgPosition], position)
                 checkAlbumMode(false)
@@ -80,8 +84,8 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
                         placeInfoList[position].placeName = result.title
                         placeInfoList[position].description = result.category
                         placeInfoList[position].address = result.address
-                        var tm128 = Tm128(result.mapx.toDouble(), result.mapy.toDouble())
-                        var point = tm128.toLatLng()
+                        val tm128 = Tm128(result.mapx.toDouble(), result.mapy.toDouble())
+                        val point = tm128.toLatLng()
                         placeInfoList[position].latitude = point.latitude
                         placeInfoList[position].longitude = point.longitude
                     }
@@ -123,6 +127,7 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addItem(placeInfo: PlaceInfoData) {
         placeInfoList.add(placeInfo)
         this.notifyDataSetChanged()
@@ -136,11 +141,25 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
         return albumMode
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun sendImgUrl(imgUrl: Uri, position: Int) {
         // MEMO: 사진 추가 이미지를 제일 뒤로 보내기 위함
         placeInfoList[position].imgUrl.removeAt(placeInfoList[position].imgUrl.size - 1)
         placeInfoList[position].imgUrl.add(MyCourseWriteImage(imgUrl.toString(), locationImage))
-        placeInfoList[position].imgUrl.add(MyCourseWriteImage("", locationAddImage))
+
+        if (placeInfoList[position].imgUrl.size < 4) {
+            placeInfoList[position].imgUrl.add(MyCourseWriteImage("", locationAddImage))
+        }
+        locationImgRVAdapter.notifyDataSetChanged()
+        this.notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun removeImage(position: Int, imgPosition: Int) {
+        placeInfoList[position].imgUrl.removeAt(imgPosition)
+        if (imgPosition == 3) {
+            placeInfoList[position].imgUrl.add(MyCourseWriteImage("", locationAddImage))
+        }
 
         locationImgRVAdapter.notifyDataSetChanged()
         this.notifyDataSetChanged()
