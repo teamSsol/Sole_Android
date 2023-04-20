@@ -87,6 +87,7 @@ data class HomeCourseDetailResponse(
 )
 
 data class HomeCourseDetailResult(
+    var address: String,
     var categories: Set<Categories>,
     var checkWriter: Boolean,
     var courseId: Int,
@@ -111,7 +112,7 @@ data class PlaceResponseDtos(
     var latitude: Double,
     var longitude: Double,
     var placeId: Int,
-    var placeImgUrls: ArrayList<MyCourseWriteImage>,
+    var placeImgUrls: ArrayList<String>,
     var placeName: String,
     var viewType: Int? = null
 )

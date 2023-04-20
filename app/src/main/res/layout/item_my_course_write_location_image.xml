@@ -8,6 +8,7 @@
         android:id="@+id/my_course_write_location_image_cv"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:layout_marginStart="10dp"
         app:strokeColor="#D3D4D5"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">

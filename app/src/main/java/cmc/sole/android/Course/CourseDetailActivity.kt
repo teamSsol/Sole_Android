@@ -68,6 +68,8 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         courseId = intent.getIntExtra("courseId", -1)
         like = intent.getBooleanExtra("like", false)
 
+        Log.d("API-TEST", "courseId = $courseId / like = $like")
+
         if (like) {
             binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
         } else {
@@ -93,6 +95,7 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         homeService = HomeService()
         homeService.setHomeCourseDetailView(this)
         homeService.getHomeDetailCourse(courseId)
+        Log.d("API-TEST", "getHomeDetailCourse")
         homeService.setHomeScrapAddAndCancelView(this)
 
         followService = FollowService()
@@ -198,7 +201,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
     }
 
     override fun homeCourseDetailSuccessView(homeCourseDetailResult: HomeCourseDetailResult) {
-        // TODO: 카테고리 연결
         for (i in 0 until homeCourseDetailResult.categories.size) {
             tagRVAdapter.addItem(Translator.tagEngToKor(this, homeCourseDetailResult.categories.elementAt(i).toString()))
         }

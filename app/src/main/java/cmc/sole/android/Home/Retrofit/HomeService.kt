@@ -179,8 +179,8 @@ class HomeService {
                 call: Call<HomePopularResponse>,
                 response: Response<HomePopularResponse>
             ) {
-                Log.d("API-TEST", "getHomePopularCourse.response = $response")
-                Log.d("API-TEST", "getHomePopularCourse.responseBody = ${response.body()}")
+                // Log.d("API-TEST", "getHomePopularCourse.response = $response")
+                // Log.d("API-TEST", "getHomePopularCourse.responseBody = ${response.body()}")
                 if (response.code() == 200) {
                     val homePopularResponse = response.body()
                     if (homePopularResponse?.success == true) {
@@ -203,8 +203,8 @@ class HomeService {
                 call: Call<HomeDefaultResponse>,
                 response: Response<HomeDefaultResponse>
             ) {
-                Log.d("API-TEST", "getHomeDefaultCourse.response = $response")
-                Log.d("API-TEST", "getHomeDefaultCourse.responseBody = ${response.body()}")
+                // Log.d("API-TEST", "getHomeDefaultCourse.response = $response")
+                // Log.d("API-TEST", "getHomeDefaultCourse.responseBody = ${response.body()}")
                 if (response.code() == 200) {
                     val homeDefaultResponse = response.body()
                     if (homeDefaultResponse?.success == true) {
@@ -221,6 +221,7 @@ class HomeService {
     }
 
     fun getHomeDetailCourse(courseId: Int?) {
+        Log.d("API-TEST", "getHomeDetailCourse in")
         homeService?.getHomeDetailCourse(courseId)?.enqueue(object: Callback<HomeCourseDetailResponse> {
             override fun onResponse(
                 call: Call<HomeCourseDetailResponse>,
@@ -229,6 +230,7 @@ class HomeService {
                 Log.d("API-TEST", "getHomeDetailCourse.response = $response")
                 Log.d("API-TEST", "getHomeDetailCourse.responseBody = ${response.body()}")
                 if (response.code() == 200) {
+                    Log.d("API-TEST", "response.code = ${response.code()}")
                     val homeDetailResponse = response.body()
                     if (homeDetailResponse?.success == true) {
                         homeCourseDetailView.homeCourseDetailSuccessView(homeDetailResponse.data)
