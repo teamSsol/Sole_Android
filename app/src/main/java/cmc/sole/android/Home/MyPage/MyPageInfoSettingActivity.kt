@@ -20,6 +20,7 @@ import cmc.sole.android.Home.Retrofit.HomeService
 import cmc.sole.android.Home.Retrofit.MyPageInfoUpdateView
 import cmc.sole.android.Signup.SignupNicknameActivity
 import cmc.sole.android.Utils.BaseActivity
+import cmc.sole.android.Utils.ImageTranslator
 import cmc.sole.android.databinding.ActivityMyPageInfoSettingBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -152,7 +153,7 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
             if (imageUri == null) {
                 multipartFile = null
             } else {
-                file = File(absolutelyPath(imageUri, this))
+                file = File(ImageTranslator.optimizeBitmap(this, imageUri!!))
                 requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
                 multipartFile = MultipartBody.Part.createFormData("multipartFile", file.name, requestFile)
             }
@@ -171,8 +172,6 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
             val dialogWithdrawal = DialogMyPageWithdrawal()
             dialogWithdrawal.show(supportFragmentManager, "WithdrawalDialog")
         }
-
-        binding
     }
 
     // 절대경로 변환

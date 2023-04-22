@@ -4,12 +4,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.CourseTag.Categories
 import cmc.sole.android.Follow.FollowUserDataResult
 import cmc.sole.android.Home.*
+import cmc.sole.android.MyCourse.Write.MyCourseWriteLocationImageRVAdapter
 import cmc.sole.android.R
 import cmc.sole.android.User
+import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.databinding.ItemCourseDetailLineBinding
 import cmc.sole.android.databinding.ItemCourseDetailNumberBinding
 import com.bumptech.glide.Glide
@@ -17,6 +20,7 @@ import com.bumptech.glide.Glide
 class CourseDetailCourseRVAdapter(private val courseList: ArrayList<PlaceResponseDtos>): RecyclerView.Adapter<CourseDetailCourseRVAdapter.ViewHolder>() {
 
     private lateinit var itemClickListener: OnItemClickListener
+    private lateinit var imgRVAdapter: CourseDetailImgRVAdapter
 
     interface OnItemClickListener{
         fun onItemClick(data: FollowUserDataResult, position: Int)
@@ -35,6 +39,10 @@ class CourseDetailCourseRVAdapter(private val courseList: ArrayList<PlaceRespons
         }
 
     override fun onBindViewHolder(holder: CourseDetailCourseRVAdapter.ViewHolder, position: Int) {
+        imgRVAdapter = CourseDetailImgRVAdapter(courseList[position].placeImgUrls)
+        holder.binding.courseDetailPlaceImgRv.adapter = imgRVAdapter
+        holder.binding.courseDetailPlaceImgRv.layoutManager = LinearLayoutManager(holder.binding.root.context, LinearLayoutManager.HORIZONTAL, false)
+        holder.binding.courseDetailPlaceImgRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 20))
         holder.bind(courseList[position])
     }
 
@@ -47,6 +55,13 @@ class CourseDetailCourseRVAdapter(private val courseList: ArrayList<PlaceRespons
                 // MEMO: 접힌 상태
                 binding.courseDetailDetailInfoLayout.visibility = View.GONE
                 binding.courseDetailPlaceDescriptionTv.visibility = View.GONE
+
+                if (imgRVAdapter.getAllItems().size == 0) {
+                    if (course.placeImgUrls.size > 0) {
+                        imgRVAdapter.addAllItems(course.placeImgUrls)
+                    }
+                    else binding.courseDetailPlaceImgRv.visibility = View.GONE
+                }
             } else if (course.viewType == detailMode) {
                 // MEMO: 펼쳐진 상태
                 binding.courseDetailDetailInfoLayout.visibility = View.VISIBLE
@@ -61,10 +76,6 @@ class CourseDetailCourseRVAdapter(private val courseList: ArrayList<PlaceRespons
             binding.courseDetailPlaceTitleTv.text = course.placeName
             binding.courseDetailPlaceDescriptionTv.text = course.description
             binding.courseDetailAddressTv.text = course.address
-
-            if (course.placeImgUrls.size > 0)
-                Glide.with(binding.root.context).load(course.placeImgUrls[0]).centerCrop().into(binding.courseDetailThumbnailImg)
-            else binding.courseDetailThumbnailImgCv.visibility = View.GONE
         }
     }
 
@@ -80,10 +91,9 @@ class CourseDetailCourseRVAdapter(private val courseList: ArrayList<PlaceRespons
     }
 
     fun setViewType(option: Int) {
-        for (i in 0 until courseList.size)
+        for (i in 0 until courseList.size) {
             courseList[i].viewType = option
-
-        Log.d("API-TEST", "courseList = $courseList")
+        }
         this.notifyDataSetChanged()
     }
 

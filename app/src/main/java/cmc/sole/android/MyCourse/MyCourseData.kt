@@ -1,5 +1,7 @@
 package cmc.sole.android.MyCourse
 
+import cmc.sole.android.Home.MyCourseWriteImage
+
 data class TagButton(
     var index: Int?,
     var title: String,
@@ -13,7 +15,7 @@ data class PlaceInfoData(
     var latitude: Double?,
     var longitude: Double?,
     var placeName: String?,
-    var imgUrl: ArrayList<String>?
+    var imgUrl: ArrayList<MyCourseWriteImage>
 //    var title: String?,
 //    var address: String?,
 //    var roadAddress: String?,

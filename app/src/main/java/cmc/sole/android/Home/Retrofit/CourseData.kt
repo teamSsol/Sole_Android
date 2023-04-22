@@ -87,6 +87,7 @@ data class HomeCourseDetailResponse(
 )
 
 data class HomeCourseDetailResult(
+    var address: String,
     var categories: Set<Categories>,
     var checkWriter: Boolean,
     var courseId: Int,

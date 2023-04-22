@@ -1,5 +1,6 @@
 package cmc.sole.android.MyCourse.Write
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,8 @@ class MyCourseWriteLocationImageRVAdapter(private val imgList: ArrayList<MyCours
     private lateinit var itemClickListener: OnItemClickListener
 
     interface OnItemClickListener {
-        fun onItemClick(data: MyCourseWriteImage, position: Int)
+        fun onLocationItemClick(data: MyCourseWriteImage, position: Int)
+        fun onLocationAddItemClick(data: MyCourseWriteImage, position: Int)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -47,13 +49,15 @@ class MyCourseWriteLocationImageRVAdapter(private val imgList: ArrayList<MyCours
         when (imgList[position].viewType) {
             locationImage -> {
                 holder.itemView.setOnClickListener {
-                    itemClickListener.onItemClick(imgList[position], position)
+                    (holder as MyCourseWriteLocationImageViewHolder).binding.myCourseWriteLocationImageX.setOnClickListener {
+                        itemClickListener.onLocationItemClick(imgList[position], position)
+                    }
                 }
                 (holder as MyCourseWriteLocationImageViewHolder).bind(imgList[position])
                 holder.setIsRecyclable(false)
             } else -> {
                 holder.itemView.setOnClickListener {
-                    itemClickListener.onItemClick(imgList[position], position)
+                    itemClickListener.onLocationAddItemClick(imgList[position], position)
                 }
                 (holder as MyCourseWriteLocationAddImageViewHolder).bind(imgList[position])
                 holder.setIsRecyclable(false)
@@ -73,7 +77,9 @@ class MyCourseWriteLocationImageRVAdapter(private val imgList: ArrayList<MyCours
     }
 
     inner class MyCourseWriteLocationAddImageViewHolder(val binding: ItemMyCourseWriteLocationAddImageBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(img: MyCourseWriteImage) { }
+        fun bind(img: MyCourseWriteImage) {
+            binding.myCourseWriteLocationAddImageNumberTv.text = "${imgList.size - 1}/4"
+        }
     }
 
     fun addItem(item: MyCourseWriteImage) {
@@ -100,5 +106,9 @@ class MyCourseWriteLocationImageRVAdapter(private val imgList: ArrayList<MyCours
             imgList.add(MyCourseWriteImage("", locationAddImage))
         }
         this.notifyDataSetChanged()
+    }
+
+    fun addImgItem() {
+        imgList.removeAt(imgList.size - 1)
     }
 }

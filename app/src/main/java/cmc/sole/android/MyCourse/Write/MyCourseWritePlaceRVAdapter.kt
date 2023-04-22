@@ -1,19 +1,29 @@
 package cmc.sole.android.MyCourse.Write
 
+import android.Manifest
 import android.R
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Point
 import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.Home.MyCourseWriteImage
 import cmc.sole.android.Home.locationAddImage
+import cmc.sole.android.Home.locationImage
 import cmc.sole.android.MyCourse.PlaceInfoData
 import cmc.sole.android.MyCourse.Write.Search.MyCourseWriteSearchBottomFragment
 import cmc.sole.android.MyCourse.Write.Search.SearchResultData
@@ -24,13 +34,13 @@ import com.naver.maps.geometry.Tm128
 
 public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<PlaceInfoData>): RecyclerView.Adapter<MyCourseWritePlaceRVAdapter.ViewHolder>() {
 
+    // MEMO: 여러 장의 장소 이미지를 위한 Adapter
+    private lateinit var locationImgRVAdapter: MyCourseWriteLocationImageRVAdapter
     private lateinit var itemClickListener: OnItemClickListener
-    var imgList = ArrayList<MyCourseWriteImage>()
     var albumMode = false
-    var placeImg: Uri? = null
 
     interface OnItemClickListener {
-        fun onItemClick(data: PlaceInfoData, position: Int)
+        fun onItemClick(data: MyCourseWriteImage, position: Int)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -45,31 +55,22 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        var locationImgRVAdapter = MyCourseWriteLocationImageRVAdapter(imgList)
-//        holder.binding.myCourseWriteLocationRv.adapter = locationImgRVAdapter
-//        holder.binding.myCourseWriteLocationRv.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
-//        holder.binding.myCourseWriteLocationRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
-//        locationImgRVAdapter.setOnItemClickListener(object: MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
-//            override fun onItemClick(data: MyCourseWriteImage, position: Int) {
-//                // 여기서 연결 필요
-//                // setAlbumMode()
-//                checkAlbumMode(true)
-//                itemClickListener.onItemClick(placeInfoList[position], position)
-//                checkAlbumMode(false)
-//            }
-//        })
-//        if (imgList.size == 0) {
-//            locationImgRVAdapter.addItem(MyCourseWriteImage("", locationAddImage))
-//        }
+    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
+        locationImgRVAdapter = MyCourseWriteLocationImageRVAdapter(placeInfoList[position].imgUrl)
+        holder.binding.myCourseWriteLocationRv.adapter = locationImgRVAdapter
+        holder.binding.myCourseWriteLocationRv.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
+        // holder.binding.myCourseWriteLocationRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
+        locationImgRVAdapter.setOnItemClickListener(object: MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
+            override fun onLocationItemClick(data: MyCourseWriteImage, imgPosition: Int) {
+                removeImage(position, imgPosition)
+            }
 
-        // UPDATE: RecyclerView로 업데이트 필요
-        // MEMO: 이미지 정보
-        holder.binding.myCourseWriteLocationAddImageCv.setOnClickListener {
-            checkAlbumMode(true)
-            itemClickListener.onItemClick(placeInfoList[position], position)
-            checkAlbumMode(false)
-        }
+            override fun onLocationAddItemClick(data: MyCourseWriteImage, imgPosition: Int) {
+                checkAlbumMode(true)
+                itemClickListener.onItemClick(placeInfoList[position].imgUrl[imgPosition], position)
+                checkAlbumMode(false)
+            }
+        })
         
         // MEMO: 장소 정보
         holder.binding.myCourseWriteSearchBar.setOnClickListener {
@@ -83,8 +84,8 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
                         placeInfoList[position].placeName = result.title
                         placeInfoList[position].description = result.category
                         placeInfoList[position].address = result.address
-                        var tm128 = Tm128(result.mapx.toDouble(), result.mapy.toDouble())
-                        var point = tm128.toLatLng()
+                        val tm128 = Tm128(result.mapx.toDouble(), result.mapy.toDouble())
+                        val point = tm128.toLatLng()
                         placeInfoList[position].latitude = point.latitude
                         placeInfoList[position].longitude = point.longitude
                     }
@@ -109,7 +110,6 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
                     }
 
                     placeInfoList[position].duration = hour.toInt() * 60 + minute.toInt()
-                    Log.d("WRITE-TEST", "placeInfoList = $placeInfoList")
                 }
             })
         }
@@ -124,16 +124,10 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
             if (placeInfo.placeName != null && placeInfo.address != null) {
                 binding.myCourseWriteTextEt.text = placeInfo.placeName
             }
-
-            // MEMO: 이미지 한장일 떄
-            Log.d("API-TEST", "placeInfoImgUrl = ${placeInfo.imgUrl}")
-            if (placeInfo.imgUrl != null) {
-                if (placeInfo.imgUrl!!.size > 0)
-                    Glide.with(binding.root.context).load(Uri.parse(placeInfo.imgUrl!!.get(0))).centerCrop().into(binding.myCourseWriteLocationAddImageIv)
-            }
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addItem(placeInfo: PlaceInfoData) {
         placeInfoList.add(placeInfo)
         this.notifyDataSetChanged()
@@ -147,25 +141,27 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
         return albumMode
     }
 
-    // UPDATE: 사진 여러 장으로 수정
-//    fun sendImgUrl(imgUrl: Uri, position: Int) {
-//        // placeInfoList[position].imgUrl?.clear()
-//        // placeInfoList[position].imgUrl.add(imgUrl.toString())
-//        var tempImgList = placeInfoList[position].imgUrl
-//        tempImgList!!.add(imgUrl.toString())
-//        placeInfoList[position].imgUrl = arrayListOf(imgUrl.toString())
-//        Log.d("WRITE-TEST", "placeInfoList = $placeInfoList")
-//
-//        this.notifyItemChanged(position)
-//   }
-
+    @SuppressLint("NotifyDataSetChanged")
     fun sendImgUrl(imgUrl: Uri, position: Int) {
-        // placeInfoList[position].imgUrl?.clear()
-        // placeInfoList[position].imgUrl.add(imgUrl.toString())
-        placeInfoList[position].imgUrl = arrayListOf(imgUrl.toString())
+        // MEMO: 사진 추가 이미지를 제일 뒤로 보내기 위함
+        placeInfoList[position].imgUrl.removeAt(placeInfoList[position].imgUrl.size - 1)
+        placeInfoList[position].imgUrl.add(MyCourseWriteImage(imgUrl.toString(), locationImage))
 
-        Log.d("WRITE-TEST", "placeInfoList = $placeInfoList")
+        if (placeInfoList[position].imgUrl.size < 4) {
+            placeInfoList[position].imgUrl.add(MyCourseWriteImage("", locationAddImage))
+        }
+        locationImgRVAdapter.notifyDataSetChanged()
+        this.notifyDataSetChanged()
+    }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun removeImage(position: Int, imgPosition: Int) {
+        placeInfoList[position].imgUrl.removeAt(imgPosition)
+        if (imgPosition == 3) {
+            placeInfoList[position].imgUrl.add(MyCourseWriteImage("", locationAddImage))
+        }
+
+        locationImgRVAdapter.notifyDataSetChanged()
         this.notifyDataSetChanged()
     }
 
