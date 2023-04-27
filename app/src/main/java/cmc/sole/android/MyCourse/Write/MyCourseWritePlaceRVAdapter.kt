@@ -130,7 +130,7 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
     @SuppressLint("NotifyDataSetChanged")
     fun addItem(placeInfo: PlaceInfoData) {
         placeInfoList.add(placeInfo)
-        this.notifyDataSetChanged()
+        this.notifyItemInserted(placeInfoList.size - 1)
     }
 
     private fun checkAlbumMode(mode: Boolean) {

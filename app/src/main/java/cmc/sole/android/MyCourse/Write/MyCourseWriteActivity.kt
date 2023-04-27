@@ -19,6 +19,8 @@ import androidx.core.net.toUri
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.Home.*
 import cmc.sole.android.Home.Retrofit.HomeCourseDetailView
 import cmc.sole.android.Home.Retrofit.HomeService
@@ -186,11 +188,23 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         }
 
         binding.myCourseWriteLocationAddCv.setOnClickListener {
-            placeRVAdapter.addItem(PlaceInfoData(null, null, null, null, null, null, arrayListOf(MyCourseWriteImage("", locationAddImage))))
+            placeRVAdapter.addItem(PlaceInfoData(null, null, null, null, null, "${placeRVAdapter.getItemSize()}", arrayListOf(MyCourseWriteImage("", locationAddImage))))
+
+            if (placeRVAdapter.getItemSize() == 10) {
+                binding.myCourseWriteLocationAddCv.visibility = View.GONE
+            }
+
+            val smoothScroller: RecyclerView.SmoothScroller by lazy {
+                object : LinearSmoothScroller(this) {
+                    override fun getVerticalSnapPreference() = SNAP_TO_START
+                }
+            }
+
+            smoothScroller.targetPosition = placeRVAdapter.getItemSize()
+            binding.myCourseWritePlaceRv.layoutManager?.scrollToPosition(placeRVAdapter.getItemSize() - 1)
         }
 
         binding.myCourseWriteUploadBtn.setOnClickListener {
-            Log.d("WRITE-TEST", "courseId = $courseId")
             if (courseId == -1) addCourse()
             else updateCourse()
         }
@@ -421,9 +435,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         Log.d("API-TEST", "homeCourseDetailResult = $homeCourseDetailResult")
 
         binding.myCourseWriteTitleEt.setText(homeCourseDetailResult.title)
-        Log.d("API-TESt", "ThumbnailImg = ${homeCourseDetailResult.thumbnailImg.toString()}")
         Glide.with(this).load(homeCourseDetailResult.thumbnailImg).centerCrop().into(binding.myCourseWriteMainIv)
-        Log.d("API-TESt", "ThumbnailImg = ${homeCourseDetailResult.thumbnailImg}")
         binding.myCourseWriteDateTv.text = homeCourseDetailResult.startDate
         binding.myCourseWriteReviewEt.setText(homeCourseDetailResult.description)
 
