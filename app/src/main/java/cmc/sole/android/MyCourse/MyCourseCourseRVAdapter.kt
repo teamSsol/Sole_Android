@@ -49,14 +49,6 @@ class MyCourseCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>):
 
     override fun onBindViewHolder(holder: MyCourseCourseRVAdapter.ViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
-            if (holder.binding.myCourseCourseUncheckIv.visibility == View.VISIBLE) {
-                holder.binding.myCourseCourseUncheckIv.visibility = View.GONE
-                holder.binding.myCourseCourseCheckIv.visibility = View.VISIBLE
-            } else {
-                holder.binding.myCourseCourseUncheckIv.visibility = View.VISIBLE
-                holder.binding.myCourseCourseCheckIv.visibility = View.GONE
-            }
-
             itemClickListener.onItemClick(courseList[position], position)
         }
         holder.bind(courseList[position])
