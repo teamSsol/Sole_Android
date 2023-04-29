@@ -13,7 +13,7 @@ import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
 import cmc.sole.android.R
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
-import cmc.sole.android.databinding.BottomFragmentMyCourseTagBinding
+import cmc.sole.android.databinding.BottomFragmentMyCourseWriteTagBinding
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -21,7 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class MyCourseWriteTagBottomFragment: BottomSheetDialogFragment() {
 
-    lateinit var binding: BottomFragmentMyCourseTagBinding
+    lateinit var binding: BottomFragmentMyCourseWriteTagBinding
     private lateinit var myCourseTagBottomPlaceRVAdapter: MyCourseTagButtonRVAdapter
     private lateinit var myCourseTagBottomWithRVAdapter: MyCourseTagButtonRVAdapter
     private lateinit var myCourseTagBottomTransRVAdapter: MyCourseTagButtonRVAdapter
@@ -65,7 +65,7 @@ class MyCourseWriteTagBottomFragment: BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // FIX: 태그 여러 개로 다시 나오는 오류 수정 필요!!
-        binding = BottomFragmentMyCourseTagBinding.inflate(inflater, container, false)
+        binding = BottomFragmentMyCourseWriteTagBinding.inflate(inflater, container, false)
         // checkTagList = writeVM.getTag()
 
         tagFlag = requireArguments().getBooleanArray("tagFlag")!!
