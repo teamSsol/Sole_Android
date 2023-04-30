@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
+import cmc.sole.android.Course.CourseDetailOptionBottomFragment
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.MyCourse.Retrofit.*
 import cmc.sole.android.MyCourse.Write.MyCourseWriteActivity
@@ -73,6 +74,11 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
     }
 
     private fun initClickListener() {
+        binding.myCourseInfoContent.setOnClickListener {
+            val myCourseWriteOptionBottomFragment = MyCourseWriteOptionBottomFragment()
+            myCourseWriteOptionBottomFragment.show(activity?.supportFragmentManager!!, "CourseDetailOptionBottom")
+        }
+
 //        binding.myCourseLocationTag.setOnClickListener {
 //            val myCourseTagBottomFragment = MyCourseTagBottomFragment()
 //            var bundle = Bundle()

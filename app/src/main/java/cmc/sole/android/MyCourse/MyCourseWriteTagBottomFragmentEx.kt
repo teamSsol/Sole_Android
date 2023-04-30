@@ -19,7 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class MyCourseWriteTagBottomFragment: BottomSheetDialogFragment() {
+class MyCourseWriteTagBottomFragmentEx: BottomSheetDialogFragment() {
 
     lateinit var binding: BottomFragmentMyCourseWriteTagBinding
     private lateinit var myCourseTagBottomPlaceRVAdapter: MyCourseTagButtonRVAdapter

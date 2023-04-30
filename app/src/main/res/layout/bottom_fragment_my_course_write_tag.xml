@@ -105,7 +105,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@drawable/default_button_o"
-        android:text="적용하기"
+        android:text="태그태그"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:fontFamily="@font/pretendard_regular"
