@@ -4,22 +4,22 @@ import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
-import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
+import androidx.appcompat.app.AppCompatActivity
+import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryRequest
 import cmc.sole.android.R
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
+import cmc.sole.android.Utils.Translator
 import cmc.sole.android.databinding.BottomFragmentMyCourseWriteTagBinding
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class MyCourseWriteTagBottomFragmentEx: BottomSheetDialogFragment() {
+class Ex_MyCourseTagBottomFragment: BottomSheetDialogFragment() {
 
     lateinit var binding: BottomFragmentMyCourseWriteTagBinding
     private lateinit var myCourseTagBottomPlaceRVAdapter: MyCourseTagButtonRVAdapter
@@ -28,15 +28,12 @@ class MyCourseWriteTagBottomFragmentEx: BottomSheetDialogFragment() {
     private var placeTagList = ArrayList<TagButton>()
     private var withTagList = ArrayList<TagButton>()
     private var transTagList = ArrayList<TagButton>()
-    private var checkTagList: MutableList<TagButton> = mutableListOf()
+    private var checkTagList = booleanArrayOf()
+    private lateinit var myCourseHistoryRequest: MyCourseHistoryRequest
     private lateinit var dialogFinishListener: OnTagFragmentFinishListener
-    private var sendTag = listOf<TagButton>()
-    private var tagFlag = booleanArrayOf()
-
-    private val writeVM: MyCourseWriteViewModel by activityViewModels()
 
     interface OnTagFragmentFinishListener {
-        fun finish(tagSort: List<TagButton>)
+        fun finish(checkTagList: BooleanArray, myCourseHistoryRequest: MyCourseHistoryRequest)
     }
 
     fun setOnFinishListener(listener: OnTagFragmentFinishListener) {
@@ -45,18 +42,20 @@ class MyCourseWriteTagBottomFragmentEx: BottomSheetDialogFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        var returnList = mutableListOf<TagButton>()
+
         for (i in 0..8) {
-            returnList.add(placeTagList[i])
+            checkTagList[i] = myCourseTagBottomPlaceRVAdapter.getItem(i).isChecked
         }
         for (i in 0..4) {
-            returnList.add(withTagList[i])
+            checkTagList[i + 9] = myCourseTagBottomWithRVAdapter.getItem(i).isChecked
         }
         for (i in 0..3) {
-            returnList.add(transTagList[i])
+            checkTagList[i + 14] = myCourseTagBottomTransRVAdapter.getItem(i).isChecked
         }
-        Log.d("WRITE-TEST", "returnList = $returnList")
-        dialogFinishListener.finish(returnList)
+
+        myCourseHistoryRequest = MyCourseHistoryRequest(returnTag("place"), returnTag("with"), returnTag("trans"))
+
+        dialogFinishListener.finish(checkTagList, myCourseHistoryRequest)
     }
 
     override fun onCreateView(
@@ -64,11 +63,8 @@ class MyCourseWriteTagBottomFragmentEx: BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // FIX: 태그 여러 개로 다시 나오는 오류 수정 필요!!
         binding = BottomFragmentMyCourseWriteTagBinding.inflate(inflater, container, false)
-        // checkTagList = writeVM.getTag()
-
-        tagFlag = requireArguments().getBooleanArray("tagFlag")!!
+        checkTagList = requireArguments().getBooleanArray("checkTagList")!!
 
         initAdapter()
         initClickListener()
@@ -78,27 +74,6 @@ class MyCourseWriteTagBottomFragmentEx: BottomSheetDialogFragment() {
 
     private fun initClickListener() {
         binding.myCourseTagOkBtn.setOnClickListener {
-            var tagResult: ArrayList<TagButton> = arrayListOf()
-
-            if (writeVM.getTag() != null) {
-                var tagCheckList = writeVM.getTag()!!
-                for (i in 0 until writeVM.getTag()!!.size - 1) {
-                    tagResult.add(tagCheckList[i])
-                }
-            }
-
-            for (element in checkTagList) {
-                tagResult.add(element)
-            }
-            tagResult.add(TagButton(1000, "", false))
-
-            writeVM.setTag(tagSort(tagResult))
-
-            sendTag = tagSort(tagResult)
-
-            for (i in 0..17) {
-                Log.d("WRITE-TEST", "tagCheck = $i ${tagFlag[i]}")
-            }
             dismiss()
         }
     }
@@ -111,32 +86,19 @@ class MyCourseWriteTagBottomFragmentEx: BottomSheetDialogFragment() {
         binding.myCoursePlaceTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 40))
         myCourseTagBottomPlaceRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
             override fun onItemClick(data: TagButton, position: Int) {
-                tagFlag[position] = data.isChecked
-                Log.d("WRITE-TEST", "$tagFlag")
-//                if (data.isChecked) {
-//                    checkTagList.add(data)
-//                }
-//                else {
-//                    for (i in 0 until checkTagList.size) {
-//                        if (data.title == checkTagList[i].title) {
-//                            checkTagList.removeAt(i)
-//                            break
-//                        }
-//                    }
-//                }
-//                writeVM.setCheckTag(position)
+                returnTag("place")
             }
         })
 
-        placeTagList.add(TagButton(1, resources.getString(R.string.place_tag1), tagFlag[0]))
-        placeTagList.add(TagButton(2, resources.getString(R.string.place_tag2), tagFlag[1]))
-        placeTagList.add(TagButton(3, resources.getString(R.string.place_tag3), tagFlag[2]))
-        placeTagList.add(TagButton(4, resources.getString(R.string.place_tag4), tagFlag[3]))
-        placeTagList.add(TagButton(5, resources.getString(R.string.place_tag5), tagFlag[4]))
-        placeTagList.add(TagButton(6, resources.getString(R.string.place_tag6), tagFlag[5]))
-        placeTagList.add(TagButton(7, resources.getString(R.string.place_tag7), tagFlag[6]))
-        placeTagList.add(TagButton(8, resources.getString(R.string.place_tag8), tagFlag[7]))
-        placeTagList.add(TagButton(9, resources.getString(R.string.place_tag9), tagFlag[8]))
+        placeTagList.add(TagButton(1, resources.getString(R.string.place_tag1), checkTagList[0]))
+        placeTagList.add(TagButton(2, resources.getString(R.string.place_tag2), checkTagList[1]))
+        placeTagList.add(TagButton(3, resources.getString(R.string.place_tag3), checkTagList[2]))
+        placeTagList.add(TagButton(4, resources.getString(R.string.place_tag4), checkTagList[3]))
+        placeTagList.add(TagButton(5, resources.getString(R.string.place_tag5), checkTagList[4]))
+        placeTagList.add(TagButton(6, resources.getString(R.string.place_tag6), checkTagList[5]))
+        placeTagList.add(TagButton(7, resources.getString(R.string.place_tag7), checkTagList[6]))
+        placeTagList.add(TagButton(8, resources.getString(R.string.place_tag8), checkTagList[7]))
+        placeTagList.add(TagButton(9, resources.getString(R.string.place_tag9), checkTagList[8]))
         placeTagList.add(TagButton(null, "", false))
 
         myCourseTagBottomWithRVAdapter = MyCourseTagButtonRVAdapter(withTagList)
@@ -145,30 +107,14 @@ class MyCourseWriteTagBottomFragmentEx: BottomSheetDialogFragment() {
         binding.myCourseWithTagRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
         binding.myCourseWithTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 40))
         myCourseTagBottomWithRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
-            override fun onItemClick(data: TagButton, position: Int) {
-                tagFlag[position] = data.isChecked
-                Log.d("WRITE-TEST", "$tagFlag")
-
-//                if (data.isChecked) {
-//                    checkTagList.add(data)
-//                }
-//                else {
-//                    for (i in 0 until checkTagList.size) {
-//                        if (data.title == checkTagList[i].title) {
-//                            checkTagList.removeAt(i)
-//                            break
-//                        }
-//                    }
-//                }
-//                writeVM.setCheckTag(position + 9)
-            }
+            override fun onItemClick(data: TagButton, position: Int) { }
         })
 
-        withTagList.add(TagButton(10, resources.getString(R.string.with_tag10), tagFlag[9]))
-        withTagList.add(TagButton(11, resources.getString(R.string.with_tag11), tagFlag[10]))
-        withTagList.add(TagButton(12, resources.getString(R.string.with_tag12), tagFlag[11]))
-        withTagList.add(TagButton(13, resources.getString(R.string.with_tag13), tagFlag[12]))
-        withTagList.add(TagButton(14, resources.getString(R.string.with_tag14), tagFlag[13]))
+        withTagList.add(TagButton(10, resources.getString(R.string.with_tag10), checkTagList[9]))
+        withTagList.add(TagButton(11, resources.getString(R.string.with_tag11), checkTagList[10]))
+        withTagList.add(TagButton(12, resources.getString(R.string.with_tag12), checkTagList[11]))
+        withTagList.add(TagButton(13, resources.getString(R.string.with_tag13), checkTagList[12]))
+        withTagList.add(TagButton(14, resources.getString(R.string.with_tag14), checkTagList[13]))
         withTagList.add(TagButton(null, "", false))
 
         myCourseTagBottomTransRVAdapter = MyCourseTagButtonRVAdapter(transTagList)
@@ -177,16 +123,13 @@ class MyCourseWriteTagBottomFragmentEx: BottomSheetDialogFragment() {
         binding.myCourseTransportTagRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
         binding.myCourseTransportTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 40))
         myCourseTagBottomTransRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
-            override fun onItemClick(data: TagButton, position: Int) {
-                tagFlag[position] = data.isChecked
-                Log.d("WRITE-TEST", "$tagFlag")
-            }
+            override fun onItemClick(data: TagButton, position: Int) { }
         })
 
-        transTagList.add(TagButton(15, resources.getString(R.string.trans_tag15), tagFlag[14]))
-        transTagList.add(TagButton(16, resources.getString(R.string.trans_tag16), tagFlag[15]))
-        transTagList.add(TagButton(17, resources.getString(R.string.trans_tag17), tagFlag[16]))
-        transTagList.add(TagButton(18, resources.getString(R.string.trans_tag18), tagFlag[17]))
+        transTagList.add(TagButton(15, resources.getString(R.string.trans_tag15), checkTagList[14]))
+        transTagList.add(TagButton(16, resources.getString(R.string.trans_tag16), checkTagList[15]))
+        transTagList.add(TagButton(17, resources.getString(R.string.trans_tag17), checkTagList[16]))
+        transTagList.add(TagButton(18, resources.getString(R.string.trans_tag18), checkTagList[17]))
         transTagList.add(TagButton(null, "", false))
     }
 
@@ -218,7 +161,29 @@ class MyCourseWriteTagBottomFragmentEx: BottomSheetDialogFragment() {
         return displayMetrics.heightPixels
     }
 
-    private fun tagSort(list: List<TagButton>): List<TagButton> {
-        return list.sortedBy { it.index }
+    private fun returnTag(option: String): MutableSet<String> {
+        var resultTagSet = mutableSetOf<String>()
+        when(option) {
+            "place" -> {
+                for (i in 0..8) {
+                    if (myCourseTagBottomPlaceRVAdapter.getItem(i).isChecked)
+                        resultTagSet.add(Translator.tagKorToEng(activity as AppCompatActivity, myCourseTagBottomPlaceRVAdapter.getItem(i).title))
+                }
+            }
+            "with" -> {
+                for (i in 0..4) {
+                    if (myCourseTagBottomWithRVAdapter.getItem(i).isChecked)
+                        resultTagSet.add(Translator.tagKorToEng(activity as AppCompatActivity, myCourseTagBottomWithRVAdapter.getItem(i).title))
+                }
+            }
+            else -> {
+                for (i in 0..3) {
+                    if (myCourseTagBottomTransRVAdapter.getItem(i).isChecked)
+                        resultTagSet.add(Translator.tagKorToEng(activity as AppCompatActivity, myCourseTagBottomTransRVAdapter.getItem(i).title))
+                }
+            }
+        }
+
+        return resultTagSet
     }
 }
