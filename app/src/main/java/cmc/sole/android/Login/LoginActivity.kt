@@ -1,6 +1,7 @@
 package cmc.sole.android.Login
 
 import android.content.Intent
+import android.util.Base64
 import android.util.Log
 import cmc.sole.android.*
 import cmc.sole.android.CourseTag.placeCategories
@@ -27,12 +28,11 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
 
     private lateinit var signupCheckService: SignupService
 
-    private var TAG = "API-TEST"
-
     override fun initAfterBinding() {
         KakaoSdk.init(this, getString(R.string.kakao_api_key))
 
         getFireBaseFCMToken()
+        getPlayStoreHashKey()
         initClickListener()
         initRetrofitService()
     }
@@ -47,6 +47,14 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
                 Log.d("TOKEN-CHECK", "task.result = ${task.result}")
             }
         }
+    }
+
+    private fun getPlayStoreHashKey() {
+        var sha1 = byteArrayOf(
+            0xCA.toByte(), 0xCA.toByte(), 0x34.toByte(), 0x52.toByte(), 0xBC.toByte(), 0x68.toByte(), 0xB9.toByte(), 0x99.toByte(), 0xA4.toByte(), 0x42.toByte(), 0xC7.toByte(), 0xB0.toByte(),
+            0xDA.toByte(), 0x20.toByte(), 0x90.toByte(), 0x38.toByte(), 0xBF.toByte(), 0x1B.toByte(), 0x66.toByte(), 0x3C.toByte())
+
+        Log.d("STORE-HASH-KEY", Base64.encodeToString(sha1, Base64.NO_WRAP))
     }
 
     private fun initClickListener() {
