@@ -18,7 +18,8 @@ data class MyCourseHistoryInfoResult(
     var nickname: String,
     var totalCourses: Int,
     var totalDate: Int,
-    var totalPlaces: Int
+    var totalPlaces: Int,
+    var profileImg: String?
 )
 
 data class MyCourseHistoryRequest(

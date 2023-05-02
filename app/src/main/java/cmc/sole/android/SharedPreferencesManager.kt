@@ -122,6 +122,7 @@ fun saveWithCategories(withCategories: MutableSet<String>) {
 
 fun getAccessToken(): String? = mSharedPreferences.getString("accessToken", null)
 fun getFCMToken(): String? = mSharedPreferences.getString("fcmToken", null)
+fun getRefreshToken(): String? = mSharedPreferences.getString("refreshToken", null)
 fun getNickname(): String? = mSharedPreferences.getString("nickname", null)
 fun getMemberId(): Int = mSharedPreferences.getInt("memberId", 0)
 fun getProfileImgUrl(): String? = mSharedPreferences.getString("profileImgUrl", null)

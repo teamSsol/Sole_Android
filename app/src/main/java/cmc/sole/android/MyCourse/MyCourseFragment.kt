@@ -24,6 +24,7 @@ import cmc.sole.android.Utils.NewDynamicDrawableSpan
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.Utils.Translator
 import cmc.sole.android.databinding.FragmentMyCourseBinding
+import com.bumptech.glide.Glide
 
 
 class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBinding::inflate),
@@ -145,7 +146,7 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
 
     override fun setMyCourseHistoryInfoSuccessView(myCourseHistoryResult: MyCourseHistoryInfoResult) {
         // UPDATE: API 프로필 이미지 추가하면 추가해주기!
-        // Glide.with(this).load(myCourseHistoryResult.profileImg)
+        Glide.with(this).load(myCourseHistoryResult.profileImg).centerCrop().circleCrop().placeholder(R.drawable.ic_profile).into(binding.myCourseProfileIv)
         binding.myCourseNicknameTv.text = myCourseHistoryResult.nickname
 
         // UPDATE: Text Span 처리 필요

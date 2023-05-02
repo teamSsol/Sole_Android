@@ -38,15 +38,16 @@ class SignupService {
     fun signupCheck(body: SignupCheckRequest) {
         signupService?.socialCheck("kakao", body)?.enqueue(object: Callback<SignupCheckResponse> {
             override fun onResponse(call: Call<SignupCheckResponse>, response: Response<SignupCheckResponse>) {
+                Log.d("API-TEST", "SignupCheck Response Body = $response")
                 if (response.code() == 200) {
                     val signupCheckResponse = response.body()
                     if (signupCheckResponse?.success == true) {
                         signupCheckView.signupCheckSuccessView(signupCheckResponse)
                     } else {
-                        signupCheckView.signupCheckFailureView()
+                        signupCheckView.signupCheckFailureView(response.code())
                     }
                 } else {
-                    Log.d("SIGNUP-SERVICE" , "signup check failure")
+                    signupCheckView.signupCheckFailureView(response.code())
                 }
             }
             override fun onFailure(call: Call<SignupCheckResponse>, t: Throwable) {

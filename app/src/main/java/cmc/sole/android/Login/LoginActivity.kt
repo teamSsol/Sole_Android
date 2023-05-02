@@ -21,20 +21,24 @@ import com.kakao.sdk.user.UserApiClient
 import org.json.JSONArray
 
 class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate),
-    SignupCheckView {
+    SignupCheckView, NewTokenView {
+
+    var TAG = "AUTO-LOGIN"
 
     private var fcmToken = ""
     private var accessToken = ""
 
     private lateinit var signupCheckService: SignupService
+    private lateinit var tokenService: TokenService
 
     override fun initAfterBinding() {
         KakaoSdk.init(this, getString(R.string.kakao_api_key))
 
+        // getPlayStoreHashKey()
         getFireBaseFCMToken()
-        getPlayStoreHashKey()
         initClickListener()
         initRetrofitService()
+        checkAutoLogin()
     }
 
     private fun getFireBaseFCMToken(){
@@ -86,17 +90,27 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
     private fun initRetrofitService() {
         signupCheckService = SignupService()
         signupCheckService.setSignupCheckView(this)
+        tokenService = TokenService()
+        tokenService.setNewTokenView(this)
+    }
+
+    private fun checkAutoLogin() {
+//        if (getAccessToken() != null) {
+//            signupCheckService.signupCheck(SignupCheckRequest(getAccessToken().toString(), getFCMToken().toString()))
+//        }
     }
 
     override fun signupCheckSuccessView(result: SignupCheckResponse) {
         Log.d("API-TEST", "result = $result")
         if (result.data.check) {
             // MEMO: 가입한 사용자
-            // saveAccessToken(result.data.accessToken)
+            saveAccessToken(result.data.accessToken)
             saveRefreshToken(result.data.refreshToken)
             saveFCMToken(fcmToken)
 
-            Log.d("API-TEST", "${getAccessToken()}")
+            Log.d(TAG, "getAccessToken = ${getAccessToken().toString()}")
+            Log.d(TAG, "getFCMToken = ${getFCMToken()}")
+            Log.d(TAG, "getRefreshToken = ${getRefreshToken()}")
 
             if (getAccessToken() != null) changeActivity(MainActivity::class.java)
             else changeActivity(MainActivity::class.java)
@@ -110,7 +124,19 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
         }
     }
 
-    override fun signupCheckFailureView() {
-        showToast("회원가입 체크 실패")
+    override fun signupCheckFailureView(code: Int) {
+        Log.d(TAG, "실패 code $code")
+        if (code == 400) {
+            tokenService.getNewToken(getAccessToken().toString(), getRefreshToken().toString())
+        }
+    }
+
+    override fun getNewTokenSuccessView(result: NewTokenResult) {
+        Log.d(TAG, "getNewTokenSuccessView")
+        Log.d(TAG, "result = $result")
+    }
+
+    override fun getNewTokenFailureView() {
+        Log.d(TAG, "getNewToken 실패")
     }
 }

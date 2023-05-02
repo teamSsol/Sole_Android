@@ -23,6 +23,7 @@ class TokenService {
                 call: Call<NewTokenResponse>,
                 response: Response<NewTokenResponse>
             ) {
+                Log.d("API-TEST", "response = $response")
                 if (response.code() == 200) {
                     val resp = response.body()
                     if (resp?.success == true) {
