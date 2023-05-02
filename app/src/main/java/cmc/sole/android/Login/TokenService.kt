@@ -1,0 +1,40 @@
+package cmc.sole.android.Login
+
+import android.util.Log
+import cmc.sole.android.DefaultResponse
+import cmc.sole.android.Home.Retrofit.*
+import com.example.geeksasaeng.Utils.NetworkModule
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+class TokenService {
+    private val tokenService = NetworkModule.getInstance()?.create(TokenRetrofitInterface::class.java)
+
+    private lateinit var getNewTokenView: NewTokenView
+
+    fun setNewTokenView(getNewTokenView: NewTokenView) {
+        this.getNewTokenView = getNewTokenView
+    }
+
+    fun getNewToken(authorization: String, refresh: String) {
+        tokenService?.getNewToken(authorization, refresh)?.enqueue(object: Callback<NewTokenResponse> {
+            override fun onResponse(
+                call: Call<NewTokenResponse>,
+                response: Response<NewTokenResponse>
+            ) {
+                if (response.code() == 200) {
+                    val resp = response.body()
+                    if (resp?.success == true) {
+                        getNewTokenView.getNewTokenSuccessView(resp.data)
+                    } else {
+                        getNewTokenView.getNewTokenFailureView()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<NewTokenResponse>, t: Throwable) {
+                Log.e("TOKEN-SERVICE", "TOKEN-SERVICE-GET-NEW-TOKEN-FAILURE", t)
+            }
+        })
+    }
+}

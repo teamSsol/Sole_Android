@@ -89,9 +89,11 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
     }
 
     override fun signupCheckSuccessView(result: SignupCheckResponse) {
+        Log.d("API-TEST", "result = $result")
         if (result.data.check) {
             // MEMO: 가입한 사용자
-            saveAccessToken(result.data.accessToken)
+            // saveAccessToken(result.data.accessToken)
+            saveRefreshToken(result.data.refreshToken)
             saveFCMToken(fcmToken)
 
             Log.d("API-TEST", "${getAccessToken()}")

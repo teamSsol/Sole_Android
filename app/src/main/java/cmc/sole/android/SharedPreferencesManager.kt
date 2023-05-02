@@ -13,9 +13,22 @@ fun removeAccessToken() {
     editor.commit()
 }
 
-fun saveAccessToken(url: String?) {
+fun saveAccessToken(token: String?) {
     val editor = mSharedPreferences.edit()
-    editor.putString("accessToken", url)
+    editor.putString("accessToken", token)
+    editor.apply()
+}
+
+// RefreshToken
+fun removeRefreshToken() {
+    val editor = mSharedPreferences.edit()
+    editor.remove("refreshToken")
+    editor.commit()
+}
+
+fun saveRefreshToken(token: String?) {
+    val editor = mSharedPreferences.edit()
+    editor.putString("refreshToken", token)
     editor.apply()
 }
 
