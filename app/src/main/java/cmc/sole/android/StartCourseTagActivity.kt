@@ -120,7 +120,6 @@ class StartCourseTagActivity: BaseActivity<ActivityStartCourseTagBinding>(Activi
             for (i in 0..3) {
                 returnList.add(transTagList[i])
             }
-            Log.d("API-TEST", "returnList = $returnList")
 
             var myCourseHistoryRequest = MyCourseHistoryRequest(returnTag("place"), returnTag("trans"), returnTag("with"))
             homeService.updateCategories(myCourseHistoryRequest)

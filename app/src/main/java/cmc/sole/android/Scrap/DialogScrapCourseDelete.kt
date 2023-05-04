@@ -49,8 +49,6 @@ class DialogScrapCourseDelete: DialogFragment(), ScrapCourseDeleteView, ScrapDef
         arguments?.getIntegerArrayList("courseId")?.let { deleteCourseId.addAll(it) }
         scrapFolderName = requireArguments().getString("scrapFolderName").toString()
 
-        Log.d("API-TEST", "scrapFolderId = $scrapFolderId / deleteCourseId = $deleteCourseId")
-
         initService()
         initClickListener()
 

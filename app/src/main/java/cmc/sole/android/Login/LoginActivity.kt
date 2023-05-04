@@ -23,8 +23,6 @@ import org.json.JSONArray
 class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate),
     SignupCheckView, NewTokenView {
 
-    var TAG = "AUTO-LOGIN"
-
     private var fcmToken = ""
     private var accessToken = ""
 
@@ -43,12 +41,9 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
 
     private fun getFireBaseFCMToken(){
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if(task.isSuccessful) {
+            if (task.isSuccessful) {
                 fcmToken = task.result?:""
                 Log.d("TOKEN-CHECK", "fcmToken = $fcmToken")
-            } else {
-                Log.d("TOKEN-CHECK", "task = $task")
-                Log.d("TOKEN-CHECK", "task.result = ${task.result}")
             }
         }
     }
@@ -67,20 +62,16 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
                 UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
                     if (error != null) Log.e("EXAMPLE", "로그인 실패", error)
                     else if (token != null) {
-                        Log.d("SIGNUP-CHECK", "로그인 성공 ${token.accessToken}")
                         accessToken = token.accessToken
                         signupCheckService.signupCheck(SignupCheckRequest(accessToken, fcmToken))
-                        // sendAccessToken(accessToken)
                     }
                 }
             } else {
                 UserApiClient.instance.loginWithKakaoAccount(this) { token, error ->
                     if (error != null) Log.e("EXAMPLE", "로그인 실패", error)
                     else if (token != null) {
-                        Log.d("SIGNUP-CHECK", "로그인 성공 ${token.accessToken}")
                         accessToken = token.accessToken
                         signupCheckService.signupCheck(SignupCheckRequest(accessToken, fcmToken))
-                        // sendAccessToken(accessToken)
                     }
                 }
             }
@@ -95,22 +86,17 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
     }
 
     private fun checkAutoLogin() {
-//        if (getAccessToken() != null) {
-//            signupCheckService.signupCheck(SignupCheckRequest(getAccessToken().toString(), getFCMToken().toString()))
-//        }
+        if (getAccessToken() != null) {
+            signupCheckService.signupCheck(SignupCheckRequest(getAccessToken().toString(), getFCMToken().toString()))
+        }
     }
 
     override fun signupCheckSuccessView(result: SignupCheckResponse) {
-        Log.d("API-TEST", "result = $result")
         if (result.data.check) {
             // MEMO: 가입한 사용자
             saveAccessToken(result.data.accessToken)
             saveRefreshToken(result.data.refreshToken)
             saveFCMToken(fcmToken)
-
-            Log.d(TAG, "getAccessToken = ${getAccessToken().toString()}")
-            Log.d(TAG, "getFCMToken = ${getFCMToken()}")
-            Log.d(TAG, "getRefreshToken = ${getRefreshToken()}")
 
             if (getAccessToken() != null) changeActivity(MainActivity::class.java)
             else changeActivity(MainActivity::class.java)
@@ -120,23 +106,22 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
             var intent = Intent(this, SignupAgreeActivity::class.java)
             intent.putExtra("accessToken", accessToken)
             startActivity(intent)
-//            changeActivity(SignupAgreeActivity::class.java)
         }
     }
 
     override fun signupCheckFailureView(code: Int) {
-        Log.d(TAG, "실패 code $code")
-        if (code == 400) {
-            tokenService.getNewToken(getAccessToken().toString(), getRefreshToken().toString())
+        if (code == 401) {
+            tokenService.getNewToken(getRefreshToken().toString())
         }
     }
 
     override fun getNewTokenSuccessView(result: NewTokenResult) {
-        Log.d(TAG, "getNewTokenSuccessView")
-        Log.d(TAG, "result = $result")
+        saveAccessToken(result.accessToken)
+        saveRefreshToken(result.refreshToken)
+        signupCheckService.signupCheck(SignupCheckRequest(getAccessToken().toString(), getFCMToken().toString()))
     }
 
     override fun getNewTokenFailureView() {
-        Log.d(TAG, "getNewToken 실패")
+        Log.d("API-TEST", "getNewToken 실패")
     }
 }

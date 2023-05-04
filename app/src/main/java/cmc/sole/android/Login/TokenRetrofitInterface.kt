@@ -10,7 +10,7 @@ interface TokenRetrofitInterface {
     // getNewToken
     @POST("/api/members/reissue")
     fun getNewToken(
-        @Header("Authorization") authorization: String,
-        @Header("Refresh") refresh: String
+//        @Header("Authorization") authorization: String,
+        @Header("Refresh") Refresh: String
     ): Call<NewTokenResponse>
 }

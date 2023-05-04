@@ -426,8 +426,6 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
     }
 
     override fun homeCourseDetailSuccessView(homeCourseDetailResult: HomeCourseDetailResult) {
-        Log.d("API-TEST", "homeCourseDetailResult = $homeCourseDetailResult")
-
         binding.myCourseWriteTitleEt.setText(homeCourseDetailResult.title)
         Glide.with(this).load(homeCourseDetailResult.thumbnailImg).centerCrop().into(binding.myCourseWriteMainIv)
         binding.myCourseWriteDateTv.text = homeCourseDetailResult.startDate

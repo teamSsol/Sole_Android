@@ -20,7 +20,6 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
         signupVM = ViewModelProvider(this)[SignupAgreeViewModel::class.java]
 
         accessToken = intent.getStringExtra("accessToken").toString()
-        Log.d("API-TEST", "accessToken = ${intent.getStringExtra("accessToken")}")
 
         initRadioSetting()
         initClickListener()

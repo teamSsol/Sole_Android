@@ -96,7 +96,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
                     val intent = Intent(activity, CourseDetailActivity::class.java)
                     intent.putExtra("courseId", data.courseId)
                     intent.putExtra("like", data.like)
-                    Log.d("API-TEST", "like out = ${data.like}")
                     startActivity(intent)
                 } else if (mode == "heart") {
 
@@ -183,7 +182,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
     override fun homePopularCourseFailureView() { }
 
     override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
-        Log.d("API-TEST", "SUCCESS")
         if (homeDefaultResponse.data.size == 0) {
             binding.homeMyCourseEmpty.visibility = View.VISIBLE
         } else {

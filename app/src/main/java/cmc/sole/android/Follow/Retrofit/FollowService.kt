@@ -80,8 +80,8 @@ class FollowService {
                 call: Call<FollowListResponse>,
                 response: Response<FollowListResponse>
             ) {
-                Log.d("API-TEST", "getFollowingList response = $response")
-                Log.d("API-TEST", "getFollowingList response = ${response.body()}")
+                // Log.d("API-TEST", "getFollowingList response = $response")
+                // Log.d("API-TEST", "getFollowingList response = ${response.body()}")
                 if (response.code() == 200) {
                     val followerListResponse = response.body()
                     if (followerListResponse?.success == true) {
@@ -103,7 +103,7 @@ class FollowService {
                 call: Call<DefaultResponse>,
                 response: Response<DefaultResponse>
             ) {
-                Log.d("API-TEST", "followUnfollow response.code = ${response.code()}\nresponse.body = ${response.body()}")
+                // Log.d("API-TEST", "followUnfollow response.code = ${response.code()}\nresponse.body = ${response.body()}")
                 if (response.code() == 200) {
                     val followUnfollowResponse = response.body()
                     if (followUnfollowResponse?.success == true) {
@@ -125,8 +125,8 @@ class FollowService {
                 call: Call<FollowUserInfoResponse>,
                 response: Response<FollowUserInfoResponse>
             ) {
-                Log.d("API-TEST", "getFollowUserInfo response = $response")
-                Log.d("API-TEST", "getFollowUserInfo response = ${response.body()}")
+                // Log.d("API-TEST", "getFollowUserInfo response = $response")
+                // Log.d("API-TEST", "getFollowUserInfo response = ${response.body()}")
                 if (response.code() == 200) {
                     val followUserInfoResponse = response.body()
                     if (followUserInfoResponse?.success == true) {

@@ -76,7 +76,6 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
                 detailCourseId = data.courseId
                 var intent = Intent(activity, CourseDetailActivity::class.java)
                 intent.putExtra("courseId", detailCourseId)
-                Log.d("API-TEST", "detailCourseId = $detailCourseId")
                 startActivity(intent)
             }
         })

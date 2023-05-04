@@ -73,8 +73,6 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
 
                     homeService.scrapAddAndCancel(courseList[position].courseId)
                     courseList[position].like = !courseList[position].like
-
-                    Log.d("API-TEST", "LIKE = ${courseList[position].like}")
                 }
                 holder.bind(courseList[position])
                 holder.setIsRecyclable(false)

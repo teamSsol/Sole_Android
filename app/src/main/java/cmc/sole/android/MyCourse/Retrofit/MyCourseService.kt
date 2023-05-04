@@ -55,8 +55,8 @@ class MyCourseService {
                 call: Call<MyCourseHistoryInfoResponse>,
                 response: Response<MyCourseHistoryInfoResponse>
             ) {
-                Log.d("API-TEST", "response.body = ${response.body()}")
-                Log.d("API-TEST", "response.data = ${response.body()?.data}")
+                // Log.d("API-TEST", "response.body = ${response.body()}")
+                // Log.d("API-TEST", "response.data = ${response.body()?.data}")
                 if (response.code() == 200) {
                     val resp = response.body()
                     if (resp?.success == true) {
@@ -78,8 +78,8 @@ class MyCourseService {
                 call: Call<MyCourseHistoryResponse>,
                 response: Response<MyCourseHistoryResponse>
             ) {
-                Log.d("API-TEST", "getMyCourseHistory.body = ${response.body()}")
-                Log.d("API-TEST", "getMyCourseHistory.data = ${response.body()?.data}")
+                // Log.d("API-TEST", "getMyCourseHistory.body = ${response.body()}")
+                // Log.d("API-TEST", "getMyCourseHistory.data = ${response.body()?.data}")
                 if (response.code() == 200) {
                     val resp = response.body()
                     if (resp?.success == true) {
@@ -101,8 +101,8 @@ class MyCourseService {
                 call: Call<MyCourseHistoryResponse>,
                 response: Response<MyCourseHistoryResponse>
             ) {
-                Log.d("API-TEST", "getMyCourseNullTagHistory.body = ${response.body()}")
-                Log.d("API-TEST", "getMyCourseNullTagHistory.data = ${response.body()?.data}")
+                // Log.d("API-TEST", "getMyCourseNullTagHistory.body = ${response.body()}")
+                // Log.d("API-TEST", "getMyCourseNullTagHistory.data = ${response.body()?.data}")
                 if (response.code() == 200) {
                     val resp = response.body()
                     if (resp?.success == true) {

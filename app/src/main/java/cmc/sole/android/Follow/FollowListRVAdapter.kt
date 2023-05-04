@@ -59,8 +59,6 @@ class FollowListRVAdapter(private val followList: ArrayList<FollowUserDataResult
             binding.itemFollowListFollowerTv.text = followList.followerCount.toString() + " 팔로워"
             binding.itemFollowListFollowingTv.text = followList.followingCount.toString() + " 팔로잉"
 
-            Log.d("API-TEST", "followList.member.nickname = ${followList.member.nickname}")
-            Log.d("API-TEST", "followList.followStatus = ${followList.followStatus}")
             if (followList.followStatus == "FOLLOWER") {
                 binding.itemFollowFollowingBtn.visibility = View.GONE
                 binding.itemFollowFollowBtn.visibility = View.VISIBLE
