@@ -6,6 +6,19 @@ import cmc.sole.android.CourseTag.transCategories
 import cmc.sole.android.CourseTag.withCategories
 import com.sole.android.ApplicationClass.Companion.mSharedPreferences
 
+// Check First Login
+fun removeFirstLogin() {
+    val editor = mSharedPreferences.edit()
+    editor.remove("firstLogin")
+    editor.commit()
+}
+
+fun saveFirstLogin(firstLogin: Boolean) {
+    val editor = mSharedPreferences.edit()
+    editor.putBoolean("firstLogin", firstLogin)
+    editor.apply()
+}
+
 // AccessToken
 fun removeAccessToken() {
     val editor = mSharedPreferences.edit()
@@ -120,6 +133,7 @@ fun saveWithCategories(withCategories: MutableSet<String>) {
     editor.apply()
 }
 
+fun getFirstLogin(): Boolean = mSharedPreferences.getBoolean("firstLogin", true)
 fun getAccessToken(): String? = mSharedPreferences.getString("accessToken", null)
 fun getFCMToken(): String? = mSharedPreferences.getString("fcmToken", null)
 fun getRefreshToken(): String? = mSharedPreferences.getString("refreshToken", null)

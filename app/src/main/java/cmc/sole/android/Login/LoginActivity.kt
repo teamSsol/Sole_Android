@@ -98,8 +98,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
             saveRefreshToken(result.data.refreshToken)
             saveFCMToken(fcmToken)
 
-            if (getAccessToken() != null) changeActivity(MainActivity::class.java)
-            else changeActivity(MainActivity::class.java)
+            changeActivity(MainActivity::class.java)
             finish()
         } else {
             // MEMO: 가입하지 않은 사용자

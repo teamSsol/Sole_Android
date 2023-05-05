@@ -10,6 +10,7 @@ import cmc.sole.android.databinding.ActivityMainBinding
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
     override fun initAfterBinding() {
+        saveFirstLogin(false)
         setFragment(R.id.main_fl, HomeFragment())
         initBottomNavi()
     }

@@ -5,6 +5,7 @@ import android.os.Looper
 import androidx.lifecycle.ViewModelProvider
 import cmc.sole.android.Login.LoginActivity
 import cmc.sole.android.MainActivity
+import cmc.sole.android.StartCourseTagActivity
 import cmc.sole.android.Utils.BaseActivity
 import cmc.sole.android.databinding.ActivitySignupAgreeBinding
 import cmc.sole.android.databinding.ActivitySignupFinishBinding
@@ -20,7 +21,7 @@ class SignupFinishActivity: BaseActivity<ActivitySignupFinishBinding>(ActivitySi
     private fun initClickListener() {
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
-            changeActivity(MainActivity::class.java)
+            changeActivity(StartCourseTagActivity::class.java)
             finishAffinity()
         }, 3000)
     }
