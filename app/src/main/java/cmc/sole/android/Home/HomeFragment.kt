@@ -201,6 +201,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
             myCourseRVAdapter.clearItems()
         }
 
+        Log.d("API-TEST", "item = ${homeDefaultResponse.data}")
         myCourseRVAdapter.addAllItems(homeDefaultResponse.data)
     }
 

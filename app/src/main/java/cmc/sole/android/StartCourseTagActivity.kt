@@ -154,7 +154,6 @@ class StartCourseTagActivity: BaseActivity<ActivityStartCourseTagBinding>(Activi
     }
 
     override fun homeCategoriesUpdateSuccessView() {
-        changeActivity(MainActivity::class.java)
         finish()
     }
 

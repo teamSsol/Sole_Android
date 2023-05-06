@@ -95,6 +95,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
         if (result.data.check) {
             // MEMO: 가입한 사용자
             saveAccessToken(result.data.accessToken)
+            Log.d("API-TEST", "accessToken = ${result.data.accessToken}")
             saveRefreshToken(result.data.refreshToken)
             saveFCMToken(fcmToken)
 
