@@ -73,7 +73,6 @@ class DialogMyPageLogout: DialogFragment(),
     }
 
     override fun setLogoutSuccessView() {
-        Log.d("API-TEST", "logout-success")
         result = true
         dismiss()
     }

@@ -32,13 +32,9 @@ class FollowActivityRVAdapter(private val followActivityList: ArrayList<FollowCo
 
     override fun onBindViewHolder(holder: FollowActivityRVAdapter.ViewHolder, position: Int) {
         holder.binding.itemFollowActivityHeartIv.setOnClickListener {
-            Log.d("API-TEST", "heart = ${followActivityList[position].like}")
             followActivityList[position].like = !followActivityList[position].like
-            Log.d("API-TEST", "heart = ${followActivityList[position].like}")
             itemClickListener.onItemClick(followActivityList[position], position)
-            Log.d("API-TEST", "heart = ${followActivityList[position].like}")
             this.notifyDataSetChanged()
-            Log.d("API-TEST", "heart = ${followActivityList[position].like}")
         }
         holder.bind(followActivityList[position])
     }

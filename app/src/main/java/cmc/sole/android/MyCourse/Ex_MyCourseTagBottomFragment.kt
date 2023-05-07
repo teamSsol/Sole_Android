@@ -13,15 +13,15 @@ import cmc.sole.android.R
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.Utils.Translator
-import cmc.sole.android.databinding.BottomFragmentMyCourseTagBinding
+import cmc.sole.android.databinding.BottomFragmentMyCourseWriteTagBinding
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class MyCourseTagBottomFragment: BottomSheetDialogFragment() {
+class Ex_MyCourseTagBottomFragment: BottomSheetDialogFragment() {
 
-    lateinit var binding: BottomFragmentMyCourseTagBinding
+    lateinit var binding: BottomFragmentMyCourseWriteTagBinding
     private lateinit var myCourseTagBottomPlaceRVAdapter: MyCourseTagButtonRVAdapter
     private lateinit var myCourseTagBottomWithRVAdapter: MyCourseTagButtonRVAdapter
     private lateinit var myCourseTagBottomTransRVAdapter: MyCourseTagButtonRVAdapter
@@ -63,7 +63,7 @@ class MyCourseTagBottomFragment: BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = BottomFragmentMyCourseTagBinding.inflate(inflater, container, false)
+        binding = BottomFragmentMyCourseWriteTagBinding.inflate(inflater, container, false)
         checkTagList = requireArguments().getBooleanArray("checkTagList")!!
 
         initAdapter()

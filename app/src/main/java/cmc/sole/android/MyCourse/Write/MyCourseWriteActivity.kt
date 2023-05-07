@@ -2,11 +2,8 @@ package cmc.sole.android.MyCourse.Write
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -47,10 +44,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.BufferedInputStream
 import java.io.File
-import java.io.FileOutputStream
-import java.util.*
 import kotlin.collections.ArrayList
 
 class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(ActivityMyCourseWriteBinding::inflate),
@@ -432,8 +426,6 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
     }
 
     override fun homeCourseDetailSuccessView(homeCourseDetailResult: HomeCourseDetailResult) {
-        Log.d("API-TEST", "homeCourseDetailResult = $homeCourseDetailResult")
-
         binding.myCourseWriteTitleEt.setText(homeCourseDetailResult.title)
         Glide.with(this).load(homeCourseDetailResult.thumbnailImg).centerCrop().into(binding.myCourseWriteMainIv)
         binding.myCourseWriteDateTv.text = homeCourseDetailResult.startDate

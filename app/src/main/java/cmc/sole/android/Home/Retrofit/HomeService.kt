@@ -221,16 +221,14 @@ class HomeService {
     }
 
     fun getHomeDetailCourse(courseId: Int?) {
-        Log.d("API-TEST", "getHomeDetailCourse in")
         homeService?.getHomeDetailCourse(courseId)?.enqueue(object: Callback<HomeCourseDetailResponse> {
             override fun onResponse(
                 call: Call<HomeCourseDetailResponse>,
                 response: Response<HomeCourseDetailResponse>
             ) {
-                Log.d("API-TEST", "getHomeDetailCourse.response = $response")
-                Log.d("API-TEST", "getHomeDetailCourse.responseBody = ${response.body()}")
+                // Log.d("API-TEST", "getHomeDetailCourse.response = $response")
+                // Log.d("API-TEST", "getHomeDetailCourse.responseBody = ${response.body()}")
                 if (response.code() == 200) {
-                    Log.d("API-TEST", "response.code = ${response.code()}")
                     val homeDetailResponse = response.body()
                     if (homeDetailResponse?.success == true) {
                         homeCourseDetailView.homeCourseDetailSuccessView(homeDetailResponse.data)
@@ -249,8 +247,8 @@ class HomeService {
     fun scrapAddAndCancel(courseId: Int) {
         homeService?.scrapAddAndCancel(courseId)?.enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                Log.d("API-TEST", "scrapAddAndCancel response = $response")
-                Log.d("API-TEST", "scrapAddAndCancel response = ${response.body()}")
+                // Log.d("API-TEST", "scrapAddAndCancel response = $response")
+                // Log.d("API-TEST", "scrapAddAndCancel response = ${response.body()}")
                 if (response.code() == 200) {
                     homeScrapAddAndCancelView.homeScrapAddAndCancelSuccessView()
                 } else {
@@ -290,8 +288,8 @@ class HomeService {
                 call: Call<MyPageUpdateResponse>,
                 response: Response<MyPageUpdateResponse>
             ) {
-                Log.d("API-TEST", "myPageInfoUpdate response = $response")
-                Log.d("API-TEST", "myPageInfoUpdate response = ${response.body()}")
+                // Log.d("API-TEST", "myPageInfoUpdate response = $response")
+                // Log.d("API-TEST", "myPageInfoUpdate response = ${response.body()}")
                 if (response.code() == 200) {
                     val myPageUpdateResponse = response.body()
                     if (myPageUpdateResponse?.success == true) {
@@ -377,8 +375,8 @@ class HomeService {
                 call: Call<MyPageNoticeResponse>,
                 response: Response<MyPageNoticeResponse>
             ) {
-                Log.d("API-TEST", "getMyPageNotice response = $response")
-                Log.d("API-TEST", "getMyPageNotice response = ${response.body()}")
+                // Log.d("API-TEST", "getMyPageNotice response = $response")
+                // Log.d("API-TEST", "getMyPageNotice response = ${response.body()}")
                 if (response.code() == 200) {
                     val myPageNoticeResponse = response.body()
                     if (myPageNoticeResponse?.success == true) {

@@ -6,6 +6,19 @@ import cmc.sole.android.CourseTag.transCategories
 import cmc.sole.android.CourseTag.withCategories
 import com.sole.android.ApplicationClass.Companion.mSharedPreferences
 
+// Check First Login
+fun removeFirstLogin() {
+    val editor = mSharedPreferences.edit()
+    editor.remove("firstLogin")
+    editor.commit()
+}
+
+fun saveFirstLogin(firstLogin: Boolean) {
+    val editor = mSharedPreferences.edit()
+    editor.putBoolean("firstLogin", firstLogin)
+    editor.apply()
+}
+
 // AccessToken
 fun removeAccessToken() {
     val editor = mSharedPreferences.edit()
@@ -13,9 +26,22 @@ fun removeAccessToken() {
     editor.commit()
 }
 
-fun saveAccessToken(url: String?) {
+fun saveAccessToken(token: String?) {
     val editor = mSharedPreferences.edit()
-    editor.putString("accessToken", url)
+    editor.putString("accessToken", token)
+    editor.apply()
+}
+
+// RefreshToken
+fun removeRefreshToken() {
+    val editor = mSharedPreferences.edit()
+    editor.remove("refreshToken")
+    editor.commit()
+}
+
+fun saveRefreshToken(token: String?) {
+    val editor = mSharedPreferences.edit()
+    editor.putString("refreshToken", token)
     editor.apply()
 }
 
@@ -107,8 +133,10 @@ fun saveWithCategories(withCategories: MutableSet<String>) {
     editor.apply()
 }
 
+fun getFirstLogin(): Boolean = mSharedPreferences.getBoolean("firstLogin", true)
 fun getAccessToken(): String? = mSharedPreferences.getString("accessToken", null)
 fun getFCMToken(): String? = mSharedPreferences.getString("fcmToken", null)
+fun getRefreshToken(): String? = mSharedPreferences.getString("refreshToken", null)
 fun getNickname(): String? = mSharedPreferences.getString("nickname", null)
 fun getMemberId(): Int = mSharedPreferences.getInt("memberId", 0)
 fun getProfileImgUrl(): String? = mSharedPreferences.getString("profileImgUrl", null)

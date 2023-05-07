@@ -68,8 +68,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         courseId = intent.getIntExtra("courseId", -1)
         like = intent.getBooleanExtra("like", false)
 
-        Log.d("API-TEST", "courseId = $courseId / like = $like")
-
         if (like) {
             binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
         } else {
@@ -95,7 +93,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         homeService = HomeService()
         homeService.setHomeCourseDetailView(this)
         homeService.getHomeDetailCourse(courseId)
-        Log.d("API-TEST", "getHomeDetailCourse")
         homeService.setHomeScrapAddAndCancelView(this)
 
         followService = FollowService()
@@ -162,7 +159,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         this.naverMap = naverMap
 
         // MEMO: Polyline 넣기
-        Log.d("API-TEST", "polylineSize = ${polyline.coords.size}")
         if (polyline.coords.size >= 2) {
             polyline.coords = pointList
             polyline.setPattern(10, 5)
@@ -219,7 +215,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         binding.courseDetailCourseDistanceTv.text = ((homeCourseDetailResult.distance * 100.0).roundToInt() / 100.0).toString() + "km 이동"
         binding.courseDetailCourseTimeTv.text = "${(homeCourseDetailResult.duration.toDouble() / 60).toInt()} 시간 소요"
 
-        Log.d("API-TEST", "${homeCourseDetailResult.followStatus}")
         if (homeCourseDetailResult.followStatus == "FOLLOWING") {
             followStatus = "NOT_FOLLOW"
             binding.itemFollowFollowBtn.visibility = View.GONE

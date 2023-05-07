@@ -181,7 +181,6 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
     }
 
     override fun scrapCourseSuccessView(scrapCourseResult: ArrayList<ScrapCourseResult>) {
-        Log.d("API-TEST", "scrapCourseResult = $scrapCourseResult")
         if (scrapCourseResult.size == 0) {
             binding.scrapFolderDetailLayout.visibility = View.VISIBLE
             binding.scrapFolderDetailEditCv.isEnabled = false

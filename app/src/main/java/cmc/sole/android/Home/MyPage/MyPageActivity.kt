@@ -105,7 +105,6 @@ class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding:
             logoutDialog.show(supportFragmentManager, "LogoutDialog")
             logoutDialog.setOnFinishListener(object: DialogMyPageLogout.OnFinishListener {
                 override fun finish(result: Boolean) {
-                    Log.d("API-TEST", "result = $result")
                     if (result) {
                         startActivity(Intent(this@MyPageActivity, LoginActivity::class.java))
                         finishAffinity()
@@ -117,7 +116,6 @@ class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding:
 
     override fun myPageInfoSuccessView(myPageInfoResponse: MyPageInfoResult) {
         myInfo = myPageInfoResponse
-        Log.d("API-TEST", "myPageInfoSuccessView = $myPageInfoResponse")
         Glide.with(this).load(myPageInfoResponse.profileImgUrl)
             .placeholder(R.drawable.ic_profile).centerCrop().circleCrop().into(binding.myPageProfileIv)
         binding.myPageNicknameTv.text = myPageInfoResponse.nickname

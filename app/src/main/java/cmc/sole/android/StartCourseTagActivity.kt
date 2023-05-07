@@ -1,5 +1,6 @@
 package cmc.sole.android
 
+import android.annotation.SuppressLint
 import android.util.Log
 import cmc.sole.android.Home.HomeCategoriesResult
 import cmc.sole.android.Home.Retrofit.HomeCategoriesUpdateView
@@ -20,9 +21,9 @@ import com.google.android.flexbox.FlexboxLayoutManager
 class StartCourseTagActivity: BaseActivity<ActivityStartCourseTagBinding>(ActivityStartCourseTagBinding::inflate),
     HomeCategoriesUpdateView, HomeGetCategoriesView {
 
-    private lateinit var myCourseTagBottomPlaceRVAdapter: MyCourseTagButtonRVAdapter
-    private lateinit var myCourseTagBottomWithRVAdapter: MyCourseTagButtonRVAdapter
-    private lateinit var myCourseTagBottomTransRVAdapter: MyCourseTagButtonRVAdapter
+    private lateinit var myCourseTagPlaceRVAdapter: MyCourseTagButtonRVAdapter
+    private lateinit var myCourseTagWithRVAdapter: MyCourseTagButtonRVAdapter
+    private lateinit var myCourseTagTransRVAdapter: MyCourseTagButtonRVAdapter
     private var placeTagList = ArrayList<TagButton>()
     private var withTagList = ArrayList<TagButton>()
     private var transTagList = ArrayList<TagButton>()
@@ -45,12 +46,12 @@ class StartCourseTagActivity: BaseActivity<ActivityStartCourseTagBinding>(Activi
     }
 
     private fun initAdapter() {
-        myCourseTagBottomPlaceRVAdapter = MyCourseTagButtonRVAdapter(placeTagList)
-        binding.myCoursePlaceTagRv.adapter = myCourseTagBottomPlaceRVAdapter
+        myCourseTagPlaceRVAdapter = MyCourseTagButtonRVAdapter(placeTagList)
+        binding.myCoursePlaceTagRv.adapter = myCourseTagPlaceRVAdapter
         binding.myCoursePlaceTagRv.layoutManager = FlexboxLayoutManager(this)
         binding.myCoursePlaceTagRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
         binding.myCoursePlaceTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 40))
-        myCourseTagBottomPlaceRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
+        myCourseTagPlaceRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
             override fun onItemClick(data: TagButton, position: Int) {
                 tagFlag[position] = data.isChecked
             }
@@ -67,12 +68,12 @@ class StartCourseTagActivity: BaseActivity<ActivityStartCourseTagBinding>(Activi
         placeTagList.add(TagButton(9, resources.getString(R.string.place_tag9), tagFlag[8]))
         placeTagList.add(TagButton(null, "", false))
 
-        myCourseTagBottomWithRVAdapter = MyCourseTagButtonRVAdapter(withTagList)
-        binding.myCourseWithTagRv.adapter = myCourseTagBottomWithRVAdapter
+        myCourseTagWithRVAdapter = MyCourseTagButtonRVAdapter(withTagList)
+        binding.myCourseWithTagRv.adapter = myCourseTagWithRVAdapter
         binding.myCourseWithTagRv.layoutManager = FlexboxLayoutManager(this)
         binding.myCourseWithTagRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
         binding.myCourseWithTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 40))
-        myCourseTagBottomWithRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
+        myCourseTagWithRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
             override fun onItemClick(data: TagButton, position: Int) {
                 tagFlag[position] = data.isChecked
             }
@@ -85,12 +86,12 @@ class StartCourseTagActivity: BaseActivity<ActivityStartCourseTagBinding>(Activi
         withTagList.add(TagButton(14, resources.getString(R.string.with_tag14), tagFlag[13]))
         withTagList.add(TagButton(null, "", false))
 
-        myCourseTagBottomTransRVAdapter = MyCourseTagButtonRVAdapter(transTagList)
-        binding.myCourseTransportTagRv.adapter = myCourseTagBottomTransRVAdapter
+        myCourseTagTransRVAdapter = MyCourseTagButtonRVAdapter(transTagList)
+        binding.myCourseTransportTagRv.adapter = myCourseTagTransRVAdapter
         binding.myCourseTransportTagRv.layoutManager = FlexboxLayoutManager(this)
         binding.myCourseTransportTagRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
         binding.myCourseTransportTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 40))
-        myCourseTagBottomTransRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
+        myCourseTagTransRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
             override fun onItemClick(data: TagButton, position: Int) {
                 tagFlag[position] = data.isChecked
             }
@@ -120,7 +121,6 @@ class StartCourseTagActivity: BaseActivity<ActivityStartCourseTagBinding>(Activi
             for (i in 0..3) {
                 returnList.add(transTagList[i])
             }
-            Log.d("API-TEST", "returnList = $returnList")
 
             var myCourseHistoryRequest = MyCourseHistoryRequest(returnTag("place"), returnTag("trans"), returnTag("with"))
             homeService.updateCategories(myCourseHistoryRequest)
@@ -132,20 +132,20 @@ class StartCourseTagActivity: BaseActivity<ActivityStartCourseTagBinding>(Activi
         when(option) {
             "place" -> {
                 for (i in 0..8) {
-                    if (myCourseTagBottomPlaceRVAdapter.getItem(i).isChecked)
-                        resultTagSet.add(Translator.tagKorToEng(this, myCourseTagBottomPlaceRVAdapter.getItem(i).title))
+                    if (myCourseTagPlaceRVAdapter.getItem(i).isChecked)
+                        resultTagSet.add(Translator.tagKorToEng(this, myCourseTagPlaceRVAdapter.getItem(i).title))
                 }
             }
             "with" -> {
                 for (i in 0..4) {
-                    if (myCourseTagBottomWithRVAdapter.getItem(i).isChecked)
-                        resultTagSet.add(Translator.tagKorToEng(this, myCourseTagBottomWithRVAdapter.getItem(i).title))
+                    if (myCourseTagWithRVAdapter.getItem(i).isChecked)
+                        resultTagSet.add(Translator.tagKorToEng(this, myCourseTagWithRVAdapter.getItem(i).title))
                 }
             }
             else -> {
                 for (i in 0..3) {
-                    if (myCourseTagBottomTransRVAdapter.getItem(i).isChecked)
-                        resultTagSet.add(Translator.tagKorToEng(this, myCourseTagBottomTransRVAdapter.getItem(i).title))
+                    if (myCourseTagTransRVAdapter.getItem(i).isChecked)
+                        resultTagSet.add(Translator.tagKorToEng(this, myCourseTagTransRVAdapter.getItem(i).title))
                 }
             }
         }
@@ -154,7 +154,6 @@ class StartCourseTagActivity: BaseActivity<ActivityStartCourseTagBinding>(Activi
     }
 
     override fun homeCategoriesUpdateSuccessView() {
-        changeActivity(MainActivity::class.java)
         finish()
     }
 
@@ -162,32 +161,46 @@ class StartCourseTagActivity: BaseActivity<ActivityStartCourseTagBinding>(Activi
         showToast("카테고리 저장 실패")
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun homeGetCategoriesUpdateSuccessView(data: HomeCategoriesResult) {
-        // TODO: 선택했던 태그 표시
-//        for (i in 0 until data.placeCategories.size) {
-//            var index = Translator.tagEngPosition(this, data.placeCategories.elementAt(i)!!.name)
-//            tagFlag[index - 1] = true
-//            Log.d("API-TEST", "index 1 = $index")
-//            myCourseTagBottomPlaceRVAdapter.getItem(index - 1).isChecked = true
-//            myCourseTagBottomPlaceRVAdapter.notifyDataSetChanged()
-//        }
-//        for (i in 0 until data.withCategories.size) {
-//            var index = Translator.tagEngPosition(this, data.withCategories.elementAt(i)!!.name)
-//            tagFlag[index - 1] = true
-//            Log.d("API-TEST", "index 2 = $index")
-//            myCourseTagBottomWithRVAdapter.getItem(index - 10).isChecked = true
-//            myCourseTagBottomWithRVAdapter.notifyDataSetChanged()
-//        }
-//        for (i in 0 until data.transCategories.size) {
-//            var index = Translator.tagEngPosition(this, data.transCategories.elementAt(i)!!.name)
-//
-//            if (data.transCategories.elementAt(i)!!.name == "CAR") tagFlag[17] = true
-//            else if (data.transCategories.elementAt(i)!!.name == "BIKE") tagFlag[16]
-//            else if (data.transCategories.elementAt(i)!!.name == "PUBLIC_TRANSPORTATION") tagFlag[15]
-//            Log.d("API-TEST", "index 3 = $index")
-//            myCourseTagBottomTransRVAdapter.getItem(index - 15).isChecked = true
-//            myCourseTagBottomTransRVAdapter.notifyDataSetChanged()
-//        }
+        for (i in 0 until data.placeCategories.size) {
+            var index = Translator.tagEngPosition(this, data.placeCategories.elementAt(i)!!.name)
+            tagFlag[index - 1] = true
+            myCourseTagPlaceRVAdapter.getItem(index - 1).isChecked = true
+            myCourseTagPlaceRVAdapter.notifyItemChanged(index - 1)
+        }
+        for (i in 0 until data.withCategories.size) {
+            var index = Translator.tagEngPosition(this, data.withCategories.elementAt(i)!!.name)
+            tagFlag[index - 10] = true
+            myCourseTagWithRVAdapter.getItem(index - 10).isChecked = true
+            myCourseTagWithRVAdapter.notifyItemChanged(index - 10)
+        }
+        for (i in 0 until data.transCategories.size) {
+            var index = Translator.tagEngPosition(this, data.transCategories.elementAt(i)!!.name)
+            tagFlag[index - 15] = true
+
+            if (data.transCategories.elementAt(i)!!.name == "CAR") {
+                tagFlag[17] = true
+                myCourseTagTransRVAdapter.getItem(3).isChecked = true
+                myCourseTagTransRVAdapter.notifyItemChanged(3)
+            }
+            else if (data.transCategories.elementAt(i)!!.name == "BIKE") {
+                tagFlag[16] = true
+                myCourseTagTransRVAdapter.getItem(2).isChecked = true
+                myCourseTagTransRVAdapter.notifyItemChanged(2)
+            }
+            else if (data.transCategories.elementAt(i)!!.name == "PUBLIC_TRANSPORTATION") {
+                tagFlag[15] = true
+                myCourseTagTransRVAdapter.getItem(1).isChecked = true
+                myCourseTagTransRVAdapter.notifyItemChanged(1)
+
+            } else {
+                tagFlag[14] = true
+                myCourseTagTransRVAdapter.getItem(0).isChecked = true
+                myCourseTagTransRVAdapter.notifyItemChanged(0)
+            }
+
+        }
     }
 
     override fun homeGetCategoriesUpdateFailureView() {

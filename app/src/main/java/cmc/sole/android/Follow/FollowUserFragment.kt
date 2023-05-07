@@ -46,7 +46,6 @@ class FollowUserFragment: BaseFragment<FragmentFollowUserBinding>(FragmentFollow
         followService = FollowService()
         followService.setFollowUserInfoView(this)
         followService.getFollowUserInfo(followInfoMemberSocialId, courseId)
-        Log.d("API-TEST", "followInfoMemberSocialId = $followInfoMemberSocialId")
     }
 
     private fun initAdapter() {

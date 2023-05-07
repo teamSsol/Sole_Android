@@ -170,7 +170,7 @@ class ScrapService {
                 call: Call<ScrapCourseResponse>,
                 response: Response<ScrapCourseResponse>
             ) {
-                Log.d("API-TEST", "response.body = ${response.body()}")
+                // Log.d("API-TEST", "response.body = ${response.body()}")
                 if (response.code() == 200) {
                     val scrapCourseResponse = response.body()
                     if (scrapCourseResponse?.success == true) {
@@ -193,8 +193,8 @@ class ScrapService {
                 call: Call<Void>,
                 response: Response<Void>
             ) {
-                Log.d("API-TEST", "scrapFolderId = ${scrapFolderId}, courseId = $courseId")
-                Log.d("API-TEST", "response = $response")
+                // Log.d("API-TEST", "scrapFolderId = ${scrapFolderId}, courseId = $courseId")
+                // Log.d("API-TEST", "response = $response")
                 if (response.code() == 200) {
                     scrapCourseDeleteView.scrapCourseDeleteSuccessView()
                 } else {
@@ -213,8 +213,7 @@ class ScrapService {
                 call: Call<ScrapFolderCourseMoveResponse>,
                 response: Response<ScrapFolderCourseMoveResponse>
             ) {
-                Log.d("API-TEST", "scrapFolderId = ${scrapFolderId}, courseId = $courseIds")
-                Log.d("API-TEST", "response = $response")
+                // Log.d("API-TEST", "response = $response")
                 if (response.code() == 200) {
                     val scrapCourseMoveResponse = response.body()
                     if (scrapCourseMoveResponse?.success == true) {

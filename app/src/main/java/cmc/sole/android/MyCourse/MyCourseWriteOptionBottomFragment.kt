@@ -9,19 +9,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import cmc.sole.android.MainActivity
 import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
 import cmc.sole.android.R
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
-import cmc.sole.android.databinding.BottomFragmentMyCourseWriteTagBinding
+import cmc.sole.android.databinding.BottomFragmentMyCourseWriteOptionBinding
+import cmc.sole.android.databinding.BottomFragmentMyCourseWriteOptionNewBinding
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class MyCourseWriteTagBottomFragment: BottomSheetDialogFragment() {
+class MyCourseWriteOptionBottomFragment: BottomSheetDialogFragment() {
 
-    lateinit var binding: BottomFragmentMyCourseWriteTagBinding
+    // lateinit var binding: BottomFragmentMyCourseWriteOptionBinding
+    lateinit var binding: BottomFragmentMyCourseWriteOptionNewBinding
     private lateinit var myCourseTagBottomPlaceRVAdapter: MyCourseTagButtonRVAdapter
     private lateinit var myCourseTagBottomWithRVAdapter: MyCourseTagButtonRVAdapter
     private lateinit var myCourseTagBottomTransRVAdapter: MyCourseTagButtonRVAdapter
@@ -64,8 +67,7 @@ class MyCourseWriteTagBottomFragment: BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // FIX: 태그 여러 개로 다시 나오는 오류 수정 필요!!
-        binding = BottomFragmentMyCourseWriteTagBinding.inflate(inflater, container, false)
+        binding = BottomFragmentMyCourseWriteOptionNewBinding.inflate(inflater, container, false)
         // checkTagList = writeVM.getTag()
 
         tagFlag = requireArguments().getBooleanArray("tagFlag")!!
@@ -100,6 +102,16 @@ class MyCourseWriteTagBottomFragment: BottomSheetDialogFragment() {
                 Log.d("WRITE-TEST", "tagCheck = $i ${tagFlag[i]}")
             }
             dismiss()
+        }
+
+        binding.myCourseWriteOptionLocationTv.setOnClickListener {
+            binding.myCourseWriteOptionTagLayout.visibility = View.GONE
+            binding.myCourseWriteOptionLocationLayout.visibility = View.VISIBLE
+        }
+
+        binding.myCourseWriteOptionTasteTv.setOnClickListener {
+            binding.myCourseWriteOptionTagLayout.visibility = View.VISIBLE
+            binding.myCourseWriteOptionLocationLayout.visibility = View.GONE
         }
     }
 

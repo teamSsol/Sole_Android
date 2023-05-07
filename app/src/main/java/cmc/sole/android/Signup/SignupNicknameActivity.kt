@@ -72,8 +72,6 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
         personal = intent.getStringExtra("personal").toString()
         marketing = intent.getStringExtra("marketing").toString()
 
-        Log.d("API-TEST", "accessToken = ${intent.getStringExtra("accessToken")}")
-
         nicknameListener()
         initClickListener()
     }
@@ -150,7 +148,6 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
             var jsonBody = JSONObject()
             jsonBody.put("accessToken", getAccessToken())
             jsonBody.put("fcmToken", getFCMToken())
-            Log.d("API-TEST", "accessToken = ${getAccessToken()} / fcmToken = ${getFCMToken()}")
             jsonBody.put("infoAccepted", personal)
             jsonBody.put("locationAccepted", location)
             jsonBody.put("marketingAccepted", marketing)
