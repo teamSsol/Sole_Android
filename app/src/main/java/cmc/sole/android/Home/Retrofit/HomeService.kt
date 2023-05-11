@@ -89,10 +89,12 @@ class HomeService {
                 call: Call<DefaultResponse>,
                 response: Response<DefaultResponse>
             ) {
+                Log.d("API-TEST", "getCurrentGPS response = ${response}")
+                Log.d("API-TEST", "getCurrentGPS response.body = ${response.body()}")
                 if (response.code() == 200) {
                     val resp = response.body()
                     if (resp?.success == true) {
-                        homeGetCurrentGPSView.homeGetCurrentGPSSuccessView()
+                        homeGetCurrentGPSView.homeGetCurrentGPSSuccessView(resp.data)
                     } else {
                         homeGetCurrentGPSView.homeGetCurrentGPSFailureView()
                     }
@@ -188,7 +190,6 @@ class HomeService {
                     } else {
                         homePopularCourseView.homePopularCourseFailureView()
                     }
-
                 }
             }
             override fun onFailure(call: Call<HomePopularResponse>, t: Throwable) {
@@ -237,7 +238,6 @@ class HomeService {
                     }
                 }
             }
-
             override fun onFailure(call: Call<HomeCourseDetailResponse>, t: Throwable) {
                 Log.e("HOME-SERVICE", "HOME-SERVICE-GET-COURSE-DETAIL-FAILURE", t)
             }
