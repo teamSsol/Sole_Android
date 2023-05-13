@@ -114,6 +114,7 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
 
     fun removeAllItems() {
         scrapCourseList.clear()
+        this.notifyDataSetChanged()
     }
 
     fun getAllItems(): ArrayList<ScrapCourseResult> {

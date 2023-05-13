@@ -192,7 +192,7 @@ class ScrapService {
     }
 
     // MEMO: 테스트 필요!
-    fun deleteScrapCourse(scrapFolderId: Int, courseId: ArrayList<Int>) {
+    fun deleteScrapCourse(scrapFolderId: Int, courseId: String) {
         scrapService?.deleteScrapCourse(scrapFolderId, courseId)?.enqueue(object: Callback<Void> {
             override fun onResponse(
                 call: Call<Void>,

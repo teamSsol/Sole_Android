@@ -47,7 +47,7 @@ interface ScrapRetrofitInterfaces {
     @DELETE("/api/scraps/{scrapFolderId}/{courseId}")
     fun deleteScrapCourse(
         @Path("scrapFolderId") scrapFolderId: Int,
-        @Path("courseId") courseId: ArrayList<Int>
+        @Path("courseId") courseId: String
     ): Call<Void>
 
     @POST("/api/scraps/default/{scrapFolderId}")

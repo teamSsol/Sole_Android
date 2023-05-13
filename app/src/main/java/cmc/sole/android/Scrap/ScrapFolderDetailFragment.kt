@@ -158,8 +158,6 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
             scrapCourseDeleteDialog.setOnFinishListener(object: DialogScrapCourseDelete.OnFinishListener {
                 override fun finish() {
                     binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
-                    Log.d("API-TEST", "Dialog Finish")
-                    Log.d("API-TEST", "ScrapFolderName = $scrapFolderName")
                     if (scrapFolderName == "기본 폴더") {
                         scrapService.getDefaultFolder()
                     } else {
@@ -212,6 +210,7 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
         if (scrapCourseResult.size == 0) {
             binding.scrapFolderDetailLayout.visibility = View.VISIBLE
             binding.scrapFolderDetailEditCv.isEnabled = false
+            scrapFolderDetailRVAdapter.removeAllItems()
         } else {
             binding.scrapFolderDetailLayout.visibility = View.GONE
             binding.scrapFolderDetailEditCv.isEnabled = true
@@ -227,6 +226,7 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
         if (scrapDefaultFolderList.size == 0) {
             binding.scrapFolderDetailLayout.visibility = View.VISIBLE
             binding.scrapFolderDetailEditCv.isEnabled = false
+            scrapFolderDetailRVAdapter.removeAllItems()
         } else {
             binding.scrapFolderDetailLayout.visibility = View.GONE
             binding.scrapFolderDetailEditCv.isEnabled = true
