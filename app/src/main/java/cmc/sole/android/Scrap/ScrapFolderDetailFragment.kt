@@ -69,7 +69,6 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
                     scrapFolderDetailRVAdapter.checkMode(1)
                     if (!data.isChecked) {
                         deleteCourseId.add(data.courseId)
-                        scrapFolderDetailRVAdapter.notifyItemChanged(position)
                     } else {
                         deleteCourseId.remove(data.courseId)
                     }

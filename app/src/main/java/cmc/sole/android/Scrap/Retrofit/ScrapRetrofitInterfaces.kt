@@ -1,6 +1,7 @@
 package cmc.sole.android.Scrap.Retrofit
 
 import cmc.sole.android.DefaultResponse
+import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -51,6 +52,6 @@ interface ScrapRetrofitInterfaces {
     @POST("/api/scraps/default/{scrapFolderId}")
     fun moveDefaultScrapFolder(
         @Path("scrapFolderId") scrapFolderId: Int,
-        @Body courseIds: ArrayList<Int>
+        @Body courseIds: ScrapFolderCourseMoveRequest
     ): Call<ScrapFolderCourseMoveResponse>
 }

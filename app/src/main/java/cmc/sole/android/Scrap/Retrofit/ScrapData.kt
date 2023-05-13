@@ -65,6 +65,9 @@ data class ScrapFolderNameUpdateRequest(
     var scrapFolderName: String
 )
 
+data class ScrapFolderCourseMoveRequest(
+    var courseIds: Set<Int>
+)
 data class ScrapFolderCourseMoveResponse(
     var data: ScrapCourseMoveResult,
     var status: Int,

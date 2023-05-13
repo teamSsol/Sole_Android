@@ -1,5 +1,6 @@
 package cmc.sole.android.Scrap
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -47,6 +48,7 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
             itemClickListener.onItemClick(scrapCourseList[position], position)
+
             if (checkFlag == 1) { // MEMO: 편집 모드
                 scrapCourseList[position].isChecked = !scrapCourseList[position].isChecked
                 this.notifyItemChanged(position)
@@ -97,11 +99,13 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addItem(item: ScrapCourseResult) {
         scrapCourseList.add(item)
         this.notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addAllItems(items: ArrayList<ScrapCourseResult>) {
         scrapCourseList.clear()
         scrapCourseList.addAll(items)

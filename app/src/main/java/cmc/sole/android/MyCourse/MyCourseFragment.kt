@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
-import cmc.sole.android.Course.CourseDetailOptionBottomFragment
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.MyCourse.Retrofit.*
 import cmc.sole.android.MyCourse.Write.MyCourseWriteActivity
@@ -83,12 +82,12 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
 
     private fun initClickListener() {
         binding.myCourseFilterCv.setOnClickListener {
-            val myCourseWriteOptionBottomFragment = MyCourseWriteOptionBottomFragment()
+            val myCourseOptionBottomFragment = MyCourseOptionBottomFragment()
             var bundle = Bundle()
             bundle.putBooleanArray("tagFlag", tagFlagList)
-            myCourseWriteOptionBottomFragment.arguments = bundle
-            myCourseWriteOptionBottomFragment.show(activity?.supportFragmentManager!!, "CourseDetailOptionBottom")
-            myCourseWriteOptionBottomFragment.setOnFinishListener(object: MyCourseWriteOptionBottomFragment.OnTagFragmentFinishListener {
+            myCourseOptionBottomFragment.arguments = bundle
+            myCourseOptionBottomFragment.show(activity?.supportFragmentManager!!, "CourseDetailOptionBottom")
+            myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
                 override fun finish(tagFragmentResult: List<TagButton>) {
                     for (i in 0..17) {
                         tagFlagList[i] = tagFragmentResult[i].isChecked

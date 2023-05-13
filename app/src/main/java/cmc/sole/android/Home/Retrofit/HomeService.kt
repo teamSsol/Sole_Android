@@ -89,8 +89,8 @@ class HomeService {
                 call: Call<DefaultResponse>,
                 response: Response<DefaultResponse>
             ) {
-                Log.d("API-TEST", "getCurrentGPS response = ${response}")
-                Log.d("API-TEST", "getCurrentGPS response.body = ${response.body()}")
+                // Log.d("API-TEST", "getCurrentGPS response = ${response}")
+                // Log.d("API-TEST", "getCurrentGPS response.body = ${response.body()}")
                 if (response.code() == 200) {
                     val resp = response.body()
                     if (resp?.success == true) {
@@ -112,8 +112,8 @@ class HomeService {
                 call: Call<HomeCurrentGPSResponse>,
                 response: Response<HomeCurrentGPSResponse>
             ) {
-                Log.d("API-TEST", "updateCurrentGPS response = ${response}")
-                Log.d("API-TEST", "updateCurrentGPS response.body = ${response.body()}")
+                // Log.d("API-TEST", "updateCurrentGPS response = ${response}")
+                // Log.d("API-TEST", "updateCurrentGPS response.body = ${response.body()}")
                 if (response.code() == 200) {
                     val resp = response.body()
                     if (resp?.success == true) {
@@ -158,8 +158,8 @@ class HomeService {
                 call: Call<HomeCategoriesResponse>,
                 response: Response<HomeCategoriesResponse>
             ) {
-                Log.d("API-TEST", "response = ${response}")
-                Log.d("API-TEST", "response = ${response.body()}")
+                // Log.d("API-TEST", "response = ${response}")
+                // Log.d("API-TEST", "response = ${response.body()}")
                 if (response.code() == 200) {
                     val resp = response.body()
                     if (resp?.success == true) {
@@ -205,7 +205,7 @@ class HomeService {
                 response: Response<HomeDefaultResponse>
             ) {
                 // Log.d("API-TEST", "getHomeDefaultCourse.response = $response")
-                // Log.d("API-TEST", "getHomeDefaultCourse.responseBody = ${response.body()}")
+                Log.d("API-TEST", "getHomeDefaultCourse.responseBody = ${response.body()}")
                 if (response.code() == 200) {
                     val homeDefaultResponse = response.body()
                     if (homeDefaultResponse?.success == true) {

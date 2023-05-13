@@ -5,6 +5,7 @@ import cmc.sole.android.DefaultResponse
 import cmc.sole.android.Home.HomePopularResponse
 import cmc.sole.android.Home.Retrofit.HomeRetrofitInterface
 import com.example.geeksasaeng.Utils.NetworkModule
+import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -207,13 +208,14 @@ class ScrapService {
         })
     }
 
-    fun moveScrapCourse(scrapFolderId: Int, courseIds: ArrayList<Int>) {
+    fun moveScrapCourse(scrapFolderId: Int, courseIds: ScrapFolderCourseMoveRequest) {
         scrapService?.moveDefaultScrapFolder(scrapFolderId, courseIds)?.enqueue(object: Callback<ScrapFolderCourseMoveResponse> {
             override fun onResponse(
                 call: Call<ScrapFolderCourseMoveResponse>,
                 response: Response<ScrapFolderCourseMoveResponse>
             ) {
                 // Log.d("API-TEST", "response = $response")
+                // Log.d("API-TEST", "response.body = ${response.body()}")
                 if (response.code() == 200) {
                     val scrapCourseMoveResponse = response.body()
                     if (scrapCourseMoveResponse?.success == true) {

@@ -70,7 +70,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="8dp"
-        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/scrap_folder_detail_top_bar">
 
         <com.google.android.material.card.MaterialCardView
