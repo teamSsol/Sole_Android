@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.MyCourse.MyCourseTagRVAdapter
+import cmc.sole.android.R
 import cmc.sole.android.Scrap.Retrofit.ScrapCourseMoveResult
 import cmc.sole.android.Scrap.Retrofit.ScrapCourseResult
 import cmc.sole.android.Scrap.Retrofit.ScrapFolderDataResult
@@ -51,7 +52,7 @@ class ScrapCourseMoveRVAdapter(private val scrapCourseList: ArrayList<ScrapFolde
     inner class ViewHolder(val binding: ItemScrapMoveFolderBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(scrapCourse: ScrapFolderDataResult) {
             // UPDATE: 이미지 연결 필요
-            // Glide.with(binding.root.context).load(scrapCourse).centerCrop().into(binding.itemScrapMoveFolderIv)
+            Glide.with(binding.root.context).load(scrapCourse.scrapFolderImg).placeholder(R.drawable.ic_default_folder_img).centerCrop().into(binding.itemScrapMoveFolderIv)
             binding.itemScrapMoveFolderTv.text = scrapCourse.scrapFolderName
         }
     }

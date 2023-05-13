@@ -69,7 +69,7 @@ class DialogScrapCourseMove: DialogFragment(), ScrapCourseMoveView, ScrapFolderV
     }
 
     override fun scrapCourseMoveSuccessView(scrapCourseMoveResult: ScrapCourseMoveResult) {
-        Log.d("API-TEST", "scrapCourseMoveResult = $scrapCourseMoveResult")
+        dismiss()
     }
 
     override fun scrapCourseMoveFailureView() {
