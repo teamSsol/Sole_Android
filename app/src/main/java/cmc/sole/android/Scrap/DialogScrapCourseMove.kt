@@ -20,6 +20,16 @@ class DialogScrapCourseMove: DialogFragment(), ScrapCourseMoveView, ScrapFolderV
     private lateinit var scrapCourseMoveRVAdapter: ScrapCourseMoveRVAdapter
     private var folderList = ArrayList<ScrapFolderDataResult>()
     lateinit var scrapService: ScrapService
+    private lateinit var dialogFinishListener: OnDialogFinishListener
+    private var moveResult = false
+
+    interface OnDialogFinishListener {
+        fun finish()
+    }
+
+    fun setOnDialogFinishListener(listener: OnDialogFinishListener) {
+        dialogFinishListener = listener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +45,6 @@ class DialogScrapCourseMove: DialogFragment(), ScrapCourseMoveView, ScrapFolderV
 
         initAdapter()
         initService()
-        initClickListener()
 
         return binding.root
     }
@@ -64,12 +73,13 @@ class DialogScrapCourseMove: DialogFragment(), ScrapCourseMoveView, ScrapFolderV
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.CENTER_VERTICAL)
     }
 
-    private fun initClickListener() {
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dialogFinishListener.finish()
     }
 
     override fun scrapCourseMoveSuccessView(scrapCourseMoveResult: ScrapCourseMoveResult) {
-        dismiss()
+        // dismiss()
     }
 
     override fun scrapCourseMoveFailureView() {

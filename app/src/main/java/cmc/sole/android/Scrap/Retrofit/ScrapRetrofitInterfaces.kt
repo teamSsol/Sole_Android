@@ -24,7 +24,8 @@ interface ScrapRetrofitInterfaces {
 
     @DELETE("/api/scraps/default/{courseIds}")
     fun deleteDefaultFolder(
-        @Path("courseIds") courseIds: ArrayList<Int>
+        // @Path("courseIds") courseIds: ArrayList<String>
+        @Path("courseIds") courseIds: String
     ): Call<Void>
 
     @DELETE("/api/scraps/{scrapFolderId}")

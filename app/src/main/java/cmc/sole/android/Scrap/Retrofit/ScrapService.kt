@@ -78,6 +78,7 @@ class ScrapService {
                 call: Call<ScrapDefaultFolderDataResponse>,
                 response: Response<ScrapDefaultFolderDataResponse>
             ) {
+                Log.d("API-TEST", "getDefaultFolder.body = ${response.body()}")
                 if (response.code() == 200) {
                     val scrapDefaultFolderResponse = response.body()
                     if (scrapDefaultFolderResponse?.success == true) {
@@ -93,9 +94,12 @@ class ScrapService {
         })
     }
 
-    fun deleteScrapDefaultFolderCourse(courseIds: ArrayList<Int>) {
+    // fun deleteScrapDefaultFolderCourse(courseIds: ArrayList<String>) {
+    fun deleteScrapDefaultFolderCourse(courseIds: String) {
         scrapService?.deleteDefaultFolder(courseIds)?.enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                // Log.d("API-TEST", "deleteScrapDefaultFolderCourse = $response")
+                // Log.d("API-TEST", "deleteScrapDefaultFolderCourse.body = ${response.body()}")
                 if (response.code() == 200) {
                     scrapDefaultFolderDeleteView.scrapDefaultFolderCourseDeleteSuccessView()
                 } else {
@@ -171,7 +175,7 @@ class ScrapService {
                 call: Call<ScrapCourseResponse>,
                 response: Response<ScrapCourseResponse>
             ) {
-                // Log.d("API-TEST", "response.body = ${response.body()}")
+                Log.d("API-TEST", "getScrapCourse.body = ${response.body()}")
                 if (response.code() == 200) {
                     val scrapCourseResponse = response.body()
                     if (scrapCourseResponse?.success == true) {

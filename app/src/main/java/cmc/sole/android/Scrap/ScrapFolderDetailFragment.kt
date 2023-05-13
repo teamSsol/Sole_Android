@@ -1,15 +1,18 @@
 package cmc.sole.android.Scrap
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.MainActivity
+import cmc.sole.android.R
 import cmc.sole.android.Scrap.Retrofit.ScrapCourseResult
 import cmc.sole.android.Scrap.Retrofit.ScrapCourseView
 import cmc.sole.android.Scrap.Retrofit.ScrapDefaultFolderView
@@ -62,6 +65,8 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
             override fun onItemClick(data: ScrapCourseResult, position: Int) {
                 if (binding.scrapFolderDetailEditCv.visibility == View.VISIBLE) {
                     scrapFolderDetailRVAdapter.checkMode(0)
+                    binding.scrapFolderDetailMoveCv.strokeColor = Color.parseColor("#D3D4D5")
+                    binding.scrapFolderDetailDeleteCv.strokeColor = Color.parseColor("#D3D4D5")
                     val intent = Intent(activity, CourseDetailActivity::class.java)
                     intent.putExtra("courseId", data.courseId)
                     startActivity(intent)
@@ -71,6 +76,18 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
                         deleteCourseId.add(data.courseId)
                     } else {
                         deleteCourseId.remove(data.courseId)
+                    }
+
+                    if (deleteCourseId.size == 0) {
+                        binding.scrapFolderDetailMoveCv.strokeColor = Color.parseColor("#D3D4D5")
+                        binding.scrapFolderDetailDeleteCv.strokeColor = Color.parseColor("#D3D4D5")
+                        binding.scrapFolderDetailMoveCv.isEnabled = false
+                        binding.scrapFolderDetailDeleteCv.isEnabled = false
+                    } else {
+                        binding.scrapFolderDetailMoveCv.strokeColor = ContextCompat.getColor(activity!!, R.color.main)
+                        binding.scrapFolderDetailDeleteCv.strokeColor = ContextCompat.getColor(activity!!, R.color.main)
+                        binding.scrapFolderDetailMoveCv.isEnabled = true
+                        binding.scrapFolderDetailDeleteCv.isEnabled = true
                     }
                 }
             }
@@ -123,6 +140,11 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
             bundle.putString("scrapFolderName", scrapFolderName)
             scrapCourseMoveDialog.arguments = bundle
             scrapCourseMoveDialog.show(requireActivity().supportFragmentManager, "ScrapCourseMoveDialog")
+            scrapCourseMoveDialog.setOnDialogFinishListener(object: DialogScrapCourseMove.OnDialogFinishListener {
+                override fun finish() {
+                    defaultMode()
+                }
+            })
         }
 
         binding.scrapFolderDetailDeleteCv.setOnClickListener {
@@ -136,6 +158,13 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
             scrapCourseDeleteDialog.setOnFinishListener(object: DialogScrapCourseDelete.OnFinishListener {
                 override fun finish() {
                     binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
+                    Log.d("API-TEST", "Dialog Finish")
+                    Log.d("API-TEST", "ScrapFolderName = $scrapFolderName")
+                    if (scrapFolderName == "기본 폴더") {
+                        scrapService.getDefaultFolder()
+                    } else {
+                        scrapService.getScrapCourse(scrapFolderId)
+                    }
                     defaultMode()
                 }
             })

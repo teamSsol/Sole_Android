@@ -134,6 +134,7 @@ class ScrapCourseRVAdapter(private val scrapCourseList: ArrayList<ScrapCourseRes
         }
     }
 
+    // MEMO: Flag = 0 기본 모드  /  Flag = 1 편집 모드
     fun checkMode(flag: Int): Int {
         checkFlag = flag
         return flag
