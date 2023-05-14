@@ -117,6 +117,7 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
             var bundle = Bundle()
             bundle.putInt("scrapFolderId", scrapFolderId)
             bundle.putIntegerArrayList("deleteCourseId", deleteCourseId)
+            bundle.putString("folderName", scrapFolderName)
             scrapFolderOptionBottomFragment.arguments = bundle
             scrapFolderOptionBottomFragment.show(requireActivity().supportFragmentManager, "ScrapFolderDetailBottom")
             scrapFolderOptionBottomFragment.setOnFinishListener(object: ScrapFolderOptionBottomFragment.OnScrapOptionFinishListener {

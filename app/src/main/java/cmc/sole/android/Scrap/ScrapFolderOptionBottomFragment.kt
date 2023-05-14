@@ -21,6 +21,7 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
     private lateinit var dialogFinishListener: OnScrapOptionFinishListener
     var folderEditName: String = ""
     var scrapFolderId: Int = -1
+    var folderName = ""
     private var deleteCourseId = ArrayList<Int>()
 
     private var mode = ""
@@ -46,6 +47,7 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
         binding = BottomFragmentScrapFolderOptionBinding.inflate(inflater, container, false)
         scrapFolderId = requireArguments().getInt("scrapFolderId")
         deleteCourseId = requireArguments().getIntegerArrayList("deleteCourseId") as ArrayList<Int>
+        folderName = requireArguments().getString("folderName").toString()
 
         initClickListener()
 
@@ -104,6 +106,7 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
             var bundle = Bundle()
             bundle.putInt("scrapFolderId", scrapFolderId)
             bundle.putIntegerArrayList("deleteCourseId", deleteCourseId)
+            bundle.putString("folderName", folderName)
             scrapFolderOptionDeleteDialog.arguments = bundle
             scrapFolderOptionDeleteDialog.show(requireActivity().supportFragmentManager, "ScrapFolderDeleteDialog")
             scrapFolderOptionDeleteDialog.setOnFinishListener(object: DialogScrapFolderDelete.OnFinishListener {

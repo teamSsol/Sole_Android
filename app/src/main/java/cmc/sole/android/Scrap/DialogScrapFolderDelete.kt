@@ -22,6 +22,7 @@ class DialogScrapFolderDelete: DialogFragment(), ScrapFolderDeleteView {
     private lateinit var dialogFinishListener: OnFinishListener
     private var mode = ""
     private var deleteCourseId = ArrayList<Int>()
+    private var folderName = ""
 
     interface OnFinishListener {
         fun finish(mode: String)
@@ -47,6 +48,9 @@ class DialogScrapFolderDelete: DialogFragment(), ScrapFolderDeleteView {
 
         scrapFolderId = requireArguments().getInt("scrapFolderId")
         deleteCourseId = requireArguments().getIntegerArrayList("deleteCourseId") as ArrayList<Int>
+        folderName = requireArguments().getString("folderName").toString()
+
+        binding.scrapFolderDeleteTitleTv.text = "'${folderName}'\n폴더를 삭제하시겠어요?"
 
         initService()
         initClickListener()
