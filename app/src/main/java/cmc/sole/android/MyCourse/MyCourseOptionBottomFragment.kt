@@ -35,6 +35,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
     private lateinit var myCourseTagBottomTransRVAdapter: MyCourseTagButtonRVAdapter
     private lateinit var myCourseOptionLocationRVAdapter: MyCourseOptionLocationRVAdapter
     private lateinit var myCourseOptionRegionRVAdapter: MyCourseOptionLocationRegionRVAdapter
+    private lateinit var myCourseOptionSelectLocationRVAdapter: MyCourseOptionLocationSelectRVAdapter
     private var placeTagList = ArrayList<TagButton>()
     private var withTagList = ArrayList<TagButton>()
     private var transTagList = ArrayList<TagButton>()
@@ -226,12 +227,22 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
                 var region = data.region
 
                 if (!data.isSelected) {
-                    selectRegionList.add(LocationData(city!!, region))
+                    myCourseOptionSelectLocationRVAdapter.addItem(LocationData(city!!, region))
                 } else {
-                    selectRegionList.remove(LocationData(city!!, region))
+                    myCourseOptionSelectLocationRVAdapter.remove(LocationData(city!!, region))
                 }
+            }
+        })
 
-                Log.d("API-TEST", "selectRegionList = $selectRegionList")
+        myCourseOptionSelectLocationRVAdapter = MyCourseOptionLocationSelectRVAdapter(selectRegionList)
+        binding.myCourseOptionSelectLocationRv.adapter = myCourseOptionSelectLocationRVAdapter
+        val layoutManager = FlexboxLayoutManager(activity)
+        binding.myCourseOptionSelectLocationRv.layoutManager = layoutManager
+        binding.myCourseOptionSelectLocationRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 8))
+        binding.myCourseOptionSelectLocationRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 10))
+        myCourseOptionSelectLocationRVAdapter.setOnItemClickListener(object: MyCourseOptionLocationSelectRVAdapter.OnItemClickListener {
+            override fun onItemClickListener(data: LocationData, position: Int) {
+                Log.d("API-TEST", "data = $data")
             }
         })
     }
