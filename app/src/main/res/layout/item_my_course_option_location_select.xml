@@ -2,6 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:paddingVertical="2.5dp"
+    android:paddingHorizontal="4dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.card.MaterialCardView
@@ -35,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:src="@drawable/ic_location_x"
-                android:padding="6dp"
+                android:padding="4dp"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintTop_toTopOf="@id/location_select_tv"
                 app:layout_constraintBottom_toBottomOf="@id/location_select_tv"

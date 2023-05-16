@@ -3,6 +3,7 @@ package cmc.sole.android.MyCourse
 import android.app.Activity
 import android.app.Dialog
 import android.graphics.Region
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
@@ -46,6 +48,8 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
     private lateinit var dialogFinishListener: OnTagFragmentFinishListener
     private var sendTag = listOf<TagButton>()
     private var tagFlag = booleanArrayOf()
+    // MEMO: 현재 선택하고 있는 지역을 알기 위함
+    private var selectCityFlag = "서울"
 
     private val writeVM: MyCourseWriteViewModel by activityViewModels()
 
@@ -197,7 +201,6 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         myCourseTagBottomTransRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
             override fun onItemClick(data: TagButton, position: Int) {
                 tagFlag[position] = data.isChecked
-                Log.d("WRITE-TEST", "$tagFlag")
             }
         })
 
@@ -213,6 +216,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         myCourseOptionLocationRVAdapter.addAllItems(LocationTranslator.returnCitySelected())
         myCourseOptionLocationRVAdapter.setOnItemClickListener(object: MyCourseOptionLocationRVAdapter.OnItemClickListener {
             override fun onItemClickListener(data: CityData, position: Int) {
+                selectCityFlag = data.city
                 myCourseOptionRegionRVAdapter.addAllItems(LocationTranslator.returnRegionSelected(data.city))
             }
         })
@@ -222,8 +226,15 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         binding.myCourseWriteRegionRv.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         myCourseOptionRegionRVAdapter.addAllItems(LocationTranslator.returnRegionSelected("서울"))
         myCourseOptionRegionRVAdapter.setOnItemClickListener(object: MyCourseOptionLocationRegionRVAdapter.OnItemClickListener {
+            @RequiresApi(Build.VERSION_CODES.N)
             override fun onItemClickListener(data: RegionData, position: Int) {
-                var city = LocationTranslator.returnCityFromRegion(data.region)
+//                var city = ""
+//                if (data.region != "전체") {
+//                    city = LocationTranslator.returnCityFromRegion(data.region).toString()
+//                } else {
+//                    selectCityFlag = r
+//                }
+                var city = selectCityFlag
                 var region = data.region
 
                 if (!data.isSelected) {
@@ -231,6 +242,8 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
                 } else {
                     myCourseOptionSelectLocationRVAdapter.remove(LocationData(city!!, region))
                 }
+
+                binding.myCourseOptionSelectNumberTv.text = myCourseOptionSelectLocationRVAdapter.returnListSize().toString()
             }
         })
 
@@ -238,11 +251,9 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         binding.myCourseOptionSelectLocationRv.adapter = myCourseOptionSelectLocationRVAdapter
         val layoutManager = FlexboxLayoutManager(activity)
         binding.myCourseOptionSelectLocationRv.layoutManager = layoutManager
-        binding.myCourseOptionSelectLocationRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 8))
-        binding.myCourseOptionSelectLocationRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 10))
         myCourseOptionSelectLocationRVAdapter.setOnItemClickListener(object: MyCourseOptionLocationSelectRVAdapter.OnItemClickListener {
             override fun onItemClickListener(data: LocationData, position: Int) {
-                Log.d("API-TEST", "data = $data")
+                binding.myCourseOptionSelectNumberTv.text = myCourseOptionSelectLocationRVAdapter.returnListSize().toString()
             }
         })
     }

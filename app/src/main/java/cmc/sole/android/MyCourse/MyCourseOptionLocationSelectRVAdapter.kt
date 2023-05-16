@@ -2,8 +2,11 @@ package cmc.sole.android.MyCourse
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.R
@@ -11,6 +14,7 @@ import cmc.sole.android.Utils.LocationData
 import cmc.sole.android.Utils.RegionData
 import cmc.sole.android.databinding.ItemMyCourseOptionLocationSelectBinding
 import cmc.sole.android.databinding.ItemMyCourseOptionRegionBinding
+import java.util.function.Predicate
 
 class MyCourseOptionLocationSelectRVAdapter(private val locationList: ArrayList<LocationData>): RecyclerView.Adapter<MyCourseOptionLocationSelectRVAdapter.ViewHolder>() {
 
@@ -35,7 +39,9 @@ class MyCourseOptionLocationSelectRVAdapter(private val locationList: ArrayList<
 
     override fun onBindViewHolder(holder: MyCourseOptionLocationSelectRVAdapter.ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.binding.root.setOnClickListener {
-
+            itemClickListener.onItemClickListener(locationList[position], position)
+            locationList.remove(locationList[position])
+            this.notifyDataSetChanged()
         }
         holder.bind(locationList[position])
     }
@@ -48,22 +54,40 @@ class MyCourseOptionLocationSelectRVAdapter(private val locationList: ArrayList<
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
+    @SuppressLint("NotifyDataSetChanged")
     fun addItem(item: LocationData) {
+
+        if (item.region == "전체") {
+            locationList.removeIf {
+                it.city == item.city
+            }
+        }
+        else {
+            locationList.removeIf {
+                it.city == item.city && it.region == "전체"
+            }
+        }
+        this.notifyDataSetChanged()
+
         locationList.add(item)
         this.notifyItemInserted(locationList.size - 1)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addAllItems(items: ArrayList<LocationData>) {
         locationList.clear()
         locationList.addAll(items)
         this.notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun remove(item: LocationData) {
         locationList.remove(item)
         this.notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun remove(city: String) {
         for (i in 0 until locationList.size) {
             if (locationList[i].city == city) {
@@ -73,8 +97,13 @@ class MyCourseOptionLocationSelectRVAdapter(private val locationList: ArrayList<
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun clearItems() {
         locationList.clear()
         this.notifyDataSetChanged()
+    }
+
+    fun returnListSize(): Int {
+        return locationList.size
     }
 }

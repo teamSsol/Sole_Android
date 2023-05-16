@@ -70,6 +70,7 @@ class MyCourseOptionLocationRegionRVAdapter(private val regionList: ArrayList<Re
         this.notifyDataSetChanged()
     }
 
+    // MEMO: 전체 선택 부분 선택/취소 처리
     @SuppressLint("NotifyDataSetChanged")
     fun setSelectIndex(position: Int) {
         if (preSelectedIndex == 0) {
