@@ -253,7 +253,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         binding.myCourseOptionSelectLocationRv.layoutManager = layoutManager
         myCourseOptionSelectLocationRVAdapter.setOnItemClickListener(object: MyCourseOptionLocationSelectRVAdapter.OnItemClickListener {
             override fun onItemClickListener(data: LocationData, position: Int) {
-                binding.myCourseOptionSelectNumberTv.text = myCourseOptionSelectLocationRVAdapter.returnListSize().toString()
+                binding.myCourseOptionSelectNumberTv.text = (myCourseOptionSelectLocationRVAdapter.returnListSize() - 1).toString()
             }
         })
     }

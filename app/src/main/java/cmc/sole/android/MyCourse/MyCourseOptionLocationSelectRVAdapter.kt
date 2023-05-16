@@ -37,6 +37,7 @@ class MyCourseOptionLocationSelectRVAdapter(private val locationList: ArrayList<
         return ViewHolder(binding)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: MyCourseOptionLocationSelectRVAdapter.ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.binding.root.setOnClickListener {
             itemClickListener.onItemClickListener(locationList[position], position)
@@ -49,8 +50,9 @@ class MyCourseOptionLocationSelectRVAdapter(private val locationList: ArrayList<
     override fun getItemCount(): Int = locationList.size
 
     inner class ViewHolder(val binding: ItemMyCourseOptionLocationSelectBinding): RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(location: LocationData) {
-            binding.locationSelectTv.text = location.city + " > " + location.region
+            binding.locationSelectTv.text = "${location.city} > ${location.region}"
         }
     }
 
