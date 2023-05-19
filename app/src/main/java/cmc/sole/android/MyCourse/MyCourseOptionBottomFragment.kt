@@ -218,6 +218,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
             override fun onItemClickListener(data: CityData, position: Int) {
                 selectCityFlag = data.city
                 myCourseOptionRegionRVAdapter.addAllItems(LocationTranslator.returnRegionSelected(data.city))
+                checkSelectedItem(selectCityFlag)
             }
         })
 
@@ -228,19 +229,13 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         myCourseOptionRegionRVAdapter.setOnItemClickListener(object: MyCourseOptionLocationRegionRVAdapter.OnItemClickListener {
             @RequiresApi(Build.VERSION_CODES.N)
             override fun onItemClickListener(data: RegionData, position: Int) {
-//                var city = ""
-//                if (data.region != "전체") {
-//                    city = LocationTranslator.returnCityFromRegion(data.region).toString()
-//                } else {
-//                    selectCityFlag = r
-//                }
                 var city = selectCityFlag
                 var region = data.region
 
                 if (!data.isSelected) {
-                    myCourseOptionSelectLocationRVAdapter.addItem(LocationData(city!!, region))
+                    myCourseOptionSelectLocationRVAdapter.addItem(LocationData(city, region))
                 } else {
-                    myCourseOptionSelectLocationRVAdapter.remove(LocationData(city!!, region))
+                    myCourseOptionSelectLocationRVAdapter.remove(LocationData(city, region))
                 }
 
                 binding.myCourseOptionSelectNumberTv.text = myCourseOptionSelectLocationRVAdapter.returnListSize().toString()
@@ -254,6 +249,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         myCourseOptionSelectLocationRVAdapter.setOnItemClickListener(object: MyCourseOptionLocationSelectRVAdapter.OnItemClickListener {
             override fun onItemClickListener(data: LocationData, position: Int) {
                 binding.myCourseOptionSelectNumberTv.text = (myCourseOptionSelectLocationRVAdapter.returnListSize() - 1).toString()
+                myCourseOptionRegionRVAdapter.changeIsSelectedNoPos(data.region)
             }
         })
     }
@@ -270,7 +266,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
     private fun setupRatio(bottomSheetDialog: BottomSheetDialog) {
         val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as View
         val behavior = BottomSheetBehavior.from<View>(bottomSheet)
-        val layoutParams = bottomSheet!!.layoutParams
+        val layoutParams = bottomSheet.layoutParams
         layoutParams.height = getBottomSheetDialogDefaultHeight()
         bottomSheet.layoutParams = layoutParams
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -288,5 +284,14 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
 
     private fun tagSort(list: List<TagButton>): List<TagButton> {
         return list.sortedBy { it.index }
+    }
+
+    private fun checkSelectedItem(city: String) {
+        var cityList = LocationTranslator.returnRegionSelected(city)
+        for (i in 0 until cityList.size) {
+            if (myCourseOptionSelectLocationRVAdapter.returnAllItems().contains(LocationData(city, cityList[i].region))) {
+                myCourseOptionRegionRVAdapter.changeIsSelected(i)
+            }
+        }
     }
 }

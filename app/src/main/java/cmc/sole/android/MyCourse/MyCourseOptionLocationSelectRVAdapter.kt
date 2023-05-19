@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.R
+import cmc.sole.android.Utils.CityData
 import cmc.sole.android.Utils.LocationData
 import cmc.sole.android.Utils.RegionData
 import cmc.sole.android.databinding.ItemMyCourseOptionLocationSelectBinding
@@ -59,7 +60,6 @@ class MyCourseOptionLocationSelectRVAdapter(private val locationList: ArrayList<
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("NotifyDataSetChanged")
     fun addItem(item: LocationData) {
-
         if (item.region == "전체") {
             locationList.removeIf {
                 it.city == item.city
@@ -90,16 +90,6 @@ class MyCourseOptionLocationSelectRVAdapter(private val locationList: ArrayList<
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun remove(city: String) {
-        for (i in 0 until locationList.size) {
-            if (locationList[i].city == city) {
-                locationList.remove(LocationData(locationList[i].city, locationList[i].region))
-                this.notifyDataSetChanged()
-            }
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
     fun clearItems() {
         locationList.clear()
         this.notifyDataSetChanged()
@@ -107,5 +97,9 @@ class MyCourseOptionLocationSelectRVAdapter(private val locationList: ArrayList<
 
     fun returnListSize(): Int {
         return locationList.size
+    }
+
+    fun returnAllItems(): ArrayList<LocationData> {
+        return locationList
     }
 }

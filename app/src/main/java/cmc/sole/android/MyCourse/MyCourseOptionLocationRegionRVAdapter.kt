@@ -2,6 +2,7 @@ package cmc.sole.android.MyCourse
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -59,12 +60,14 @@ class MyCourseOptionLocationRegionRVAdapter(private val regionList: ArrayList<Re
         this.notifyItemInserted(regionList.size - 1)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addAllItems(items: ArrayList<RegionData>) {
         regionList.clear()
         regionList.addAll(items)
         this.notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun clearItems() {
         regionList.clear()
         this.notifyDataSetChanged()
@@ -87,5 +90,24 @@ class MyCourseOptionLocationRegionRVAdapter(private val regionList: ArrayList<Re
 
         regionList[position].isSelected = !regionList[position].isSelected
         this.notifyItemChanged(position)
+    }
+
+    fun returnAllItems(): ArrayList<RegionData> {
+        return regionList
+    }
+
+    fun changeIsSelected(position: Int) {
+        regionList[position].isSelected = !regionList[position].isSelected
+        this.notifyItemChanged(position)
+    }
+
+    fun changeIsSelectedNoPos(region: String) {
+        for (i in 0 until regionList.size) {
+            if (regionList[i].region == region) {
+                regionList[i].isSelected = !regionList[i].isSelected
+                this.notifyItemChanged(i)
+                break
+            }
+        }
     }
 }

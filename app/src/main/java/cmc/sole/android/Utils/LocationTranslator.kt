@@ -116,14 +116,6 @@ object LocationTranslator {
 
         return returnData
     }
-
-    fun returnCityFromRegion(region: String): String? {
-        for (i in 0 until returnCity().size) {
-            if (returnRegion(returnCity()[i]).contains(region)) return returnCity()[i]
-        }
-
-        return null
-    }
 }
 
 data class CityData(
