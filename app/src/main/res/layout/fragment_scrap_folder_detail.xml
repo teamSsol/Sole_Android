@@ -70,7 +70,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="8dp"
-        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/scrap_folder_detail_top_bar">
 
         <com.google.android.material.card.MaterialCardView
@@ -125,6 +124,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:visibility="gone"
+            android:enabled="false"
             app:cardElevation="0dp"
             app:strokeColor="#D3D4D5"
             app:strokeWidth="1dp"
@@ -161,6 +161,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
+            android:enabled="false"
             android:visibility="gone"
             app:cardElevation="0dp"
             app:strokeColor="#D3D4D5"

@@ -62,7 +62,7 @@ class FollowListRVAdapter(private val followList: ArrayList<FollowUserDataResult
             if (followList.followStatus == "FOLLOWER") {
                 binding.itemFollowFollowingBtn.visibility = View.GONE
                 binding.itemFollowFollowBtn.visibility = View.VISIBLE
-            } else {
+            } else if (followList.followStatus == "FOLLOWING") {
                 binding.itemFollowFollowingBtn.visibility = View.VISIBLE
                 binding.itemFollowFollowBtn.visibility = View.GONE
             }

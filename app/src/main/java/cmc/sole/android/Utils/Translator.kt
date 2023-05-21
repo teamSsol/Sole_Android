@@ -24,9 +24,9 @@ object Translator {
             "PET" -> activity.getString(R.string.with_tag14)
 
             "WALK" -> activity.getString(R.string.trans_tag15)
-            "BIKE" -> activity.getString(R.string.trans_tag16)
-            "CAR" -> activity.getString(R.string.trans_tag17)
-            "PUBLIC_TRANSPORTATION" -> activity.getString(R.string.trans_tag18)
+            "BIKE" -> activity.getString(R.string.trans_tag17)
+            "CAR" -> activity.getString(R.string.trans_tag18)
+            "PUBLIC_TRANSPORTATION" -> activity.getString(R.string.trans_tag16)
             else -> "."
         }
     }

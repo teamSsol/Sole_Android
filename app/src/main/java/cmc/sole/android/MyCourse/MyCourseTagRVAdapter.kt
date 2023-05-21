@@ -43,7 +43,8 @@ class MyCourseTagRVAdapter(private val tagList: ArrayList<String>): RecyclerView
 
     fun addItem(item: String) {
         tagList.add(item)
-        this.notifyDataSetChanged()
+        // this.notifyDataSetChanged()
+        this.notifyItemInserted(tagList.size - 1)
     }
 
     fun addAllItems(items: ArrayList<String>) {

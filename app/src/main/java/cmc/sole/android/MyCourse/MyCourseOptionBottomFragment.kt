@@ -2,39 +2,54 @@ package cmc.sole.android.MyCourse
 
 import android.app.Activity
 import android.app.Dialog
+import android.graphics.Region
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
-import cmc.sole.android.MainActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
 import cmc.sole.android.R
+import cmc.sole.android.Utils.CityData
+import cmc.sole.android.Utils.LocationData
+import cmc.sole.android.Utils.LocationTranslator
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
-import cmc.sole.android.databinding.BottomFragmentMyCourseWriteOptionBinding
+import cmc.sole.android.Utils.RegionData
 import cmc.sole.android.databinding.BottomFragmentMyCourseWriteOptionNewBinding
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class MyCourseWriteOptionBottomFragment: BottomSheetDialogFragment() {
+class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
 
     // lateinit var binding: BottomFragmentMyCourseWriteOptionBinding
     lateinit var binding: BottomFragmentMyCourseWriteOptionNewBinding
     private lateinit var myCourseTagBottomPlaceRVAdapter: MyCourseTagButtonRVAdapter
     private lateinit var myCourseTagBottomWithRVAdapter: MyCourseTagButtonRVAdapter
     private lateinit var myCourseTagBottomTransRVAdapter: MyCourseTagButtonRVAdapter
+    private lateinit var myCourseOptionLocationRVAdapter: MyCourseOptionLocationRVAdapter
+    private lateinit var myCourseOptionRegionRVAdapter: MyCourseOptionLocationRegionRVAdapter
+    private lateinit var myCourseOptionSelectLocationRVAdapter: MyCourseOptionLocationSelectRVAdapter
     private var placeTagList = ArrayList<TagButton>()
     private var withTagList = ArrayList<TagButton>()
     private var transTagList = ArrayList<TagButton>()
     private var checkTagList: MutableList<TagButton> = mutableListOf()
+    private var locationList = ArrayList<CityData>()
+    private var regionList = ArrayList<RegionData>()
+    private var selectRegionList = ArrayList<LocationData>()
     private lateinit var dialogFinishListener: OnTagFragmentFinishListener
     private var sendTag = listOf<TagButton>()
     private var tagFlag = booleanArrayOf()
+    // MEMO: 현재 선택하고 있는 지역을 알기 위함
+    private var selectCityFlag = "서울"
 
     private val writeVM: MyCourseWriteViewModel by activityViewModels()
 
@@ -95,12 +110,7 @@ class MyCourseWriteOptionBottomFragment: BottomSheetDialogFragment() {
             tagResult.add(TagButton(1000, "", false))
 
             writeVM.setTag(tagSort(tagResult))
-
             sendTag = tagSort(tagResult)
-
-            for (i in 0..17) {
-                Log.d("WRITE-TEST", "tagCheck = $i ${tagFlag[i]}")
-            }
             dismiss()
         }
 
@@ -191,7 +201,6 @@ class MyCourseWriteOptionBottomFragment: BottomSheetDialogFragment() {
         myCourseTagBottomTransRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
             override fun onItemClick(data: TagButton, position: Int) {
                 tagFlag[position] = data.isChecked
-                Log.d("WRITE-TEST", "$tagFlag")
             }
         })
 
@@ -200,6 +209,49 @@ class MyCourseWriteOptionBottomFragment: BottomSheetDialogFragment() {
         transTagList.add(TagButton(17, resources.getString(R.string.trans_tag17), tagFlag[16]))
         transTagList.add(TagButton(18, resources.getString(R.string.trans_tag18), tagFlag[17]))
         transTagList.add(TagButton(null, "", false))
+
+        myCourseOptionLocationRVAdapter = MyCourseOptionLocationRVAdapter(locationList)
+        binding.myCourseWriteCityRv.adapter = myCourseOptionLocationRVAdapter
+        binding.myCourseWriteCityRv.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        myCourseOptionLocationRVAdapter.addAllItems(LocationTranslator.returnCitySelected())
+        myCourseOptionLocationRVAdapter.setOnItemClickListener(object: MyCourseOptionLocationRVAdapter.OnItemClickListener {
+            override fun onItemClickListener(data: CityData, position: Int) {
+                selectCityFlag = data.city
+                myCourseOptionRegionRVAdapter.addAllItems(LocationTranslator.returnRegionSelected(data.city))
+                checkSelectedItem(selectCityFlag)
+            }
+        })
+
+        myCourseOptionRegionRVAdapter = MyCourseOptionLocationRegionRVAdapter(regionList)
+        binding.myCourseWriteRegionRv.adapter = myCourseOptionRegionRVAdapter
+        binding.myCourseWriteRegionRv.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        myCourseOptionRegionRVAdapter.addAllItems(LocationTranslator.returnRegionSelected("서울"))
+        myCourseOptionRegionRVAdapter.setOnItemClickListener(object: MyCourseOptionLocationRegionRVAdapter.OnItemClickListener {
+            @RequiresApi(Build.VERSION_CODES.N)
+            override fun onItemClickListener(data: RegionData, position: Int) {
+                var city = selectCityFlag
+                var region = data.region
+
+                if (!data.isSelected) {
+                    myCourseOptionSelectLocationRVAdapter.addItem(LocationData(city, region))
+                } else {
+                    myCourseOptionSelectLocationRVAdapter.remove(LocationData(city, region))
+                }
+
+                binding.myCourseOptionSelectNumberTv.text = myCourseOptionSelectLocationRVAdapter.returnListSize().toString()
+            }
+        })
+
+        myCourseOptionSelectLocationRVAdapter = MyCourseOptionLocationSelectRVAdapter(selectRegionList)
+        binding.myCourseOptionSelectLocationRv.adapter = myCourseOptionSelectLocationRVAdapter
+        val layoutManager = FlexboxLayoutManager(activity)
+        binding.myCourseOptionSelectLocationRv.layoutManager = layoutManager
+        myCourseOptionSelectLocationRVAdapter.setOnItemClickListener(object: MyCourseOptionLocationSelectRVAdapter.OnItemClickListener {
+            override fun onItemClickListener(data: LocationData, position: Int) {
+                binding.myCourseOptionSelectNumberTv.text = (myCourseOptionSelectLocationRVAdapter.returnListSize() - 1).toString()
+                myCourseOptionRegionRVAdapter.changeIsSelectedNoPos(data.region)
+            }
+        })
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -214,7 +266,7 @@ class MyCourseWriteOptionBottomFragment: BottomSheetDialogFragment() {
     private fun setupRatio(bottomSheetDialog: BottomSheetDialog) {
         val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as View
         val behavior = BottomSheetBehavior.from<View>(bottomSheet)
-        val layoutParams = bottomSheet!!.layoutParams
+        val layoutParams = bottomSheet.layoutParams
         layoutParams.height = getBottomSheetDialogDefaultHeight()
         bottomSheet.layoutParams = layoutParams
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -232,5 +284,14 @@ class MyCourseWriteOptionBottomFragment: BottomSheetDialogFragment() {
 
     private fun tagSort(list: List<TagButton>): List<TagButton> {
         return list.sortedBy { it.index }
+    }
+
+    private fun checkSelectedItem(city: String) {
+        var cityList = LocationTranslator.returnRegionSelected(city)
+        for (i in 0 until cityList.size) {
+            if (myCourseOptionSelectLocationRVAdapter.returnAllItems().contains(LocationData(city, cityList[i].region))) {
+                myCourseOptionRegionRVAdapter.changeIsSelected(i)
+            }
+        }
     }
 }

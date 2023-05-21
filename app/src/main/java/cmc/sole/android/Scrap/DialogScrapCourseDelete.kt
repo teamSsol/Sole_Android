@@ -47,6 +47,7 @@ class DialogScrapCourseDelete: DialogFragment(), ScrapCourseDeleteView, ScrapDef
 
         scrapFolderId = requireArguments().getInt("scrapFolderId")
         arguments?.getIntegerArrayList("courseId")?.let { deleteCourseId.addAll(it) }
+
         scrapFolderName = requireArguments().getString("scrapFolderName").toString()
 
         initService()
@@ -73,28 +74,36 @@ class DialogScrapCourseDelete: DialogFragment(), ScrapCourseDeleteView, ScrapDef
         }
         
         binding.scrapCourseDeleteBtn.setOnClickListener {
+            var deleteCourse = ""
+            for (i in 0 until deleteCourseId.size) {
+                if (i != 0) {
+                    deleteCourse += ", "
+                }
+                deleteCourse += deleteCourseId[i]
+            }
+
             if (scrapFolderName == "기본 폴더") {
-                scrapService.deleteScrapDefaultFolderCourse(deleteCourseId)
+                scrapService.deleteScrapDefaultFolderCourse(deleteCourse)
             } else {
-                scrapService.deleteScrapCourse(scrapFolderId, deleteCourseId)
+                scrapService.deleteScrapCourse(scrapFolderId, deleteCourse)
             }
             dismiss()
         }
     }
 
     override fun scrapCourseDeleteSuccessView() {
-        Toast.makeText(context, "삭제 완료", Toast.LENGTH_LONG).show()
+        deleteCourseId.clear()
     }
 
     override fun scrapCourseDeleteFailureView() {
-        Toast.makeText(context, "삭제 실패", Toast.LENGTH_LONG).show()
+        deleteCourseId.clear()
     }
 
     override fun scrapDefaultFolderCourseDeleteSuccessView() {
-        Toast.makeText(context, "삭제 완료", Toast.LENGTH_LONG).show()
+        deleteCourseId.clear()
     }
 
     override fun scrapDefaultFolderCourseDeleteFailureView() {
-        Toast.makeText(context, "삭제 실패", Toast.LENGTH_LONG).show()
+        deleteCourseId.clear()
     }
 }

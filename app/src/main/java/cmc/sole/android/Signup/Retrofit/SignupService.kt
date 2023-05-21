@@ -3,15 +3,9 @@ package cmc.sole.android.Signup.Retrofit
 import android.util.Log
 import com.example.geeksasaeng.Utils.NetworkModule
 import okhttp3.MultipartBody
-import okhttp3.Request
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Multipart
-import retrofit2.http.Part
-import retrofit2.http.Path
 
 class SignupService {
     private lateinit var signupCheckView: SignupCheckView
@@ -39,6 +33,7 @@ class SignupService {
         signupService?.socialCheck("kakao", body)?.enqueue(object: Callback<SignupCheckResponse> {
             override fun onResponse(call: Call<SignupCheckResponse>, response: Response<SignupCheckResponse>) {
                 Log.d("API-TEST", "SignupCheck response = $response")
+                Log.d("API-TEST", "SignupCheck response.body = ${response.body()}")
                 if (response.code() == 200) {
                     val signupCheckResponse = response.body()
                     if (signupCheckResponse?.success == true) {

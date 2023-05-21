@@ -41,27 +41,11 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
     private lateinit var homeService: HomeService
     var courseId: Int? = null
     var lastCourseId: Int? = null
-    private var locationPermissionLive: MutableLiveData<HomeCurrentGPSRequest>? = null
 
     override fun initAfterBinding() {
         initAdapter()
         initClickListener()
         initAPIService()
-        setLocationPermissionLive()
-
-        locationPermissionLive?.observe(this, Observer {
-            Log.d("GPS-TEST", "locationPermissionLive = ${locationPermissionLive?.value}")
-            if (locationPermissionLive != null) {
-                homeService.updateCurrentGPS(locationPermissionLive?.value!!)
-            }
-            Log.d("GPS-TEST", "locationPermissionLive = ${locationPermissionLive?.value}")
-        })
-    }
-
-    private fun setLocationPermissionLive() {
-        Log.d("GPS-TEST", "locationPermissionLive = ${locationPermissionLive?.value}")
-        locationPermissionLive?.value = getCurrentLocation()
-        Log.d("GPS-TEST", "locationPermissionLive = ${locationPermissionLive?.value}")
     }
 
     override fun onResume() {
@@ -119,9 +103,9 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
 
         binding.homePopularCourseLayout.setOnClickListener {
             // UPDATE: 현재 위치 변경
-            Log.d("GPS-TEST", "locationPermissionLive = ${locationPermissionLive?.value}")
-            if (locationPermissionLive != null)
-                homeService.updateCurrentGPS(locationPermissionLive?.value!!)
+            val currentLocation = getCurrentLocation()
+            if (currentLocation != null)
+                homeService.updateCurrentGPS(currentLocation)
             popularCourseRVAdapter.clearItems()
             homeService.getHomePopularCourse()
         }
@@ -148,11 +132,11 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
                 // MEMO: 프로바이더 활성화 여부 체크
                 isNetworkEnabled -> {
                     val location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) //인터넷기반으로 위치를 찾음
-                    return HomeCurrentGPSRequest(location?.latitude!!, location?.longitude!!)
+                    return HomeCurrentGPSRequest(location?.latitude!!, location.longitude)
                 }
                 isGPSEnabled -> {
                     val location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) //GPS 기반으로 위치를 찾음
-                    return HomeCurrentGPSRequest(location?.latitude!!, location?.longitude!!)
+                    return HomeCurrentGPSRequest(location?.latitude!!, location.longitude)
                 }
                 else -> { }
             }
@@ -201,13 +185,14 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
             myCourseRVAdapter.clearItems()
         }
 
-        Log.d("API-TEST", "item = ${homeDefaultResponse.data}")
         myCourseRVAdapter.addAllItems(homeDefaultResponse.data)
     }
 
     override fun homeDefaultCourseFailureView() { }
 
-    override fun homeGetCurrentGPSSuccessView() { }
+    override fun homeGetCurrentGPSSuccessView(currentGPS: String) {
+        binding.homePopularCourseSettingLocationIv.text = currentGPS
+    }
 
     override fun homeGetCurrentGPSFailureView() { }
     override fun homeUpdateCurrentGPSSuccessView(homeCurrentGPSResult: HomeCurrentGPSResult) {
@@ -215,11 +200,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
     }
 
     override fun homeUpdateCurrentGPSFailureView() { }
-    override fun homeScrapAddAndCancelSuccessView() {
-        TODO("Not yet implemented")
-    }
+    override fun homeScrapAddAndCancelSuccessView() { }
 
-    override fun homeScrapAddAndCancelFailureView() {
-        TODO("Not yet implemented")
-    }
+    override fun homeScrapAddAndCancelFailureView() { }
 }

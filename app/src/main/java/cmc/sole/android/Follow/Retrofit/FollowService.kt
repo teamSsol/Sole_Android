@@ -125,8 +125,8 @@ class FollowService {
                 call: Call<FollowUserInfoResponse>,
                 response: Response<FollowUserInfoResponse>
             ) {
-                // Log.d("API-TEST", "getFollowUserInfo response = $response")
-                // Log.d("API-TEST", "getFollowUserInfo response = ${response.body()}")
+                Log.d("API-TEST", "getFollowUserInfo response = $response")
+                Log.d("API-TEST", "getFollowUserInfo response = ${response.body()}")
                 if (response.code() == 200) {
                     val followUserInfoResponse = response.body()
                     if (followUserInfoResponse?.success == true) {

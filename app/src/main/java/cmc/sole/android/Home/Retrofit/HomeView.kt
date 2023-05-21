@@ -3,7 +3,7 @@ package cmc.sole.android.Home.Retrofit
 import cmc.sole.android.Home.*
 
 interface HomeGetCurrentGPSView {
-    fun homeGetCurrentGPSSuccessView()
+    fun homeGetCurrentGPSSuccessView(currentGPS: String)
     fun homeGetCurrentGPSFailureView()
 }
 
