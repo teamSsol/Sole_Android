@@ -1,8 +1,11 @@
 package cmc.sole.android.Login
 
+import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import cmc.sole.android.*
 import cmc.sole.android.CourseTag.placeCategories
 import cmc.sole.android.CourseTag.transCategories
@@ -12,7 +15,7 @@ import cmc.sole.android.Signup.Retrofit.SignupCheckResponse
 import cmc.sole.android.Signup.Retrofit.SignupCheckView
 import cmc.sole.android.Signup.Retrofit.SignupService
 import cmc.sole.android.Signup.SignupAgreeActivity
-import cmc.sole.android.Utils.BaseActivity
+
 import cmc.sole.android.databinding.ActivityLoginBinding
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kakao.sdk.common.KakaoSdk
@@ -20,8 +23,10 @@ import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import org.json.JSONArray
 
-class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate),
+class LoginActivity: AppCompatActivity(),
     SignupCheckView, NewTokenView {
+
+    lateinit var binding: ActivityLoginBinding
 
     private var fcmToken = ""
     private var accessToken = ""
@@ -29,7 +34,10 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
     private lateinit var signupCheckService: SignupService
     private lateinit var tokenService: TokenService
 
-    override fun initAfterBinding() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+
         KakaoSdk.init(this, getString(R.string.kakao_api_key))
 
         // getPlayStoreHashKey()
@@ -37,6 +45,8 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
         initClickListener()
         initRetrofitService()
         checkAutoLogin()
+
+        setContentView(binding.root)
     }
 
     private fun getFireBaseFCMToken(){
@@ -123,5 +133,9 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::in
 
     override fun getNewTokenFailureView() {
         Log.d("API-TEST", "getNewToken 실패")
+    }
+
+    private fun changeActivity(activity: Class<*>) {
+        startActivity(Intent(this, activity))
     }
 }

@@ -1,11 +1,11 @@
-package cmc.sole.android.MyCourse.Write
+package cmc.sole.android.Write
 
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
+import cmc.sole.android.Write.MyCourseWriteViewModel
 import cmc.sole.android.databinding.DialogTimepickerBinding
 
 class DialogMyCourseWriteTimePicker: DialogFragment() {
@@ -33,7 +33,7 @@ class DialogMyCourseWriteTimePicker: DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DialogTimepickerBinding.inflate(inflater, container, false)
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP)
         binding.myCourseWriteTp.setIs24HourView(true)

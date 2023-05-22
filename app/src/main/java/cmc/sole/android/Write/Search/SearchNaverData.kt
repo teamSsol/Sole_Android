@@ -1,4 +1,4 @@
-package cmc.sole.android.MyCourse.Write.Search
+package cmc.sole.android.Write.Search
 
 data class SearchNaverData(
     var title: String,

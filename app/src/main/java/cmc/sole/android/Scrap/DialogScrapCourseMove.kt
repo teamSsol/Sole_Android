@@ -35,7 +35,7 @@ class DialogScrapCourseMove: DialogFragment(), ScrapCourseMoveView, ScrapFolderV
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DialogScrapMoveFolderBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.setGravity(Gravity.CENTER)

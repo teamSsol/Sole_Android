@@ -1,24 +1,32 @@
 package cmc.sole.android.Home.MyPage.Alarm
 
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Home.MyPageNotificationHistoryResult
 import cmc.sole.android.Home.Retrofit.HomeService
 import cmc.sole.android.Home.Retrofit.MyPageNotificationHistoryView
 import cmc.sole.android.R
-import cmc.sole.android.Utils.BaseActivity
+
 import cmc.sole.android.databinding.ActivityMyPageAlarmBinding
 
-class MyPageAlarmActivity: BaseActivity<ActivityMyPageAlarmBinding>(ActivityMyPageAlarmBinding::inflate),
+class MyPageAlarmActivity: AppCompatActivity(),
     MyPageNotificationHistoryView {
 
+    lateinit var binding: ActivityMyPageAlarmBinding
     lateinit var homeService: HomeService
     lateinit var alarmRVAdapter: MyPageAlarmRVAdapter
     private var alarmList = ArrayList<MyPageNotificationHistoryResult?>()
 
-    override fun initAfterBinding() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityMyPageAlarmBinding.inflate(layoutInflater)
+
         initService()
         initAdapter()
         initClickListener()
+
+        setContentView(binding.root)
     }
 
     private fun initService() {
@@ -45,6 +53,6 @@ class MyPageAlarmActivity: BaseActivity<ActivityMyPageAlarmBinding>(ActivityMyPa
     }
 
     override fun myPageNotificationHistoryFailureView() {
-        showToast("알림 목록 가져오기 실패")
+
     }
 }

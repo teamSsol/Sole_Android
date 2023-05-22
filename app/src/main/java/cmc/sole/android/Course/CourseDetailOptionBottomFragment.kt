@@ -8,7 +8,7 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import cmc.sole.android.MyCourse.Write.MyCourseWriteActivity
+import cmc.sole.android.Write.MyCourseWriteActivity
 import cmc.sole.android.databinding.BottomFragmentCourseDetailOptionBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -22,7 +22,7 @@ class CourseDetailOptionBottomFragment: BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = BottomFragmentCourseDetailOptionBinding.inflate(inflater, container, false)
         courseId = requireArguments().getInt("courseId", -1)
         initClickListener()

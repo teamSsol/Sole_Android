@@ -1,4 +1,4 @@
-package cmc.sole.android.MyCourse.Write
+package cmc.sole.android.Write
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -10,6 +10,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -27,7 +28,7 @@ import cmc.sole.android.MyCourse.PlaceInfoData
 import cmc.sole.android.MyCourse.Retrofit.*
 import cmc.sole.android.MyCourse.TagButton
 import cmc.sole.android.R
-import cmc.sole.android.Utils.BaseActivity
+
 import cmc.sole.android.Utils.ImageTranslator
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
@@ -47,8 +48,10 @@ import org.json.JSONObject
 import java.io.File
 import kotlin.collections.ArrayList
 
-class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(ActivityMyCourseWriteBinding::inflate),
+class MyCourseWriteActivity: AppCompatActivity(),
     HomeCourseDetailView, ImageTestView, MyCourseAddView, MyCourseUpdateView {
+
+    lateinit var binding: ActivityMyCourseWriteBinding
 
     private lateinit var writeVM: MyCourseWriteViewModel
     private lateinit var tagRVAdapter: MyCourseTagRVAdapter
@@ -96,7 +99,10 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         // locationImgRVAdapter.addItem(MyCourseWriteImage(locationImageUri.toString(), locationImage))
     }
 
-    override fun initAfterBinding() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMyCourseWriteBinding.inflate(layoutInflater)
+
         // UPDATE: Intent로 모드 받고 작업 진행
         courseId = intent.getIntExtra("courseId", -1)
 
@@ -109,6 +115,8 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         }
         initViewModel()
         initClickListener()
+
+        setContentView(binding.root)
     }
 
     private fun initService() {
@@ -362,7 +370,8 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
         binding.myCourseWritePlaceRv.adapter = placeRVAdapter
         binding.myCourseWritePlaceRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.myCourseWritePlaceRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 30))
-        placeRVAdapter.setOnItemClickListener(object: MyCourseWritePlaceRVAdapter.OnItemClickListener {
+        placeRVAdapter.setOnItemClickListener(object:
+            MyCourseWritePlaceRVAdapter.OnItemClickListener {
             override fun onItemClick(data: MyCourseWriteImage, position: Int) {
                 if (placeRVAdapter.returnAlbumMode()) {
                     val writePermission = ContextCompat.checkSelfPermission(this@MyCourseWriteActivity, WRITE_EXTERNAL_STORAGE)
@@ -422,7 +431,7 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
     }
 
     override fun setMyCourseAddFailureView() {
-        showToast("코스 추가 실패")
+
     }
 
     override fun homeCourseDetailSuccessView(homeCourseDetailResult: HomeCourseDetailResult) {
@@ -451,13 +460,13 @@ class MyCourseWriteActivity: BaseActivity<ActivityMyCourseWriteBinding>(Activity
     }
 
     override fun homeCourseDetailFailureView() {
-        showToast("코스 정보 불러오기 실패")
+
     }
 
     override fun setMyCourseUpdateSuccessView() {
     }
 
     override fun setMyCourseUpdateFailureView() {
-        showToast("코스 수정 실패")
+
     }
 }

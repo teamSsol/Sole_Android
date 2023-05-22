@@ -2,27 +2,35 @@ package cmc.sole.android.Signup
 
 import android.content.Intent
 import android.graphics.Color
+import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import cmc.sole.android.R
-import cmc.sole.android.Utils.BaseActivity
+
 import cmc.sole.android.databinding.ActivitySignupAgreeBinding
 import cmc.sole.android.getAccessToken
 import cmc.sole.android.saveAccessToken
 
-class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySignupAgreeBinding::inflate) {
+class SignupAgreeActivity: AppCompatActivity() {
+
+    lateinit var binding: ActivitySignupAgreeBinding
 
     private lateinit var signupVM: SignupAgreeViewModel
     var accessToken = ""
-    override fun initAfterBinding() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivitySignupAgreeBinding.inflate(layoutInflater)
         signupVM = ViewModelProvider(this)[SignupAgreeViewModel::class.java]
 
         accessToken = intent.getStringExtra("accessToken").toString()
 
         initRadioSetting()
         initClickListener()
+
+        setContentView(binding.root)
     }
 
     private fun initRadioSetting() {
@@ -214,5 +222,9 @@ class SignupAgreeActivity: BaseActivity<ActivitySignupAgreeBinding>(ActivitySign
 
         binding.signupAgreeNextBtn.setCardBackgroundColor(off)
         return false
+    }
+
+    private fun changeActivity(activity: Class<*>) {
+        startActivity(Intent(this, activity))
     }
 }

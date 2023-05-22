@@ -8,10 +8,12 @@ import android.database.Cursor
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import cmc.sole.android.*
@@ -19,9 +21,10 @@ import cmc.sole.android.Home.MyPageInfoResult
 import cmc.sole.android.Home.Retrofit.HomeService
 import cmc.sole.android.Home.Retrofit.MyPageInfoUpdateView
 import cmc.sole.android.Signup.SignupNicknameActivity
-import cmc.sole.android.Utils.BaseActivity
+
 import cmc.sole.android.Utils.ImageTranslator
 import cmc.sole.android.databinding.ActivityMyPageInfoSettingBinding
+import cmc.sole.android.databinding.ActivityMyPageNoticeBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
@@ -34,18 +37,18 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.File
 
-class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(ActivityMyPageInfoSettingBinding::inflate),
+class MyPageInfoSettingActivity: AppCompatActivity(),
     MyPageInfoUpdateView {
+
+    lateinit var binding: ActivityMyPageInfoSettingBinding
 
     private lateinit var homeService: HomeService
 
     private var imageUri: Uri? = null
-
     companion object{
         // 갤러리 권한 요청
         const val REQ_GALLERY = 1
     }
-
     private val imageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             imageUri = result.data?.data
@@ -58,7 +61,10 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
         }
     }
 
-    override fun initAfterBinding() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMyPageInfoSettingBinding.inflate(layoutInflater)
+
         Glide.with(this).load(intent.getStringExtra("profileImgUrl")).placeholder(R.drawable.ic_profile)
             .circleCrop().centerCrop().into(binding.signupNicknameProfileIv)
         binding.myPageInfoEmailTv.text = intent.getStringExtra("socialId")
@@ -68,6 +74,8 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
         initService()
         initTextWatcher()
         initClickListener()
+
+        setContentView(binding.root)
     }
 
     private fun initService() {
@@ -174,18 +182,6 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
         }
     }
 
-    // 절대경로 변환
-    private fun absolutelyPath(path: Uri?, context : Context): String {
-        var proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
-        var c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
-        var index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        c?.moveToFirst()
-
-        var result = c?.getString(index!!)
-
-        return result!!
-    }
-
     override fun myPageInfoUpdateSuccessView(myPageInfoResult: MyPageInfoResult) {
         Glide.with(this).load(myPageInfoResult.profileImgUrl)
             .placeholder(R.drawable.ic_profile).centerCrop().circleCrop().into(binding.signupNicknameProfileIv)
@@ -197,6 +193,6 @@ class MyPageInfoSettingActivity: BaseActivity<ActivityMyPageInfoSettingBinding>(
     }
 
     override fun myPageInfoUpdateFailureView() {
-        showToast("마이페이지 정보 수정 실패")
+
     }
 }

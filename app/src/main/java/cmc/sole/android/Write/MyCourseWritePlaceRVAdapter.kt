@@ -1,4 +1,4 @@
-package cmc.sole.android.MyCourse.Write
+package cmc.sole.android.Write
 
 import android.Manifest
 import android.R
@@ -25,8 +25,8 @@ import cmc.sole.android.Home.MyCourseWriteImage
 import cmc.sole.android.Home.locationAddImage
 import cmc.sole.android.Home.locationImage
 import cmc.sole.android.MyCourse.PlaceInfoData
-import cmc.sole.android.MyCourse.Write.Search.MyCourseWriteSearchBottomFragment
-import cmc.sole.android.MyCourse.Write.Search.SearchResultData
+import cmc.sole.android.Write.Search.MyCourseWriteSearchBottomFragment
+import cmc.sole.android.Write.Search.SearchResultData
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.databinding.ItemMyCourseWritePlaceBinding
 import com.bumptech.glide.Glide
@@ -60,7 +60,8 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
         holder.binding.myCourseWriteLocationRv.adapter = locationImgRVAdapter
         holder.binding.myCourseWriteLocationRv.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
         // holder.binding.myCourseWriteLocationRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 40))
-        locationImgRVAdapter.setOnItemClickListener(object: MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
+        locationImgRVAdapter.setOnItemClickListener(object:
+            MyCourseWriteLocationImageRVAdapter.OnItemClickListener {
             override fun onLocationItemClick(data: MyCourseWriteImage, imgPosition: Int) {
                 removeImage(position, imgPosition)
             }
@@ -98,7 +99,8 @@ public class MyCourseWritePlaceRVAdapter(private val placeInfoList: ArrayList<Pl
             checkAlbumMode(false)
             val timePickerDialog = DialogMyCourseWriteTimePicker()
             timePickerDialog.show((holder.binding.root.context as FragmentActivity).supportFragmentManager, "MyCourseWriteTimePicker")
-            timePickerDialog.setOnFinishListener(object: DialogMyCourseWriteTimePicker.OnDialogFragmentFinishListener {
+            timePickerDialog.setOnFinishListener(object:
+                DialogMyCourseWriteTimePicker.OnDialogFragmentFinishListener {
                 override fun finish(hour:String, minute: String) {
                     holder.binding.myCourseWriteTimeTv.text = if (minute == "0") {
                         if (hour == "0") ""

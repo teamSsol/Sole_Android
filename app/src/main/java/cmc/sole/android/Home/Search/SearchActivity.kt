@@ -1,9 +1,11 @@
 package cmc.sole.android.Home.Search
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
 import cmc.sole.android.Home.DefaultCourse
@@ -11,12 +13,14 @@ import cmc.sole.android.Home.HomeDefaultCourseRVAdapter
 import cmc.sole.android.Home.HomeDefaultResponse
 import cmc.sole.android.Home.Retrofit.HomeDefaultCourseView
 import cmc.sole.android.Home.Retrofit.HomeService
-import cmc.sole.android.Utils.BaseActivity
+
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.databinding.ActivitySearchBinding
 
-class SearchActivity: BaseActivity<ActivitySearchBinding>(ActivitySearchBinding::inflate),
+class SearchActivity: AppCompatActivity(),
     HomeDefaultCourseView {
+
+    lateinit var binding: ActivitySearchBinding
 
     private lateinit var searchWordRVAdapter: SearchWordRVAdapter
     private var searchWordList = ArrayList<SearchData>()
@@ -28,10 +32,15 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>(ActivitySearchBinding:
     private var searchWord = ""
     private lateinit var callback: OnBackPressedCallback
 
-    override fun initAfterBinding() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+
         initService()
         initAdapter()
         initClickListener()
+
+        setContentView(binding.root)
     }
 
     private fun initService() {
@@ -110,6 +119,6 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>(ActivitySearchBinding:
     }
 
     override fun homeDefaultCourseFailureView() {
-        showToast("검색 실패")
+
     }
 }

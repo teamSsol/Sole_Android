@@ -1,4 +1,4 @@
-package cmc.sole.android.MyCourse.Write.Search
+package cmc.sole.android.Write.Search
 
 import android.app.Activity
 import android.app.Dialog
@@ -13,7 +13,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
+import cmc.sole.android.Write.MyCourseWriteViewModel
 import cmc.sole.android.R
 import cmc.sole.android.databinding.BottomFragmentMyCourseWriteSearchBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -58,7 +58,7 @@ class MyCourseWriteSearchBottomFragment: BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = BottomFragmentMyCourseWriteSearchBinding.inflate(inflater, container, false)
         initSearchListener()
         initAdapter()
@@ -69,7 +69,8 @@ class MyCourseWriteSearchBottomFragment: BottomSheetDialogFragment() {
         searchResultRVAdapter = MyCourseSearchResultRVAdapter(searchResultList)
         binding.myCourseWriteSearchResultRv.adapter = searchResultRVAdapter
         binding.myCourseWriteSearchResultRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        searchResultRVAdapter.setOnItemClickListener(object: MyCourseSearchResultRVAdapter.OnItemClickListener {
+        searchResultRVAdapter.setOnItemClickListener(object:
+            MyCourseSearchResultRVAdapter.OnItemClickListener {
             override fun onItemClick(data: SearchResultData, position: Int) {
                 selectResult = data
                 dismiss()

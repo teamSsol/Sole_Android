@@ -6,8 +6,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -19,9 +22,9 @@ import cmc.sole.android.Course.CourseDetailActivity
 import cmc.sole.android.Home.MyPage.MyPageActivity
 import cmc.sole.android.Home.Retrofit.*
 import cmc.sole.android.Home.Search.SearchActivity
-import cmc.sole.android.MyCourse.Write.MyCourseWriteActivity
+import cmc.sole.android.Write.MyCourseWriteActivity
 import cmc.sole.android.StartCourseTagActivity
-import cmc.sole.android.Utils.BaseFragment
+
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.databinding.FragmentHomeBinding
@@ -29,10 +32,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.fragment.app.Fragment
+import cmc.sole.android.databinding.FragmentFollowerFollowerBinding
+import cmc.sole.android.databinding.FragmentFollowerFollowingBinding
 
 
-class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate),
+class HomeFragment: Fragment(),
     HomePopularCourseView, HomeDefaultCourseView, HomeGetCurrentGPSView, HomeUpdateCurrentGPSView, HomeScrapAddAndCancelView {
+
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var popularCourseRVAdapter: HomePopularCourseRVAdapter
     private lateinit var myCourseRVAdapter: HomeDefaultCourseRVAdapter
@@ -42,10 +51,18 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infla
     var courseId: Int? = null
     var lastCourseId: Int? = null
 
-    override fun initAfterBinding() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
         initAdapter()
         initClickListener()
         initAPIService()
+
+        return binding.root
     }
 
     override fun onResume() {

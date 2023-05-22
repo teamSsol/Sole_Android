@@ -1,8 +1,12 @@
 package cmc.sole.android.Follow
 
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
@@ -13,7 +17,7 @@ import cmc.sole.android.Home.HomeDefaultCourseRVAdapter
 import cmc.sole.android.MyCourse.MyCourseTagRVAdapter
 import cmc.sole.android.MyCourse.TagButton
 import cmc.sole.android.R
-import cmc.sole.android.Utils.BaseFragment
+
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.Utils.Translator
@@ -21,9 +25,14 @@ import cmc.sole.android.databinding.FragmentFollowUserBinding
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexboxLayoutManager
 import kotlin.math.roundToInt
+import androidx.fragment.app.Fragment
+import cmc.sole.android.databinding.FragmentFollowerFollowerBinding
 
-class FollowUserFragment: BaseFragment<FragmentFollowUserBinding>(FragmentFollowUserBinding::inflate),
+class FollowUserFragment: Fragment(),
     FollowUserInfoView {
+
+    private var _binding: FragmentFollowUserBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var followService: FollowService
     lateinit var followUserRecentRVAdapter: HomeDefaultCourseRVAdapter
@@ -34,12 +43,20 @@ class FollowUserFragment: BaseFragment<FragmentFollowUserBinding>(FragmentFollow
     var courseId: Int? = null
 
     // UPDATE: courseId 연결해주기!
-    override fun initAfterBinding() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentFollowUserBinding.inflate(inflater, container, false)
+        
         followInfoMemberSocialId = requireArguments().getString("followInfoMemberSocialId").toString()
 
         initService()
         initAdapter()
         initClickListener()
+        
+        return binding.root
     }
 
     private fun initService() {
@@ -112,6 +129,7 @@ class FollowUserFragment: BaseFragment<FragmentFollowUserBinding>(FragmentFollow
     }
 
     override fun followUserInfoFailureView() {
-        showToast("팔로우 유저 정보 불러오기 실패")
+        var message = "팔로우 유저 정보 불러오기 실패"
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

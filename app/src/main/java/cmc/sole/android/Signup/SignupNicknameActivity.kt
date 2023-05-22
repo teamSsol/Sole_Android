@@ -8,11 +8,13 @@ import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Color
 import android.net.Uri
+import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import cmc.sole.android.*
@@ -20,7 +22,8 @@ import cmc.sole.android.CourseTag.placeCategories
 import cmc.sole.android.CourseTag.transCategories
 import cmc.sole.android.CourseTag.withCategories
 import cmc.sole.android.Signup.Retrofit.*
-import cmc.sole.android.Utils.BaseActivity
+import cmc.sole.android.databinding.ActivitySignupAgreeMarketingBinding
+
 import cmc.sole.android.databinding.ActivitySignupNicknameBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -35,8 +38,10 @@ import org.json.JSONObject
 import java.io.File
 
 
-class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(ActivitySignupNicknameBinding::inflate),
+class SignupNicknameActivity: AppCompatActivity(),
     SignupNicknameView, SignupSocialView {
+
+    lateinit var binding: ActivitySignupNicknameBinding
 
     lateinit var signupService: SignupService
 
@@ -64,8 +69,10 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
             }
         }
     }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivitySignupNicknameBinding.inflate(layoutInflater)
 
-    override fun initAfterBinding() {
         all = intent.getStringExtra("all").toString()
         service = intent.getStringExtra("location").toString()
         service = intent.getStringExtra("service").toString()
@@ -74,6 +81,8 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
 
         nicknameListener()
         initClickListener()
+
+        setContentView(binding.root)
     }
 
     private fun initSignupService(nickname: SignupNicknameRequest) {
@@ -219,6 +228,10 @@ class SignupNicknameActivity: BaseActivity<ActivitySignupNicknameBinding>(Activi
     }
 
     override fun signupSocialFailureView() {
-        showToast("소셜 로그인 에러")
+
+    }
+
+    fun changeActivity(activity: Class<*>) {
+        startActivity(Intent(this, activity))
     }
 }

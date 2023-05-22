@@ -1,4 +1,4 @@
-package cmc.sole.android.MyCourse.Write.Search
+package cmc.sole.android.Write.Search
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,12 +21,12 @@ class MyCourseSearchResultRVAdapter(private val searchResultList: ArrayList<Sear
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MyCourseSearchResultRVAdapter.ViewHolder {
+    ): ViewHolder {
         val binding: ItemMyCourseWriteSearchResultBinding = ItemMyCourseWriteSearchResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MyCourseSearchResultRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
             itemClickListener.onItemClick(searchResultList[position], position)
         }

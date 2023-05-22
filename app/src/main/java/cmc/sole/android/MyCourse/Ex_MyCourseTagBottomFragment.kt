@@ -62,7 +62,7 @@ class Ex_MyCourseTagBottomFragment: BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = BottomFragmentMyCourseWriteTagBinding.inflate(inflater, container, false)
         checkTagList = requireArguments().getBooleanArray("checkTagList")!!
 

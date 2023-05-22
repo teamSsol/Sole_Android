@@ -1,26 +1,35 @@
 package cmc.sole.android.Home.MyPage.Notice
 
 import android.content.Intent
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Home.MyPageNoticeAddRequest
 import cmc.sole.android.Home.MyPageNoticeResult
 import cmc.sole.android.Home.Retrofit.HomeService
 import cmc.sole.android.Home.Retrofit.MyPageNoticeAddView
 import cmc.sole.android.Home.Retrofit.MyPageNoticeView
-import cmc.sole.android.Utils.BaseActivity
+
 import cmc.sole.android.databinding.ActivityMyPageNoticeBinding
 
-class MyPageNoticeActivity: BaseActivity<ActivityMyPageNoticeBinding>(ActivityMyPageNoticeBinding::inflate),
+class MyPageNoticeActivity: AppCompatActivity(),
     MyPageNoticeView {
+
+    lateinit var binding: ActivityMyPageNoticeBinding
 
     private lateinit var homeService: HomeService
     lateinit var noticeRVAdapter: MyPageNoticeRVAdapter
     private var noticeList = ArrayList<MyPageNoticeResult>()
 
-    override fun initAfterBinding() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMyPageNoticeBinding.inflate(layoutInflater)
+
         initService()
         initAdapter()
         initClickListener()
+
+        setContentView(binding.root)
     }
 
     private fun initService() {
@@ -58,6 +67,6 @@ class MyPageNoticeActivity: BaseActivity<ActivityMyPageNoticeBinding>(ActivityMy
     }
 
     override fun myPageNoticeFailureView() {
-        showToast("공지사항 조회 실패")
+
     }
 }

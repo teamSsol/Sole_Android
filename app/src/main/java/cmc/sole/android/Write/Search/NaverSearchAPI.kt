@@ -1,4 +1,4 @@
-package cmc.sole.android.MyCourse.Write.Search
+package cmc.sole.android.Write.Search
 
 import retrofit2.Call
 import retrofit2.http.GET

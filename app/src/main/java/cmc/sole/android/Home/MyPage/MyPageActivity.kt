@@ -2,7 +2,9 @@ package cmc.sole.android.Home.MyPage
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import cmc.sole.android.Home.MyPage.Alarm.MyPageAlarmActivity
 import cmc.sole.android.Home.MyPage.Alarm.MyPageAlarmSettingActivity
 import cmc.sole.android.Home.MyPage.FAQ.MyPageFAQActivity
@@ -13,11 +15,14 @@ import cmc.sole.android.Home.Retrofit.HomeService
 import cmc.sole.android.Home.Retrofit.MyPageInfoView
 import cmc.sole.android.Login.LoginActivity
 import cmc.sole.android.R
-import cmc.sole.android.Utils.BaseActivity
+
 import cmc.sole.android.databinding.ActivityMyPageBinding
+import cmc.sole.android.databinding.ActivityMyPageNoticeBinding
 import com.bumptech.glide.Glide
 
-class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding::inflate), MyPageInfoView {
+class MyPageActivity: AppCompatActivity(), MyPageInfoView {
+
+    lateinit var binding: ActivityMyPageBinding
 
     private lateinit var homeService: HomeService
     private lateinit var myInfo: MyPageInfoResult
@@ -27,9 +32,14 @@ class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding:
         homeService.getMyPageInfo()
     }
 
-    override fun initAfterBinding() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMyPageBinding.inflate(layoutInflater)
+
         initService()
         initClickListener()
+
+        setContentView(binding.root)
     }
 
     private fun initService() {
@@ -124,6 +134,10 @@ class MyPageActivity: BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding:
     }
 
     override fun myPageInfoFailureView() {
-        showToast("마이페이지 정보 조회 실패")
+
+    }
+
+    private fun changeActivity(activity: Class<*>) {
+        startActivity(Intent(this, activity))
     }
 }

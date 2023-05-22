@@ -1,7 +1,10 @@
 package cmc.sole.android.Home.MyPage.Alarm
 
+import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import cmc.sole.android.Home.MyPageNotificationResult
 import cmc.sole.android.Home.MyPageNotificationUpdateRequest
@@ -10,20 +13,27 @@ import cmc.sole.android.Home.Retrofit.HomeService
 import cmc.sole.android.Home.Retrofit.MyPageNotificationUpdateView
 import cmc.sole.android.Home.Retrofit.MyPageNotificationView
 import cmc.sole.android.R
-import cmc.sole.android.Utils.BaseActivity
+
+import cmc.sole.android.databinding.ActivityMyPageAlarmBinding
 import cmc.sole.android.databinding.ActivityMyPageAlarmSettingBinding
 
-class MyPageAlarmSettingActivity: BaseActivity<ActivityMyPageAlarmSettingBinding>(ActivityMyPageAlarmSettingBinding::inflate),
+class MyPageAlarmSettingActivity: AppCompatActivity(),
     MyPageNotificationView, MyPageNotificationUpdateView {
 
+    lateinit var binding: ActivityMyPageAlarmSettingBinding
     private lateinit var homeService: HomeService
 
     private var activityFlag: Boolean? = null
     private var marketingFlag: Boolean? = null
 
-    override fun initAfterBinding() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMyPageAlarmSettingBinding.inflate(layoutInflater)
+
         initService()
         initClickListener()
+
+        setContentView(binding.root)
     }
 
     private fun initService() {
@@ -101,7 +111,7 @@ class MyPageAlarmSettingActivity: BaseActivity<ActivityMyPageAlarmSettingBinding
     }
 
     override fun myPageNotificationFailureView() {
-        showToast("알림 설정 확인 실패")
+
     }
 
     override fun myPageNotificationUpdateSuccessView(myPageNotificationUpdateResult: MyPageNotificationResult) {
@@ -109,6 +119,6 @@ class MyPageAlarmSettingActivity: BaseActivity<ActivityMyPageAlarmSettingBinding
     }
 
     override fun myPageNotificationUpdateFailureView() {
-        showToast("알림 설정 실패")
+
     }
 }

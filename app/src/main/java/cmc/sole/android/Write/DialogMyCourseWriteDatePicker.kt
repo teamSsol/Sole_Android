@@ -1,10 +1,10 @@
-package cmc.sole.android.MyCourse.Write
+package cmc.sole.android.Write
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
+import cmc.sole.android.Write.MyCourseWriteViewModel
 import cmc.sole.android.databinding.DialogDatepickerBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,7 +18,7 @@ class DialogMyCourseWriteDatePicker: DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DialogDatepickerBinding.inflate(inflater, container, false)
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP)
         binding.myCourseWriteDp.maxDate = System.currentTimeMillis()

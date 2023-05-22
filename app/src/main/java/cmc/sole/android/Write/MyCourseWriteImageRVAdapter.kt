@@ -1,4 +1,4 @@
-package cmc.sole.android.MyCourse.Write
+package cmc.sole.android.Write
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
+import cmc.sole.android.Write.MyCourseWriteViewModel
 import cmc.sole.android.R
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
@@ -63,7 +63,7 @@ class MyCourseWriteTagBottomFragment: BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // FIX: 태그 여러 개로 다시 나오는 오류 수정 필요!!
         binding = BottomFragmentMyCourseWriteTagBinding.inflate(inflater, container, false)
         // checkTagList = writeVM.getTag()
