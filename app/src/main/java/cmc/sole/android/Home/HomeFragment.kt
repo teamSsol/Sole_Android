@@ -19,9 +19,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
-import cmc.sole.android.Home.MyPage.MyPageActivity
+import cmc.sole.android.MyPage.MyPageActivity
 import cmc.sole.android.Home.Retrofit.*
-import cmc.sole.android.Home.Search.SearchActivity
+import cmc.sole.android.Search.SearchActivity
 import cmc.sole.android.Write.MyCourseWriteActivity
 import cmc.sole.android.StartCourseTagActivity
 

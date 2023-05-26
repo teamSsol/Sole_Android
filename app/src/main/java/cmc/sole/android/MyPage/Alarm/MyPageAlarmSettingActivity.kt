@@ -1,4 +1,4 @@
-package cmc.sole.android.Home.MyPage.Alarm
+package cmc.sole.android.MyPage.Alarm
 
 import android.os.Bundle
 import android.util.Log

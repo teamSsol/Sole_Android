@@ -1,4 +1,4 @@
-package cmc.sole.android.Home.Search
+package cmc.sole.android.Search
 
 data class SearchData(
     var searchWord: String

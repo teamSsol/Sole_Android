@@ -1,9 +1,11 @@
-package cmc.sole.android.Home.Search
+package cmc.sole.android.Search
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -71,25 +73,25 @@ class SearchActivity: AppCompatActivity(),
         }
 
         binding.searchTextEt.setOnClickListener {
-            // binding.searchTextEt.setText(binding.searchTextEt.text.toString() + " dd")
-            binding.searchTextEt.setSelection(binding.searchTextEt.length() - 1)
+            binding.searchTextEt.setSelection(binding.searchTextEt.length())
         }
 
-        binding.searchTextEt.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            when (keyCode) {
-                KeyEvent.KEYCODE_ENTER -> {
-                    binding.searchDefaultLayout.visibility = View.GONE
-                    binding.searchResultRv.visibility = View.VISIBLE
+        binding.searchTextEt.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.searchTextEt.windowToken, 0)
 
-                    binding.searchTextEt.isFocusable = false
-                    binding.searchTextEt.isFocusableInTouchMode = false
+                binding.searchDefaultLayout.visibility = View.GONE
+                binding.searchResultRv.visibility = View.VISIBLE
 
-                    searchWord = binding.searchTextEt.text.toString()
-                    searchService.getHomeDefaultCourse(courseId, searchWord)
-                }
+                searchWord = binding.searchTextEt.text.toString()
+                searchService.getHomeDefaultCourse(courseId, searchWord)
+
+                true
             }
-            true
-        })
+
+            false
+        }
 
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

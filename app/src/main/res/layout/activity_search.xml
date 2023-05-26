@@ -60,6 +60,7 @@
                 android:textSize="14sp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/pretendard_regular"
+                android:imeOptions="actionSearch"
                 app:layout_constraintStart_toEndOf="@id/search_search_iv"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

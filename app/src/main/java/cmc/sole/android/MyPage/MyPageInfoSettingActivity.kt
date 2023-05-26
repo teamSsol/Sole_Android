@@ -1,4 +1,4 @@
-package cmc.sole.android.Home.MyPage
+package cmc.sole.android.MyPage
 
 import android.Manifest
 import android.content.Context

@@ -1,4 +1,4 @@
-package cmc.sole.android.Home.Search.RoomDB
+package cmc.sole.android.Search.RoomDB
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

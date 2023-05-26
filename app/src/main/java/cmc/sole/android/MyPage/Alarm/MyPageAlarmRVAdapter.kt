@@ -1,4 +1,4 @@
-package cmc.sole.android.Home.MyPage.Alarm
+package cmc.sole.android.MyPage.Alarm
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,12 +11,12 @@ class MyPageAlarmRVAdapter(private val alarmList: ArrayList<MyPageNotificationHi
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MyPageAlarmRVAdapter.ViewHolder {
+    ): ViewHolder {
         val binding = ItemMyPageAlarmListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MyPageAlarmRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         alarmList[position]?.let { holder.bind(it) }
     }
 

@@ -1,10 +1,10 @@
-package cmc.sole.android.Home.MyPage.FAQ
+package cmc.sole.android.MyPage.FAQ
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import cmc.sole.android.Home.MyPage.Notice.MyPageNoticeRVAdapter
+import cmc.sole.android.MyPage.Notice.MyPageNoticeRVAdapter
 import cmc.sole.android.R
 
 import cmc.sole.android.databinding.ActivityMyPageFaqBinding

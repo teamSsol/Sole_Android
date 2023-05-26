@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.Follow.Retrofit.FollowCourseView
-import cmc.sole.android.Home.MyPage.FAQ.FAQData
+import cmc.sole.android.MyPage.FAQ.FAQData
 import cmc.sole.android.R
 import cmc.sole.android.databinding.ItemFollowActivityBinding
 import com.bumptech.glide.Glide

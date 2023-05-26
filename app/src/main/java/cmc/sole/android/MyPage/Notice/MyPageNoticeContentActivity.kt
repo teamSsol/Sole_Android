@@ -1,4 +1,4 @@
-package cmc.sole.android.Home.MyPage.Notice
+package cmc.sole.android.MyPage.Notice
 
 
 import android.os.Bundle

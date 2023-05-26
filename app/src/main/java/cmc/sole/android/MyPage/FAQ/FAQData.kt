@@ -1,4 +1,4 @@
-package cmc.sole.android.Home.MyPage.FAQ
+package cmc.sole.android.MyPage.FAQ
 
 data class FAQData(
     val title: String,

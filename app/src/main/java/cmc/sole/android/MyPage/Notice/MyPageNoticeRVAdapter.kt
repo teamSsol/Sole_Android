@@ -1,4 +1,4 @@
-package cmc.sole.android.Home.MyPage.Notice
+package cmc.sole.android.MyPage.Notice
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -21,12 +21,12 @@ class MyPageNoticeRVAdapter(private val noticeList: ArrayList<MyPageNoticeResult
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MyPageNoticeRVAdapter.ViewHolder {
+    ): ViewHolder {
         val binding: ItemMyPageNoticeListBinding = ItemMyPageNoticeListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MyPageNoticeRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
             itemClickListener.onItemClick(noticeList[position], position)
         }

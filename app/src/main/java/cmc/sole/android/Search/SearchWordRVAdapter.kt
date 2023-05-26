@@ -1,4 +1,4 @@
-package cmc.sole.android.Home.Search
+package cmc.sole.android.Search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,12 +9,12 @@ class SearchWordRVAdapter(private val wordList: ArrayList<SearchData>): Recycler
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): SearchWordRVAdapter.ViewHolder {
+    ): ViewHolder {
         val binding = ItemSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: SearchWordRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(wordList[position])
     }
 

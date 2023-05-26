@@ -1,4 +1,4 @@
-package cmc.sole.android.Home.MyPage
+package cmc.sole.android.MyPage
 
 import android.content.Intent
 import android.graphics.Color

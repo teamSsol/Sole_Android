@@ -1,14 +1,14 @@
-package cmc.sole.android.Home.MyPage
+package cmc.sole.android.MyPage
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import cmc.sole.android.Home.MyPage.Alarm.MyPageAlarmActivity
-import cmc.sole.android.Home.MyPage.Alarm.MyPageAlarmSettingActivity
-import cmc.sole.android.Home.MyPage.FAQ.MyPageFAQActivity
-import cmc.sole.android.Home.MyPage.Notice.MyPageNoticeActivity
+import cmc.sole.android.MyPage.Alarm.MyPageAlarmActivity
+import cmc.sole.android.MyPage.Alarm.MyPageAlarmSettingActivity
+import cmc.sole.android.MyPage.FAQ.MyPageFAQActivity
+import cmc.sole.android.MyPage.Notice.MyPageNoticeActivity
 import cmc.sole.android.Home.MyPageInfoResponse
 import cmc.sole.android.Home.MyPageInfoResult
 import cmc.sole.android.Home.Retrofit.HomeService

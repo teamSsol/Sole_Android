@@ -1,4 +1,4 @@
-package cmc.sole.android.Home.MyPage.FAQ
+package cmc.sole.android.MyPage.FAQ
 
 import android.view.LayoutInflater
 import android.view.View
@@ -22,12 +22,12 @@ class MyPageFAQRVAdapter(private val FAQList: ArrayList<FAQData>): RecyclerView.
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MyPageFAQRVAdapter.ViewHolder {
+    ): ViewHolder {
         val binding: ItemMyPageFaqListBinding = ItemMyPageFaqListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MyPageFAQRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
             itemClickListener.onItemClick(FAQList[position], position)
 
