@@ -32,8 +32,8 @@ class SignupService {
     fun signupCheck(body: SignupCheckRequest) {
         signupService?.socialCheck("kakao", body)?.enqueue(object: Callback<SignupCheckResponse> {
             override fun onResponse(call: Call<SignupCheckResponse>, response: Response<SignupCheckResponse>) {
-                Log.d("API-TEST", "SignupCheck response = $response")
-                Log.d("API-TEST", "SignupCheck response.body = ${response.body()}")
+                // Log.d("API-TEST", "SignupCheck response = $response")
+                // Log.d("API-TEST", "SignupCheck response.body = ${response.body()}")
                 if (response.code() == 200) {
                     val signupCheckResponse = response.body()
                     if (signupCheckResponse?.success == true) {

@@ -118,8 +118,6 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
 
     @SuppressLint("NotifyDataSetChanged")
     fun addAllItems(items: ArrayList<DefaultCourse>) {
-        Log.d("API-TEST", "courseList = $courseList")
-        Log.d("API-TEST", "items = $items")
         courseList.addAll(items)
         this.notifyDataSetChanged()
     }

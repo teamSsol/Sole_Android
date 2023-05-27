@@ -28,14 +28,7 @@ import cmc.sole.android.StartCourseTagActivity
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.databinding.FragmentHomeBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import androidx.fragment.app.Fragment
-import cmc.sole.android.databinding.FragmentFollowerFollowerBinding
-import cmc.sole.android.databinding.FragmentFollowerFollowingBinding
-
 
 class HomeFragment: Fragment(),
     HomePopularCourseView, HomeDefaultCourseView, HomeGetCurrentGPSView, HomeUpdateCurrentGPSView, HomeScrapAddAndCancelView {
