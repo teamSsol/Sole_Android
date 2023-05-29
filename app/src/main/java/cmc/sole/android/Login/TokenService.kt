@@ -3,6 +3,8 @@ package cmc.sole.android.Login
 import android.util.Log
 import cmc.sole.android.DefaultResponse
 import cmc.sole.android.Home.Retrofit.*
+import cmc.sole.android.saveAccessToken
+import cmc.sole.android.saveRefreshToken
 import com.example.geeksasaeng.Utils.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,7 +33,9 @@ class TokenService {
                 if (response.code() == 200) {
                     val resp = response.body()
                     if (resp?.success == true) {
-                        getNewTokenView.getNewTokenSuccessView(resp.data)
+                        saveAccessToken(resp.data.accessToken)
+                        saveRefreshToken(resp.data.refreshToken)
+                        // getNewTokenView.getNewTokenSuccessView(resp.data)
                     } else {
                         getNewTokenView.getNewTokenFailureView()
                     }

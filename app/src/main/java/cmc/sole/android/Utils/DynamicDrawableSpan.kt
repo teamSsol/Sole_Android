@@ -4,12 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
-import android.graphics.drawable.Drawable
-import android.text.style.DynamicDrawableSpan
 import android.text.style.ReplacementSpan
-import androidx.annotation.DrawableRes
-import androidx.core.content.ContextCompat
-import cmc.sole.android.R
 
 
 //internal class NewDynamicDrawableSpan(context: Context, @DrawableRes resourceId: Int) :
@@ -30,7 +25,7 @@ import cmc.sole.android.R
 //}
 
 
-class NewDynamicDrawableSpan(context: Context, backgroundColor: Int, textColor: Int) :
+class DynamicDrawableSpan(context: Context, backgroundColor: Int, textColor: Int) :
     ReplacementSpan() {
     private var backgroundColor = 0
     private var textColor = 0

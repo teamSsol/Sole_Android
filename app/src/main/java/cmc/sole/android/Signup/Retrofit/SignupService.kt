@@ -1,7 +1,9 @@
 package cmc.sole.android.Signup.Retrofit
 
 import android.util.Log
+import cmc.sole.android.ErrorResponse
 import com.example.geeksasaeng.Utils.NetworkModule
+import com.google.gson.Gson
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,10 +41,16 @@ class SignupService {
                     if (signupCheckResponse?.success == true) {
                         signupCheckView.signupCheckSuccessView(signupCheckResponse)
                     } else {
-                        signupCheckView.signupCheckFailureView(response.code())
+                        val gson = Gson()
+                        val errorResponse = gson.fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                        signupCheckView.signupCheckFailureView(errorResponse)
                     }
                 } else {
-                    signupCheckView.signupCheckFailureView(response.code())
+                    if (response.errorBody() != null) {
+                        val gson = Gson()
+                        val errorResponse = gson.fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                        signupCheckView.signupCheckFailureView(errorResponse)
+                    } else signupCheckView.signupCheckFailureView(null)
                 }
             }
             override fun onFailure(call: Call<SignupCheckResponse>, t: Throwable) {
