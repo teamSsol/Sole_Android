@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.CourseTag.Categories
 import cmc.sole.android.Follow.FollowUserDataResult
 import cmc.sole.android.Home.*
-import cmc.sole.android.MyCourse.Write.MyCourseWriteLocationImageRVAdapter
+import cmc.sole.android.Write.MyCourseWriteLocationImageRVAdapter
 import cmc.sole.android.R
 import cmc.sole.android.User
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration

@@ -2,6 +2,11 @@ package cmc.sole.android.Follow
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Follow.Retrofit.FollowListView
 import cmc.sole.android.Follow.Retrofit.FollowService
@@ -10,20 +15,31 @@ import cmc.sole.android.Follow.Retrofit.FollowUserInfoView
 import cmc.sole.android.MainActivity
 import cmc.sole.android.R
 import cmc.sole.android.User
-import cmc.sole.android.Utils.BaseFragment
+
 import cmc.sole.android.databinding.FragmentFollowerFollowerBinding
 
-class FollowFollowerFragment: BaseFragment<FragmentFollowerFollowerBinding>(FragmentFollowerFollowerBinding::inflate),
+class FollowFollowerFragment: Fragment(),
     FollowListView, FollowUnfollowView {
+
+    private var _binding: FragmentFollowerFollowerBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var followService: FollowService
     lateinit var followListRVAdapter: FollowListRVAdapter
     private var followList = ArrayList<FollowUserDataResult>()
     private var followUnfollowResult = false
 
-    override fun initAfterBinding() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentFollowerFollowerBinding.inflate(inflater, container, false)
+
         initService()
         initAdapter()
+
+        return binding.root
     }
 
     override fun onResume() {
@@ -70,15 +86,18 @@ class FollowFollowerFragment: BaseFragment<FragmentFollowerFollowerBinding>(Frag
     }
 
     override fun followListFailureView() {
-        showToast("팔로우 유저 불러오기 실패")
+        var message = "팔로우 유저 불러오기 실패"
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun followUnfollowSuccessView() {
         followUnfollowResult = true
-        showToast("팔로우/언팔로우 성공")
+        var message = "팔로우/언팔로우 성공"
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun followUnfollowFailureView() {
-        showToast("팔로우/언팔로우 실패")
+        var message = "팔로우/언팔로우 실패"
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

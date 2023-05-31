@@ -4,7 +4,10 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
@@ -17,12 +20,17 @@ import cmc.sole.android.Scrap.Retrofit.ScrapCourseResult
 import cmc.sole.android.Scrap.Retrofit.ScrapCourseView
 import cmc.sole.android.Scrap.Retrofit.ScrapDefaultFolderView
 import cmc.sole.android.Scrap.Retrofit.ScrapService
-import cmc.sole.android.Utils.BaseFragment
+
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.databinding.FragmentScrapFolderDetailBinding
+import androidx.fragment.app.Fragment
+import cmc.sole.android.databinding.FragmentFollowerFollowerBinding
 
-class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(FragmentScrapFolderDetailBinding::inflate),
+class ScrapFolderDetailFragment: Fragment(),
     ScrapCourseView, ScrapDefaultFolderView {
+
+    private var _binding: FragmentScrapFolderDetailBinding? = null
+    private val binding get() = _binding!!
 
     lateinit var scrapService: ScrapService
 
@@ -34,7 +42,13 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
 
     private lateinit var callback: OnBackPressedCallback
 
-    override fun initAfterBinding() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentScrapFolderDetailBinding.inflate(inflater, container, false)
+        
         scrapFolderName = arguments?.getString("title").toString()
         binding.scrapFolderDetailTitle.text = arguments?.getString("title")
         scrapFolderId = requireArguments().getInt("scrapFolderId", -1)
@@ -48,6 +62,8 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
         } else scrapService.getScrapCourse(scrapFolderId)
 
         initClickListener()
+        
+        return binding.root
     }
 
     private fun initService() {
@@ -220,7 +236,8 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
     }
 
     override fun scrapCourseFailureView() {
-        showToast("코스 불러오기 실패")
+        var message = "코스 불러오기 실패"
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun scrapDefaultFolderSuccessView(scrapDefaultFolderList: ArrayList<ScrapCourseResult>) {
@@ -236,6 +253,7 @@ class ScrapFolderDetailFragment: BaseFragment<FragmentScrapFolderDetailBinding>(
     }
 
     override fun scrapDefaultFolderFailureView() {
-        showToast("코스 불러오기 실패")
+        var message = "코스 불러오기 실패"
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

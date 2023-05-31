@@ -43,7 +43,7 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = BottomFragmentScrapFolderOptionBinding.inflate(inflater, container, false)
         scrapFolderId = requireArguments().getInt("scrapFolderId")
         deleteCourseId = requireArguments().getIntegerArrayList("deleteCourseId") as ArrayList<Int>

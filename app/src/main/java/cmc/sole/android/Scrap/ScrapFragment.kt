@@ -5,28 +5,42 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import cmc.sole.android.R
 import cmc.sole.android.Scrap.Retrofit.ScrapFolderDataResult
 import cmc.sole.android.Scrap.Retrofit.ScrapFolderView
 import cmc.sole.android.Scrap.Retrofit.ScrapService
 import cmc.sole.android.Scrap.Retrofit.addFolder
-import cmc.sole.android.Utils.BaseFragment
+
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.databinding.FragmentScrapBinding
+import androidx.fragment.app.Fragment
+import cmc.sole.android.databinding.FragmentFollowerFollowerBinding
 
-class ScrapFragment: BaseFragment<FragmentScrapBinding>(FragmentScrapBinding::inflate),
+class ScrapFragment: Fragment(),
     ScrapFolderView {
+
+    private var _binding: FragmentScrapBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var scrapService: ScrapService
     
     private lateinit var scrapFolderRVAdapter: ScrapFolderRVAdapter
     private var scrapFolderList = ArrayList<ScrapFolderDataResult>()
 
-    override fun initAfterBinding() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentScrapBinding.inflate(inflater, container, false)
+        
         initService()
         initAdapter()
+        
+        return binding.root
     }
 
     private fun initService() {
@@ -69,6 +83,7 @@ class ScrapFragment: BaseFragment<FragmentScrapBinding>(FragmentScrapBinding::in
     }
 
     override fun scrapFolderFailureView() {
-        showToast("스크랩 폴더 조회 실패")
+        var message = "스크랩 폴더 조회 실패"
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

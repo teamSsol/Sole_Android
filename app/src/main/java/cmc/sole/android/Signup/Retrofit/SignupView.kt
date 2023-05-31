@@ -1,8 +1,10 @@
 package cmc.sole.android.Signup.Retrofit
 
+import cmc.sole.android.ErrorResponse
+
 interface SignupCheckView {
     fun signupCheckSuccessView(result: SignupCheckResponse)
-    fun signupCheckFailureView(responseCode: Int)
+    fun signupCheckFailureView(errorResponse: ErrorResponse?)
 }
 
 interface SignupNicknameView {

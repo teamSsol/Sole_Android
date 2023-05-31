@@ -1,7 +1,10 @@
 package cmc.sole.android
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import cmc.sole.android.Home.HomeCategoriesResult
 import cmc.sole.android.Home.Retrofit.HomeCategoriesUpdateView
 import cmc.sole.android.Home.Retrofit.HomeGetCategoriesView
@@ -10,16 +13,19 @@ import cmc.sole.android.MyCourse.MyCourseTagButtonRVAdapter
 import cmc.sole.android.MyCourse.Retrofit.MyCourseAddPlace
 import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryRequest
 import cmc.sole.android.MyCourse.TagButton
-import cmc.sole.android.MyCourse.Write.MyCourseWritePlaceRVAdapter
-import cmc.sole.android.Utils.BaseActivity
+import cmc.sole.android.Write.MyCourseWritePlaceRVAdapter
+
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.Utils.Translator
+import cmc.sole.android.databinding.ActivitySignupAgreeMarketingBinding
 import cmc.sole.android.databinding.ActivityStartCourseTagBinding
 import com.google.android.flexbox.FlexboxLayoutManager
 
-class StartCourseTagActivity: BaseActivity<ActivityStartCourseTagBinding>(ActivityStartCourseTagBinding::inflate),
+class StartCourseTagActivity: AppCompatActivity(),
     HomeCategoriesUpdateView, HomeGetCategoriesView {
+
+    lateinit var binding: ActivityStartCourseTagBinding
 
     private lateinit var myCourseTagPlaceRVAdapter: MyCourseTagButtonRVAdapter
     private lateinit var myCourseTagWithRVAdapter: MyCourseTagButtonRVAdapter
@@ -31,11 +37,15 @@ class StartCourseTagActivity: BaseActivity<ActivityStartCourseTagBinding>(Activi
     private var tagFlag = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
 
     private lateinit var homeService: HomeService
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityStartCourseTagBinding.inflate(layoutInflater)
 
-    override fun initAfterBinding() {
         initService()
         initAdapter()
         initClickListener()
+
+        setContentView(binding.root)
     }
 
     private fun initService() {
@@ -158,7 +168,7 @@ class StartCourseTagActivity: BaseActivity<ActivityStartCourseTagBinding>(Activi
     }
 
     override fun homeCategoriesUpdateFailureView() {
-        showToast("카테고리 저장 실패")
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -204,6 +214,10 @@ class StartCourseTagActivity: BaseActivity<ActivityStartCourseTagBinding>(Activi
     }
 
     override fun homeGetCategoriesUpdateFailureView() {
-        showToast("카테고리 불러오기 실패")
+
+    }
+
+    private fun changeActivity(activity: Class<*>) {
+        startActivity(Intent(this, activity))
     }
 }

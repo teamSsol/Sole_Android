@@ -1,5 +1,6 @@
 package cmc.sole.android.Home
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -109,11 +110,13 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
         fun bind(course: DefaultCourse) { }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addItem(item: DefaultCourse) {
         courseList.add(item)
         this.notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addAllItems(items: ArrayList<DefaultCourse>) {
         courseList.addAll(items)
         this.notifyDataSetChanged()
@@ -121,6 +124,12 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
 
     fun returnAllItems(): ArrayList<DefaultCourse> {
         return courseList
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun removeAllItems() {
+        courseList.clear()
+        this.notifyDataSetChanged()
     }
 
     fun clearItems() {

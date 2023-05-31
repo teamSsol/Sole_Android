@@ -2,25 +2,42 @@ package cmc.sole.android.Follow
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Follow.Retrofit.FollowListView
 import cmc.sole.android.Follow.Retrofit.FollowService
 import cmc.sole.android.MainActivity
 import cmc.sole.android.R
 import cmc.sole.android.User
-import cmc.sole.android.Utils.BaseFragment
-import cmc.sole.android.databinding.FragmentFollowerFollowingBinding
 
-class FollowFollowingFragment: BaseFragment<FragmentFollowerFollowingBinding>(FragmentFollowerFollowingBinding::inflate),
+import cmc.sole.android.databinding.FragmentFollowerFollowingBinding
+import androidx.fragment.app.Fragment
+import cmc.sole.android.databinding.FragmentFollowerFollowerBinding
+
+class FollowFollowingFragment: Fragment(),
     FollowListView {
+
+    private var _binding: FragmentFollowerFollowingBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var followService: FollowService
     private lateinit var followListRVAdapter: FollowListRVAdapter
     private var followList = ArrayList<FollowUserDataResult>()
 
-    override fun initAfterBinding() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentFollowerFollowingBinding.inflate(inflater, container, false)
+        
         initService()
         initAdapter()
+        
+        return binding.root
     }
 
     override fun onResume() {
@@ -64,6 +81,7 @@ class FollowFollowingFragment: BaseFragment<FragmentFollowerFollowingBinding>(Fr
     }
 
     override fun followListFailureView() {
-        showToast("팔로잉 유저 불러오기 실패")
+        var message = "팔로잉 유저 불러오기 실패"
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

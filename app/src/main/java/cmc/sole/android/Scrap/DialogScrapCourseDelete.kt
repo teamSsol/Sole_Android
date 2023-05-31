@@ -40,7 +40,7 @@ class DialogScrapCourseDelete: DialogFragment(), ScrapCourseDeleteView, ScrapDef
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DialogScrapCourseDeleteBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP)

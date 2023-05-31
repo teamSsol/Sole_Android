@@ -19,6 +19,19 @@ fun saveFirstLogin(firstLogin: Boolean) {
     editor.apply()
 }
 
+// KakaoAccessToken
+fun removeKakaoAccessToken() {
+    val editor = mSharedPreferences.edit()
+    editor.remove("kakaoAccessToken")
+    editor.apply()
+}
+
+fun saveKakaoAccessToken(token: String?) {
+    val editor = mSharedPreferences.edit()
+    editor.putString("kakaoAccessToken", token)
+    editor.apply()
+}
+
 // AccessToken
 fun removeAccessToken() {
     val editor = mSharedPreferences.edit()
@@ -134,6 +147,7 @@ fun saveWithCategories(withCategories: MutableSet<String>) {
 }
 
 fun getFirstLogin(): Boolean = mSharedPreferences.getBoolean("firstLogin", true)
+fun getKakaoAccessToken(): String? = mSharedPreferences.getString("kakaoAccessToken", null)
 fun getAccessToken(): String? = mSharedPreferences.getString("accessToken", null)
 fun getFCMToken(): String? = mSharedPreferences.getString("fcmToken", null)
 fun getRefreshToken(): String? = mSharedPreferences.getString("refreshToken", null)

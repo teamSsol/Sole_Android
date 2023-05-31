@@ -18,3 +18,11 @@ data class User(
     var social: String,
     var socialId: String
 )
+
+data class ErrorResponse(
+    var code: String,
+    var success: Boolean,
+    var message: String,
+    var timestamp: String,
+    var status: Int
+)

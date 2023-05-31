@@ -9,25 +9,32 @@ import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.MyCourse.Retrofit.*
-import cmc.sole.android.MyCourse.Write.MyCourseWriteActivity
+import cmc.sole.android.Write.MyCourseWriteActivity
 import cmc.sole.android.R
-import cmc.sole.android.Utils.BaseFragment
-import cmc.sole.android.Utils.NewDynamicDrawableSpan
+
+import cmc.sole.android.Utils.DynamicDrawableSpan
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.Utils.Translator
 import cmc.sole.android.databinding.FragmentMyCourseBinding
 import com.bumptech.glide.Glide
+import androidx.fragment.app.Fragment
 
 
-class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBinding::inflate),
+class MyCourseFragment: Fragment(),
     MyCourseHistoryInfoView, MyCourseHistoryView, MyCourseNullTagHistoryView {
+
+    private var _binding: FragmentMyCourseBinding? = null
+    private val binding get() = _binding!!
 
     lateinit var myCourseCourseRVAdapter: MyCourseCourseRVAdapter
     var myCourseCourseList = ArrayList<DefaultCourse>()
@@ -49,10 +56,18 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
         myCourseService.getMyCourseNullTagHistory(courseId)
     }
 
-    override fun initAfterBinding() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMyCourseBinding.inflate(inflater, container, false)
+        
         initService()
         initAdapter()
         initClickListener()
+        
+        return binding.root
     }
 
     private fun initService() {
@@ -176,7 +191,8 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
     }
 
     override fun setMyCourseHistoryInfoFailureView() {
-        showToast("나의 기록 정보 가져오기 실패")
+        var message = "나의 기록 정보 가져오기 실패"
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun setMyCourseHistorySuccessView(myCourseHistoryResult: ArrayList<DefaultCourse>) {
@@ -184,7 +200,8 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
     }
 
     override fun setMyCourseHistoryFailureView() {
-        showToast("나의 기록 가져오기 실패")
+        var message = "나의 기록 가져오기 실패"
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun setSpannableText(text: String, option: String): SpannableStringBuilder {
@@ -212,7 +229,7 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
             "bottom1" -> {
                 // MEMO: TextSpan 적용 -> [가장, 많이, 방문한, 지역은, ?, ?, 이고]
                 var dateTextLength = returnTextLength(textArray, 5, option)
-                builder.setSpan(NewDynamicDrawableSpan(requireContext(), Color.parseColor("#EDEDED"), Color.parseColor("#000000")), dateTextLength[0], dateTextLength[1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                builder.setSpan(DynamicDrawableSpan(requireContext(), Color.parseColor("#EDEDED"), Color.parseColor("#000000")), dateTextLength[0], dateTextLength[1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
                 return builder
             }
@@ -221,8 +238,8 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
                 var placeTextLength = returnTextLength(textArray, 1, option)
                 var courseTextLength = returnTextLength(textArray, 5, option)
 
-                builder.setSpan(NewDynamicDrawableSpan(requireContext(), Color.parseColor("#EDEDED"), Color.parseColor("#000000")), placeTextLength[0], placeTextLength[1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                builder.setSpan(NewDynamicDrawableSpan(requireContext(), Color.parseColor("#EDEDED"), Color.parseColor("#000000")), courseTextLength[0], courseTextLength[1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                builder.setSpan(DynamicDrawableSpan(requireContext(), Color.parseColor("#EDEDED"), Color.parseColor("#000000")), placeTextLength[0], placeTextLength[1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                builder.setSpan(DynamicDrawableSpan(requireContext(), Color.parseColor("#EDEDED"), Color.parseColor("#000000")), courseTextLength[0], courseTextLength[1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
                 return builder
             }
@@ -253,6 +270,7 @@ class MyCourseFragment: BaseFragment<FragmentMyCourseBinding>(FragmentMyCourseBi
     }
 
     override fun setMyCourseNullTagHistoryFailureView() {
-        showToast("나의 기록 가져오기 실패")
+        var message = "나의 기록 가져오기 실패"
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

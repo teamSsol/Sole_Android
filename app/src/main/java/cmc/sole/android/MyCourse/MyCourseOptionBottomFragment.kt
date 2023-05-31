@@ -14,7 +14,7 @@ import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import cmc.sole.android.MyCourse.Write.MyCourseWriteViewModel
+import cmc.sole.android.Write.MyCourseWriteViewModel
 import cmc.sole.android.R
 import cmc.sole.android.Utils.CityData
 import cmc.sole.android.Utils.LocationData
@@ -81,7 +81,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = BottomFragmentMyCourseWriteOptionNewBinding.inflate(inflater, container, false)
         // checkTagList = writeVM.getTag()
 

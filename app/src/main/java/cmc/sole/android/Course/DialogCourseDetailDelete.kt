@@ -22,7 +22,7 @@ class DialogCourseDetailDelete: DialogFragment(), MyCourseDeleteView {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DialogCourseDetailDeleteBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP)

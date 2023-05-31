@@ -55,15 +55,15 @@
         <activity android:name=".Signup.SignupNicknameActivity" />
         <activity android:name=".Signup.SignupFinishActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".Home.Search.SearchActivity" />
-        <activity android:name=".Home.MyPage.MyPageActivity" />
-        <activity android:name=".Home.MyPage.MyPageInfoSettingActivity" />
-        <activity android:name=".Home.MyPage.Alarm.MyPageAlarmActivity" />
-        <activity android:name=".Home.MyPage.Alarm.MyPageAlarmSettingActivity" />
-        <activity android:name=".Home.MyPage.Notice.MyPageNoticeActivity" />
-        <activity android:name=".Home.MyPage.Notice.MyPageNoticeContentActivity" />
-        <activity android:name=".Home.MyPage.FAQ.MyPageFAQActivity" />
-        <activity android:name=".MyCourse.Write.MyCourseWriteActivity" />
+        <activity android:name=".Search.SearchActivity" />
+        <activity android:name=".MyPage.MyPageActivity" />
+        <activity android:name=".MyPage.MyPageInfoSettingActivity" />
+        <activity android:name=".MyPage.Alarm.MyPageAlarmActivity" />
+        <activity android:name=".MyPage.Alarm.MyPageAlarmSettingActivity" />
+        <activity android:name=".MyPage.Notice.MyPageNoticeActivity" />
+        <activity android:name=".MyPage.Notice.MyPageNoticeContentActivity" />
+        <activity android:name=".MyPage.FAQ.MyPageFAQActivity" />
+        <activity android:name=".Write.MyCourseWriteActivity" />
         <activity android:name=".Home.MyCourseTagActivity" />
         <activity android:name=".Course.CourseDetailActivity" />
 

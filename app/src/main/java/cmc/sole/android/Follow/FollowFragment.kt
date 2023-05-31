@@ -1,6 +1,11 @@
 package cmc.sole.android.Follow
 
+import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Follow.Retrofit.FollowCourseView
 import cmc.sole.android.Follow.Retrofit.FollowService
@@ -8,21 +13,34 @@ import cmc.sole.android.Home.Retrofit.HomeScrapAddAndCancelView
 import cmc.sole.android.Home.Retrofit.HomeService
 import cmc.sole.android.MainActivity
 import cmc.sole.android.R
-import cmc.sole.android.Utils.BaseFragment
-import cmc.sole.android.databinding.FragmentFollowBinding
 
-class FollowFragment: BaseFragment<FragmentFollowBinding>(FragmentFollowBinding::inflate),
+import cmc.sole.android.databinding.FragmentFollowBinding
+import androidx.fragment.app.Fragment
+import cmc.sole.android.databinding.FragmentFollowerFollowerBinding
+
+class FollowFragment: Fragment(),
     FollowCourseView, HomeScrapAddAndCancelView {
+
+    private var _binding: FragmentFollowBinding? = null
+    private val binding get() = _binding!!
 
     lateinit var homeService: HomeService
     lateinit var followService: FollowService
     lateinit var followActivityRVAdapter: FollowActivityRVAdapter
     private var followActivityList = ArrayList<FollowCourseResult>()
 
-    override fun initAfterBinding() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentFollowBinding.inflate(inflater, container, false)
+        
         initService()
         initAdapter()
         initClickListener()
+        
+        return binding.root
     }
 
     private fun initService() {
@@ -55,7 +73,8 @@ class FollowFragment: BaseFragment<FragmentFollowBinding>(FragmentFollowBinding:
     }
 
     override fun followCourseFailureView() {
-        showToast("팔로잉 유저 코스 불러오기 실패")
+        var message = "팔로잉 유저 코스 불러오기 실패"
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun homeScrapAddAndCancelSuccessView() {
@@ -63,6 +82,7 @@ class FollowFragment: BaseFragment<FragmentFollowBinding>(FragmentFollowBinding:
     }
 
     override fun homeScrapAddAndCancelFailureView() {
-        showToast("스크랩 실패")
+        var message = "스크랩 실패"
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }
