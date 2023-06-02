@@ -204,7 +204,7 @@ class HomeService {
                 call: Call<HomeDefaultResponse>,
                 response: Response<HomeDefaultResponse>
             ) {
-                // Log.d("API-TEST", "getHomeDefaultCourse.response = $response")
+                Log.d("API-TEST", "getHomeDefaultCourse.response = $response")
                 // Log.d("API-TEST", "getHomeDefaultCourse.responseBody = ${response.body()}")
                 if (response.code() == 200) {
                     val homeDefaultResponse = response.body()
@@ -227,7 +227,7 @@ class HomeService {
                 call: Call<HomeCourseDetailResponse>,
                 response: Response<HomeCourseDetailResponse>
             ) {
-                // Log.d("API-TEST", "getHomeDetailCourse.response = $response")
+                Log.d("API-TEST", "getHomeDetailCourse.response = $response")
                 // Log.d("API-TEST", "getHomeDetailCourse.responseBody = ${response.body()}")
                 if (response.code() == 200) {
                     val homeDetailResponse = response.body()
