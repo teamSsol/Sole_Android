@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:text="FAQ"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="17sp"
             android:fontFamily="@font/pretendard_semibold"
             android:layout_marginStart="8dp"
             app:layout_constraintTop_toTopOf="@id/my_page_faq_back_iv"
