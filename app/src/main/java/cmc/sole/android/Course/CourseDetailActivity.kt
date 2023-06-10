@@ -71,7 +71,7 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         if (like) {
             binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
         } else {
-            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_empty)
+            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_course_detail_heart)
         }
 
         var mapFragment = supportFragmentManager.findFragmentById(R.id.course_detail_map) as MapFragment?
@@ -112,14 +112,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
             courseDetailOptionBottomFragment.show(supportFragmentManager, "CourseDetailOptionBottom")
         }
 
-        binding.courseDetailCourseDetailIv.setOnClickListener {
-            if (courseDetailCourseRVAdapter.returnViewType() == simpleMode) {
-                courseDetailCourseRVAdapter.setViewType(detailMode)
-            } else if (courseDetailCourseRVAdapter.returnViewType() == detailMode) {
-                courseDetailCourseRVAdapter.setViewType(simpleMode)
-            }
-        }
-
         binding.courseDetailReportIv.setOnClickListener {
             val courseDetailReportDialog = DialogCourseDetailReport()
             var bundle = Bundle()
@@ -145,7 +137,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         courseDetailCourseRVAdapter = CourseDetailCourseRVAdapter(courseList)
         binding.courseDetailCourseRv.adapter = courseDetailCourseRVAdapter
         binding.courseDetailCourseRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.courseDetailCourseRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 40))
 
         tagRVAdapter = MyCourseTagRVAdapter(tagList)
         binding.courseDetailTagRv.adapter = tagRVAdapter
@@ -205,9 +196,11 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         if (homeCourseDetailResult.checkWriter) {
             binding.courseDetailOptionIv.visibility = View.VISIBLE
             binding.courseDetailReportIv.visibility = View.GONE
+            binding.courseDetailCourseHeartIv.visibility = View.GONE
         } else {
             binding.courseDetailOptionIv.visibility = View.GONE
             binding.courseDetailReportIv.visibility = View.VISIBLE
+            binding.courseDetailCourseHeartIv.visibility = View.VISIBLE
         }
 
         binding.courseDetailCourseContent.text = homeCourseDetailResult.description
@@ -248,8 +241,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         }
 
         memberId = homeCourseDetailResult.writer.memberId
-
-        courseDetailCourseRVAdapter.setViewType(simpleMode)
     }
 
     override fun homeCourseDetailFailureView() {
@@ -263,7 +254,7 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
             binding.courseDetailCourseHeartNumber.text = (binding.courseDetailCourseHeartNumber.toString().toInt() + 1).toString()
         } else {
             binding.courseDetailCourseHeartNumber.text = (binding.courseDetailCourseHeartNumber.toString().toInt() - 1).toString()
-            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_empty)
+            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_course_detail_heart)
         }
     }
 

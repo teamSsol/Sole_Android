@@ -33,7 +33,7 @@
                 android:text="따뜻한 3월에 가기 좋은 삼청동 전시 코스"
                 android:textColor="@color/white"
                 android:fontFamily="@font/pretendard_regular"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:alpha="0.9"
                 android:paddingHorizontal="16dp"
                 android:paddingBottom="8dp"

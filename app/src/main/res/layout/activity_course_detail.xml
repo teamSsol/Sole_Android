@@ -102,6 +102,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!-- MEMO: View 수정할 때는 이 부분 주석 처리 필수! -->
             <fragment
                 android:id="@+id/course_detail_map"
                 android:name="com.naver.maps.map.MapFragment"
@@ -120,7 +121,7 @@
                 android:paddingVertical="8dp"
                 android:paddingHorizontal="16dp"
                 app:layout_constraintTop_toBottomOf="@id/course_detail_map">
-                <!--        app:layout_constraintTop_toBottomOf="@id/course_detail_top_bar">-->
+<!--                app:layout_constraintTop_toBottomOf="@id/course_detail_top_bar">-->
 
                 <ImageView
                     android:id="@+id/course_detail_profile_iv"
@@ -137,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:text="닉네임"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:fontFamily="@font/pretendard_semibold"
                     android:layout_marginStart="12dp"
                     app:layout_constraintTop_toTopOf="parent"
@@ -159,7 +160,7 @@
                         android:layout_height="wrap_content"
                         android:text="팔로워 00"
                         android:textColor="@color/black"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:fontFamily="@font/pretendard_regular"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -170,7 +171,7 @@
                         android:layout_height="wrap_content"
                         android:text="|"
                         android:textColor="@color/black"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:fontFamily="@font/pretendard_regular"
                         android:layout_marginStart="7dp"
                         app:layout_constraintStart_toEndOf="@id/course_detail_follower_tv"
@@ -183,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:text="팔로잉 00"
                         android:textColor="@color/black"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:fontFamily="@font/pretendard_regular"
                         android:layout_marginStart="7dp"
                         app:layout_constraintTop_toTopOf="parent"
@@ -251,7 +252,7 @@
                     android:layout_height="wrap_content"
                     android:text="코스 이름"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:fontFamily="@font/pretendard_semibold"
                     android:layout_marginEnd="2dp"
                     app:layout_constraintEnd_toStartOf="@id/course_detail_course_heart_iv"
@@ -291,7 +292,7 @@
                 android:layout_height="wrap_content"
                 android:text="전시를 관람하다보면 창을 통해 빛이 들어오는 구도까지 생각해서 전시를 기획하는 것 같다는 느낌을 받았어요. 요시고 사진전에 이어서 이번 겨울, 많은 사람들이 사랑할 전시회가 되지 않을까 싶어요. 평일에 방문했더니 관람객이 별로 없어서 웨이팅 없이 여유롭게 전시를 관람할 수 있었어요!"
                 android:textColor="@color/black"
-                android:textSize="13sp"
+                android:textSize="15sp"
                 android:fontFamily="@font/pretendard_regular"
                 android:lineHeight="19.5dp"
                 android:layout_marginTop="8dp"
@@ -304,7 +305,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2023.00.00"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textColor="#404040"
                 android:fontFamily="@font/pretendard_regular"
                 android:layout_marginTop="16dp"
@@ -320,7 +321,7 @@
                 android:textColor="#404040"
                 android:fontFamily="@font/pretendard_regular"
                 android:textFontWeight="400"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
                 app:layout_constraintStart_toStartOf="@id/course_detail_course_write_date"
@@ -335,7 +336,7 @@
                 android:textColor="#404040"
                 android:fontFamily="@font/pretendard_regular"
                 android:textFontWeight="400"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:layout_marginStart="4dp"
                 android:gravity="center"
                 app:layout_constraintStart_toEndOf="@id/course_detail_course_location_tv"
@@ -350,7 +351,7 @@
                 android:textColor="#404040"
                 android:fontFamily="@font/pretendard_regular"
                 android:textFontWeight="400"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:layout_marginStart="4dp"
                 android:gravity="center"
                 app:layout_constraintStart_toEndOf="@id/course_detail_course_dot_1"
@@ -365,7 +366,7 @@
                 android:text="·"
                 android:textColor="#404040"
                 android:fontFamily="@font/pretendard_regular"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:layout_marginStart="4dp"
                 android:gravity="center"
                 app:layout_constraintStart_toEndOf="@id/course_detail_course_time_tv"
@@ -380,7 +381,7 @@
                 android:textColor="#404040"
                 android:fontFamily="@font/pretendard_regular"
                 android:textFontWeight="400"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:layout_marginStart="4dp"
                 android:gravity="center"
                 app:layout_constraintStart_toEndOf="@id/course_detail_course_dot_2"
@@ -391,8 +392,10 @@
                 android:id="@+id/course_detail_tag_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/item_my_course_tag"
                 android:paddingHorizontal="16dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                tools:listitem="@layout/item_my_course_tag"
                 app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
                 app:layout_constraintStart_toStartOf="@id/course_detail_course_write_date"
                 app:layout_constraintTop_toBottomOf="@id/course_detail_course_location_tv" />
@@ -406,30 +409,6 @@
                 app:layout_constraintTop_toBottomOf="@id/course_detail_tag_rv"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/course_detail_detail_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="코스 상세보기"
-                android:textSize="14sp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/pretendard_semibold"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="17dp"
-                app:layout_constraintTop_toBottomOf="@id/course_detail_bottom_line"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <ImageView
-                android:id="@+id/course_detail_course_detail_iv"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_down"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/course_detail_detail_title"
-                app:layout_constraintBottom_toBottomOf="@id/course_detail_detail_title"
-                app:tint="@color/black" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/course_detail_course_rv"
                 android:layout_width="match_parent"
@@ -438,7 +417,7 @@
                 android:orientation="vertical"
                 tools:listitem="@layout/item_course_detail_number"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/course_detail_detail_title" />
+                app:layout_constraintTop_toBottomOf="@id/course_detail_bottom_line" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
