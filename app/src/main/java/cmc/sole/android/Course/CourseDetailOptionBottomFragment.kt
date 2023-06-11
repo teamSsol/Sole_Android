@@ -18,6 +18,7 @@ class CourseDetailOptionBottomFragment: BottomSheetDialogFragment() {
 
     lateinit var binding: BottomFragmentCourseDetailOptionBinding
     var courseId = -1
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

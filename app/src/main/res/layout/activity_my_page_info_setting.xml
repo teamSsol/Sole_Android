@@ -17,7 +17,7 @@
             android:id="@+id/my_page_info_back_iv"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_back"
+            android:src="@drawable/ic_arrow_left"
             android:padding="10dp"
             android:layout_marginStart="14dp"
             app:tint="#404040"
@@ -29,12 +29,13 @@
             android:layout_height="wrap_content"
             android:text="계정 설정"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="17sp"
             android:fontFamily="@font/pretendard_semibold"
             android:layout_marginStart="8dp"
             app:layout_constraintTop_toTopOf="@id/my_page_info_back_iv"
             app:layout_constraintBottom_toBottomOf="@id/my_page_info_back_iv"
-            app:layout_constraintStart_toEndOf="@id/my_page_info_back_iv" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -89,11 +90,11 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/my_page_info_email_tv"
+            android:id="@+id/my_page_info_nickname_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="sole123@gmail.com"
-            android:textSize="16sp"
+            android:text="닉네임"
+            android:textSize="18sp"
             android:fontFamily="@font/pretendard_regular"
             android:textColor="#999999"
             android:background="@android:color/transparent"
@@ -109,8 +110,8 @@
             android:src="@drawable/ic_kakao_circle"
             android:layout_marginEnd="4dp"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintTop_toTopOf="@id/my_page_info_email_tv"
-            app:layout_constraintBottom_toBottomOf="@id/my_page_info_email_tv"
+            app:layout_constraintTop_toTopOf="@id/my_page_info_nickname_tv"
+            app:layout_constraintBottom_toBottomOf="@id/my_page_info_nickname_tv"
             app:layout_constraintEnd_toStartOf="@id/my_page_info_email_kakao_tv" />
 
         <TextView
@@ -121,8 +122,8 @@
             android:textColor="@color/black"
             android:textSize="14sp"
             android:fontFamily="@font/pretendard_regular"
-            app:layout_constraintTop_toTopOf="@id/my_page_info_email_tv"
-            app:layout_constraintBottom_toBottomOf="@id/my_page_info_email_tv"
+            app:layout_constraintTop_toTopOf="@id/my_page_info_nickname_tv"
+            app:layout_constraintBottom_toBottomOf="@id/my_page_info_nickname_tv"
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -136,31 +137,6 @@
         android:layout_marginHorizontal="16dp"
         app:layout_constraintTop_toBottomOf="@id/my_page_info_email_layout" />
 
-    <EditText
-        android:id="@+id/my_page_info_nickname_et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="닉네임을 입력해주세요"
-        android:textColorHint="#999999"
-        android:text=""
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_marginTop="25dp"
-        android:background="@android:color/transparent"
-        android:layout_marginHorizontal="16dp"
-        app:layout_constraintTop_toBottomOf="@id/my_page_info_email_line1"
-        app:layout_constraintStart_toStartOf="@id/my_page_info_email_layout"
-        app:layout_constraintEnd_toEndOf="@id/my_page_info_email_layout" />
-
-    <View
-        android:id="@+id/my_page_info_email_line2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#D3D4D5"
-        android:layout_marginTop="8dp"
-        android:layout_marginHorizontal="16dp"
-        app:layout_constraintTop_toBottomOf="@id/my_page_info_nickname_et" />
-
     <TextView
         android:id="@+id/my_page_info_intro_tv"
         android:layout_width="wrap_content"
@@ -171,8 +147,8 @@
         android:fontFamily="@font/pretendard_semibold"
         android:layout_marginTop="45dp"
         android:layout_marginStart="16dp"
-        app:layout_constraintTop_toBottomOf="@id/my_page_info_nickname_et"
-        app:layout_constraintStart_toStartOf="@id/my_page_info_email_layout" />
+        app:layout_constraintTop_toBottomOf="@id/my_page_info_email_line1"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/my_page_info_intro_cv"
@@ -218,7 +194,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/withdrawal"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textColor="#999999"
         android:fontFamily="@font/pretendard_regular"
         android:layout_marginBottom="28dp"
@@ -235,7 +211,7 @@
         android:background="@drawable/default_button_o"
         android:text="변경사항 저장하기"
         android:fontFamily="@font/button"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

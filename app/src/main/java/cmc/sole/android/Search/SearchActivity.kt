@@ -66,9 +66,9 @@ class SearchActivity: AppCompatActivity(),
 
             withContext(Dispatchers.Main) {
                 if (allRecentWord.isNotEmpty()) {
-                    binding.searchDefaultLayout.visibility = View.VISIBLE
+                    binding.searchAllDeleteTv.visibility = View.VISIBLE
                 } else {
-                    binding.searchDefaultLayout.visibility = View.GONE
+                    binding.searchAllDeleteTv.visibility = View.GONE
                 }
             }
         }

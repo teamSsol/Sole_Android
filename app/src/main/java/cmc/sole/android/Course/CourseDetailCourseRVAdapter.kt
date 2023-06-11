@@ -43,6 +43,13 @@ class CourseDetailCourseRVAdapter(private val courseList: ArrayList<PlaceRespons
         holder.binding.courseDetailPlaceImgRv.adapter = imgRVAdapter
         holder.binding.courseDetailPlaceImgRv.layoutManager = LinearLayoutManager(holder.binding.root.context, LinearLayoutManager.HORIZONTAL, false)
         holder.binding.courseDetailPlaceImgRv.addItemDecoration(RecyclerViewHorizontalDecoration("right", 20))
+
+        if (position == courseList.size - 1) {
+            holder.binding.courseDetailDotLine.visibility = View.GONE
+        } else {
+            holder.binding.courseDetailDotLine.visibility = View.VISIBLE
+        }
+
         holder.bind(courseList[position])
     }
 
@@ -50,27 +57,15 @@ class CourseDetailCourseRVAdapter(private val courseList: ArrayList<PlaceRespons
 
     inner class ViewHolder(val binding: ItemCourseDetailNumberBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(course: PlaceResponseDtos) {
-            // UPDATE: Mode 변수 추가 -> Mode 이용해서 View 변화주기
-            if (course.viewType == simpleMode) {
-                // MEMO: 접힌 상태
-                binding.courseDetailDetailInfoLayout.visibility = View.GONE
-                binding.courseDetailPlaceDescriptionTv.visibility = View.GONE
-
-                if (imgRVAdapter.getAllItems().size == 0) {
-                    if (course.placeImgUrls.size > 0) {
-                        imgRVAdapter.addAllItems(course.placeImgUrls)
-                    }
-                    else binding.courseDetailPlaceImgRv.visibility = View.GONE
-                }
-            } else if (course.viewType == detailMode) {
-                // MEMO: 펼쳐진 상태
-                binding.courseDetailDetailInfoLayout.visibility = View.VISIBLE
-                binding.courseDetailPlaceDescriptionTv.visibility = View.VISIBLE
-            }
+            binding.courseDetailDetailInfoLayout.visibility = View.VISIBLE
+            binding.courseDetailPlaceDescriptionTv.visibility = View.VISIBLE
 
             for (i in 0 until courseList.size) {
                 if (course.address == courseList[i].address)
                     binding.courseDetailNumberTv.text = (i + 1).toString()
+
+                if (course.address == "")
+                    binding.courseDetailAddressTv.visibility = View.GONE
             }
 
             binding.courseDetailPlaceTitleTv.text = course.placeName
@@ -88,16 +83,5 @@ class CourseDetailCourseRVAdapter(private val courseList: ArrayList<PlaceRespons
         courseList.clear()
         courseList.addAll(items)
         this.notifyDataSetChanged()
-    }
-
-    fun setViewType(option: Int) {
-        for (i in 0 until courseList.size) {
-            courseList[i].viewType = option
-        }
-        this.notifyDataSetChanged()
-    }
-
-    fun returnViewType(): Int? {
-        return courseList[0].viewType
     }
 }

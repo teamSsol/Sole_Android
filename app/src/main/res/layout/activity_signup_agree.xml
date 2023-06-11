@@ -19,7 +19,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:fontFamily="@font/body"
-            android:textSize="16sp" />
+            android:textSize="17sp" />
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:text="안녕하세요.\n지도 위의 발자국, SOLE 입니다."
             android:fontFamily="@font/pretendard_medium"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:textColor="@color/black"
             android:lineHeight="30dp"
             app:layout_constraintVertical_chainStyle="packed"
@@ -110,10 +110,10 @@
             android:id="@+id/signup_agree_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/signup_agree_line"
-            app:layout_constraintBottom_toTopOf="@id/signup_agree_personal">
+            app:layout_constraintBottom_toTopOf="@id/signup_agree_service">
 
             <ImageView
                 android:id="@+id/signup_agree_location_iv"
@@ -159,7 +159,7 @@
             android:id="@+id/signup_agree_service"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/signup_agree_location"
             app:layout_constraintBottom_toTopOf="@id/signup_agree_personal">
@@ -322,7 +322,7 @@
             android:layout_height="wrap_content"
             android:text="동의하고 계속하기"
             android:fontFamily="@font/button"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:layout_gravity="center"
             android:textColor="@color/white" />
 

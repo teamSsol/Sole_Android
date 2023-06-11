@@ -67,8 +67,7 @@ class MyPageInfoSettingActivity: AppCompatActivity(),
 
         Glide.with(this).load(intent.getStringExtra("profileImgUrl")).placeholder(R.drawable.ic_profile)
             .circleCrop().centerCrop().into(binding.signupNicknameProfileIv)
-        binding.myPageInfoEmailTv.text = intent.getStringExtra("socialId")
-        binding.myPageInfoNicknameEt.setText(intent.getStringExtra("nickname"))
+        binding.myPageInfoNicknameTv.setText(intent.getStringExtra("nickname"))
         binding.myPageInfoIntroEt.setText(intent.getStringExtra("description"))
 
         initService()
@@ -84,11 +83,11 @@ class MyPageInfoSettingActivity: AppCompatActivity(),
     }
 
     private fun initTextWatcher() {
-        binding.myPageInfoNicknameEt.addTextChangedListener(object: TextWatcher {
+        binding.myPageInfoNicknameTv.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                if (binding.myPageInfoNicknameEt.length() < 50 && binding.myPageInfoNicknameEt.text.isNotEmpty() && binding.myPageInfoNicknameEt.text.length < 11) {
+                if (binding.myPageInfoNicknameTv.length() < 50 && binding.myPageInfoNicknameTv.text.isNotEmpty() && binding.myPageInfoNicknameTv.text.length < 11) {
                     binding.myPageInfoSaveBtn.setBackgroundResource(R.drawable.default_button_o)
                     binding.myPageInfoSaveBtn.isEnabled = true
                     binding.myPageInfoIntroResult.setTextColor(Color.parseColor("#D3D4D5"))
@@ -108,7 +107,7 @@ class MyPageInfoSettingActivity: AppCompatActivity(),
             override fun afterTextChanged(s: Editable?) {
                 binding.myPageInfoIntroResult.text="${binding.myPageInfoIntroEt.length()}/50"
 
-                if (binding.myPageInfoIntroEt.length() < 50 && binding.myPageInfoNicknameEt.text.isNotEmpty() && binding.myPageInfoNicknameEt.text.length < 11) {
+                if (binding.myPageInfoIntroEt.length() < 50 && binding.myPageInfoNicknameTv.text.isNotEmpty() && binding.myPageInfoNicknameTv.text.length < 11) {
                     binding.myPageInfoSaveBtn.setBackgroundResource(R.drawable.default_button_o)
                     binding.myPageInfoSaveBtn.isEnabled = true
                     binding.myPageInfoIntroResult.setTextColor(Color.parseColor("#D3D4D5"))
@@ -168,7 +167,7 @@ class MyPageInfoSettingActivity: AppCompatActivity(),
 
             var jsonBody = JSONObject()
             jsonBody.put("description", binding.myPageInfoIntroEt.text)
-            jsonBody.put("nickname", binding.myPageInfoNicknameEt.text)
+            jsonBody.put("nickname", binding.myPageInfoNicknameTv.text)
 
             val requestBody: RequestBody = jsonBody.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
             var mypageRequestDto = MultipartBody.Part.createFormData("mypageRequestDto", "mypageRequestDto", requestBody)
@@ -185,8 +184,7 @@ class MyPageInfoSettingActivity: AppCompatActivity(),
     override fun myPageInfoUpdateSuccessView(myPageInfoResult: MyPageInfoResult) {
         Glide.with(this).load(myPageInfoResult.profileImgUrl)
             .placeholder(R.drawable.ic_profile).centerCrop().circleCrop().into(binding.signupNicknameProfileIv)
-        binding.myPageInfoEmailTv.text = myPageInfoResult.socialId
-        binding.myPageInfoNicknameEt.setText(myPageInfoResult.nickname)
+        binding.myPageInfoNicknameTv.setText(myPageInfoResult.nickname)
         binding.myPageInfoIntroEt.setText(myPageInfoResult.description)
 
         finish()

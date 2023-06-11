@@ -21,7 +21,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:fontFamily="@font/body"
-            android:textSize="16sp" />
+            android:textSize="17sp" />
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -76,7 +76,7 @@
         android:layout_marginBottom="250dp"
         android:paddingVertical="3dp"
         android:fontFamily="@font/body"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textColor="@color/black"
         android:textColorHint="#A7A9AB"
         android:maxLength="11"
@@ -135,7 +135,7 @@
             android:layout_height="wrap_content"
             android:text="시작하기"
             android:fontFamily="@font/button"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:layout_gravity="center"
             android:textColor="@color/white" />
 

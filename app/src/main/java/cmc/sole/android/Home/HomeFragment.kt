@@ -111,7 +111,7 @@ class HomeFragment: Fragment(),
             startActivity(Intent(activity, MyCourseWriteActivity::class.java))
         }
 
-        binding.homePopularCourseLayout.setOnClickListener {
+        binding.homePopularCourseLayoutCv.setOnClickListener {
             // UPDATE: 현재 위치 변경
             val currentLocation = getCurrentLocation()
             if (currentLocation != null)

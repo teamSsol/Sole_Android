@@ -73,12 +73,61 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="14dp"
         app:layout_constraintTop_toBottomOf="@id/search_top_bar"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <!-- UPDATE: 코멘트 후 수정 -->
+<!--            <com.google.android.material.card.MaterialCardView-->
+<!--                android:id="@+id/search_filter_cv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingHorizontal="12dp"-->
+<!--                android:layout_marginEnd="16dp"-->
+<!--                app:strokeColor="#D3D4D5"-->
+<!--                app:strokeWidth="1dp"-->
+<!--                app:cardCornerRadius="4dp"-->
+<!--                app:cardElevation="0dp"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent">-->
+
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginVertical="5dp"-->
+<!--                    android:layout_marginHorizontal="12dp">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/search_filter_tv"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="필터"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:font="@font/body"-->
+<!--                        android:textSize="14sp"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent" />-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/my_course_filter_iv"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="0dp"-->
+<!--                        android:src="@drawable/ic_filter"-->
+<!--                        android:layout_marginEnd="4dp"-->
+<!--                        app:layout_constraintDimensionRatio="1:1"-->
+<!--                        app:layout_constraintTop_toTopOf="@id/search_filter_tv"-->
+<!--                        app:layout_constraintBottom_toBottomOf="@id/search_filter_tv"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintEnd_toStartOf="@id/search_filter_tv" />-->
+
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--            </com.google.android.material.card.MaterialCardView>-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/search_result_rv"
@@ -143,7 +192,6 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- UPDATE: 최근 검색어 기능 개발 후 주석 풀기 -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/search_default_layout"
         android:layout_width="match_parent"
@@ -159,7 +207,7 @@
             android:layout_height="wrap_content"
             android:text="최근 검색"
             android:textColor="@color/black"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:fontFamily="@font/pretendard_semibold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
