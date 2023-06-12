@@ -81,7 +81,7 @@ class FollowFollowerFragment: Fragment(),
         followListRVAdapter.addAllItems(followerResult)
 
         if (followerResult.size == 0) {
-            binding.followerFollowerIv.setImageResource(R.drawable.ic_follow_empty_view)
+            binding.followerFollowerIv.setImageResource(R.drawable.ic_follower_empty_view)
         }
     }
 
