@@ -25,6 +25,8 @@ import cmc.sole.android.Utils.Translator
 import cmc.sole.android.databinding.ActivityCourseDetailBinding
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.MapFragment
@@ -104,12 +106,18 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
             finish()
         }
 
+        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_fragment_course_detail_option, null)
+        val bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetDialog.setContentView(bottomSheetView)
+
         binding.courseDetailOptionIv.setOnClickListener {
-            val courseDetailOptionBottomFragment = CourseDetailOptionBottomFragment()
-            var bundle = Bundle()
-            bundle.putInt("courseId", courseId)
-            courseDetailOptionBottomFragment.arguments = bundle
-            courseDetailOptionBottomFragment.show(supportFragmentManager, "CourseDetailOptionBottom")
+            bottomSheetDialog.show()
+//            val courseDetailOptionBottomFragment = CourseDetailOptionBottomFragment()
+//            var bundle = Bundle()
+//            bundle.putInt("courseId", courseId)
+//            courseDetailOptionBottomFragment.arguments = bundle
+//            courseDetailOptionBottomFragment.show(supportFragmentManager, "CourseDetailOptionBottom")
         }
 
         binding.courseDetailReportIv.setOnClickListener {
