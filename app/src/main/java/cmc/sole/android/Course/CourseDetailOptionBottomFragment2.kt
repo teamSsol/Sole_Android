@@ -14,7 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class CourseDetailOptionBottomFragment: BottomSheetDialogFragment() {
+class CourseDetailOptionBottomFragment2: BottomSheetDialogFragment() {
 
     lateinit var binding: BottomFragmentCourseDetailOptionBinding
     var courseId = -1

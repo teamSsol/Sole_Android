@@ -29,8 +29,8 @@
             android:layout_height="wrap_content"
             android:text="닉네임"
             android:textColor="@color/black"
-            android:textSize="15sp"
-            android:fontFamily="@font/pretendard_regular"
+            android:textSize="16sp"
+            android:fontFamily="@font/pretendard_medium"
             android:layout_marginHorizontal="8dp"
             app:layout_constraintStart_toEndOf="@id/item_follow_activity_profile_iv"
             app:layout_constraintEnd_toStartOf="@id/item_follow_activity_heart_iv"
@@ -75,10 +75,10 @@
         android:layout_height="wrap_content"
         android:text="전시를 관람하다보면 창을 통해 빛이 들어오는 구도까지 생각해서 전시를 기획하는 것 같다는 느낌을 받았어요. 요시고 사진전에 이어서 이번 겨울, 많은 사람들이 사랑할 전시회가 되지 않을까 싶어요. 평일에 방문했더니 관람객이 별로 없어서 웨이팅 없이 여유롭게 전시를 관람할 수 있었어요!"
         android:textColor="@color/black"
-        android:textSize="13sp"
+        android:textSize="14sp"
         android:fontFamily="@font/pretendard_regular"
         android:lineHeight="19.5dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@id/item_follow_activity_course_name"
         app:layout_constraintStart_toStartOf="parent" />
 

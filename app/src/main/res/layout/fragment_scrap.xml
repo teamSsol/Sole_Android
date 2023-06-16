@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:text="스크랩"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="17sp"
             android:fontFamily="@font/pretendard_medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,6 +37,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/scrap_tool_bar"
         app:layout_constraintVertical_bias="1.0"
-        tools:layout_editor_absoluteX="0dp" />
+        tools:layout_editor_absoluteX="0dp"
+        tools:listitem="@layout/item_scrap_folder" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         app:cardElevation="0dp"
         app:cardBackgroundColor="#EDEDED"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="3dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="🍚  맛집"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/black"
             android:fontFamily="@font/pretendard_regular"
             android:paddingVertical="4dp"
