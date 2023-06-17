@@ -204,11 +204,11 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         if (homeCourseDetailResult.checkWriter) {
             binding.courseDetailOptionIv.visibility = View.VISIBLE
             binding.courseDetailReportIv.visibility = View.GONE
-            binding.courseDetailCourseHeartIv.visibility = View.GONE
+            binding.courseDetailTitleHeartIv.visibility = View.GONE
         } else {
             binding.courseDetailOptionIv.visibility = View.GONE
             binding.courseDetailReportIv.visibility = View.VISIBLE
-            binding.courseDetailCourseHeartIv.visibility = View.VISIBLE
+            binding.courseDetailTitleHeartIv.visibility = View.VISIBLE
         }
 
         binding.courseDetailCourseContent.text = homeCourseDetailResult.description
