@@ -54,6 +54,7 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
     var followStatus = "FOLLOWER"
     var memberId = -1
     var pointList = mutableListOf<LatLng>()
+    private var checkWriter: Boolean = false
 
     // NaverMap
     lateinit var naverMap: NaverMap
@@ -106,26 +107,13 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
             finish()
         }
 
-        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_fragment_course_detail_option, null)
-        val bottomSheetDialog = BottomSheetDialog(this)
-        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheetDialog.setContentView(bottomSheetView)
-
         binding.courseDetailOptionIv.setOnClickListener {
-            bottomSheetDialog.show()
-//            val courseDetailOptionBottomFragment = CourseDetailOptionBottomFragment()
-//            var bundle = Bundle()
-//            bundle.putInt("courseId", courseId)
-//            courseDetailOptionBottomFragment.arguments = bundle
-//            courseDetailOptionBottomFragment.show(supportFragmentManager, "CourseDetailOptionBottom")
-        }
-
-        binding.courseDetailReportIv.setOnClickListener {
-            val courseDetailReportDialog = DialogCourseDetailReport()
+            val courseDetailOptionBottomFragment = CourseDetailOptionBottomFragment()
             var bundle = Bundle()
             bundle.putInt("courseId", courseId)
-            courseDetailReportDialog.arguments = bundle
-            courseDetailReportDialog.show(supportFragmentManager, "CourseDetailReportDialog")
+            bundle.putBoolean("checkWriter", checkWriter)
+            courseDetailOptionBottomFragment.arguments = bundle
+            courseDetailOptionBottomFragment.show(supportFragmentManager, "CourseDetailOptionBottom")
         }
 
         binding.courseDetailTitleHeartIv.setOnClickListener {
@@ -201,6 +189,7 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         }
         tagRVAdapter.addItem("")
 
+        checkWriter = homeCourseDetailResult.checkWriter
         if (homeCourseDetailResult.checkWriter) {
             binding.courseDetailOptionIv.visibility = View.VISIBLE
             binding.courseDetailReportIv.visibility = View.GONE
