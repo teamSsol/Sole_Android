@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import cmc.sole.android.R
 import cmc.sole.android.Write.MyCourseWriteActivity
 import cmc.sole.android.databinding.BottomFragmentCourseDetailOptionBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -18,6 +19,9 @@ class CourseDetailOptionBottomFragment: BottomSheetDialogFragment() {
     var courseId = -1
     var checkWriter = false
 
+    override fun getTheme(): Int {
+        return R.style.AppBottomDialogTheme
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import cmc.sole.android.R
 import cmc.sole.android.Scrap.Retrofit.ScrapFolderDeleteView
 import cmc.sole.android.Scrap.Retrofit.ScrapService
 import cmc.sole.android.databinding.BottomFragmentScrapFolderOptionBinding
@@ -26,6 +27,10 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
     private var deleteCourseId = ArrayList<Int>()
 
     private var mode = ""
+
+    override fun getTheme(): Int {
+        return R.style.AppBottomDialogTheme
+    }
 
     interface OnScrapOptionFinishListener {
         fun finish(mode: String, newFolderName: String?)
