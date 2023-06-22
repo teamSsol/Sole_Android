@@ -41,6 +41,10 @@ class MyCourseWriteSearchBottomFragment: BottomSheetDialogFragment() {
 
     private var selectResult: SearchResultData? = null
 
+    override fun getTheme(): Int {
+        return R.style.AppBottomDialogTheme
+    }
+
     interface OnFinishListener {
         fun finish(result: SearchResultData?)
     }

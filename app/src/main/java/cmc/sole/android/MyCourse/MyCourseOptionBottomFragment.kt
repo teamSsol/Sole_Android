@@ -30,7 +30,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
 
-    // lateinit var binding: BottomFragmentMyCourseWriteOptionBinding
     lateinit var binding: BottomFragmentMyCourseWriteOptionNewBinding
     private lateinit var myCourseTagBottomPlaceRVAdapter: MyCourseTagButtonRVAdapter
     private lateinit var myCourseTagBottomWithRVAdapter: MyCourseTagButtonRVAdapter
@@ -52,6 +51,10 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
     private var selectCityFlag = "서울"
 
     private val writeVM: MyCourseWriteViewModel by activityViewModels()
+
+    override fun getTheme(): Int {
+        return R.style.AppBottomDialogTheme
+    }
 
     interface OnTagFragmentFinishListener {
         fun finish(tagSort: List<TagButton>)

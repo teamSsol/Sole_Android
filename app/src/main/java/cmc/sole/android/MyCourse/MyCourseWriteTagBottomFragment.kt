@@ -35,6 +35,10 @@ class MyCourseWriteTagBottomFragment: BottomSheetDialogFragment() {
 
     private val writeVM: MyCourseWriteViewModel by activityViewModels()
 
+    override fun getTheme(): Int {
+        return R.style.AppBottomDialogTheme
+    }
+
     interface OnTagFragmentFinishListener {
         fun finish(tagSort: List<TagButton>)
     }

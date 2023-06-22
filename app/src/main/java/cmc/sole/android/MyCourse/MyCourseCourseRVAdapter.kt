@@ -67,6 +67,8 @@ class MyCourseCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>):
             tagRVAdapter.clearItems()
             for (i in 0 until course.categories.size) {
                 tagRVAdapter.addItem(Translator.tagEngToKor(binding.root.context as AppCompatActivity, course.categories.elementAt(i).toString()))
+
+                if (i == 2) break
             }
             tagRVAdapter.addItem("")
         }

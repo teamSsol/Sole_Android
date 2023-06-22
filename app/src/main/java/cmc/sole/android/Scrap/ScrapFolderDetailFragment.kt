@@ -39,6 +39,7 @@ class ScrapFolderDetailFragment: Fragment(),
     lateinit var scrapFolderName: String
     var scrapFolderId = 0
     var deleteCourseId = ArrayList<Int>()
+    var scrapListSize = -1
 
     private lateinit var callback: OnBackPressedCallback
 
@@ -57,7 +58,6 @@ class ScrapFolderDetailFragment: Fragment(),
         initAdapter()
 
         if (scrapFolderName == "기본 폴더") {
-            binding.scrapFolderDetailOptionIv.visibility = View.GONE
             scrapService.getDefaultFolder()
         } else scrapService.getScrapCourse(scrapFolderId)
 
@@ -79,7 +79,7 @@ class ScrapFolderDetailFragment: Fragment(),
         binding.scrapFolderDetailCourseRv.addItemDecoration(RecyclerViewVerticalDecoration("bottom", 40))
         scrapFolderDetailRVAdapter.setOnItemClickListener(object: ScrapCourseRVAdapter.OnItemClickListener {
             override fun onItemClick(data: ScrapCourseResult, position: Int) {
-                if (binding.scrapFolderDetailEditCv.visibility == View.VISIBLE) {
+                if (binding.scrapFolderDetailMoveCv.visibility != View.VISIBLE && binding.scrapFolderDetailDeleteCv.visibility != View.VISIBLE) {
                     scrapFolderDetailRVAdapter.checkMode(0)
                     binding.scrapFolderDetailMoveCv.strokeColor = Color.parseColor("#D3D4D5")
                     binding.scrapFolderDetailDeleteCv.strokeColor = Color.parseColor("#D3D4D5")
@@ -118,7 +118,7 @@ class ScrapFolderDetailFragment: Fragment(),
         // MEMO: 뒤로가기 눌렀을 때
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (binding.scrapFolderDetailEditCv.visibility == View.GONE) {
+                if (binding.scrapFolderDetailDeleteCv.visibility == View.VISIBLE && binding.scrapFolderDetailMoveCv.visibility == View.VISIBLE) {
                     binding.scrapFolderDetailOptionIv.visibility = View.VISIBLE
                     defaultMode()
                 } else {
@@ -126,7 +126,7 @@ class ScrapFolderDetailFragment: Fragment(),
                 }
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         binding.scrapFolderDetailOptionIv.setOnClickListener {
             var scrapFolderOptionBottomFragment = ScrapFolderOptionBottomFragment()
@@ -134,19 +134,21 @@ class ScrapFolderDetailFragment: Fragment(),
             bundle.putInt("scrapFolderId", scrapFolderId)
             bundle.putIntegerArrayList("deleteCourseId", deleteCourseId)
             bundle.putString("folderName", scrapFolderName)
+            bundle.putInt("scrapListSize", scrapListSize)
+            Log.d("API-TEST", "2 scrapListSize = $scrapListSize")
             scrapFolderOptionBottomFragment.arguments = bundle
             scrapFolderOptionBottomFragment.show(requireActivity().supportFragmentManager, "ScrapFolderDetailBottom")
             scrapFolderOptionBottomFragment.setOnFinishListener(object: ScrapFolderOptionBottomFragment.OnScrapOptionFinishListener {
                 override fun finish(mode: String, newFolderName: String?) {
                     if (mode == "delete") {
                         clearBackStack()
-                    } else if (mode == "edit") binding.scrapFolderDetailTitle.text = newFolderName
+                    } else if (mode == "edit") {
+                        binding.scrapFolderDetailTitle.text = newFolderName
+                    } else if (mode == "course_edit") {
+                        editMode()
+                    }
                 }
             })
-        }
-
-        binding.scrapFolderDetailEditCv.setOnClickListener {
-            editMode()
         }
 
         binding.scrapFolderDetailMoveCv.setOnClickListener {
@@ -199,7 +201,6 @@ class ScrapFolderDetailFragment: Fragment(),
 
     fun editMode() {
         binding.scrapFolderDetailOptionIv.visibility = View.GONE
-        binding.scrapFolderDetailEditCv.visibility = View.GONE
         binding.scrapFolderDetailOkTv.visibility = View.VISIBLE
         binding.scrapFolderDetailMoveCv.visibility = View.VISIBLE
         binding.scrapFolderDetailDeleteCv.visibility = View.VISIBLE
@@ -211,7 +212,6 @@ class ScrapFolderDetailFragment: Fragment(),
     }
 
     fun defaultMode() {
-        binding.scrapFolderDetailEditCv.visibility = View.VISIBLE
         binding.scrapFolderDetailOkTv.visibility = View.GONE
         binding.scrapFolderDetailMoveCv.visibility = View.GONE
         binding.scrapFolderDetailDeleteCv.visibility = View.GONE
@@ -224,13 +224,12 @@ class ScrapFolderDetailFragment: Fragment(),
     }
 
     override fun scrapCourseSuccessView(scrapCourseResult: ArrayList<ScrapCourseResult>) {
+        scrapListSize = scrapCourseResult.size
         if (scrapCourseResult.size == 0) {
             binding.scrapFolderDetailLayout.visibility = View.VISIBLE
-            binding.scrapFolderDetailEditCv.isEnabled = false
             scrapFolderDetailRVAdapter.removeAllItems()
         } else {
             binding.scrapFolderDetailLayout.visibility = View.GONE
-            binding.scrapFolderDetailEditCv.isEnabled = true
             scrapFolderDetailRVAdapter.addAllItems(scrapCourseResult)
         }
     }
@@ -241,13 +240,12 @@ class ScrapFolderDetailFragment: Fragment(),
     }
 
     override fun scrapDefaultFolderSuccessView(scrapDefaultFolderList: ArrayList<ScrapCourseResult>) {
+        scrapListSize = scrapDefaultFolderList.size
         if (scrapDefaultFolderList.size == 0) {
             binding.scrapFolderDetailLayout.visibility = View.VISIBLE
-            binding.scrapFolderDetailEditCv.isEnabled = false
             scrapFolderDetailRVAdapter.removeAllItems()
         } else {
             binding.scrapFolderDetailLayout.visibility = View.GONE
-            binding.scrapFolderDetailEditCv.isEnabled = true
             scrapFolderDetailRVAdapter.addAllItems(scrapDefaultFolderList)
         }
     }

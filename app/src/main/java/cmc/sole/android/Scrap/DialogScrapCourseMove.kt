@@ -79,7 +79,7 @@ class DialogScrapCourseMove: DialogFragment(), ScrapCourseMoveView, ScrapFolderV
     }
 
     override fun scrapCourseMoveSuccessView(scrapCourseMoveResult: ScrapCourseMoveResult) {
-        // dismiss()
+        dismiss()
     }
 
     override fun scrapCourseMoveFailureView() {

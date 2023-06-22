@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import cmc.sole.android.R
 import cmc.sole.android.Scrap.Retrofit.ScrapFolderDeleteView
 import cmc.sole.android.Scrap.Retrofit.ScrapService
 import cmc.sole.android.databinding.BottomFragmentScrapFolderOptionBinding
@@ -22,9 +23,14 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
     var folderEditName: String = ""
     var scrapFolderId: Int = -1
     var folderName = ""
+    var scrapListSize = -1
     private var deleteCourseId = ArrayList<Int>()
 
     private var mode = ""
+
+    override fun getTheme(): Int {
+        return R.style.AppBottomDialogTheme
+    }
 
     interface OnScrapOptionFinishListener {
         fun finish(mode: String, newFolderName: String?)
@@ -48,6 +54,18 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
         scrapFolderId = requireArguments().getInt("scrapFolderId")
         deleteCourseId = requireArguments().getIntegerArrayList("deleteCourseId") as ArrayList<Int>
         folderName = requireArguments().getString("folderName").toString()
+        if (folderName == "기본 폴더") {
+            binding.scrapFolderOptionDelete.visibility = View.GONE
+            binding.scrapFolderOptionEdit.visibility = View.GONE
+            binding.scrapFolderOptionCourseEdit.visibility = View.VISIBLE
+        }
+
+        scrapListSize = requireArguments().getInt("scrapListSize")
+        if (scrapListSize <= 0) {
+            binding.scrapFolderOptionCourseEdit.visibility = View.GONE
+        } else {
+            binding.scrapFolderOptionCourseEdit.visibility = View.VISIBLE
+        }
 
         initClickListener()
 
@@ -67,19 +85,8 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
         val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as View
         val behavior = BottomSheetBehavior.from<View>(bottomSheet)
         val layoutParams = bottomSheet!!.layoutParams
-        layoutParams.height = getBottomSheetDialogDefaultHeight()
         bottomSheet.layoutParams = layoutParams
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
-    }
-
-    private fun getBottomSheetDialogDefaultHeight(): Int {
-        return getWindowHeight() * 15 / 100
-    }
-
-    private fun getWindowHeight(): Int {
-        val displayMetrics = DisplayMetrics()
-        (context as Activity?)!!.windowManager.defaultDisplay.getMetrics(displayMetrics)
-        return displayMetrics.heightPixels
     }
 
     private fun initClickListener() {
@@ -117,6 +124,11 @@ class ScrapFolderOptionBottomFragment: BottomSheetDialogFragment() {
                     }
                 }
             })
+        }
+
+        binding.scrapFolderOptionCourseEdit.setOnClickListener {
+            mode = "course_edit"
+            dismiss()
         }
     }
 }

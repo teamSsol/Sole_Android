@@ -32,6 +32,10 @@ class Ex_MyCourseTagBottomFragment: BottomSheetDialogFragment() {
     private lateinit var myCourseHistoryRequest: MyCourseHistoryRequest
     private lateinit var dialogFinishListener: OnTagFragmentFinishListener
 
+    override fun getTheme(): Int {
+        return R.style.AppBottomDialogTheme
+    }
+
     interface OnTagFragmentFinishListener {
         fun finish(checkTagList: BooleanArray, myCourseHistoryRequest: MyCourseHistoryRequest)
     }
