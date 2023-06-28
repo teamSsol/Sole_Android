@@ -84,4 +84,10 @@ interface HomeRetrofitInterface {
     // MEMO: 회원탈퇴
     @DELETE("api/mypage/quit")
     fun quitMember(): Call<Void>
+    
+    // MEMO: 스크랩 등록/취소
+    @POST("/api/courses/{courseId}/scrap")
+    fun scrapOnOff(
+        @Path("courseId") courseId: Int
+    ): Call<DefaultResponse>
 }
