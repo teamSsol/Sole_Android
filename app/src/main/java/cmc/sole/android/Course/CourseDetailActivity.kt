@@ -71,12 +71,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         courseId = intent.getIntExtra("courseId", -1)
         like = intent.getBooleanExtra("like", false)
 
-        if (like) {
-            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
-        } else {
-            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_course_detail_heart)
-        }
-
         var mapFragment = supportFragmentManager.findFragmentById(R.id.course_detail_map) as MapFragment?
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance()
@@ -117,7 +111,21 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         }
 
         binding.courseDetailTitleHeartIv.setOnClickListener {
-            homeService.scrapAddAndCancel(courseId)
+            val scrapSelectFolderBottomFragment = ScrapSelectFolderBottomFragment()
+            var bundle = Bundle()
+            bundle.putInt("courseId", courseId)
+            scrapSelectFolderBottomFragment.arguments = bundle
+            scrapSelectFolderBottomFragment.show(supportFragmentManager, "ScrapSelectFolderBottomFragment")
+            scrapSelectFolderBottomFragment.setOnDialogFinishListener(object: ScrapSelectFolderBottomFragment.OnDialogFinishListener {
+                override fun finish() {
+                    if (like) {
+                        binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
+                    } else {
+                        binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_course_detail_heart)
+                    }
+                }
+            })
+            // homeService.scrapAddAndCancel(courseId)
         }
 
         binding.itemFollowFollowBtn.setOnClickListener {

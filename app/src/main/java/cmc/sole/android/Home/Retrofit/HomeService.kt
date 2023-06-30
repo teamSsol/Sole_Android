@@ -30,6 +30,7 @@ class HomeService {
     private lateinit var myPageNoticeAddView: MyPageNoticeAddView
     private lateinit var myPageNoticeUpdateView: MyPageNoticeUpdateView
     private lateinit var myPageMemberQuitView: MyPageMemberQuitView
+    private lateinit var scrapOnOffView: ScrapOnOffView
 
     fun setHomeGetCurrentGPSView(homeGetCurrentGPSView: HomeGetCurrentGPSView) {
         this.homeGetCurrentGPSView = homeGetCurrentGPSView
@@ -81,6 +82,9 @@ class HomeService {
     }
     fun setMyPageMemberQuitView(myPageMemberQuitView: MyPageMemberQuitView) {
         this.myPageMemberQuitView = myPageMemberQuitView
+    }
+    fun setScrapOnOffView(scrapOnOffView: ScrapOnOffView) {
+        this.scrapOnOffView = scrapOnOffView
     }
 
     fun getCurrentGPS() {
@@ -452,6 +456,24 @@ class HomeService {
             }
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.e("HOME-SERVICE", "HOME-SERVICE-MY-PAGE-MEMBER-QUIT-FAILURE", t)
+            }
+        })
+    }
+
+    // MEMO: 스크랩 등록/취소
+    fun scrapOnOff(courseId: Int) {
+        homeService?.scrapOnOff(courseId)?.enqueue(object: Callback<DefaultResponse> {
+            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                Log.d("API-TEST", "scrapOnOff response = $response")
+                Log.d("API-TEST", "scrapOnOff response.body = ${response.body()}")
+                if (response.code() == 200) {
+                    scrapOnOffView.scrapOnOffSuccessView()
+                } else {
+                    scrapOnOffView.scrapOnOffFailureView()
+                }
+            }
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                Log.e("HOME-SERVICE", "HOME-SERVICE-SCRAP-ON-OFF-FAILURE", t)
             }
         })
     }
