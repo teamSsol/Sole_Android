@@ -199,12 +199,8 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
 
         checkWriter = homeCourseDetailResult.checkWriter
         if (homeCourseDetailResult.checkWriter) {
-            binding.courseDetailOptionIv.visibility = View.VISIBLE
-            binding.courseDetailReportIv.visibility = View.GONE
             binding.courseDetailTitleHeartIv.visibility = View.GONE
         } else {
-            binding.courseDetailOptionIv.visibility = View.GONE
-            binding.courseDetailReportIv.visibility = View.VISIBLE
             binding.courseDetailTitleHeartIv.visibility = View.VISIBLE
         }
 

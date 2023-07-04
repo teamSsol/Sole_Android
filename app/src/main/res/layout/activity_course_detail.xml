@@ -59,19 +59,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <ImageView
-                android:id="@+id/course_detail_report_iv"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="5dp"
-                android:layout_marginEnd="11dp"
-                android:src="@drawable/ic_report"
-                android:visibility="gone"
-                app:tint="#404040"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -265,7 +252,8 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:src="@drawable/ic_heart_color"
-                    android:padding="1dp"
+                    android:padding="1.5dp"
+                    android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@id/course_detail_course_name"
                     app:layout_constraintTop_toTopOf="@id/course_detail_course_name"
                     app:layout_constraintBottom_toBottomOf="@id/course_detail_course_name"
