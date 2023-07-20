@@ -2,6 +2,7 @@ package cmc.sole.android.Utils
 
 import android.content.SharedPreferences
 import android.util.Log
+import cmc.sole.android.Follow.FollowListResponse
 import cmc.sole.android.Login.NewTokenResponse
 import cmc.sole.android.Login.NewTokenView
 import cmc.sole.android.Login.TokenRetrofitInterface
@@ -15,6 +16,7 @@ import cmc.sole.android.saveRefreshToken
 import com.example.geeksasaeng.Utils.NetworkModule
 import com.sole.android.ApplicationClass
 import com.sole.android.ApplicationClass.Companion.Authorization_TOKEN
+import com.sole.android.ApplicationClass.Companion.BASE_URL
 import com.sole.android.ApplicationClass.Companion.mSharedPreferences
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -71,7 +73,7 @@ class AuthorizationTokenInterceptor: Interceptor {
             .build()
 
         var service = retrofit.create(TokenService::class.java)
-        return service.getNewToken(getRefreshToken().toString())
+        return service.getNewToken(getAccessToken().toString(), getRefreshToken().toString())
     }
 
     // MEMO: 일반적인 경우
@@ -87,6 +89,7 @@ class AuthorizationTokenInterceptor: Interceptor {
         if (response.code == 401) {
             Log.d("API-TEST", "intercept ${response}")
             Log.d("API-TEST", "updateRefreshToken = ${updateRefreshToken()}")
+            getNewToken()
         }
 
         /*
@@ -100,5 +103,32 @@ class AuthorizationTokenInterceptor: Interceptor {
          */
 
         return response
+    }
+
+    private fun getNewToken() {
+        val retrofit = Retrofit.Builder().baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        val getNewTokenInterface = retrofit.create(TokenRetrofitInterface::class.java)
+        getNewTokenInterface.getNewToken(getAccessToken().toString(), getRefreshToken().toString()).enqueue(object: Callback<NewTokenResponse> {
+            override fun onResponse(
+                call: Call<NewTokenResponse>,
+                response: retrofit2.Response<NewTokenResponse>
+            ) {
+                if (response.code() == 200) {
+                    val tokenResponse = response.body()
+                    if (tokenResponse?.success == true) {
+                        var newAccessToken = tokenResponse.data.accessToken
+                        var refreshToken = tokenResponse.data.refreshToken
+                        saveAccessToken(newAccessToken)
+                        saveRefreshToken(refreshToken)
+                    } else {
+                        Log.d("TOKEN-SERVICE", "Failure")
+                    }
+                }
+            }
+            override fun onFailure(call: Call<NewTokenResponse>, t: Throwable) {
+                Log.e("TOKEN-SERVICE", "FOLLOW-SERVICE-GET-FOLLOWING-FAILURE", t)
+            }
+        })
     }
 }

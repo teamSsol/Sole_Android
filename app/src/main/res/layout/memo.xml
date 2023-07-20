@@ -8,7 +8,9 @@
 1-1) 코스 상세보기에서 스크랩 누르기
 스크랩 api가 기존은 스크랩 버튼을 누르면 기본 폴더에 스크랩되고 이를 복사하는 형식이었지만, 지금은 스크랩 버튼을 누르면 스크랩 폴더를 선택하는 방식으로 변경
 
-스웨거 보면 Request 파라미터가 스크랩할 폴더의 pk(scrapFolderId)가 추가된 것을 볼 수 있음. 다시 누르면 스크랩 취소, 취소할때는 scrapFolderId 안 보내도 됨(/api/courses/{scrapId})
+스웨거 보면 Request 파라미터가 스크랩할 폴더의 pk(scrapFolderId)가 추가된 것을 볼 수 있음.
+
+다시 누르면 스크랩 취소, 취소할때는 scrapFolderId 안 보내도 됨(/api/courses/{scrapId})
 
 1-2) 스크랩 탭
 /api/scraps/{fromScrapFolderId}/{toScrapFolderId}: 폴더에서 폴더이동

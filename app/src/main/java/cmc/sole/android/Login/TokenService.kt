@@ -19,17 +19,12 @@ class TokenService {
         this.getNewTokenView = getNewTokenView
     }
 
-    // fun getNewToken(authorization: String, refresh: String) {
-        // tokenService?.getNewToken(authorization, refresh)?.enqueue(object: Callback<NewTokenResponse> {
-    fun getNewToken(refresh: String) {
-        tokenService?.getNewToken(refresh)?.enqueue(object: Callback<NewTokenResponse> {
+    fun getNewToken(authorization: String, refresh: String) {
+        tokenService?.getNewToken(authorization, refresh)?.enqueue(object: Callback<NewTokenResponse> {
             override fun onResponse(
                 call: Call<NewTokenResponse>,
                 response: Response<NewTokenResponse>
             ) {
-                Log.d("API-TEST", "getNewToken")
-                Log.d("API-TEST", "response = $response")
-                Log.d("API-TEST", "response.code = ${response.code()}")
                 if (response.code() == 200) {
                     val resp = response.body()
                     if (resp?.success == true) {

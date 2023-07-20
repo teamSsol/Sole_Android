@@ -56,6 +56,7 @@ class ScrapSelectFolderBottomFragment: BottomSheetDialogFragment(), ScrapFolderV
             override fun onItemClick(data: ScrapFolderDataResult, position: Int) {
                 // scrapService.moveScrapCourse(data.scrapFolderId, ScrapFolderCourseMoveRequest(moveCourseId))
                 // MEMO: 폴더 이동시키기
+                Log.d("API-TEST", "courseId = $courseId")
                 homeService.scrapOnOff(courseId)
             }
         })
