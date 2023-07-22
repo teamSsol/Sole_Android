@@ -17,6 +17,11 @@ import cmc.sole.android.databinding.ActivityLoginBinding
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.user.UserApiClient
+import com.sole.android.ApplicationClass
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class LoginActivity: AppCompatActivity(),
@@ -45,7 +50,6 @@ class LoginActivity: AppCompatActivity(),
 
         fcmToken.observe(this, Observer<String?> { s ->
             saveFCMToken(fcmToken.value.toString())
-            checkAutoLogin()
         })
 
         setContentView(binding.root)
@@ -93,11 +97,6 @@ class LoginActivity: AppCompatActivity(),
                 }
             }
         }
-    }
-
-    private fun checkAutoLogin() {
-        var testToken = "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2ODUyNTU0NjcsInN1YiI6IjI2NjIwNzQ3NjAiLCJhdXRoIjoiUk9MRV9VU0VSIiwiZXhwIjoxNjg1MzQxODY3fQ.WzYNyhsTIJ8e6WJ2B_Zpb_y_nXrYbwFBlv47hpcpLJG7udsyiDdEDx9UpdqIaj1FcO2cLmOdnL_9GAx8h3g6rw"
-        signupCheckService.signupCheck(SignupCheckRequest(getKakaoAccessToken().toString(), getFCMToken().toString()))
     }
 
     private fun initRetrofitService() {

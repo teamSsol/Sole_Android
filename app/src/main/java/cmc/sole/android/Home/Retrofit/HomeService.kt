@@ -474,6 +474,7 @@ class HomeService {
             }
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 Log.e("HOME-SERVICE", "HOME-SERVICE-SCRAP-ON-OFF-FAILURE", t)
+                Log.e("API-TEST", "HOME-SERVICE-SCRAP-ON-OFF-FAILURE", t)
             }
         })
     }
