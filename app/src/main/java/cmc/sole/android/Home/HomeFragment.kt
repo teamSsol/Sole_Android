@@ -114,8 +114,10 @@ class HomeFragment: Fragment(),
         binding.homePopularCourseLayoutCv.setOnClickListener {
             // UPDATE: 현재 위치 변경
             val currentLocation = getCurrentLocation()
-            if (currentLocation != null)
+            if (currentLocation != null) {
                 homeService.updateCurrentGPS(currentLocation)
+                Log.d("API-TEST", "currentLocation = $currentLocation")
+            }
             popularCourseRVAdapter.clearItems()
             homeService.getHomePopularCourse()
         }
@@ -201,11 +203,13 @@ class HomeFragment: Fragment(),
     override fun homeDefaultCourseFailureView() { }
 
     override fun homeGetCurrentGPSSuccessView(currentGPS: String) {
+        Log.d("API-TEST", currentGPS.toString())
         binding.homePopularCourseSettingLocationIv.text = currentGPS
     }
 
     override fun homeGetCurrentGPSFailureView() { }
     override fun homeUpdateCurrentGPSSuccessView(homeCurrentGPSResult: HomeCurrentGPSResult) {
+        Log.d("API-TEST", homeCurrentGPSResult.currentGps.toString())
         binding.homePopularCourseSettingLocationIv.text = homeCurrentGPSResult.currentGps.address
     }
 

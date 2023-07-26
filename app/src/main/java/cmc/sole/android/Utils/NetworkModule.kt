@@ -1,6 +1,7 @@
 package com.example.geeksasaeng.Utils
 
 import cmc.sole.android.Utils.AuthorizationTokenInterceptor
+import cmc.sole.android.Utils.NullOnEmptyConverterFactory
 import com.google.gson.GsonBuilder
 import com.sole.android.ApplicationClass
 import okhttp3.OkHttpClient
@@ -25,6 +26,7 @@ class NetworkModule {
                         .baseUrl(ApplicationClass.BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create(gson))
                         .addConverterFactory(ScalarsConverterFactory.create())
+                        .addConverterFactory(NullOnEmptyConverterFactory)
                         .client(client)
                         .build()
                 }

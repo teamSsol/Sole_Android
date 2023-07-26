@@ -2,6 +2,7 @@ package cmc.sole.android.Utils
 
 import android.content.SharedPreferences
 import android.util.Log
+import cmc.sole.android.*
 import cmc.sole.android.Follow.FollowListResponse
 import cmc.sole.android.Login.NewTokenResponse
 import cmc.sole.android.Login.NewTokenView
@@ -9,11 +10,8 @@ import cmc.sole.android.Login.TokenRetrofitInterface
 import cmc.sole.android.Login.TokenService
 import cmc.sole.android.Signup.Retrofit.SignupRetrofitInterface
 import cmc.sole.android.Signup.Retrofit.SignupService
-import cmc.sole.android.getAccessToken
-import cmc.sole.android.getRefreshToken
-import cmc.sole.android.saveAccessToken
-import cmc.sole.android.saveRefreshToken
 import com.example.geeksasaeng.Utils.NetworkModule
+import com.google.gson.Gson
 import com.sole.android.ApplicationClass
 import com.sole.android.ApplicationClass.Companion.Authorization_TOKEN
 import com.sole.android.ApplicationClass.Companion.BASE_URL
@@ -83,24 +81,10 @@ class AuthorizationTokenInterceptor: Interceptor {
 
         request = chain.request()
         response = chain.proceed(builder.build())
-
-        // Log.d("API-TEST", "AuthorizationTokenInterceptor Response = $response")
-        // Log.d("API-TEST", "AuthorizationTokenInterceptor Response.body = ${response.body}")
         if (response.code == 401) {
-            Log.d("API-TEST", "intercept ${response}")
-            Log.d("API-TEST", "updateRefreshToken = ${updateRefreshToken()}")
+            Log.d("API-TEST", "Response.code = ${response.code}")
             getNewToken()
         }
-
-        /*
-        {
-            "code": "AUTH001",
-            "success": false,
-            "message": "만료된 엑세스 토큰입니다",
-            "timestamp": "2023-05-28T15:40:10.668203",
-            "status": 401
-        }
-         */
 
         return response
     }
