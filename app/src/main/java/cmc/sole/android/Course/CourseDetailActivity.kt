@@ -41,7 +41,7 @@ import kotlin.math.roundToInt
 
 
 class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
-    HomeCourseDetailView, HomeScrapAddAndCancelView,ScrapOnOffView, FollowUnfollowView {
+    HomeCourseDetailView, HomeScrapAddAndCancelView, ScrapOnOffView, FollowUnfollowView {
 
     lateinit var binding: ActivityCourseDetailBinding
     private lateinit var courseDetailCourseRVAdapter: CourseDetailCourseRVAdapter
@@ -72,6 +72,12 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         courseId = intent.getIntExtra("courseId", -1)
         like = intent.getBooleanExtra("like", false)
 
+        if (like) {
+            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
+        } else {
+            binding.courseDetailCourseHeartIv.setImageResource(R.drawable.ic_heart)
+        }
+
         var mapFragment = supportFragmentManager.findFragmentById(R.id.course_detail_map) as MapFragment?
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance()
@@ -92,6 +98,7 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         homeService.setHomeCourseDetailView(this)
         homeService.getHomeDetailCourse(courseId)
         homeService.setHomeScrapAddAndCancelView(this)
+        homeService.setScrapOnOffView(this)
 
         followService = FollowService()
         followService.setFollowUnfollowView(this)
@@ -124,8 +131,9 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
                 scrapSelectFolderBottomFragment.show(supportFragmentManager, "ScrapSelectFolderBottomFragment")
                 scrapSelectFolderBottomFragment.setOnDialogFinishListener(object: ScrapSelectFolderBottomFragment.OnDialogFinishListener {
                     override fun finish() {
-                        binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_course_detail_heart)
-                        like != like
+                        // UPDATE: 성공 여부 받아오기
+                        like = !like
+                        binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
                     }
                 })
             }
