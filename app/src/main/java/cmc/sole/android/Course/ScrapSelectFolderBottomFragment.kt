@@ -22,9 +22,10 @@ class ScrapSelectFolderBottomFragment: BottomSheetDialogFragment(), ScrapFolderV
     lateinit var scrapService: ScrapService
     lateinit var homeService: HomeService
     private lateinit var dialogFinishListener: OnDialogFinishListener
+    private var isSuccess = false
 
     interface OnDialogFinishListener {
-        fun finish()
+        fun finish(isSuccess: Boolean)
     }
 
     fun setOnDialogFinishListener(listener: OnDialogFinishListener) {
@@ -78,7 +79,7 @@ class ScrapSelectFolderBottomFragment: BottomSheetDialogFragment(), ScrapFolderV
 
     override fun onDestroyView() {
         super.onDestroyView()
-        dialogFinishListener.finish()
+        dialogFinishListener.finish(isSuccess)
     }
 
     override fun scrapFolderSuccessView(scrapFolderDataResult: ArrayList<ScrapFolderDataResult>) {
@@ -91,9 +92,11 @@ class ScrapSelectFolderBottomFragment: BottomSheetDialogFragment(), ScrapFolderV
 
     override fun scrapOnOffSuccessView() {
         dismiss()
+        isSuccess = true
     }
 
     override fun scrapOnOffFailureView() {
         Log.d("API-TEST", "SCRAP_FAILURE")
+        isSuccess = false
     }
 }

@@ -39,7 +39,6 @@ import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.overlay.PolylineOverlay
 import kotlin.math.roundToInt
 
-
 class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
     HomeCourseDetailView, HomeScrapAddAndCancelView, ScrapOnOffView, FollowUnfollowView {
 
@@ -130,10 +129,13 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
                 scrapSelectFolderBottomFragment.arguments = bundle
                 scrapSelectFolderBottomFragment.show(supportFragmentManager, "ScrapSelectFolderBottomFragment")
                 scrapSelectFolderBottomFragment.setOnDialogFinishListener(object: ScrapSelectFolderBottomFragment.OnDialogFinishListener {
-                    override fun finish() {
+                    override fun finish(isSuccess: Boolean) {
                         // UPDATE: 성공 여부 받아오기
-                        like = !like
-                        binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
+                        if (isSuccess) {
+                            like = !like
+                            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
+                        }
+                        Log.d("API-TEST", "isSuccess = $isSuccess")
                     }
                 })
             }
