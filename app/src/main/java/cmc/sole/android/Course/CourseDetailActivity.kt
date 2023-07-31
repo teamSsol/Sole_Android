@@ -119,10 +119,8 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
 
         binding.courseDetailTitleHeartIv.setOnClickListener {
             if (like) {
-                Log.d("API-TEST", "Like 삭제")
                 homeService.scrapOnOff(courseId)
             } else {
-                Log.d("API-TEST", "Like 추가")
                 val scrapSelectFolderBottomFragment = ScrapSelectFolderBottomFragment()
                 var bundle = Bundle()
                 bundle.putInt("courseId", courseId)
@@ -135,7 +133,6 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
                             like = !like
                             binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
                         }
-                        Log.d("API-TEST", "isSuccess = $isSuccess")
                     }
                 })
             }
