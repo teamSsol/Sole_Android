@@ -2,6 +2,7 @@ package cmc.sole.android.MyCourse
 
 import android.app.Activity
 import android.app.Dialog
+import android.graphics.Color
 import android.graphics.Region
 import android.os.Build
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Write.MyCourseWriteViewModel
@@ -120,11 +122,15 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         binding.myCourseWriteOptionLocationTv.setOnClickListener {
             binding.myCourseWriteOptionTagLayout.visibility = View.GONE
             binding.myCourseWriteOptionLocationLayout.visibility = View.VISIBLE
+            binding.myCourseWriteOptionLocationTv.setTextColor(ContextCompat.getColor(binding.root.context, R.color.black))
+            binding.myCourseWriteOptionTasteTv.setTextColor(Color.parseColor("#999999"))
         }
 
         binding.myCourseWriteOptionTasteTv.setOnClickListener {
             binding.myCourseWriteOptionTagLayout.visibility = View.VISIBLE
             binding.myCourseWriteOptionLocationLayout.visibility = View.GONE
+            binding.myCourseWriteOptionTasteTv.setTextColor(ContextCompat.getColor(binding.root.context, R.color.black))
+            binding.myCourseWriteOptionLocationTv.setTextColor(Color.parseColor("#999999"))
         }
     }
 

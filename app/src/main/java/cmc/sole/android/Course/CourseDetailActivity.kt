@@ -14,6 +14,7 @@ import cmc.sole.android.Home.*
 import cmc.sole.android.Home.Retrofit.HomeCourseDetailView
 import cmc.sole.android.Home.Retrofit.HomeScrapAddAndCancelView
 import cmc.sole.android.Home.Retrofit.HomeService
+import cmc.sole.android.Home.Retrofit.ScrapOnOffView
 import cmc.sole.android.MyCourse.MyCourseTagRVAdapter
 import cmc.sole.android.MyCourse.Retrofit.MyCourseReportView
 import cmc.sole.android.MyCourse.Retrofit.MyCourseService
@@ -38,9 +39,8 @@ import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.overlay.PolylineOverlay
 import kotlin.math.roundToInt
 
-
 class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
-    HomeCourseDetailView, HomeScrapAddAndCancelView, FollowUnfollowView {
+    HomeCourseDetailView, HomeScrapAddAndCancelView, ScrapOnOffView, FollowUnfollowView {
 
     lateinit var binding: ActivityCourseDetailBinding
     private lateinit var courseDetailCourseRVAdapter: CourseDetailCourseRVAdapter
@@ -71,6 +71,12 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         courseId = intent.getIntExtra("courseId", -1)
         like = intent.getBooleanExtra("like", false)
 
+        if (like) {
+            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
+        } else {
+            binding.courseDetailCourseHeartIv.setImageResource(R.drawable.ic_heart)
+        }
+
         var mapFragment = supportFragmentManager.findFragmentById(R.id.course_detail_map) as MapFragment?
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance()
@@ -91,6 +97,7 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         homeService.setHomeCourseDetailView(this)
         homeService.getHomeDetailCourse(courseId)
         homeService.setHomeScrapAddAndCancelView(this)
+        homeService.setScrapOnOffView(this)
 
         followService = FollowService()
         followService.setFollowUnfollowView(this)
@@ -111,21 +118,24 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         }
 
         binding.courseDetailTitleHeartIv.setOnClickListener {
-            val scrapSelectFolderBottomFragment = ScrapSelectFolderBottomFragment()
-            var bundle = Bundle()
-            bundle.putInt("courseId", courseId)
-            scrapSelectFolderBottomFragment.arguments = bundle
-            scrapSelectFolderBottomFragment.show(supportFragmentManager, "ScrapSelectFolderBottomFragment")
-            scrapSelectFolderBottomFragment.setOnDialogFinishListener(object: ScrapSelectFolderBottomFragment.OnDialogFinishListener {
-                override fun finish() {
-                    if (like) {
-                        binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
-                    } else {
-                        binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_course_detail_heart)
+            if (like) {
+                homeService.scrapOnOff(courseId)
+            } else {
+                val scrapSelectFolderBottomFragment = ScrapSelectFolderBottomFragment()
+                var bundle = Bundle()
+                bundle.putInt("courseId", courseId)
+                scrapSelectFolderBottomFragment.arguments = bundle
+                scrapSelectFolderBottomFragment.show(supportFragmentManager, "ScrapSelectFolderBottomFragment")
+                scrapSelectFolderBottomFragment.setOnDialogFinishListener(object: ScrapSelectFolderBottomFragment.OnDialogFinishListener {
+                    override fun finish(isSuccess: Boolean) {
+                        // UPDATE: 성공 여부 받아오기
+                        if (isSuccess) {
+                            like = !like
+                            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
+                        }
                     }
-                }
-            })
-            // homeService.scrapAddAndCancel(courseId)
+                })
+            }
         }
 
         binding.itemFollowFollowBtn.setOnClickListener {
@@ -277,5 +287,14 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
 
     override fun followUnfollowFailureView() {
         Toast.makeText(this, "팔로우/언팔로우 실패", Toast.LENGTH_LONG).show()
+    }
+
+    override fun scrapOnOffSuccessView() {
+        like = !like
+        binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart)
+    }
+
+    override fun scrapOnOffFailureView() {
+
     }
 }

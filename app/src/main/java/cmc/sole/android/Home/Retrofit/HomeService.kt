@@ -2,9 +2,11 @@ package cmc.sole.android.Home.Retrofit
 
 import android.util.Log
 import cmc.sole.android.DefaultResponse
+import cmc.sole.android.ErrorResponse
 import cmc.sole.android.Home.*
 import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryRequest
 import com.example.geeksasaeng.Utils.NetworkModule
+import com.google.gson.Gson
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -116,8 +118,8 @@ class HomeService {
                 call: Call<HomeCurrentGPSResponse>,
                 response: Response<HomeCurrentGPSResponse>
             ) {
-                // Log.d("API-TEST", "updateCurrentGPS response = ${response}")
-                // Log.d("API-TEST", "updateCurrentGPS response.body = ${response.body()}")
+                Log.d("API-TEST", "updateCurrentGPS response = ${response}")
+                Log.d("API-TEST", "updateCurrentGPS response.body = ${response.body()}")
                 if (response.code() == 200) {
                     val resp = response.body()
                     if (resp?.success == true) {
@@ -125,6 +127,10 @@ class HomeService {
                     } else {
                         homeUpdateCurrentGPSView.homeUpdateCurrentGPSFailureView()
                     }
+                } else {
+                    val gson = Gson()
+                    val errorResponse = gson.fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                    Log.d("API-TEST", "errorResponse = ${errorResponse}")
                 }
             }
             override fun onFailure(call: Call<HomeCurrentGPSResponse>, t: Throwable) {
@@ -462,8 +468,8 @@ class HomeService {
 
     // MEMO: 스크랩 등록/취소
     fun scrapOnOff(courseId: Int) {
-        homeService?.scrapOnOff(courseId)?.enqueue(object: Callback<DefaultResponse> {
-            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+        homeService?.scrapOnOff(courseId)?.enqueue(object: Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 Log.d("API-TEST", "scrapOnOff response = $response")
                 Log.d("API-TEST", "scrapOnOff response.body = ${response.body()}")
                 if (response.code() == 200) {
@@ -472,7 +478,7 @@ class HomeService {
                     scrapOnOffView.scrapOnOffFailureView()
                 }
             }
-            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+            override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.e("HOME-SERVICE", "HOME-SERVICE-SCRAP-ON-OFF-FAILURE", t)
                 Log.e("API-TEST", "HOME-SERVICE-SCRAP-ON-OFF-FAILURE", t)
             }

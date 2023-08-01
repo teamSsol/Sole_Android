@@ -89,5 +89,5 @@ interface HomeRetrofitInterface {
     @POST("/api/courses/{courseId}/scrap")
     fun scrapOnOff(
         @Path("courseId") courseId: Int
-    ): Call<DefaultResponse>
+    ): Call<Void>
 }
