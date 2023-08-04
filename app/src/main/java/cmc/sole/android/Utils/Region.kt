@@ -266,210 +266,252 @@ enum class Region {
 
 fun returnRegionCode(region: String): Region {
     // MEMO: 서울
-    if (region == "서울 전체") return Region.S00
-    else if (region == "강남구") return Region.S01
-    else if (region == "강동구")  return Region.S02
-    else if (region == "강북구") return Region.S03
-    else if (region == "서울 강서구")return Region.S04
-    else if (region == "관악구") return Region.S05
-    else if (region == "광진구") return Region.S06
-    else if (region == "구로구") return Region.S07
-    else if (region == "금천구") return Region.S08
-    else if (region == "노원구") return Region.S09
-    else if (region == "도봉구") return Region.S10
-    else if (region == "동대문구") return Region.S11
-    else if (region == "동작구") return Region.S12
-    else if (region == "마포구") return Region.S13
-    else if (region == "서대문구") return Region.S14
-    else if (region == "서초구") return Region.S15
-    else if (region == "성동구") return Region.S16
-    else if (region == "성북구") return Region.S17
-    else if (region == "송파구") return Region.S18
-    else if (region == "양천구") return Region.S19
-    else if (region == "영등포구") return Region.S20
-    else if (region == "용산구") return Region.S21
-    else if (region == "은평구") return Region.S22
-    else if (region == "종로구") return Region.S23
-    else if (region == "중구") return Region.S24
-    else if (region == "중랑구") return Region.S25
-
-    else if (region == "부산 전체") return Region.B00
-    else if (region == "부산 강서구") return Region.B01
-    else if (region == "금정구") return Region.B02
-    else if (region == "기장군") return Region.B03
-    else if (region == "남구") return Region.B04
-    else if (region == "동구") return Region.B05
-    else if (region == "동래구") return Region.B06
-    else if (region == "부산진구") return Region.B07
-    else if (region == "북구") return Region.B08
-    else if (region == "사상구") return Region.B09
-    else if (region == "사하구") return Region.B10
-    else if (region == "서구") return Region.B11
-    else if (region == "수영구") return Region.B12
-    else if (region == "연제구") return Region.B13
-    else if (region == "영도구") return Region.B14
-    else if (region == "중구") return Region.B15
-    else if (region == "해운대구") return Region.B16
-
-    else if (region == "대구 전체") return Region.D00
-    else if (region == "대구 남구") return Region.D01
-    else if (region == "대구 달서구") return Region.D02
-    else if (region == "대구 달성군") return Region.D03
-    else if (region == "대구 동구") return Region.D04
-    else if (region == "대구 북구") return Region.D05
-    else if (region == "대구 서구") return Region.D06
-    else if (region == "대구 수성구") return Region.D07
-    else if (region == "대구 중구") return Region.D08
-
-    else if (region == "인천 전체") return Region.I00
-    else if (region == "인천 강화군") return Region.I01
-    else if (region == "인천 계양구") return Region.I02
-    else if (region == "인천 남동구") return Region.I03
-    else if (region == "인천 동구") return Region.I04
-    else if (region == "인천 미추홀구") return Region.I05
-    else if (region == "인천 부평구") return Region.I06
-    else if (region == "인천 서구") return Region.I07
-    else if (region == "인천 연수구") return Region.I08
-    else if (region == "인천 옹진군") return Region.I09
-    else if (region == "인천 중구") return Region.I10
-
-    else if (region == "광주 전체") return Region.G00
-    else if (region == "광주 광산구") return Region.G01
-    else if (region == "광주 남구") return Region.G02
-    else if (region == "광주 동구") return Region.G03
-    else if (region == "광주 북구") return Region.G04
-    else if (region == "광주 서구") return Region.G05
-
-    else if (region == "대전 전체") return Region.DJ00
-    else if (region == "대전 대덕구") return Region.DJ01
-    else if (region == "대전 동구") return Region.DJ02
-    else if (region == "대전 서구") return Region.DJ03
-    else if (region == "대전 유성구") return Region.DJ04
-    else if (region == "대전 중구") return Region.DJ05
-
-    else if (region == "울산 전체") return Region.U00
-    else if (region == "울산 남구") return Region.U01
-    else if (region == "울산 동구") return Region.U02
-    else if (region == "울산 북구") return Region.U03
-    else if (region == "울산 울주군") return Region.U04
-    else if (region == "울산 중구") return Region.U05
-
-    else if (region == "세종 전체") return Region.SGG
-
-    else if (region == "경기 전체") return Region.K00
-    else if (region == "경기 가평군")  return Region.K01
-    else if (region == "경기 고양시") return Region.K02
-    else if (region == "경기 과천시")return Region.K03
-    else if (region == "경기 광명시") return Region.K04
-    else if (region == "경기 광주시") return Region.K05
-    else if (region == "경기 구리시") return Region.K06
-    else if (region == "경기 군포시") return Region.K07
-    else if (region == "경기 김포시") return Region.K08
-    else if (region == "경기 남양주시") return Region.K09
-    else if (region == "경기 동두천시") return Region.K10
-    else if (region == "경기 부천시") return Region.K11
-    else if (region == "경기 성남시") return Region.K12
-    else if (region == "경기 수원시") return Region.K13
-    else if (region == "경기 시흥시") return Region.K14
-    else if (region == "경기 안산시") return Region.K15
-    else if (region == "경기 안성시") return Region.K16
-    else if (region == "경기 안양시") return Region.K17
-    else if (region == "경기 양주시") return Region.K18
-    else if (region == "경기 양평군") return Region.K19
-    else if (region == "경기 여주시") return Region.K20
-    else if (region == "경기 연천군") return Region.K21
-    else if (region == "경기 오산시") return Region.K22
-    else if (region == "경기 용인시") return Region.K23
-    else if (region == "경기 의왕시") return Region.K24
-    else if (region == "경기 의정부시") return Region.K25
-    else if (region == "경기 이천시") return Region.K26
-    else if (region == "경기 파주시") return Region.K27
-    else if (region == "경기 평택시") return Region.K28
-    else if (region == "경기 포천시") return Region.K29
-    else if (region == "경기 하남시") return Region.K30
-    else if (region == "경기 화성시") return Region.K31
-
-    else if (region == "강원 전체") return Region.KW00
-    else if (region == "강원 강릉시")  return Region.KW01
-    else if (region == "강원 고성군") return Region.KW02
-    else if (region == "강원 동해시")return Region.KW03
-    else if (region == "강원 삼척시") return Region.KW04
-    else if (region == "강원 속초시") return Region.KW05
-    else if (region == "강원 양구군") return Region.KW06
-    else if (region == "강원 양양군") return Region.KW07
-    else if (region == "강원 영월군") return Region.KW08
-    else if (region == "강원 원주시") return Region.KW09
-    else if (region == "강원 인제군") return Region.KW10
-    else if (region == "강원 정선군") return Region.KW11
-    else if (region == "강원 철원군") return Region.KW12
-    else if (region == "강원 춘천시") return Region.KW13
-    else if (region == "강원 태백시") return Region.KW14
-    else if (region == "강원 평창군") return Region.KW15
-    else if (region == "강원 홍천군") return Region.KW16
-    else if (region == "강원 화천군") return Region.KW17
-    else if (region == "강원 횡성군") return Region.KW18
-
-    else if (region == "충북 전체") return Region.CB00
-    else if (region == "충북 괴산군")  return Region.CB01
-    else if (region == "충북 단양군") return Region.CB02
-    else if (region == "충북 보은군")return Region.CB03
-    else if (region == "충북 영동군") return Region.CB04
-    else if (region == "충북 옥천군") return Region.CB05
-    else if (region == "충북 음성군") return Region.CB06
-    else if (region == "충북 제천시") return Region.CB07
-    else if (region == "충북 증평군") return Region.CB08
-    else if (region == "충북 진천군") return Region.CB09
-    else if (region == "충북 청주시") return Region.CB10
-    else if (region == "충북 충주시") return Region.CB11
-
-    else if (region == "충남 전체") return Region.CN00
-    else if (region == "충남 계룡시")  return Region.CN01
-    else if (region == "충남 공주시") return Region.CN02
-    else if (region == "충남 금산군")return Region.CN03
-    else if (region == "충남 논산시") return Region.CN04
-    else if (region == "충남 당진시") return Region.CN05
-    else if (region == "충남 보령시") return Region.CN06
-    else if (region == "충남 부여군") return Region.CN07
-    else if (region == "충남 서산시") return Region.CN08
-    else if (region == "충남 서천군") return Region.CN09
-    else if (region == "충남 아산시") return Region.CN10
-    else if (region == "충남 예산군") return Region.CN11
-    else if (region == "충남 천안시") return Region.CN12
-    else if (region == "충남 청양군") return Region.CN13
-    else if (region == "충남 태안군") return Region.CN14
-    else if (region == "충남 홍성군") return Region.CN15
-
-    else if (region == "전북 전체") return Region.JB00
-    else if (region == "전북 고창군")  return Region.JB01
-    else if (region == "전북 군산시") return Region.JB02
-    else if (region == "전북 김제시")return Region.JB03
-    else if (region == "전북 남원시") return Region.JB04
-    else if (region == "전북 무주군") return Region.JB05
-    else if (region == "전북 부안군") return Region.JB06
-    else if (region == "전북 순창군") return Region.JB07
-    else if (region == "전북 완주군") return Region.JB08
-    else if (region == "전북 익산시") return Region.JB09
-    else if (region == "전북 임실군") return Region.JB10
-    else if (region == "전북 장수군") return Region.JB11
-    else if (region == "전북 전주시") return Region.JB12
-    else if (region == "전북 정읍시") return Region.JB13
-    else if (region == "전북 진안군") return Region.JB14
-
-    else if (region == "제주 전체") return Region.JJ00
-    else if (region == "제주 서귀포시")  return Region.JJ01
-    else if (region == "제주 제주시") return Region.JJ02
-
-    else return Region.JJ00
+    when (region) {
+        "서울 전체" -> return Region.S00
+        "서울 강남구" -> return Region.S01
+        "서울 강동구" -> return Region.S02
+        "서울 강북구" -> return Region.S03
+        "서울 강서구" -> return Region.S04
+        "서울 관악구" -> return Region.S05
+        "서울 광진구" -> return Region.S06
+        "서울 구로구" -> return Region.S07
+        "서울 금천구" -> return Region.S08
+        "서울 노원구" -> return Region.S09
+        "서울 도봉구" -> return Region.S10
+        "서울 동대문구" -> return Region.S11
+        "서울 동작구" -> return Region.S12
+        "서울 마포구" -> return Region.S13
+        "서울 서대문구" -> return Region.S14
+        "서울 서초구" -> return Region.S15
+        "서울 성동구" -> return Region.S16
+        "서울 성북구" -> return Region.S17
+        "서울 송파구" -> return Region.S18
+        "서울 양천구" -> return Region.S19
+        "서울 영등포구" -> return Region.S20
+        "서울 용산구" -> return Region.S21
+        "서울 은평구" -> return Region.S22
+        "서울 종로구" -> return Region.S23
+        "서울 중구" -> return Region.S24
+        "서울 중랑구" -> return Region.S25
+        "부산 전체" -> return Region.B00
+        "부산 강서구" -> return Region.B01
+        "부산 금정구" -> return Region.B02
+        "부산 기장군" -> return Region.B03
+        "부산 남구" -> return Region.B04
+        "부산 동구" -> return Region.B05
+        "부산 동래구" -> return Region.B06
+        "부산 부산진구" -> return Region.B07
+        "부산 북구" -> return Region.B08
+        "부산 사상구" -> return Region.B09
+        "부산 사하구" -> return Region.B10
+        "부산 서구" -> return Region.B11
+        "부산 수영구" -> return Region.B12
+        "부산 연제구" -> return Region.B13
+        "부산 영도구" -> return Region.B14
+        "부산 중구" -> return Region.B15
+        "부산 해운대구" -> return Region.B16
+        "대구 전체" -> return Region.D00
+        "대구 남구" -> return Region.D01
+        "대구 달서구" -> return Region.D02
+        "대구 달성군" -> return Region.D03
+        "대구 동구" -> return Region.D04
+        "대구 북구" -> return Region.D05
+        "대구 서구" -> return Region.D06
+        "대구 수성구" -> return Region.D07
+        "대구 중구" -> return Region.D08
+        "인천 전체" -> return Region.I00
+        "인천 강화군" -> return Region.I01
+        "인천 계양구" -> return Region.I02
+        "인천 남동구" -> return Region.I03
+        "인천 동구" -> return Region.I04
+        "인천 미추홀구" -> return Region.I05
+        "인천 부평구" -> return Region.I06
+        "인천 서구" -> return Region.I07
+        "인천 연수구" -> return Region.I08
+        "인천 옹진군" -> return Region.I09
+        "인천 중구" -> return Region.I10
+        "광주 전체" -> return Region.G00
+        "광주 광산구" -> return Region.G01
+        "광주 남구" -> return Region.G02
+        "광주 동구" -> return Region.G03
+        "광주 북구" -> return Region.G04
+        "광주 서구" -> return Region.G05
+        "대전 전체" -> return Region.DJ00
+        "대전 대덕구" -> return Region.DJ01
+        "대전 동구" -> return Region.DJ02
+        "대전 서구" -> return Region.DJ03
+        "대전 유성구" -> return Region.DJ04
+        "대전 중구" -> return Region.DJ05
+        "울산 전체" -> return Region.U00
+        "울산 남구" -> return Region.U01
+        "울산 동구" -> return Region.U02
+        "울산 북구" -> return Region.U03
+        "울산 울주군" -> return Region.U04
+        "울산 중구" -> return Region.U05
+        "세종 전체" -> return Region.SGG
+        "경기 전체" -> return Region.K00
+        "경기 가평군" -> return Region.K01
+        "경기 고양시" -> return Region.K02
+        "경기 과천시" -> return Region.K03
+        "경기 광명시" -> return Region.K04
+        "경기 광주시" -> return Region.K05
+        "경기 구리시" -> return Region.K06
+        "경기 군포시" -> return Region.K07
+        "경기 김포시" -> return Region.K08
+        "경기 남양주시" -> return Region.K09
+        "경기 동두천시" -> return Region.K10
+        "경기 부천시" -> return Region.K11
+        "경기 성남시" -> return Region.K12
+        "경기 수원시" -> return Region.K13
+        "경기 시흥시" -> return Region.K14
+        "경기 안산시" -> return Region.K15
+        "경기 안성시" -> return Region.K16
+        "경기 안양시" -> return Region.K17
+        "경기 양주시" -> return Region.K18
+        "경기 양평군" -> return Region.K19
+        "경기 여주시" -> return Region.K20
+        "경기 연천군" -> return Region.K21
+        "경기 오산시" -> return Region.K22
+        "경기 용인시" -> return Region.K23
+        "경기 의왕시" -> return Region.K24
+        "경기 의정부시" -> return Region.K25
+        "경기 이천시" -> return Region.K26
+        "경기 파주시" -> return Region.K27
+        "경기 평택시" -> return Region.K28
+        "경기 포천시" -> return Region.K29
+        "경기 하남시" -> return Region.K30
+        "경기 화성시" -> return Region.K31
+        "강원 전체" -> return Region.KW00
+        "강원 강릉시" -> return Region.KW01
+        "강원 고성군" -> return Region.KW02
+        "강원 동해시" -> return Region.KW03
+        "강원 삼척시" -> return Region.KW04
+        "강원 속초시" -> return Region.KW05
+        "강원 양구군" -> return Region.KW06
+        "강원 양양군" -> return Region.KW07
+        "강원 영월군" -> return Region.KW08
+        "강원 원주시" -> return Region.KW09
+        "강원 인제군" -> return Region.KW10
+        "강원 정선군" -> return Region.KW11
+        "강원 철원군" -> return Region.KW12
+        "강원 춘천시" -> return Region.KW13
+        "강원 태백시" -> return Region.KW14
+        "강원 평창군" -> return Region.KW15
+        "강원 홍천군" -> return Region.KW16
+        "강원 화천군" -> return Region.KW17
+        "강원 횡성군" -> return Region.KW18
+        "충북 전체" -> return Region.CB00
+        "충북 괴산군" -> return Region.CB01
+        "충북 단양군" -> return Region.CB02
+        "충북 보은군" -> return Region.CB03
+        "충북 영동군" -> return Region.CB04
+        "충북 옥천군" -> return Region.CB05
+        "충북 음성군" -> return Region.CB06
+        "충북 제천시" -> return Region.CB07
+        "충북 증평군" -> return Region.CB08
+        "충북 진천군" -> return Region.CB09
+        "충북 청주시" -> return Region.CB10
+        "충북 충주시" -> return Region.CB11
+        "충남 전체" -> return Region.CN00
+        "충남 계룡시" -> return Region.CN01
+        "충남 공주시" -> return Region.CN02
+        "충남 금산군" -> return Region.CN03
+        "충남 논산시" -> return Region.CN04
+        "충남 당진시" -> return Region.CN05
+        "충남 보령시" -> return Region.CN06
+        "충남 부여군" -> return Region.CN07
+        "충남 서산시" -> return Region.CN08
+        "충남 서천군" -> return Region.CN09
+        "충남 아산시" -> return Region.CN10
+        "충남 예산군" -> return Region.CN11
+        "충남 천안시" -> return Region.CN12
+        "충남 청양군" -> return Region.CN13
+        "충남 태안군" -> return Region.CN14
+        "충남 홍성군" -> return Region.CN15
+        "전북 전체" -> return Region.JB00
+        "전북 고창군" -> return Region.JB01
+        "전북 군산시" -> return Region.JB02
+        "전북 김제시" -> return Region.JB03
+        "전북 남원시" -> return Region.JB04
+        "전북 무주군" -> return Region.JB05
+        "전북 부안군" -> return Region.JB06
+        "전북 순창군" -> return Region.JB07
+        "전북 완주군" -> return Region.JB08
+        "전북 익산시" -> return Region.JB09
+        "전북 임실군" -> return Region.JB10
+        "전북 장수군" -> return Region.JB11
+        "전북 전주시" -> return Region.JB12
+        "전북 정읍시" -> return Region.JB13
+        "전북 진안군" -> return Region.JB14
+        "전남 전체" -> return Region.JN00
+        "전남 강진군" -> return Region.JN01
+        "전남 고흥군" -> return Region.JN02
+        "전남 곡성군" -> return Region.JN03
+        "전남 광양시" -> return Region.JN04
+        "전남 구례군" -> return Region.JN05
+        "전남 나주시" -> return Region.JN06
+        "전남 담양군" -> return Region.JN07
+        "전남 목포시" -> return Region.JN08
+        "전남 무안군" -> return Region.JN09
+        "전남 보성군" -> return Region.JN10
+        "전남 순천시" -> return Region.JN11
+        "전남 신안군" -> return Region.JN12
+        "전남 여수시" -> return Region.JN13
+        "전남 영광군" -> return Region.JN14
+        "전남 영암군" -> return Region.JN15
+        "전남 완도군" -> return Region.JN16
+        "전남 장성군" -> return Region.JN17
+        "전남 장흥군" -> return Region.JN18
+        "전남 진도군" -> return Region.JN19
+        "전남 함평군" -> return Region.JN20
+        "전남 해남군" -> return Region.JN21
+        "전남 화순군" -> return Region.JN22
+        "경북 전체" -> return Region.GB00
+        "경북 경산시" -> return Region.GB01
+        "경북 경주시" -> return Region.GB02
+        "경북 고령군" -> return Region.GB03
+        "경북 구미시" -> return Region.GB04
+        "경북 군위군" -> return Region.GB05
+        "경북 김천시" -> return Region.GB06
+        "경북 문경시" -> return Region.GB07
+        "경북 봉화군" -> return Region.GB08
+        "경북 상주시" -> return Region.GB09
+        "경북 성주군" -> return Region.GB10
+        "경북 안동시" -> return Region.GB11
+        "경북 영덕군" -> return Region.GB12
+        "경북 영양군" -> return Region.GB13
+        "경북 영주시" -> return Region.GB14
+        "경북 영천시" -> return Region.GB15
+        "경북 예천군" -> return Region.GB16
+        "경북 울릉군" -> return Region.GB17
+        "경북 울진군" -> return Region.GB18
+        "경북 의성군" -> return Region.GB19
+        "경북 청도군" -> return Region.GB20
+        "경북 청송군" -> return Region.GB21
+        "경북 칠곡군" -> return Region.GB22
+        "경북 포항시" -> return Region.GB23
+        "경남 전체" -> return Region.GN00
+        "경남 거제시" -> return Region.GN01
+        "경남 거창군" -> return Region.GN02
+        "경남 고성군" -> return Region.GN03
+        "경남 김해시" -> return Region.GN04
+        "경남 남해군" -> return Region.GN05
+        "경남 밀양시" -> return Region.GN06
+        "경남 사천시" -> return Region.GN07
+        "경남 산청군" -> return Region.GN08
+        "경남 양산시" -> return Region.GN09
+        "경남 의령군" -> return Region.GN10
+        "경남 진주시" -> return Region.GN11
+        "경남 창녕군" -> return Region.GN12
+        "경남 창원시" -> return Region.GN13
+        "경남 통영시" -> return Region.GN14
+        "경남 하동군" -> return Region.GN15
+        "경남 함안군" -> return Region.GN16
+        "경남 함양군" -> return Region.GN17
+        "경남 합천군" -> return Region.GN18
+        "제주 전체" -> return Region.JJ00
+        "제주 서귀포시" -> return Region.JJ01
+        "제주 제주시" -> return Region.JJ02
+        else -> return Region.JJ00
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-

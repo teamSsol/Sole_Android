@@ -32,7 +32,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
 
-    val TAG = "COURSE_OPTION_BOTTOM"
+    val TAG = "API-TEST"
     
     lateinit var binding: BottomFragmentMyCourseWriteOptionNewBinding
     private lateinit var myCourseTagBottomPlaceRVAdapter: MyCourseTagButtonRVAdapter
@@ -80,7 +80,6 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         for (i in 0..3) {
             returnList.add(transTagList[i])
         }
-        Log.d(TAG, "returnList = $returnList")
         dialogFinishListener.finish(returnList)
     }
 
@@ -103,27 +102,24 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
     private fun initClickListener() {
         binding.myCourseTagOkBtn.setOnClickListener {
             // UPDATE: 태그 리스트 저장
-//            var tagResult: ArrayList<TagButton> = arrayListOf()
-//
-//            if (writeVM.getTag() != null) {
-//                var tagCheckList = writeVM.getTag()!!
-//                for (i in 0 until writeVM.getTag()!!.size - 1) {
-//                    tagResult.add(tagCheckList[i])
-//                    Log.d(TAG, "tagResult 1 = $tagResult")
-//                }
-//            }
-//
-//            for (element in checkTagList) {
-//                tagResult.add(element)
-//                Log.d(TAG, "tagResult 2 = $tagResult")
-//            }
-//            tagResult.add(TagButton(1000, "", false))
-//            Log.d(TAG, "tagResult 3 = $tagResult")
-//
-//            writeVM.setTag(tagSort(tagResult))
-//            sendTag = tagSort(tagResult)
-//            dismiss()
+            var tagResult: ArrayList<TagButton> = arrayListOf()
 
+            if (writeVM.getTag() != null) {
+                var tagCheckList = writeVM.getTag()!!
+                for (i in 0 until writeVM.getTag()!!.size - 1) {
+                    tagResult.add(tagCheckList[i])
+                }
+            }
+
+            for (element in checkTagList) {
+                tagResult.add(element)
+            }
+            tagResult.add(TagButton(1000, "", false))
+
+            writeVM.setTag(tagSort(tagResult))
+            sendTag = tagSort(tagResult)
+
+            dismiss()
 
             // MEMO: 선택한 지역 리스트 API 연결
             var regionList = myCourseOptionSelectLocationRVAdapter.returnAllItems()
