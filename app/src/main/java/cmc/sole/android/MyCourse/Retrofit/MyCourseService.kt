@@ -101,8 +101,6 @@ class MyCourseService {
                 call: Call<MyCourseHistoryResponse>,
                 response: Response<MyCourseHistoryResponse>
             ) {
-                // Log.d("API-TEST", "getMyCourseNullTagHistory.body = ${response.body()}")
-                // Log.d("API-TEST", "getMyCourseNullTagHistory.data = ${response.body()?.data}")
                 if (response.code() == 200) {
                     val resp = response.body()
                     if (resp?.success == true) {

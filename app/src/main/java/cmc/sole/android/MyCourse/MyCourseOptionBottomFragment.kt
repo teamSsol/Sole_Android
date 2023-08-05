@@ -32,6 +32,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
 
+    val TAG = "API-TEST"
+    
     lateinit var binding: BottomFragmentMyCourseWriteOptionNewBinding
     private lateinit var myCourseTagBottomPlaceRVAdapter: MyCourseTagButtonRVAdapter
     private lateinit var myCourseTagBottomWithRVAdapter: MyCourseTagButtonRVAdapter
@@ -78,7 +80,6 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         for (i in 0..3) {
             returnList.add(transTagList[i])
         }
-        Log.d("WRITE-TEST", "returnList = $returnList")
         dialogFinishListener.finish(returnList)
     }
 
@@ -100,6 +101,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
 
     private fun initClickListener() {
         binding.myCourseTagOkBtn.setOnClickListener {
+            // UPDATE: 태그 리스트 저장
             var tagResult: ArrayList<TagButton> = arrayListOf()
 
             if (writeVM.getTag() != null) {
@@ -116,7 +118,12 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
 
             writeVM.setTag(tagSort(tagResult))
             sendTag = tagSort(tagResult)
+
             dismiss()
+
+            // MEMO: 선택한 지역 리스트 API 연결
+            var regionList = myCourseOptionSelectLocationRVAdapter.returnAllItems()
+
         }
 
         binding.myCourseWriteOptionLocationTv.setOnClickListener {
@@ -124,6 +131,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
             binding.myCourseWriteOptionLocationLayout.visibility = View.VISIBLE
             binding.myCourseWriteOptionLocationTv.setTextColor(ContextCompat.getColor(binding.root.context, R.color.black))
             binding.myCourseWriteOptionTasteTv.setTextColor(Color.parseColor("#999999"))
+            binding.myCourseOptionSelectLayout.visibility = View.VISIBLE
         }
 
         binding.myCourseWriteOptionTasteTv.setOnClickListener {
@@ -131,6 +139,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
             binding.myCourseWriteOptionLocationLayout.visibility = View.GONE
             binding.myCourseWriteOptionTasteTv.setTextColor(ContextCompat.getColor(binding.root.context, R.color.black))
             binding.myCourseWriteOptionLocationTv.setTextColor(Color.parseColor("#999999"))
+            binding.myCourseOptionSelectLayout.visibility = View.GONE
         }
     }
 
@@ -143,7 +152,8 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         myCourseTagBottomPlaceRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
             override fun onItemClick(data: TagButton, position: Int) {
                 tagFlag[position] = data.isChecked
-                Log.d("WRITE-TEST", "$tagFlag")
+                Log.d(TAG, "${tagFlag[position]}")
+//
 //                if (data.isChecked) {
 //                    checkTagList.add(data)
 //                }
@@ -178,7 +188,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         myCourseTagBottomWithRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
             override fun onItemClick(data: TagButton, position: Int) {
                 tagFlag[position] = data.isChecked
-                Log.d("WRITE-TEST", "$tagFlag")
+                Log.d(TAG, "$tagFlag")
 
 //                if (data.isChecked) {
 //                    checkTagList.add(data)

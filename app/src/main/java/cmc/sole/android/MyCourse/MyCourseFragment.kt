@@ -28,6 +28,10 @@ import cmc.sole.android.Utils.Translator
 import cmc.sole.android.databinding.FragmentMyCourseBinding
 import com.bumptech.glide.Glide
 import androidx.fragment.app.Fragment
+import cmc.sole.android.CourseTag.Categories
+import cmc.sole.android.CourseTag.placeCategories
+import cmc.sole.android.CourseTag.transCategories
+import cmc.sole.android.CourseTag.withCategories
 
 
 class MyCourseFragment: Fragment(),
@@ -47,9 +51,9 @@ class MyCourseFragment: Fragment(),
     // private lateinit var tagRVAdapter: MyCourseTagRVAdapter
     // private var tagList = ArrayList<String>()
     var tagFlagList = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
-    var placeCategories = mutableSetOf<String>()
-    var transCategories = mutableSetOf<String>()
-    var withCategories = mutableSetOf<String>()
+    var placeCategories = mutableSetOf<Categories>()
+    var transCategories = mutableSetOf<Categories>()
+    var withCategories = mutableSetOf<Categories>()
 
     override fun onResume() {
         super.onResume()
@@ -104,6 +108,8 @@ class MyCourseFragment: Fragment(),
             myCourseOptionBottomFragment.show(activity?.supportFragmentManager!!, "CourseDetailOptionBottom")
             myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
                 override fun finish(tagFragmentResult: List<TagButton>) {
+                    var tagTrueList = mutableListOf()
+
                     for (i in 0..17) {
                         tagFlagList[i] = tagFragmentResult[i].isChecked
                     }
@@ -115,6 +121,8 @@ class MyCourseFragment: Fragment(),
 
                     tagArrayList.add("")
                     // tagRVAdapter.addAllItems(tagArrayList)
+
+                    Log.d("API-TEST", "tagArrayList = $tagArrayList")
 
                     placeCategories = returnCategories("PLACE")
                     transCategories = returnCategories("TRANS")
@@ -128,30 +136,30 @@ class MyCourseFragment: Fragment(),
         }
     }
 
-    private fun returnCategories(option: String): MutableSet<String> {
-        var returnCategoriesArray = mutableSetOf<String>()
+    private fun returnCategories(option: String): MutableSet<Categories> {
+        var returnCategoriesArray = mutableSetOf<Categories>()
         Log.d("WRITE-TEST", "option = $option")
 
         when(option) {
             "PLACE" -> {
                 for (i in 0..8) {
                     if (tagFlagList[i]) {
-                        returnCategoriesArray.add(Translator.returnTagEngStr(i + 1).name)
+                        returnCategoriesArray.add(Translator.returnTagEngStr(i + 1))
                     }
                 }
             } "WITH" -> {
-            for (i in 9..13) {
-                if (tagFlagList[i]) {
-                    returnCategoriesArray.add(Translator.returnTagEngStr(i + 1).name)
+                for (i in 9..13) {
+                    if (tagFlagList[i]) {
+                        returnCategoriesArray.add(Translator.returnTagEngStr(i + 1))
+                    }
+                }
+            } else -> {
+                for (i in 14..17) {
+                    if (tagFlagList[i]) {
+                        returnCategoriesArray.add(Translator.returnTagEngStr(i + 1))
+                    }
                 }
             }
-        } else -> {
-            for (i in 14..17) {
-                if (tagFlagList[i]) {
-                    returnCategoriesArray.add(Translator.returnTagEngStr(i + 1).name)
-                }
-            }
-        }
         }
 
         return returnCategoriesArray
