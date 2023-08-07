@@ -33,6 +33,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:id="@+id/my_course_write_option_x"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:src="@drawable/ic_cancel_x"

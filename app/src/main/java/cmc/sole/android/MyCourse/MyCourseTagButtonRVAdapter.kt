@@ -66,4 +66,8 @@ class MyCourseTagButtonRVAdapter(private val tagList: ArrayList<TagButton>): Rec
     fun getItem(position: Int): TagButton {
         return tagList[position]
     }
+
+    fun changeIsChecked(position: Int) {
+        tagList[position].isChecked = !tagList[position].isChecked
+    }
 }

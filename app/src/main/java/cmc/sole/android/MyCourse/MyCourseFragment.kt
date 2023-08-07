@@ -108,7 +108,7 @@ class MyCourseFragment: Fragment(),
             myCourseOptionBottomFragment.show(activity?.supportFragmentManager!!, "CourseDetailOptionBottom")
             myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
                 override fun finish(tagFragmentResult: List<TagButton>) {
-                    var tagTrueList = mutableListOf()
+                    var tagTrueList = mutableListOf<Categories>()
 
                     for (i in 0..17) {
                         tagFlagList[i] = tagFragmentResult[i].isChecked
