@@ -32,8 +32,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
 
-    val TAG = "API-TEST"
-    
     lateinit var binding: BottomFragmentMyCourseWriteOptionNewBinding
     private lateinit var myCourseTagBottomPlaceRVAdapter: MyCourseTagButtonRVAdapter
     private lateinit var myCourseTagBottomWithRVAdapter: MyCourseTagButtonRVAdapter
@@ -51,6 +49,8 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
     private lateinit var dialogFinishListener: OnTagFragmentFinishListener
     private var sendTag = listOf<TagButton>()
     private var tagFlag = booleanArrayOf()
+    private var initialTagFlag = booleanArrayOf()
+    private var applyTag: Boolean = false
     // MEMO: 현재 선택하고 있는 지역을 알기 위함
     private var selectCityFlag = "서울"
 
@@ -70,6 +70,30 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        if (applyTag) {
+            returnTagList()
+        } else cancel()
+    }
+
+    private fun cancel() {
+        var returnList = mutableListOf<TagButton>()
+        for (i in 0 until initialTagFlag.size) {
+            Log.d("API-TEST", "initialTagFlag $i = ${initialTagFlag[i]}")
+        }
+        for (i in 0..8) {
+            returnList.add(TagButton(i + 1, placeTagList[i].title, initialTagFlag[i]))
+        }
+        for (i in 0..4) {
+            returnList.add(TagButton(i + 10, withTagList[i].title, initialTagFlag[9 + i]))
+        }
+        for (i in 0..3) {
+            returnList.add(TagButton(i + 15, transTagList[i].title, initialTagFlag[14 + i]))
+        }
+        Log.d("API-TEST", "initialReturn = $returnList")
+        dialogFinishListener.finish(returnList)
+    }
+
+    private fun returnTagList() {
         var returnList = mutableListOf<TagButton>()
         for (i in 0..8) {
             returnList.add(placeTagList[i])
@@ -80,6 +104,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         for (i in 0..3) {
             returnList.add(transTagList[i])
         }
+        Log.d("API-TEST", "returnList = $returnList")
         dialogFinishListener.finish(returnList)
     }
 
@@ -89,9 +114,9 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = BottomFragmentMyCourseWriteOptionNewBinding.inflate(inflater, container, false)
-        // checkTagList = writeVM.getTag()
 
-        tagFlag = requireArguments().getBooleanArray("tagFlag")!!
+        initialTagFlag = requireArguments().getBooleanArray("tagFlag")!!
+        tagFlag = initialTagFlag
 
         initAdapter()
         initClickListener()
@@ -119,11 +144,11 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
             writeVM.setTag(tagSort(tagResult))
             sendTag = tagSort(tagResult)
 
-            dismiss()
-
             // MEMO: 선택한 지역 리스트 API 연결
             var regionList = myCourseOptionSelectLocationRVAdapter.returnAllItems()
 
+            applyTag = true
+            dismiss()
         }
 
         binding.myCourseWriteOptionLocationTv.setOnClickListener {
@@ -141,6 +166,10 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
             binding.myCourseWriteOptionLocationTv.setTextColor(Color.parseColor("#999999"))
             binding.myCourseOptionSelectLayout.visibility = View.GONE
         }
+
+        binding.myCourseWriteOptionX.setOnClickListener {
+            dismiss()
+        }
     }
 
     private fun initAdapter() {
@@ -152,20 +181,6 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         myCourseTagBottomPlaceRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
             override fun onItemClick(data: TagButton, position: Int) {
                 tagFlag[position] = data.isChecked
-                Log.d(TAG, "${tagFlag[position]}")
-//
-//                if (data.isChecked) {
-//                    checkTagList.add(data)
-//                }
-//                else {
-//                    for (i in 0 until checkTagList.size) {
-//                        if (data.title == checkTagList[i].title) {
-//                            checkTagList.removeAt(i)
-//                            break
-//                        }
-//                    }
-//                }
-//                writeVM.setCheckTag(position)
             }
         })
 
@@ -188,20 +203,6 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         myCourseTagBottomWithRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
             override fun onItemClick(data: TagButton, position: Int) {
                 tagFlag[position] = data.isChecked
-                Log.d(TAG, "$tagFlag")
-
-//                if (data.isChecked) {
-//                    checkTagList.add(data)
-//                }
-//                else {
-//                    for (i in 0 until checkTagList.size) {
-//                        if (data.title == checkTagList[i].title) {
-//                            checkTagList.removeAt(i)
-//                            break
-//                        }
-//                    }
-//                }
-//                writeVM.setCheckTag(position + 9)
             }
         })
 
