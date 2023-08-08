@@ -42,7 +42,6 @@ class MyCourseFragment: Fragment(),
 
     lateinit var myCourseCourseRVAdapter: MyCourseCourseRVAdapter
     var myCourseCourseList = ArrayList<DefaultCourse>()
-    private var checkTagList = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
     lateinit var myCourseService: MyCourseService
     var courseId: Int? = null
     var detailCourseId = 0
@@ -66,7 +65,9 @@ class MyCourseFragment: Fragment(),
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMyCourseBinding.inflate(inflater, container, false)
-        
+
+        Log.d("API-TEST", "tagFlagList = ${tagFlagList.size}")
+
         initService()
         initAdapter()
         initClickListener()
@@ -104,6 +105,9 @@ class MyCourseFragment: Fragment(),
             val myCourseOptionBottomFragment = MyCourseOptionBottomFragment()
             var bundle = Bundle()
             bundle.putBooleanArray("tagFlag", tagFlagList)
+            for (i in 0 until tagFlagList.size) {
+                Log.d("API-TEST", "Out tagFlagList $i = ${tagFlagList[i]}")
+            }
             myCourseOptionBottomFragment.arguments = bundle
             myCourseOptionBottomFragment.show(activity?.supportFragmentManager!!, "CourseDetailOptionBottom")
             myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
