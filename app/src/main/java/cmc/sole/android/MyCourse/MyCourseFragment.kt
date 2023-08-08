@@ -66,8 +66,6 @@ class MyCourseFragment: Fragment(),
     ): View {
         _binding = FragmentMyCourseBinding.inflate(inflater, container, false)
 
-        Log.d("API-TEST", "tagFlagList = ${tagFlagList.size}")
-
         initService()
         initAdapter()
         initClickListener()
@@ -105,15 +103,10 @@ class MyCourseFragment: Fragment(),
             val myCourseOptionBottomFragment = MyCourseOptionBottomFragment()
             var bundle = Bundle()
             bundle.putBooleanArray("tagFlag", tagFlagList)
-            for (i in 0 until tagFlagList.size) {
-                Log.d("API-TEST", "Out tagFlagList $i = ${tagFlagList[i]}")
-            }
             myCourseOptionBottomFragment.arguments = bundle
             myCourseOptionBottomFragment.show(activity?.supportFragmentManager!!, "CourseDetailOptionBottom")
             myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
                 override fun finish(tagFragmentResult: List<TagButton>) {
-                    var tagTrueList = mutableListOf<Categories>()
-
                     for (i in 0..17) {
                         tagFlagList[i] = tagFragmentResult[i].isChecked
                     }
@@ -126,11 +119,7 @@ class MyCourseFragment: Fragment(),
                     tagArrayList.add("")
                     // tagRVAdapter.addAllItems(tagArrayList)
 
-                    Log.d("API-TEST", "tagArrayList = $tagArrayList")
-
-                    placeCategories = returnCategories("PLACE")
-                    transCategories = returnCategories("TRANS")
-                    withCategories = returnCategories("WITH")
+                    myCourseService.getMyCourseHistory(null, MyCourseHistoryRequest(returnCategories("PLACE"), returnCategories("WITH"), returnCategories("TRANS")))
                 }
             })
         }
@@ -142,7 +131,6 @@ class MyCourseFragment: Fragment(),
 
     private fun returnCategories(option: String): MutableSet<Categories> {
         var returnCategoriesArray = mutableSetOf<Categories>()
-        Log.d("WRITE-TEST", "option = $option")
 
         when(option) {
             "PLACE" -> {
