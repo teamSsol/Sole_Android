@@ -23,9 +23,9 @@ data class MyCourseHistoryInfoResult(
 )
 
 data class MyCourseHistoryRequest(
-    var placeCategories: Set<String>?,
-    var transCategories: Set<String>?,
-    var withCategories: Set<String>?
+    var placeCategories: Set<Categories>?,
+    var transCategories: Set<Categories>?,
+    var withCategories: Set<Categories>?
 )
 
 data class MyCourseHistoryResponse(

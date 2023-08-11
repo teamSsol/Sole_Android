@@ -132,8 +132,9 @@ class StartCourseTagActivity: AppCompatActivity(),
                 returnList.add(transTagList[i])
             }
 
-            var myCourseHistoryRequest = MyCourseHistoryRequest(returnTag("place"), returnTag("trans"), returnTag("with"))
-            homeService.updateCategories(myCourseHistoryRequest)
+            // UPDATE: 이 부분 타입 수정하기 (returnTag ReturnType MutableSet<String> -> MutableSet<Categories>
+//            var myCourseHistoryRequest = MyCourseHistoryRequest(returnTag("place"), returnTag("trans"), returnTag("with"))
+//            homeService.updateCategories(myCourseHistoryRequest)
         }
     }
 

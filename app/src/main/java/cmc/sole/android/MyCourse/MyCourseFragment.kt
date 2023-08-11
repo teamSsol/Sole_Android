@@ -42,7 +42,6 @@ class MyCourseFragment: Fragment(),
 
     lateinit var myCourseCourseRVAdapter: MyCourseCourseRVAdapter
     var myCourseCourseList = ArrayList<DefaultCourse>()
-    private var checkTagList = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
     lateinit var myCourseService: MyCourseService
     var courseId: Int? = null
     var detailCourseId = 0
@@ -66,7 +65,7 @@ class MyCourseFragment: Fragment(),
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMyCourseBinding.inflate(inflater, container, false)
-        
+
         initService()
         initAdapter()
         initClickListener()
@@ -108,8 +107,6 @@ class MyCourseFragment: Fragment(),
             myCourseOptionBottomFragment.show(activity?.supportFragmentManager!!, "CourseDetailOptionBottom")
             myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
                 override fun finish(tagFragmentResult: List<TagButton>) {
-                    var tagTrueList = mutableListOf<Categories>()
-
                     for (i in 0..17) {
                         tagFlagList[i] = tagFragmentResult[i].isChecked
                     }
@@ -122,11 +119,7 @@ class MyCourseFragment: Fragment(),
                     tagArrayList.add("")
                     // tagRVAdapter.addAllItems(tagArrayList)
 
-                    Log.d("API-TEST", "tagArrayList = $tagArrayList")
-
-                    placeCategories = returnCategories("PLACE")
-                    transCategories = returnCategories("TRANS")
-                    withCategories = returnCategories("WITH")
+                    myCourseService.getMyCourseHistory(null, MyCourseHistoryRequest(returnCategories("PLACE"), returnCategories("WITH"), returnCategories("TRANS")))
                 }
             })
         }
@@ -138,7 +131,6 @@ class MyCourseFragment: Fragment(),
 
     private fun returnCategories(option: String): MutableSet<Categories> {
         var returnCategoriesArray = mutableSetOf<Categories>()
-        Log.d("WRITE-TEST", "option = $option")
 
         when(option) {
             "PLACE" -> {

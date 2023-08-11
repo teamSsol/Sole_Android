@@ -16,14 +16,14 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import cmc.sole.android.CourseTag.Categories
+import cmc.sole.android.Home.DefaultCourse
+import cmc.sole.android.MyCourse.Retrofit.*
 import cmc.sole.android.Write.MyCourseWriteViewModel
 import cmc.sole.android.R
-import cmc.sole.android.Utils.CityData
-import cmc.sole.android.Utils.LocationData
-import cmc.sole.android.Utils.LocationTranslator
+import cmc.sole.android.Utils.*
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
-import cmc.sole.android.Utils.RegionData
 import cmc.sole.android.databinding.BottomFragmentMyCourseWriteOptionNewBinding
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -39,17 +39,17 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
     private lateinit var myCourseOptionLocationRVAdapter: MyCourseOptionLocationRVAdapter
     private lateinit var myCourseOptionRegionRVAdapter: MyCourseOptionLocationRegionRVAdapter
     private lateinit var myCourseOptionSelectLocationRVAdapter: MyCourseOptionLocationSelectRVAdapter
+    private lateinit var myCourseService: MyCourseService
     private var placeTagList = ArrayList<TagButton>()
     private var withTagList = ArrayList<TagButton>()
     private var transTagList = ArrayList<TagButton>()
-    private var checkTagList: MutableList<TagButton> = mutableListOf()
     private var locationList = ArrayList<CityData>()
     private var regionList = ArrayList<RegionData>()
     private var selectRegionList = ArrayList<LocationData>()
     private lateinit var dialogFinishListener: OnTagFragmentFinishListener
     private var sendTag = listOf<TagButton>()
     private var tagFlag = booleanArrayOf()
-    private var initialTagFlag = booleanArrayOf()
+    private var initialTagFlag = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
     private var applyTag: Boolean = false
     // MEMO: 현재 선택하고 있는 지역을 알기 위함
     private var selectCityFlag = "서울"
@@ -77,9 +77,6 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
 
     private fun cancel() {
         var returnList = mutableListOf<TagButton>()
-        for (i in 0 until initialTagFlag.size) {
-            Log.d("API-TEST", "initialTagFlag $i = ${initialTagFlag[i]}")
-        }
         for (i in 0..8) {
             returnList.add(TagButton(i + 1, placeTagList[i].title, initialTagFlag[i]))
         }
@@ -89,7 +86,6 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         for (i in 0..3) {
             returnList.add(TagButton(i + 15, transTagList[i].title, initialTagFlag[14 + i]))
         }
-        Log.d("API-TEST", "initialReturn = $returnList")
         dialogFinishListener.finish(returnList)
     }
 
@@ -104,7 +100,6 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         for (i in 0..3) {
             returnList.add(transTagList[i])
         }
-        Log.d("API-TEST", "returnList = $returnList")
         dialogFinishListener.finish(returnList)
     }
 
@@ -116,7 +111,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         binding = BottomFragmentMyCourseWriteOptionNewBinding.inflate(inflater, container, false)
 
         initialTagFlag = requireArguments().getBooleanArray("tagFlag")!!
-        tagFlag = initialTagFlag
+        tagFlag = initialTagFlag.copyOf()
 
         initAdapter()
         initClickListener()
@@ -126,27 +121,30 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
 
     private fun initClickListener() {
         binding.myCourseTagOkBtn.setOnClickListener {
-            // UPDATE: 태그 리스트 저장
-            var tagResult: ArrayList<TagButton> = arrayListOf()
 
-            if (writeVM.getTag() != null) {
-                var tagCheckList = writeVM.getTag()!!
-                for (i in 0 until writeVM.getTag()!!.size - 1) {
-                    tagResult.add(tagCheckList[i])
-                }
-            }
-
-            for (element in checkTagList) {
-                tagResult.add(element)
-            }
-            tagResult.add(TagButton(1000, "", false))
-
-            writeVM.setTag(tagSort(tagResult))
-            sendTag = tagSort(tagResult)
+//            if (writeVM.getTag() != null) {
+//                var tagCheckList = writeVM.getTag()!!
+//                for (i in 0 until writeVM.getTag()!!.size - 1) {
+//                    tagResult.add(tagCheckList[i])
+//                }
+//            }
+//
+//            for (element in checkTagList) {
+//                tagResult.add(element)
+//            }
+//            tagResult.add(TagButton(1000, "", false))
+//
+//            writeVM.setTag(tagSort(tagResult))
+//            sendTag = tagSort(tagResult)
+//
+//            for (i in tagResult.indices) {
+//                Log.d("API-TEST", "tagResult = ${tagResult[i]}")
+//            }
 
             // MEMO: 선택한 지역 리스트 API 연결
             var regionList = myCourseOptionSelectLocationRVAdapter.returnAllItems()
 
+            // MEMO: Tag 적용했는지 안했는지 확인하기 위함
             applyTag = true
             dismiss()
         }
@@ -202,7 +200,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         binding.myCourseWithTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 40))
         myCourseTagBottomWithRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
             override fun onItemClick(data: TagButton, position: Int) {
-                tagFlag[position] = data.isChecked
+                tagFlag[position + 9] = data.isChecked
             }
         })
 
@@ -220,7 +218,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         binding.myCourseTransportTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 40))
         myCourseTagBottomTransRVAdapter.setOnItemClickListener(object: MyCourseTagButtonRVAdapter.OnItemClickListener {
             override fun onItemClick(data: TagButton, position: Int) {
-                tagFlag[position] = data.isChecked
+                tagFlag[position + 14] = data.isChecked
             }
         })
 
@@ -313,5 +311,34 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
                 myCourseOptionRegionRVAdapter.changeIsSelected(i)
             }
         }
+    }
+
+    private fun returnCategories(option: String): MutableSet<Categories> {
+        var returnCategoriesArray = mutableSetOf<Categories>()
+        Log.d("WRITE-TEST", "option = $option")
+
+        when(option) {
+            "PLACE" -> {
+                for (i in 0..8) {
+                    if (tagFlag[i]) {
+                        returnCategoriesArray.add(Translator.returnTagEngStr(i + 1))
+                    }
+                }
+            } "WITH" -> {
+                for (i in 9..13) {
+                    if (tagFlag[i]) {
+                        returnCategoriesArray.add(Translator.returnTagEngStr(i + 1))
+                    }
+                }
+            } else -> {
+                for (i in 14..17) {
+                    if (tagFlag[i]) {
+                        returnCategoriesArray.add(Translator.returnTagEngStr(i + 1))
+                    }
+                }
+            }
+        }
+
+        return returnCategoriesArray
     }
 }
