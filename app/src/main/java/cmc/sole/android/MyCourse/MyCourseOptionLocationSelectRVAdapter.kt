@@ -102,4 +102,8 @@ class MyCourseOptionLocationSelectRVAdapter(private val locationList: ArrayList<
     fun returnAllItems(): ArrayList<LocationData> {
         return locationList
     }
+
+    fun getItem(position: Int): LocationData {
+        return locationList[position]
+    }
 }

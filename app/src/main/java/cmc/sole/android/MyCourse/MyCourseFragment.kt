@@ -32,6 +32,8 @@ import cmc.sole.android.CourseTag.Categories
 import cmc.sole.android.CourseTag.placeCategories
 import cmc.sole.android.CourseTag.transCategories
 import cmc.sole.android.CourseTag.withCategories
+import cmc.sole.android.Utils.Region
+import cmc.sole.android.Utils.returnRegionCode
 
 
 class MyCourseFragment: Fragment(),
@@ -50,6 +52,7 @@ class MyCourseFragment: Fragment(),
     // private lateinit var tagRVAdapter: MyCourseTagRVAdapter
     // private var tagList = ArrayList<String>()
     var tagFlagList = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
+    var regionFlagList = arrayListOf<String>()
     var placeCategories = mutableSetOf<Categories>()
     var transCategories = mutableSetOf<Categories>()
     var withCategories = mutableSetOf<Categories>()
@@ -103,21 +106,30 @@ class MyCourseFragment: Fragment(),
             val myCourseOptionBottomFragment = MyCourseOptionBottomFragment()
             var bundle = Bundle()
             bundle.putBooleanArray("tagFlag", tagFlagList)
+            bundle.putStringArrayList("regionFlag", regionFlagList)
             myCourseOptionBottomFragment.arguments = bundle
             myCourseOptionBottomFragment.show(activity?.supportFragmentManager!!, "CourseDetailOptionBottom")
             myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
-                override fun finish(tagFragmentResult: List<TagButton>) {
+                override fun finish(returnTagList: List<TagButton>, returnRegionList: ArrayList<String>) {
+                    // MEMO: 태그
                     for (i in 0..17) {
-                        tagFlagList[i] = tagFragmentResult[i].isChecked
+                        tagFlagList[i] = returnTagList[i].isChecked
                     }
 
                     var tagArrayList = arrayListOf<String>()
                     for (i in 0..17) {
-                        if (tagFlagList[i]) tagArrayList.add(tagFragmentResult[i].title)
+                        if (tagFlagList[i]) tagArrayList.add(returnTagList[i].title)
                     }
 
                     tagArrayList.add("")
                     // tagRVAdapter.addAllItems(tagArrayList)
+
+                    // MEMO: 지역 필터
+                    regionFlagList = returnRegionList
+                    var regionList = mutableSetOf<Region>()
+                    for (i in 0 until returnRegionList.size) {
+                        regionList.add(returnRegionCode(returnRegionList[i]))
+                    }
 
                     myCourseService.getMyCourseHistory(null, MyCourseHistoryRequest(null, returnCategories("PLACE"), returnCategories("WITH"), returnCategories("TRANS")))
                 }

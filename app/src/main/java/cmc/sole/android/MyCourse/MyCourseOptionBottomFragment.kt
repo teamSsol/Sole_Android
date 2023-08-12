@@ -36,7 +36,6 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
     private lateinit var myCourseOptionLocationRVAdapter: MyCourseOptionLocationRVAdapter
     private lateinit var myCourseOptionRegionRVAdapter: MyCourseOptionLocationRegionRVAdapter
     private lateinit var myCourseOptionSelectLocationRVAdapter: MyCourseOptionLocationSelectRVAdapter
-    private lateinit var myCourseService: MyCourseService
     private var placeTagList = ArrayList<TagButton>()
     private var withTagList = ArrayList<TagButton>()
     private var transTagList = ArrayList<TagButton>()
@@ -44,24 +43,20 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
     private var regionList = ArrayList<RegionData>()
     private var selectRegionList = ArrayList<LocationData>()
     private lateinit var dialogFinishListener: OnTagFragmentFinishListener
-    private var sendTag = listOf<TagButton>()
     private var tagFlag = booleanArrayOf()
     private var initialTagFlag = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
-    private var getRegionList = arrayListOf<String>()
-    private var initialRegionList = mutableSetOf<Region>()
-    private var returnRegionList = mutableSetOf<Region>()
+    private var initialRegionList = arrayListOf<String>()
+    private var returnRegionList = arrayListOf<String>()
     private var applyTag: Boolean = false
     // MEMO: 현재 선택하고 있는 지역을 알기 위함
     private var selectCityFlag = "서울"
-
-    private val writeVM: MyCourseWriteViewModel by activityViewModels()
 
     override fun getTheme(): Int {
         return R.style.AppBottomDialogTheme
     }
 
     interface OnTagFragmentFinishListener {
-        fun finish(tagSort: List<TagButton>, returnRegionList: MutableSet<Region>)
+        fun finish(returnTagList: List<TagButton>, returnRegionList: ArrayList<String>)
     }
 
     fun setOnFinishListener(listener: OnTagFragmentFinishListener) {
@@ -113,11 +108,8 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         initialTagFlag = requireArguments().getBooleanArray("tagFlag")!!
         tagFlag = initialTagFlag.copyOf()
 
-        getRegionList = requireArguments().getStringArrayList("regionFlag")!!
-
-
-        var a = "B01"
-        var b = enumValueOf<Region>(a)
+        initialRegionList = requireArguments().getStringArrayList("regionFlag")!!
+        returnRegionList.addAll(initialRegionList)
 
         initAdapter()
         initClickListener()
@@ -129,10 +121,11 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         binding.myCourseTagOkBtn.setOnClickListener {
             // MEMO: 선택한 지역 리스트 API 연결
             var regionList = myCourseOptionSelectLocationRVAdapter.returnAllItems()
-            returnRegionList = mutableSetOf<Region>()
-            for (i in 0 until regionList.size) {
-                returnRegionList.add(returnRegionCode(regionList[i].city + " " + regionList[i].region))
-            }
+
+            // MEMO: 새로운 지역 추가
+//            for (i in 0 until regionList.size) {
+//                returnRegionList.add(regionList[i].city + " " + regionList[i].region)
+//            }
 
             // MEMO: Tag 적용했는지 안했는지 확인하기 위함
             applyTag = true
@@ -160,6 +153,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun initAdapter() {
         myCourseTagBottomPlaceRVAdapter = MyCourseTagButtonRVAdapter(placeTagList)
         binding.myCoursePlaceTagRv.adapter = myCourseTagBottomPlaceRVAdapter
@@ -242,8 +236,10 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
 
                 if (!data.isSelected) {
                     myCourseOptionSelectLocationRVAdapter.addItem(LocationData(city, region))
+                    returnRegionList.add("$city $region")
                 } else {
                     myCourseOptionSelectLocationRVAdapter.remove(LocationData(city, region))
+                    returnRegionList.remove("$city $region")
                 }
 
                 binding.myCourseOptionSelectNumberTv.text = myCourseOptionSelectLocationRVAdapter.returnListSize().toString()
@@ -260,6 +256,12 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
                 myCourseOptionRegionRVAdapter.changeIsSelectedNoPos(data.region)
             }
         })
+
+        // MEMO: 선택한 지역 적용
+        for (i in 0 until initialRegionList.size) {
+            myCourseOptionRegionRVAdapter.changeIsSelectedText(initialRegionList[i])
+            myCourseOptionSelectLocationRVAdapter.addItem(LocationData(initialRegionList[i].split(" ")[0], initialRegionList[i].split(" ")[1]))
+        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
