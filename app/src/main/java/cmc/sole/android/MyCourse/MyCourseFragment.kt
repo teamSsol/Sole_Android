@@ -119,7 +119,7 @@ class MyCourseFragment: Fragment(),
                     tagArrayList.add("")
                     // tagRVAdapter.addAllItems(tagArrayList)
 
-                    myCourseService.getMyCourseHistory(null, MyCourseHistoryRequest(returnCategories("PLACE"), returnCategories("WITH"), returnCategories("TRANS")))
+                    myCourseService.getMyCourseHistory(null, MyCourseHistoryRequest(null, returnCategories("PLACE"), returnCategories("WITH"), returnCategories("TRANS")))
                 }
             })
         }
