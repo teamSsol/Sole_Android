@@ -111,9 +111,15 @@ class MyCourseFragment: Fragment(),
             myCourseOptionBottomFragment.show(activity?.supportFragmentManager!!, "CourseDetailOptionBottom")
             myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
                 override fun finish(returnTagList: List<TagButton>, returnRegionList: ArrayList<String>) {
+                    var filterFlag = false
+
                     // MEMO: 태그
                     for (i in 0..17) {
                         tagFlagList[i] = returnTagList[i].isChecked
+
+                        if (returnTagList[i].isChecked) {
+                            filterFlag = true
+                        }
                     }
 
                     var tagArrayList = arrayListOf<String>()
@@ -130,7 +136,15 @@ class MyCourseFragment: Fragment(),
                     for (i in 0 until returnRegionList.size) {
                         regionList.add(returnRegionCode(returnRegionList[i]))
                     }
+                    if (returnRegionList.size > 0) {
+                        filterFlag = true
+                    }
 
+                    if (filterFlag) {
+                        binding.myCourseFilterCv.strokeColor = ContextCompat.getColor(binding.root.context, R.color.main)
+                    } else {
+                        binding.myCourseFilterCv.strokeColor = Color.parseColor("#D3D4D5")
+                    }
                     myCourseService.getMyCourseHistory(null, MyCourseHistoryRequest(null, returnCategories("PLACE"), returnCategories("WITH"), returnCategories("TRANS")))
                 }
             })

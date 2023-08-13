@@ -98,6 +98,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         dialogFinishListener.finish(returnList, returnRegionList)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -110,6 +111,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
 
         initialRegionList = requireArguments().getStringArrayList("regionFlag")!!
         returnRegionList.addAll(initialRegionList)
+        binding.myCourseOptionSelectNumberTv.setText(initialRegionList.size.toString())
 
         initAdapter()
         initClickListener()
@@ -119,14 +121,6 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
 
     private fun initClickListener() {
         binding.myCourseTagOkBtn.setOnClickListener {
-            // MEMO: 선택한 지역 리스트 API 연결
-            var regionList = myCourseOptionSelectLocationRVAdapter.returnAllItems()
-
-            // MEMO: 새로운 지역 추가
-//            for (i in 0 until regionList.size) {
-//                returnRegionList.add(regionList[i].city + " " + regionList[i].region)
-//            }
-
             // MEMO: Tag 적용했는지 안했는지 확인하기 위함
             applyTag = true
             dismiss()
@@ -254,6 +248,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
             override fun onItemClickListener(data: LocationData, position: Int) {
                 binding.myCourseOptionSelectNumberTv.text = (myCourseOptionSelectLocationRVAdapter.returnListSize() - 1).toString()
                 myCourseOptionRegionRVAdapter.changeIsSelectedNoPos(data.region)
+                returnRegionList.remove("${data.city} ${data.region}")
             }
         })
 
