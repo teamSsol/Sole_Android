@@ -3,6 +3,7 @@ package cmc.sole.android.MyCourse.Retrofit
 import cmc.sole.android.CourseTag.Categories
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.User
+import cmc.sole.android.Utils.Region
 
 data class MyCourseHistoryInfoResponse(
     var data: MyCourseHistoryInfoResult,
@@ -23,6 +24,7 @@ data class MyCourseHistoryInfoResult(
 )
 
 data class MyCourseHistoryRequest(
+    var regions: Set<Region>?,
     var placeCategories: Set<Categories>?,
     var transCategories: Set<Categories>?,
     var withCategories: Set<Categories>?

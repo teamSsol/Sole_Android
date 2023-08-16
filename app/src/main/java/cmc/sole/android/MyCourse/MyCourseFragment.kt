@@ -32,6 +32,8 @@ import cmc.sole.android.CourseTag.Categories
 import cmc.sole.android.CourseTag.placeCategories
 import cmc.sole.android.CourseTag.transCategories
 import cmc.sole.android.CourseTag.withCategories
+import cmc.sole.android.Utils.Region
+import cmc.sole.android.Utils.returnRegionCode
 
 
 class MyCourseFragment: Fragment(),
@@ -50,6 +52,7 @@ class MyCourseFragment: Fragment(),
     // private lateinit var tagRVAdapter: MyCourseTagRVAdapter
     // private var tagList = ArrayList<String>()
     var tagFlagList = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
+    var regionFlagList = arrayListOf<String>()
     var placeCategories = mutableSetOf<Categories>()
     var transCategories = mutableSetOf<Categories>()
     var withCategories = mutableSetOf<Categories>()
@@ -103,23 +106,46 @@ class MyCourseFragment: Fragment(),
             val myCourseOptionBottomFragment = MyCourseOptionBottomFragment()
             var bundle = Bundle()
             bundle.putBooleanArray("tagFlag", tagFlagList)
+            bundle.putStringArrayList("regionFlag", regionFlagList)
             myCourseOptionBottomFragment.arguments = bundle
             myCourseOptionBottomFragment.show(activity?.supportFragmentManager!!, "CourseDetailOptionBottom")
             myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
-                override fun finish(tagFragmentResult: List<TagButton>) {
+                override fun finish(returnTagList: List<TagButton>, returnRegionList: ArrayList<String>) {
+                    var filterFlag = false
+
+                    // MEMO: 태그
                     for (i in 0..17) {
-                        tagFlagList[i] = tagFragmentResult[i].isChecked
+                        tagFlagList[i] = returnTagList[i].isChecked
+
+                        if (returnTagList[i].isChecked) {
+                            filterFlag = true
+                        }
                     }
 
                     var tagArrayList = arrayListOf<String>()
                     for (i in 0..17) {
-                        if (tagFlagList[i]) tagArrayList.add(tagFragmentResult[i].title)
+                        if (tagFlagList[i]) tagArrayList.add(returnTagList[i].title)
                     }
 
                     tagArrayList.add("")
                     // tagRVAdapter.addAllItems(tagArrayList)
 
-                    myCourseService.getMyCourseHistory(null, MyCourseHistoryRequest(returnCategories("PLACE"), returnCategories("WITH"), returnCategories("TRANS")))
+                    // MEMO: 지역 필터
+                    regionFlagList = returnRegionList
+                    var regionList = mutableSetOf<Region>()
+                    for (i in 0 until returnRegionList.size) {
+                        regionList.add(returnRegionCode(returnRegionList[i]))
+                    }
+                    if (returnRegionList.size > 0) {
+                        filterFlag = true
+                    }
+
+                    if (filterFlag) {
+                        binding.myCourseFilterCv.strokeColor = ContextCompat.getColor(binding.root.context, R.color.main)
+                    } else {
+                        binding.myCourseFilterCv.strokeColor = Color.parseColor("#D3D4D5")
+                    }
+                    myCourseService.getMyCourseHistory(null, MyCourseHistoryRequest(null, returnCategories("PLACE"), returnCategories("WITH"), returnCategories("TRANS")))
                 }
             })
         }

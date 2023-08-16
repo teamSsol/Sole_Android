@@ -1,7 +1,6 @@
 package cmc.sole.android.MyCourse
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -101,6 +100,17 @@ class MyCourseOptionLocationRegionRVAdapter(private val regionList: ArrayList<Re
         this.notifyItemChanged(position)
     }
 
+    fun changeIsSelectedText(cityAndRegion: String) {
+        Log.d("API-TEST", "regionList = $regionList")
+        var region = cityAndRegion.split(" ")[1]
+        var index = regionList.indexOf(RegionData(region))
+        Log.d("API-TEST", "index = $index")
+        if (index != -1) {
+            regionList[index].isSelected = !regionList[index].isSelected
+            this.notifyItemChanged(index)
+        }
+    }
+
     fun changeIsSelectedNoPos(region: String) {
         for (i in 0 until regionList.size) {
             if (regionList[i].region == region) {
@@ -109,5 +119,10 @@ class MyCourseOptionLocationRegionRVAdapter(private val regionList: ArrayList<Re
                 break
             }
         }
+    }
+
+    fun returnIndex(cityAndRegion: String): Int {
+        var region = cityAndRegion.split(" ")[1]
+        return regionList.indexOf(RegionData(region))
     }
 }

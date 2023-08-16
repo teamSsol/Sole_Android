@@ -4,6 +4,7 @@ import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -22,18 +23,13 @@ import androidx.recyclerview.widget.RecyclerView
 import cmc.sole.android.Home.*
 import cmc.sole.android.Home.Retrofit.HomeCourseDetailView
 import cmc.sole.android.Home.Retrofit.HomeService
-import cmc.sole.android.MyCourse.MyCourseTagRVAdapter
-import cmc.sole.android.MyCourse.MyCourseWriteTagBottomFragment
-import cmc.sole.android.MyCourse.PlaceInfoData
+import cmc.sole.android.MyCourse.*
 import cmc.sole.android.MyCourse.Retrofit.*
-import cmc.sole.android.MyCourse.TagButton
 import cmc.sole.android.R
+import cmc.sole.android.Utils.*
 
-import cmc.sole.android.Utils.ImageTranslator
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecoration
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
-import cmc.sole.android.Utils.ToastDefault
-import cmc.sole.android.Utils.Translator
 import cmc.sole.android.databinding.ActivityMyCourseWriteBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -68,6 +64,7 @@ class MyCourseWriteActivity: AppCompatActivity(),
     var index = 0
 
     var tagFlagList = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
+    var regionFlagList = arrayListOf<String>()
     var placeCategories = mutableSetOf<String>()
     var transCategories = mutableSetOf<String>()
     var withCategories = mutableSetOf<String>()
@@ -163,28 +160,57 @@ class MyCourseWriteActivity: AppCompatActivity(),
         }
 
         binding.myCourseWriteTagLayout.setOnClickListener {
-            val myCourseWriteTagBottomFragment = MyCourseWriteTagBottomFragment()
+//            val myCourseWriteTagBottomFragment = MyCourseWriteTagBottomFragment()
+//            var bundle = Bundle()
+//            bundle.putBooleanArray("tagFlag", tagFlagList)
+//            myCourseWriteTagBottomFragment.arguments = bundle
+//            myCourseWriteTagBottomFragment.show(supportFragmentManager, "myCourseTagBottom")
+//            myCourseWriteTagBottomFragment.setOnFinishListener(object: MyCourseWriteTagBottomFragment.OnTagFragmentFinishListener {
+//                override fun finish(tagFragmentResult: List<TagButton>) {
+//                    for (i in 0..17) {
+//                        tagFlagList[i] = tagFragmentResult[i].isChecked
+//                    }
+//
+//                    var tagArrayList = arrayListOf<String>()
+//                    for (i in 0..17) {
+//                        if (tagFlagList[i]) tagArrayList.add(tagFragmentResult[i].title)
+//                    }
+//
+//                    tagArrayList.add("")
+//                    tagRVAdapter.addAllItems(tagArrayList)
+//
+//                    placeCategories = returnCategories("PLACE")
+//                    transCategories = returnCategories("TRANS")
+//                    withCategories = returnCategories("WITH")
+//                }
+//            })
+            val myCourseOptionBottomFragment = MyCourseOptionBottomFragment()
             var bundle = Bundle()
             bundle.putBooleanArray("tagFlag", tagFlagList)
-            myCourseWriteTagBottomFragment.arguments = bundle
-            myCourseWriteTagBottomFragment.show(supportFragmentManager, "myCourseTagBottom")
-            myCourseWriteTagBottomFragment.setOnFinishListener(object: MyCourseWriteTagBottomFragment.OnTagFragmentFinishListener {
-                override fun finish(tagFragmentResult: List<TagButton>) {
+            bundle.putStringArrayList("regionFlag", regionFlagList)
+            myCourseOptionBottomFragment.arguments = bundle
+            myCourseOptionBottomFragment.show(supportFragmentManager, "CourseDetailOptionBottom")
+            myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
+                override fun finish(returnTagList: List<TagButton>, returnRegionList: ArrayList<String>) {
+                    // MEMO: 태그
                     for (i in 0..17) {
-                        tagFlagList[i] = tagFragmentResult[i].isChecked
+                        tagFlagList[i] = returnTagList[i].isChecked
                     }
 
                     var tagArrayList = arrayListOf<String>()
                     for (i in 0..17) {
-                        if (tagFlagList[i]) tagArrayList.add(tagFragmentResult[i].title)
+                        if (tagFlagList[i]) tagArrayList.add(returnTagList[i].title)
                     }
 
                     tagArrayList.add("")
-                    tagRVAdapter.addAllItems(tagArrayList)
+                    // tagRVAdapter.addAllItems(tagArrayList)
 
-                    placeCategories = returnCategories("PLACE")
-                    transCategories = returnCategories("TRANS")
-                    withCategories = returnCategories("WITH")
+                    // MEMO: 지역 필터
+                    regionFlagList = returnRegionList
+                    var regionList = mutableSetOf<Region>()
+                    for (i in 0 until returnRegionList.size) {
+                        regionList.add(returnRegionCode(returnRegionList[i]))
+                    }
                 }
             })
         }
