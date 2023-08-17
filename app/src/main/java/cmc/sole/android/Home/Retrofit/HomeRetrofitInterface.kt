@@ -3,6 +3,7 @@ package cmc.sole.android.Home.Retrofit
 import cmc.sole.android.DefaultResponse
 import cmc.sole.android.Home.*
 import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryRequest
+import cmc.sole.android.TagSettingRequest
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -18,7 +19,7 @@ interface HomeRetrofitInterface {
 
     @PATCH("/api/courses/favCategory")
     fun updateCategories(
-        @Body myCourseHistoryRequest: MyCourseHistoryRequest
+        @Body tagSettingRequest: TagSettingRequest
     ): Call<HomeCategoriesResponse>
 
     @GET("/api/courses/favCategory")

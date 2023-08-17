@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import cmc.sole.android.CourseTag.Categories
 import cmc.sole.android.Home.HomeCategoriesResult
 import cmc.sole.android.Home.Retrofit.HomeCategoriesUpdateView
 import cmc.sole.android.Home.Retrofit.HomeGetCategoriesView
@@ -133,33 +134,35 @@ class StartCourseTagActivity: AppCompatActivity(),
             }
 
             // UPDATE: 이 부분 타입 수정하기 (returnTag ReturnType MutableSet<String> -> MutableSet<Categories>
-//            var myCourseHistoryRequest = MyCourseHistoryRequest(returnTag("place"), returnTag("trans"), returnTag("with"))
-//            homeService.updateCategories(myCourseHistoryRequest)
+            var myCourseHistoryRequest = TagSettingRequest(returnTag("place"), returnTag("trans"), returnTag("with"))
+            homeService.updateCategories(myCourseHistoryRequest)
         }
     }
 
-    private fun returnTag(option: String): MutableSet<String> {
-        var resultTagSet = mutableSetOf<String>()
+    private fun returnTag(option: String): MutableSet<Categories> {
+        var resultTagSet = mutableSetOf<Categories>()
         when(option) {
             "place" -> {
                 for (i in 0..8) {
                     if (myCourseTagPlaceRVAdapter.getItem(i).isChecked)
-                        resultTagSet.add(Translator.tagKorToEng(this, myCourseTagPlaceRVAdapter.getItem(i).title))
+                        resultTagSet.add(Translator.returnTagEngStr(i + 1))
                 }
             }
             "with" -> {
                 for (i in 0..4) {
                     if (myCourseTagWithRVAdapter.getItem(i).isChecked)
-                        resultTagSet.add(Translator.tagKorToEng(this, myCourseTagWithRVAdapter.getItem(i).title))
+                        resultTagSet.add(Translator.returnTagEngStr(i + 10))
                 }
             }
             else -> {
                 for (i in 0..3) {
                     if (myCourseTagTransRVAdapter.getItem(i).isChecked)
-                        resultTagSet.add(Translator.tagKorToEng(this, myCourseTagTransRVAdapter.getItem(i).title))
+                        resultTagSet.add(Translator.returnTagEngStrStep(i + 15))
                 }
             }
         }
+
+        Log.d("API-TEST", "resultTagSet = $resultTagSet")
 
         return resultTagSet
     }

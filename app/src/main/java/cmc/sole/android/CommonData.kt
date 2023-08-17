@@ -1,10 +1,18 @@
 package cmc.sole.android
 
+import cmc.sole.android.CourseTag.Categories
+
 data class DefaultResponse(
     var data: String,
     var status: Int,
     var success: Boolean,
     var timestamp: String
+)
+
+data class TagSettingRequest(
+    var placeCategories: Set<Categories>?,
+    var transCategories: Set<Categories>?,
+    var withCategories: Set<Categories>?
 )
 
 data class User(
