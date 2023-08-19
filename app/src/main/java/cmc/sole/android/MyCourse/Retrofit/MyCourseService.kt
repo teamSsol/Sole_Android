@@ -78,6 +78,7 @@ class MyCourseService {
                 call: Call<MyCourseHistoryResponse>,
                 response: Response<MyCourseHistoryResponse>
             ) {
+                Log.d("API-TEST", "myCourseHistoryRequest = $myCourseHistoryRequest")
                 // Log.d("API-TEST", "getMyCourseHistory.body = ${response.body()}")
                 // Log.d("API-TEST", "getMyCourseHistory.data = ${response.body()?.data}")
                 if (response.code() == 200) {
