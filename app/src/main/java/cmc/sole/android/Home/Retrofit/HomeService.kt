@@ -5,6 +5,7 @@ import cmc.sole.android.DefaultResponse
 import cmc.sole.android.ErrorResponse
 import cmc.sole.android.Home.*
 import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryRequest
+import cmc.sole.android.TagSettingRequest
 import com.example.geeksasaeng.Utils.NetworkModule
 import com.google.gson.Gson
 import okhttp3.MultipartBody
@@ -139,8 +140,8 @@ class HomeService {
         })
     }
 
-    fun updateCategories(myCourseHistoryRequest: MyCourseHistoryRequest) {
-        homeService?.updateCategories(myCourseHistoryRequest)?.enqueue(object: Callback<HomeCategoriesResponse> {
+    fun updateCategories(tagSettingRequest: TagSettingRequest) {
+        homeService?.updateCategories(tagSettingRequest)?.enqueue(object: Callback<HomeCategoriesResponse> {
             override fun onResponse(
                 call: Call<HomeCategoriesResponse>,
                 response: Response<HomeCategoriesResponse>

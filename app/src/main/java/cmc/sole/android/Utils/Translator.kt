@@ -109,6 +109,32 @@ object Translator {
         }
     }
 
+    fun returnTagEngStrStep(position: Int): Categories {
+        return when(position) {
+            1 -> Categories.TASTY_PLACE
+            2 -> Categories.CAFE
+            3 -> Categories.CULTURE_ART
+            4 -> Categories.ACTIVITY
+            5 -> Categories.HEALING
+            6 -> Categories.NATURE
+            7 -> Categories.NIGHT_VIEW
+            8 -> Categories.HISTORY
+            9 -> Categories.THEME_PARK
+
+            10 -> Categories.ALONE
+            11 -> Categories.FRIEND
+            12 -> Categories.COUPLE
+            13 -> Categories.KID
+            14 -> Categories.PET
+
+            15 -> Categories.WALK
+            16 -> Categories.PUBLIC_TRANSPORTATION
+            17 -> Categories.BIKE
+            18 -> Categories.CAR
+            else -> Categories.CAR
+        }
+    }
+
     fun tagEngPosition(activity: AppCompatActivity, tag: String): Int {
         return when(tag) {
             "TASTY_PLACE" -> 1

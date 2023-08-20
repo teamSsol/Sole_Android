@@ -145,7 +145,17 @@ class MyCourseFragment: Fragment(),
                     } else {
                         binding.myCourseFilterCv.strokeColor = Color.parseColor("#D3D4D5")
                     }
-                    myCourseService.getMyCourseHistory(null, MyCourseHistoryRequest(null, returnCategories("PLACE"), returnCategories("WITH"), returnCategories("TRANS")))
+
+                    var region = regionList
+                    var placeCategories = returnCategories("PLACE")
+                    var withCategories = returnCategories("WITH")
+                    var transCategories = returnCategories("TRANS")
+
+                    if (region.size == 0 && placeCategories.size == 0 && withCategories.size == 0 && transCategories.size == 0) {
+                        myCourseService.getMyCourseNullTagHistory(courseId)
+                    } else {
+                        myCourseService.getMyCourseHistory(null, MyCourseHistoryRequest(region, placeCategories, transCategories, withCategories))
+                    }
                 }
             })
         }
