@@ -123,7 +123,9 @@ class HomeFragment: Fragment(),
         }
 
         binding.homeMyCourseSettingTv.setOnClickListener {
-            startActivity(Intent(activity, StartCourseTagActivity::class.java))
+            val intent = Intent(activity, StartCourseTagActivity::class.java)
+            intent.putExtra("flag", "homeMyCourseSetting")
+            startActivity(intent)
         }
 
         binding.courseMoreCv.setOnClickListener {
