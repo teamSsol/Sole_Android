@@ -113,6 +113,14 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         returnRegionList.addAll(initialRegionList)
         binding.myCourseOptionSelectNumberTv.setText(initialRegionList.size.toString())
 
+        // UPDATE: 나중에 지역 추가하면 이 부분 삭제하기
+        binding.myCourseWriteOptionTagLayout.visibility = View.VISIBLE
+        binding.myCourseWriteOptionLocationLayout.visibility = View.GONE
+        binding.myCourseWriteOptionLocationTv.visibility = View.GONE
+        binding.myCourseWriteOptionTasteTv.setTextColor(ContextCompat.getColor(binding.root.context, R.color.black))
+        binding.myCourseWriteOptionLocationTv.setTextColor(Color.parseColor("#999999"))
+        binding.myCourseOptionSelectLayout.visibility = View.GONE
+
         initAdapter()
         initClickListener()
 
