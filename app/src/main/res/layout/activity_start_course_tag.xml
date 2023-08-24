@@ -24,25 +24,35 @@
         android:id="@+id/start_course_tag_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="내 취향 코스를 추천받기 위해\n선호하는 코스의 태그를 설정해주세요."
+        android:text="취향 태그를 설정해 주세요."
         android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_marginTop="36dp"
+        android:textSize="22sp"
+        android:layout_marginTop="37dp"
+        android:layout_margin="16dp"
         android:fontFamily="@font/pretendard_semibold"
-        android:gravity="center"
         android:textFontWeight="600"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/start_course_tag_skip_tv" />
+
+    <TextView
+        android:id="@+id/start_course_tag_sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#404040"
+        android:textSize="14sp"
+        android:text="선택한 태그를 포함한 코스를 추천해 드릴게요."
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/start_course_tag_title"
+        app:layout_constraintStart_toStartOf="@id/start_course_tag_title" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="19dp"
         android:layout_marginBottom="20dp"
         android:scrollbars="none"
         android:overScrollMode="never"
-        app:layout_constraintTop_toBottomOf="@id/start_course_tag_title"
+        app:layout_constraintTop_toBottomOf="@id/start_course_tag_sub_title"
         app:layout_constraintBottom_toTopOf="@id/my_course_tag_ok_btn">
 
         <androidx.constraintlayout.widget.ConstraintLayout

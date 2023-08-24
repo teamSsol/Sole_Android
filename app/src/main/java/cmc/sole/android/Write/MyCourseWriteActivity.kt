@@ -186,6 +186,7 @@ class MyCourseWriteActivity: AppCompatActivity(),
 //            })
             val myCourseOptionBottomFragment = MyCourseOptionBottomFragment()
             var bundle = Bundle()
+            bundle.putString("flag", "myCourseWrite")
             bundle.putBooleanArray("tagFlag", tagFlagList)
             bundle.putStringArrayList("regionFlag", regionFlagList)
             myCourseOptionBottomFragment.arguments = bundle

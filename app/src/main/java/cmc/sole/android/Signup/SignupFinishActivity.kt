@@ -30,7 +30,9 @@ class SignupFinishActivity: AppCompatActivity() {
     private fun initClickListener() {
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
-            changeActivity(StartCourseTagActivity::class.java)
+            val intent = Intent(this, StartCourseTagActivity::class.java)
+            intent.putExtra("flag", "signupFinish")
+            startActivity(intent)
             finishAffinity()
         }, 3000)
     }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import cmc.sole.android.CourseTag.Categories
 import cmc.sole.android.Home.HomeCategoriesResult
@@ -41,6 +42,13 @@ class StartCourseTagActivity: AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStartCourseTagBinding.inflate(layoutInflater)
+
+        var flag = intent.getStringExtra("flag")
+        if (flag == "signupFinish") {
+            binding.startCourseTagSkipTv.visibility = View.VISIBLE
+        } else {
+            binding.startCourseTagSkipTv.visibility = View.INVISIBLE
+        }
 
         initService()
         initAdapter()
