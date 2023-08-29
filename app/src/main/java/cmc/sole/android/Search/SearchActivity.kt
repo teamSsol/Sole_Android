@@ -211,6 +211,7 @@ class SearchActivity: AppCompatActivity(),
     override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
         binding.searchRv.visibility = View.VISIBLE
         binding.searchDefaultLayout.visibility = View.GONE
+        binding.searchFilterCv.visibility = View.VISIBLE
 
         if (homeDefaultResponse.data.size != 0) {
             // MEMO: 마지막 페이지가 아니라면 더 보기 버튼 보여주기
