@@ -2,6 +2,7 @@ package cmc.sole.android.Search
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -9,17 +10,27 @@ import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
+import cmc.sole.android.CourseTag.Categories
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.Home.HomeDefaultCourseRVAdapter
 import cmc.sole.android.Home.HomeDefaultResponse
 import cmc.sole.android.Home.Retrofit.HomeDefaultCourseView
 import cmc.sole.android.Home.Retrofit.HomeService
+import cmc.sole.android.MyCourse.MyCourseOptionBottomFragment
+import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryRequest
+import cmc.sole.android.MyCourse.Retrofit.MyCourseService
+import cmc.sole.android.MyCourse.TagButton
+import cmc.sole.android.R
 import cmc.sole.android.Search.RoomDB.SearchWord
 import cmc.sole.android.Search.RoomDB.SearchWordDao
 import cmc.sole.android.Search.RoomDB.SearchWordDatabase
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
+import cmc.sole.android.Utils.Region
+import cmc.sole.android.Utils.Translator
+import cmc.sole.android.Utils.returnRegionCode
 import cmc.sole.android.databinding.ActivitySearchBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +53,13 @@ class SearchActivity: AppCompatActivity(),
     var courseId: Int? = null
     var lastCourseId: Int? = null
     private var searchWord = ""
+
+    // MEMO: 필터 적용
+    var tagFlagList = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
+    var regionFlagList = arrayListOf<String>()
+    var placeCategories = mutableSetOf<Categories>()
+    var transCategories = mutableSetOf<Categories>()
+    var withCategories = mutableSetOf<Categories>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,6 +154,7 @@ class SearchActivity: AppCompatActivity(),
                 }
                 binding.searchDefaultLayout.visibility = View.VISIBLE
                 binding.searchResultRv.visibility = View.GONE
+                binding.searchFilterCv.visibility = View.GONE
                 binding.searchTextEt.setText("")
 
                 searchResultRVAdapter.removeAllItems()
@@ -156,6 +175,8 @@ class SearchActivity: AppCompatActivity(),
                 }
                 binding.searchDefaultLayout.visibility = View.VISIBLE
                 binding.searchResultRv.visibility = View.GONE
+                binding.searchFilterCv.visibility = View.GONE
+                binding.courseMoreCv.visibility = View.GONE
                 binding.searchTextEt.setText("")
 
                 searchResultRVAdapter.removeAllItems()
@@ -206,11 +227,101 @@ class SearchActivity: AppCompatActivity(),
         binding.courseMoreCv.setOnClickListener {
             searchService.getHomeDefaultCourse(lastCourseId, searchWord)
         }
+
+
+        binding.searchFilterCv.setOnClickListener {
+            val myCourseOptionBottomFragment = MyCourseOptionBottomFragment()
+            var bundle = Bundle()
+            bundle.putBooleanArray("tagFlag", tagFlagList)
+            bundle.putStringArrayList("regionFlag", regionFlagList)
+            myCourseOptionBottomFragment.arguments = bundle
+            myCourseOptionBottomFragment.show(supportFragmentManager!!, "CourseDetailOptionBottom")
+            myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
+                override fun finish(returnTagList: List<TagButton>, returnRegionList: ArrayList<String>) {
+                    var filterFlag = false
+
+                    // MEMO: 태그
+                    for (i in 0..17) {
+                        tagFlagList[i] = returnTagList[i].isChecked
+
+                        if (returnTagList[i].isChecked) {
+                            filterFlag = true
+                        }
+                    }
+
+                    var tagArrayList = arrayListOf<String>()
+                    for (i in 0..17) {
+                        if (tagFlagList[i]) tagArrayList.add(returnTagList[i].title)
+                    }
+
+                    tagArrayList.add("")
+                    // tagRVAdapter.addAllItems(tagArrayList)
+
+                    // MEMO: 지역 필터
+                    regionFlagList = returnRegionList
+                    var regionList = mutableSetOf<Region>()
+                    for (i in 0 until returnRegionList.size) {
+                        regionList.add(returnRegionCode(returnRegionList[i]))
+                    }
+                    if (returnRegionList.size > 0) {
+                        filterFlag = true
+                    }
+
+                    if (filterFlag) {
+                        binding.searchFilterCv.strokeColor = ContextCompat.getColor(binding.root.context, R.color.main)
+                    } else {
+                        binding.searchFilterCv.strokeColor = Color.parseColor("#D3D4D5")
+                    }
+
+                    var region = regionList
+                    var placeCategories = returnCategories("PLACE")
+                    var withCategories = returnCategories("WITH")
+                    var transCategories = returnCategories("TRANS")
+
+                    Log.d("API-TEST", "region = $region / placeCategories = $placeCategories / withCategories = $withCategories / transCategories = $transCategories")
+
+                    if (region.size == 0 && placeCategories.size == 0 && withCategories.size == 0 && transCategories.size == 0) {
+                        searchService.getHomeDefaultCourse(courseId, searchWord)
+                    } else {
+                        // myCourseService.getMyCourseHistory(null, MyCourseHistoryRequest(region, placeCategories, transCategories, withCategories))
+                    }
+                }
+            })
+        }
+    }
+
+    private fun returnCategories(option: String): MutableSet<Categories> {
+        var returnCategoriesArray = mutableSetOf<Categories>()
+
+        when(option) {
+            "PLACE" -> {
+                for (i in 0..8) {
+                    if (tagFlagList[i]) {
+                        returnCategoriesArray.add(Translator.returnTagEngStr(i + 1))
+                    }
+                }
+            } "WITH" -> {
+            for (i in 9..13) {
+                if (tagFlagList[i]) {
+                    returnCategoriesArray.add(Translator.returnTagEngStr(i + 1))
+                }
+            }
+        } else -> {
+            for (i in 14..17) {
+                if (tagFlagList[i]) {
+                    returnCategoriesArray.add(Translator.returnTagEngStr(i + 1))
+                }
+            }
+        }
+        }
+
+        return returnCategoriesArray
     }
 
     override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
         binding.searchRv.visibility = View.VISIBLE
         binding.searchDefaultLayout.visibility = View.GONE
+        binding.searchFilterCv.visibility = View.VISIBLE
 
         if (homeDefaultResponse.data.size != 0) {
             // MEMO: 마지막 페이지가 아니라면 더 보기 버튼 보여주기
