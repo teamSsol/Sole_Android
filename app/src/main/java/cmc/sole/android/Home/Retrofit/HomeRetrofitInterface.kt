@@ -1,5 +1,9 @@
 package cmc.sole.android.Home.Retrofit
 
+import cmc.sole.android.CourseTag.Categories
+import cmc.sole.android.CourseTag.placeCategories
+import cmc.sole.android.CourseTag.transCategories
+import cmc.sole.android.CourseTag.withCategories
 import cmc.sole.android.DefaultResponse
 import cmc.sole.android.Home.*
 import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryRequest
@@ -31,7 +35,10 @@ interface HomeRetrofitInterface {
     @GET("/api/courses")
     fun getHomeDefaultCourse(
         @Query("courseId") courseId: Int?,
-        @Query("searchWord") searchWord: String
+        @Query("searchWord") searchWord: String,
+        @Query("placeCategories") placeCategories: Categories?,
+        @Query("withCategories") withCategories: Categories?,
+        @Query("transCategories") transCategories: Categories?
     ): Call<HomeDefaultResponse>
 
     @GET("/api/courses/{courseId}")

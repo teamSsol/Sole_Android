@@ -11,12 +11,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
 import cmc.sole.android.MyPage.MyPageActivity
@@ -62,7 +58,7 @@ class HomeFragment: Fragment(),
         super.onResume()
         myCourseRVAdapter.clearItems()
         homeService.getHomePopularCourse()
-        homeService.getHomeDefaultCourse(courseId, "")
+        homeService.getHomeDefaultCourse(courseId, "", null, null, null)
     }
 
     private fun initAdapter() {

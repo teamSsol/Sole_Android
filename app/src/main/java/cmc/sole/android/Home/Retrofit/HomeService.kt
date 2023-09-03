@@ -1,6 +1,10 @@
 package cmc.sole.android.Home.Retrofit
 
 import android.util.Log
+import cmc.sole.android.CourseTag.Categories
+import cmc.sole.android.CourseTag.placeCategories
+import cmc.sole.android.CourseTag.transCategories
+import cmc.sole.android.CourseTag.withCategories
 import cmc.sole.android.DefaultResponse
 import cmc.sole.android.ErrorResponse
 import cmc.sole.android.Home.*
@@ -209,14 +213,13 @@ class HomeService {
         })
     }
 
-    fun getHomeDefaultCourse(courseId: Int?, searchWord: String) {
-        homeService?.getHomeDefaultCourse(courseId, searchWord)?.enqueue(object: Callback<HomeDefaultResponse> {
+    fun getHomeDefaultCourse(courseId: Int?, searchWord: String, placeCategories: Categories?, withCategories: Categories?, transCategories: Categories?) {
+        homeService?.getHomeDefaultCourse(courseId, searchWord, placeCategories, withCategories, transCategories)?.enqueue(object: Callback<HomeDefaultResponse> {
             override fun onResponse(
                 call: Call<HomeDefaultResponse>,
                 response: Response<HomeDefaultResponse>
             ) {
                 Log.d("API-TEST", "getHomeDefaultCourse.response = $response")
-                // Log.d("API-TEST", "getHomeDefaultCourse.responseBody = ${response.body()}")
                 if (response.code() == 200) {
                     val homeDefaultResponse = response.body()
                     if (homeDefaultResponse?.success == true) {

@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -20,8 +19,6 @@ import cmc.sole.android.Home.HomeDefaultResponse
 import cmc.sole.android.Home.Retrofit.HomeDefaultCourseView
 import cmc.sole.android.Home.Retrofit.HomeService
 import cmc.sole.android.MyCourse.MyCourseOptionBottomFragment
-import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryRequest
-import cmc.sole.android.MyCourse.Retrofit.MyCourseService
 import cmc.sole.android.MyCourse.TagButton
 import cmc.sole.android.R
 import cmc.sole.android.Search.RoomDB.SearchWord
@@ -232,12 +229,14 @@ class SearchActivity: AppCompatActivity(),
         binding.searchFilterCv.setOnClickListener {
             val myCourseOptionBottomFragment = MyCourseOptionBottomFragment()
             var bundle = Bundle()
+            bundle.putString("viewFlag", "searchActivity")
             bundle.putBooleanArray("tagFlag", tagFlagList)
             bundle.putStringArrayList("regionFlag", regionFlagList)
             myCourseOptionBottomFragment.arguments = bundle
             myCourseOptionBottomFragment.show(supportFragmentManager!!, "CourseDetailOptionBottom")
             myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
                 override fun finish(returnTagList: List<TagButton>, returnRegionList: ArrayList<String>) {
+                    Log.d("API-TEST", "returnTagList = $returnTagList / returnRegionList = $returnRegionList")
                     var filterFlag = false
 
                     // MEMO: 태그
@@ -281,10 +280,13 @@ class SearchActivity: AppCompatActivity(),
                     Log.d("API-TEST", "region = $region / placeCategories = $placeCategories / withCategories = $withCategories / transCategories = $transCategories")
 
                     if (region.size == 0 && placeCategories.size == 0 && withCategories.size == 0 && transCategories.size == 0) {
-                        searchService.getHomeDefaultCourse(courseId, searchWord)
+                        searchService.getHomeDefaultCourse(courseId, searchWord, null, null, null)
                     } else {
-                        // myCourseService.getMyCourseHistory(null, MyCourseHistoryRequest(region, placeCategories, transCategories, withCategories))
+                        searchService.getHomeDefaultCourse(courseId, searchWord, placeCategories, withCategories, transCategories)
                     }
+
+                    var map = hashSetOf(Categories.ACTIVITY, Categories.CAFE)
+                    Log.d("API-TEST", "map = ${map}")
                 }
             })
         }
