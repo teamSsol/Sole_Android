@@ -120,7 +120,7 @@ class SearchActivity: AppCompatActivity(),
                     binding.searchDefaultLayout.visibility = View.GONE
                     binding.searchResultRv.visibility = View.VISIBLE
                     binding.searchTextEt.setText(data.searchWord)
-                    searchService.getHomeDefaultCourse(courseId, data.searchWord)
+                    searchService.getHomeDefaultCourse(courseId, data.searchWord, null, null, null)
                 }
             }
         })
@@ -207,7 +207,7 @@ class SearchActivity: AppCompatActivity(),
                 searchWord = binding.searchTextEt.text.toString()
                 searchResultRVAdapter.removeAllItems()
 
-                searchService.getHomeDefaultCourse(courseId, searchWord)
+                searchService.getHomeDefaultCourse(courseId, searchWord, null, null, null)
 
                 CoroutineScope(Dispatchers.IO).launch {
                     val searchWord = binding.searchTextEt.text.toString()
@@ -222,7 +222,7 @@ class SearchActivity: AppCompatActivity(),
         }
 
         binding.courseMoreCv.setOnClickListener {
-            searchService.getHomeDefaultCourse(lastCourseId, searchWord)
+            searchService.getHomeDefaultCourse(lastCourseId, searchWord, null, null, null)
         }
 
 
@@ -282,7 +282,7 @@ class SearchActivity: AppCompatActivity(),
                     if (region.size == 0 && placeCategories.size == 0 && withCategories.size == 0 && transCategories.size == 0) {
                         searchService.getHomeDefaultCourse(courseId, searchWord, null, null, null)
                     } else {
-                        searchService.getHomeDefaultCourse(courseId, searchWord, placeCategories, withCategories, transCategories)
+                        // searchService.getHomeDefaultCourse(courseId, searchWord, placeCategories, withCategories, transCategories)
                     }
 
                     var map = hashSetOf(Categories.ACTIVITY, Categories.CAFE)

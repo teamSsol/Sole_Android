@@ -1,6 +1,5 @@
 package cmc.sole.android.Home
 
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
 import android.content.Intent
@@ -125,7 +124,7 @@ class HomeFragment: Fragment(),
         }
 
         binding.courseMoreCv.setOnClickListener {
-            homeService.getHomeDefaultCourse(lastCourseId, "")
+            homeService.getHomeDefaultCourse(lastCourseId, "", null, null, null)
         }
     }
 
