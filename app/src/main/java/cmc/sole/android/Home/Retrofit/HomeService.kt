@@ -214,7 +214,7 @@ class HomeService {
         })
     }
 
-    fun getHomeDefaultCourse(courseId: Int?, searchWord: String, placeCategories: HashSet<Categories>?, withCategories: HashSet<Categories>?, transCategories: HashSet<Categories>?, regions: Set<Region>?) {
+    fun getHomeDefaultCourse(courseId: Int?, searchWord: String, placeCategories: HashSet<Categories>?, withCategories: HashSet<Categories>?, transCategories: HashSet<Categories>?, regions: HashSet<Region>?) {
         Log.d("API-TEST", "getHomeDefaultCourse In")
         homeService?.getHomeDefaultCourse(courseId, searchWord, placeCategories, withCategories, transCategories, regions)?.enqueue(object: Callback<HomeDefaultResponse> {
             override fun onResponse(
@@ -222,6 +222,7 @@ class HomeService {
                 response: Response<HomeDefaultResponse>
             ) {
                 Log.d("API-TEST", "getHomeDefaultCourse.response = $response")
+                Log.d("API-TEST", "getHomeDefaultCourse.response.body = ${response.body()}")
                 Log.d("API-TEST", "placeCategories = $placeCategories, withCategories = $withCategories, transCategories = $transCategories, region = $regions")
                 if (response.code() == 200) {
                     val homeDefaultResponse = response.body()

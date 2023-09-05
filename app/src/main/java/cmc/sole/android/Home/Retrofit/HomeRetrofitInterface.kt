@@ -40,7 +40,7 @@ interface HomeRetrofitInterface {
         @Query("placeCategories") placeCategories: HashSet<Categories>? = null,
         @Query("withCategories") withCategories: HashSet<Categories>? = null,
         @Query("transCategories") transCategories: HashSet<Categories>? = null,
-        @Query("regions") regions: Set<Region>? = null
+        @Query("regions") regions: HashSet<Region>? = null
     ): Call<HomeDefaultResponse>
 
     @GET("/api/courses/{courseId}")

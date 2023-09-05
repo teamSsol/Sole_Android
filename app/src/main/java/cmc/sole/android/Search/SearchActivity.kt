@@ -52,11 +52,14 @@ class SearchActivity: AppCompatActivity(),
     private var searchWord = ""
 
     // MEMO: 필터 적용
+    var filterFlag = false
+    private var filterResultSetFlag = false
     var tagFlagList = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
     var regionFlagList = arrayListOf<String>()
-    var placeCategories = mutableSetOf<Categories>()
-    var transCategories = mutableSetOf<Categories>()
-    var withCategories = mutableSetOf<Categories>()
+    var placeCategories: HashSet<Categories>? = null
+    var transCategories: HashSet<Categories>? = null
+    var withCategories: HashSet<Categories>? = null
+    var regions: HashSet<Region>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,7 +123,7 @@ class SearchActivity: AppCompatActivity(),
                     binding.searchDefaultLayout.visibility = View.GONE
                     binding.searchResultRv.visibility = View.VISIBLE
                     binding.searchTextEt.setText(data.searchWord)
-                    searchService.getHomeDefaultCourse(courseId, data.searchWord, null, null, null, null)
+                    searchService.getHomeDefaultCourse(courseId, data.searchWord, placeCategories, withCategories, transCategories, regions)
                 }
             }
         })
@@ -237,7 +240,6 @@ class SearchActivity: AppCompatActivity(),
             myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
                 override fun finish(returnTagList: List<TagButton>, returnRegionList: ArrayList<String>) {
                     Log.d("API-TEST", "returnTagList = $returnTagList / returnRegionList = $returnRegionList")
-                    var filterFlag = false
 
                     // MEMO: 태그
                     for (i in 0..17) {
@@ -258,7 +260,7 @@ class SearchActivity: AppCompatActivity(),
 
                     // MEMO: 지역 필터
                     regionFlagList = returnRegionList
-                    var regionList = mutableSetOf<Region>()
+                    var regionList = hashSetOf<Region>()
                     for (i in 0 until returnRegionList.size) {
                         regionList.add(returnRegionCode(returnRegionList[i]))
                     }
@@ -272,20 +274,15 @@ class SearchActivity: AppCompatActivity(),
                         binding.searchFilterCv.strokeColor = Color.parseColor("#D3D4D5")
                     }
 
-                    var region = regionList
-                    var placeCategories = returnCategories("PLACE")
-                    var withCategories = returnCategories("WITH")
-                    var transCategories = returnCategories("TRANS")
+                    regions = regionList
+                    placeCategories = returnCategories("PLACE")
+                    withCategories = returnCategories("WITH")
+                    transCategories = returnCategories("TRANS")
 
-                    Log.d("API-TEST", "region = $region / placeCategories = $placeCategories / withCategories = $withCategories / transCategories = $transCategories")
-                    Log.d("API-TEST", "region = ${region.toString()} / placeCategories = ${placeCategories.toString()} / withCategories = ${withCategories.toString()} / transCategories = ${transCategories.toString()}")
+                    Log.d("API-TEST", "region = $regions / placeCategories = $placeCategories / withCategories = $withCategories / transCategories = $transCategories")
+                    Log.d("API-TEST", "region = ${regions.toString()} / placeCategories = ${placeCategories.toString()} / withCategories = ${withCategories.toString()} / transCategories = ${transCategories.toString()}")
 
-                    if (region.size == 0 && placeCategories.size == 0 && withCategories.size == 0 && transCategories.size == 0) {
-                        searchService.getHomeDefaultCourse(courseId, searchWord, null, null, null, null)
-                    } else {
-                        Log.d("API-TEST", "second")
-                        searchService.getHomeDefaultCourse(courseId, searchWord, placeCategories, withCategories, transCategories, region)
-                    }
+                    searchService.getHomeDefaultCourse(courseId, searchWord, placeCategories, withCategories, transCategories, regions)
 
                     var map = hashSetOf(Categories.ACTIVITY, Categories.CAFE)
                     Log.d("API-TEST", "map = ${map}")
@@ -325,8 +322,15 @@ class SearchActivity: AppCompatActivity(),
     }
 
     override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
-        Log.d("API-TEST", "homeDefaultCourseSuccessView")
-        Log.d("API-TEST", "homeDefaultResponse = $homeDefaultResponse")
+        // MEMO: 경우의 수 : 기본) 필터 X -> 필터 X / 1) 필터 X -> 필터 O / 2) 필터 O -> O / 3) 필터 O -> X
+
+
+        // MEMO: 필터가 새로 적용되었을 때, 기존에 있던 결과 제거
+        if (placeCategories != null && transCategories != null && withCategories != null && regions != null && !filterResultSetFlag) {
+            searchResultRVAdapter.removeAllItems()
+            filterResultSetFlag = true
+        }
+
         binding.searchRv.visibility = View.VISIBLE
         binding.searchDefaultLayout.visibility = View.GONE
         binding.searchFilterCv.visibility = View.VISIBLE
