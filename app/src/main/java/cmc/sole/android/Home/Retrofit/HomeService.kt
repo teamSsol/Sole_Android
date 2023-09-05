@@ -10,6 +10,7 @@ import cmc.sole.android.ErrorResponse
 import cmc.sole.android.Home.*
 import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryRequest
 import cmc.sole.android.TagSettingRequest
+import cmc.sole.android.Utils.Region
 import com.example.geeksasaeng.Utils.NetworkModule
 import com.google.gson.Gson
 import okhttp3.MultipartBody
@@ -213,13 +214,15 @@ class HomeService {
         })
     }
 
-    fun getHomeDefaultCourse(courseId: Int?, searchWord: String, placeCategories: Categories?, withCategories: Categories?, transCategories: Categories?) {
-        homeService?.getHomeDefaultCourse(courseId, searchWord, placeCategories, withCategories, transCategories)?.enqueue(object: Callback<HomeDefaultResponse> {
+    fun getHomeDefaultCourse(courseId: Int?, searchWord: String, placeCategories: HashSet<Categories>?, withCategories: HashSet<Categories>?, transCategories: HashSet<Categories>?, regions: Set<Region>?) {
+        Log.d("API-TEST", "getHomeDefaultCourse In")
+        homeService?.getHomeDefaultCourse(courseId, searchWord, placeCategories, withCategories, transCategories, regions)?.enqueue(object: Callback<HomeDefaultResponse> {
             override fun onResponse(
                 call: Call<HomeDefaultResponse>,
                 response: Response<HomeDefaultResponse>
             ) {
                 Log.d("API-TEST", "getHomeDefaultCourse.response = $response")
+                Log.d("API-TEST", "placeCategories = $placeCategories, withCategories = $withCategories, transCategories = $transCategories, region = $regions")
                 if (response.code() == 200) {
                     val homeDefaultResponse = response.body()
                     if (homeDefaultResponse?.success == true) {
@@ -230,9 +233,11 @@ class HomeService {
                 }
             }
             override fun onFailure(call: Call<HomeDefaultResponse>, t: Throwable) {
+                Log.d("API-TEST", "onFailure")
                 Log.e("HOME-SERVICE", "HOME-SERVICE-GET-DEFAULT-FAILURE", t)
             }
         })
+        Log.d("API-TEST", "finish")
     }
 
     fun getHomeDetailCourse(courseId: Int?) {

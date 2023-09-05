@@ -11,7 +11,10 @@ import java.util.concurrent.TimeUnit
 class ApplicationClass: Application() {
     companion object {
         const val Authorization_TOKEN: String = "Authorization"
-        const val BASE_URL = "https://www.api-teamsole.site"
+        // MEMO: 운영서버
+        // const val BASE_URL = "https://www.api-teamsole.site"
+        // MEMO: 개발서버
+        const val BASE_URL = "https://dev.api-teamsole.site"
         const val TAG: String = "sole-pref" // Log, SharedPreference
 
         lateinit var retrofit: Retrofit

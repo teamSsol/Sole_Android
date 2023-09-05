@@ -55,9 +55,13 @@ class HomeFragment: Fragment(),
 
     override fun onResume() {
         super.onResume()
+        Log.d("API-TEST", "onResume")
         myCourseRVAdapter.clearItems()
+        Log.d("API-TEST", "clearItems")
         homeService.getHomePopularCourse()
-        homeService.getHomeDefaultCourse(courseId, "", null, null, null)
+        Log.d("API-TEST", "getHomePopularCourse")
+        homeService.getHomeDefaultCourse(courseId, "", null, null, null, null)
+        Log.d("API-TEST", "getHomeDefaultCourse")
     }
 
     private fun initAdapter() {
@@ -124,7 +128,7 @@ class HomeFragment: Fragment(),
         }
 
         binding.courseMoreCv.setOnClickListener {
-            homeService.getHomeDefaultCourse(lastCourseId, "", null, null, null)
+            homeService.getHomeDefaultCourse(lastCourseId, "", null, null, null, null)
         }
     }
 

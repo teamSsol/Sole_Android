@@ -8,6 +8,7 @@ import cmc.sole.android.DefaultResponse
 import cmc.sole.android.Home.*
 import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryRequest
 import cmc.sole.android.TagSettingRequest
+import cmc.sole.android.Utils.Region
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -34,11 +35,12 @@ interface HomeRetrofitInterface {
 
     @GET("/api/courses")
     fun getHomeDefaultCourse(
-        @Query("courseId") courseId: Int?,
-        @Query("searchWord") searchWord: String,
-        @Query("placeCategories") placeCategories: Categories?,
-        @Query("withCategories") withCategories: Categories?,
-        @Query("transCategories") transCategories: Categories?
+        @Query("courseId") courseId: Int? = null,
+        @Query("searchWord") searchWord: String = "",
+        @Query("placeCategories") placeCategories: HashSet<Categories>? = null,
+        @Query("withCategories") withCategories: HashSet<Categories>? = null,
+        @Query("transCategories") transCategories: HashSet<Categories>? = null,
+        @Query("regions") regions: Set<Region>? = null
     ): Call<HomeDefaultResponse>
 
     @GET("/api/courses/{courseId}")

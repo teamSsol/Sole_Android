@@ -120,7 +120,7 @@ class SearchActivity: AppCompatActivity(),
                     binding.searchDefaultLayout.visibility = View.GONE
                     binding.searchResultRv.visibility = View.VISIBLE
                     binding.searchTextEt.setText(data.searchWord)
-                    searchService.getHomeDefaultCourse(courseId, data.searchWord, null, null, null)
+                    searchService.getHomeDefaultCourse(courseId, data.searchWord, null, null, null, null)
                 }
             }
         })
@@ -207,7 +207,7 @@ class SearchActivity: AppCompatActivity(),
                 searchWord = binding.searchTextEt.text.toString()
                 searchResultRVAdapter.removeAllItems()
 
-                searchService.getHomeDefaultCourse(courseId, searchWord, null, null, null)
+                searchService.getHomeDefaultCourse(courseId, searchWord, null, null, null, null)
 
                 CoroutineScope(Dispatchers.IO).launch {
                     val searchWord = binding.searchTextEt.text.toString()
@@ -222,7 +222,7 @@ class SearchActivity: AppCompatActivity(),
         }
 
         binding.courseMoreCv.setOnClickListener {
-            searchService.getHomeDefaultCourse(lastCourseId, searchWord, null, null, null)
+            searchService.getHomeDefaultCourse(lastCourseId, searchWord, null, null, null, null)
         }
 
 
@@ -278,11 +278,13 @@ class SearchActivity: AppCompatActivity(),
                     var transCategories = returnCategories("TRANS")
 
                     Log.d("API-TEST", "region = $region / placeCategories = $placeCategories / withCategories = $withCategories / transCategories = $transCategories")
+                    Log.d("API-TEST", "region = ${region.toString()} / placeCategories = ${placeCategories.toString()} / withCategories = ${withCategories.toString()} / transCategories = ${transCategories.toString()}")
 
                     if (region.size == 0 && placeCategories.size == 0 && withCategories.size == 0 && transCategories.size == 0) {
-                        searchService.getHomeDefaultCourse(courseId, searchWord, null, null, null)
+                        searchService.getHomeDefaultCourse(courseId, searchWord, null, null, null, null)
                     } else {
-                        // searchService.getHomeDefaultCourse(courseId, searchWord, placeCategories, withCategories, transCategories)
+                        Log.d("API-TEST", "second")
+                        searchService.getHomeDefaultCourse(courseId, searchWord, placeCategories, withCategories, transCategories, region)
                     }
 
                     var map = hashSetOf(Categories.ACTIVITY, Categories.CAFE)
@@ -292,8 +294,10 @@ class SearchActivity: AppCompatActivity(),
         }
     }
 
-    private fun returnCategories(option: String): MutableSet<Categories> {
-        var returnCategoriesArray = mutableSetOf<Categories>()
+    // private fun returnCategories(option: String): MutableSet<Categories> {
+    private fun returnCategories(option: String): HashSet<Categories> {
+        // var returnCategoriesArray = mutableSetOf<Categories>()
+        var returnCategoriesArray = hashSetOf<Categories>()
 
         when(option) {
             "PLACE" -> {
@@ -321,6 +325,8 @@ class SearchActivity: AppCompatActivity(),
     }
 
     override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
+        Log.d("API-TEST", "homeDefaultCourseSuccessView")
+        Log.d("API-TEST", "homeDefaultResponse = $homeDefaultResponse")
         binding.searchRv.visibility = View.VISIBLE
         binding.searchDefaultLayout.visibility = View.GONE
         binding.searchFilterCv.visibility = View.VISIBLE
@@ -338,6 +344,6 @@ class SearchActivity: AppCompatActivity(),
     }
 
     override fun homeDefaultCourseFailureView() {
-
+        Log.d("API-TEST", "homeDefaultCourseFailureView")
     }
 }
