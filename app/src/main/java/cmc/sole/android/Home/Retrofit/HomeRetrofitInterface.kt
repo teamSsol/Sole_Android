@@ -36,6 +36,14 @@ interface HomeRetrofitInterface {
     @GET("/api/courses")
     fun getHomeDefaultCourse(
         @Query("courseId") courseId: Int? = null,
+        @Query("searchWord") searchWord: String = ""
+    ): Call<HomeDefaultResponse>
+
+    // MEMO: 필터 적용/미적용 구분을 위한 API 추가
+    // MEMO: 위와 같은 API
+    @GET("/api/courses")
+    fun getHomeFilterCourse(
+        @Query("courseId") courseId: Int? = null,
         @Query("searchWord") searchWord: String = "",
         @Query("placeCategories") placeCategories: HashSet<Categories>? = null,
         @Query("withCategories") withCategories: HashSet<Categories>? = null,

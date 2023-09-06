@@ -32,6 +32,11 @@ interface HomeDefaultCourseView {
     fun homeDefaultCourseFailureView()
 }
 
+interface HomeFilterCourseView {
+    fun homeFilterCourseSuccessView(homeDefaultResponse: HomeDefaultResponse)
+    fun homeFilterCourseFailureView()
+}
+
 interface HomeCourseDetailView {
     fun homeCourseDetailSuccessView(homeCourseDetailResult: HomeCourseDetailResult)
     fun homeCourseDetailFailureView()

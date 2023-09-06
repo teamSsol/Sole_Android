@@ -27,6 +27,7 @@ class HomeService {
     private lateinit var homeGetCategoriesView: HomeGetCategoriesView
     private lateinit var homePopularCourseView: HomePopularCourseView
     private lateinit var homeDefaultCourseView: HomeDefaultCourseView
+    private lateinit var homeFilterCourseView: HomeFilterCourseView
     private lateinit var homeCourseDetailView: HomeCourseDetailView
     private lateinit var homeScrapAddAndCancelView: HomeScrapAddAndCancelView
     private lateinit var myPageInfoView: MyPageInfoView
@@ -57,6 +58,9 @@ class HomeService {
     }
     fun setHomeDefaultCourseView(homeDefaultCourseView: HomeDefaultCourseView) {
         this.homeDefaultCourseView = homeDefaultCourseView
+    }
+    fun setHomeFilterCourseView(homeFilterCourseView: HomeFilterCourseView) {
+        this.homeFilterCourseView = homeFilterCourseView
     }
     fun setHomeCourseDetailView(homeCourseDetailView: HomeCourseDetailView) {
         this.homeCourseDetailView = homeCourseDetailView
@@ -214,16 +218,13 @@ class HomeService {
         })
     }
 
-    fun getHomeDefaultCourse(courseId: Int?, searchWord: String, placeCategories: HashSet<Categories>?, withCategories: HashSet<Categories>?, transCategories: HashSet<Categories>?, regions: HashSet<Region>?) {
-        Log.d("API-TEST", "getHomeDefaultCourse In")
-        homeService?.getHomeDefaultCourse(courseId, searchWord, placeCategories, withCategories, transCategories, regions)?.enqueue(object: Callback<HomeDefaultResponse> {
+    fun getHomeDefaultCourse(courseId: Int?, searchWord: String) {
+        homeService?.getHomeDefaultCourse(courseId, searchWord)?.enqueue(object: Callback<HomeDefaultResponse> {
             override fun onResponse(
                 call: Call<HomeDefaultResponse>,
                 response: Response<HomeDefaultResponse>
             ) {
-                Log.d("API-TEST", "getHomeDefaultCourse.response = $response")
-                Log.d("API-TEST", "getHomeDefaultCourse.response.body = ${response.body()}")
-                Log.d("API-TEST", "placeCategories = $placeCategories, withCategories = $withCategories, transCategories = $transCategories, region = $regions")
+                // Log.d("API-TEST", "getHomeDefaultCourse.response = $response")
                 if (response.code() == 200) {
                     val homeDefaultResponse = response.body()
                     if (homeDefaultResponse?.success == true) {
@@ -234,11 +235,32 @@ class HomeService {
                 }
             }
             override fun onFailure(call: Call<HomeDefaultResponse>, t: Throwable) {
-                Log.d("API-TEST", "onFailure")
                 Log.e("HOME-SERVICE", "HOME-SERVICE-GET-DEFAULT-FAILURE", t)
             }
         })
-        Log.d("API-TEST", "finish")
+    }
+
+    fun getHomeFilterCourse(courseId: Int?, searchWord: String, placeCategories: HashSet<Categories>?, withCategories: HashSet<Categories>?, transCategories: HashSet<Categories>?, regions: HashSet<Region>?) {
+        homeService?.getHomeFilterCourse(courseId, searchWord, placeCategories, withCategories, transCategories, regions)?.enqueue(object: Callback<HomeDefaultResponse> {
+            override fun onResponse(
+                call: Call<HomeDefaultResponse>,
+                response: Response<HomeDefaultResponse>
+            ) {
+                Log.d("API-TEST", "getHomeFilterCourse.response = $response")
+                Log.d("API-TEST", "placeCategories = $placeCategories, withCategories = $withCategories, transCategories = $transCategories, region = $regions")
+                if (response.code() == 200) {
+                    val homeFilterResponse = response.body()
+                    if (homeFilterResponse?.success == true) {
+                        homeFilterCourseView.homeFilterCourseSuccessView(homeFilterResponse)
+                    } else {
+                        homeFilterCourseView.homeFilterCourseFailureView()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<HomeDefaultResponse>, t: Throwable) {
+                Log.e("HOME-SERVICE", "HOME-SERVICE-GET-DEFAULT-FAILURE", t)
+            }
+        })
     }
 
     fun getHomeDetailCourse(courseId: Int?) {

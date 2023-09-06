@@ -13,10 +13,12 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
 import cmc.sole.android.CourseTag.Categories
+import cmc.sole.android.CourseTag.transCategories
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.Home.HomeDefaultCourseRVAdapter
 import cmc.sole.android.Home.HomeDefaultResponse
 import cmc.sole.android.Home.Retrofit.HomeDefaultCourseView
+import cmc.sole.android.Home.Retrofit.HomeFilterCourseView
 import cmc.sole.android.Home.Retrofit.HomeService
 import cmc.sole.android.MyCourse.MyCourseOptionBottomFragment
 import cmc.sole.android.MyCourse.TagButton
@@ -33,10 +35,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.NullPointerException
 
 
-class SearchActivity: AppCompatActivity(),
-    HomeDefaultCourseView {
+class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCourseView {
 
     lateinit var binding: ActivitySearchBinding
 
@@ -53,13 +55,16 @@ class SearchActivity: AppCompatActivity(),
 
     // MEMO: 필터 적용
     var filterFlag = false
-    private var filterResultSetFlag = false
     var tagFlagList = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
     var regionFlagList = arrayListOf<String>()
     var placeCategories: HashSet<Categories>? = null
     var transCategories: HashSet<Categories>? = null
     var withCategories: HashSet<Categories>? = null
     var regions: HashSet<Region>? = null
+    var prePlaceCategories: HashSet<Categories>? = null
+    var preTransCategories: HashSet<Categories>? = null
+    var preWithCategories: HashSet<Categories>? = null
+    var preRegions: HashSet<Categories>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,6 +100,7 @@ class SearchActivity: AppCompatActivity(),
     private fun initService() {
         searchService = HomeService()
         searchService.setHomeDefaultCourseView(this)
+        searchService.setHomeFilterCourseView(this)
     }
 
     private fun initAdapter() {
@@ -123,7 +129,7 @@ class SearchActivity: AppCompatActivity(),
                     binding.searchDefaultLayout.visibility = View.GONE
                     binding.searchResultRv.visibility = View.VISIBLE
                     binding.searchTextEt.setText(data.searchWord)
-                    searchService.getHomeDefaultCourse(courseId, data.searchWord, placeCategories, withCategories, transCategories, regions)
+                    checkFilterAndApplyAPI()
                 }
             }
         })
@@ -210,7 +216,7 @@ class SearchActivity: AppCompatActivity(),
                 searchWord = binding.searchTextEt.text.toString()
                 searchResultRVAdapter.removeAllItems()
 
-                searchService.getHomeDefaultCourse(courseId, searchWord, null, null, null, null)
+                searchService.getHomeDefaultCourse(courseId, searchWord)
 
                 CoroutineScope(Dispatchers.IO).launch {
                     val searchWord = binding.searchTextEt.text.toString()
@@ -225,7 +231,7 @@ class SearchActivity: AppCompatActivity(),
         }
 
         binding.courseMoreCv.setOnClickListener {
-            searchService.getHomeDefaultCourse(lastCourseId, searchWord, null, null, null, null)
+            checkFilterAndApplyAPI()
         }
 
 
@@ -282,7 +288,7 @@ class SearchActivity: AppCompatActivity(),
                     Log.d("API-TEST", "region = $regions / placeCategories = $placeCategories / withCategories = $withCategories / transCategories = $transCategories")
                     Log.d("API-TEST", "region = ${regions.toString()} / placeCategories = ${placeCategories.toString()} / withCategories = ${withCategories.toString()} / transCategories = ${transCategories.toString()}")
 
-                    searchService.getHomeDefaultCourse(courseId, searchWord, placeCategories, withCategories, transCategories, regions)
+                    checkFilterAndApplyAPI()
 
                     var map = hashSetOf(Categories.ACTIVITY, Categories.CAFE)
                     Log.d("API-TEST", "map = ${map}")
@@ -321,19 +327,26 @@ class SearchActivity: AppCompatActivity(),
         return returnCategoriesArray
     }
 
-    override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
-        // MEMO: 경우의 수 : 기본) 필터 X -> 필터 X / 1) 필터 X -> 필터 O / 2) 필터 O -> O / 3) 필터 O -> X
-
-
-        // MEMO: 필터가 새로 적용되었을 때, 기존에 있던 결과 제거
-        if (placeCategories != null && transCategories != null && withCategories != null && regions != null && !filterResultSetFlag) {
-            searchResultRVAdapter.removeAllItems()
-            filterResultSetFlag = true
+    private fun checkFilterAndApplyAPI() {
+        if (placeCategories == null && withCategories == null && transCategories == null && regions == null) {
+            searchService.getHomeDefaultCourse(courseId, searchWord)
+        } else {
+            searchService.getHomeFilterCourse(courseId, searchWord, placeCategories, withCategories, transCategories, regions)
         }
+    }
 
+    // MEMO: 경우의 수 : 기본) 필터 X -> 필터 X / 1) 필터 X -> 필터 O / 2) 필터 O -> O / 3) 필터 O -> X
+    override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
         binding.searchRv.visibility = View.VISIBLE
         binding.searchDefaultLayout.visibility = View.GONE
         binding.searchFilterCv.visibility = View.VISIBLE
+        binding.searchFilterCv.strokeColor = Color.parseColor("#D3D4D5")
+
+
+        // MEMO: 이전에 필터를 설정했던 결과가 있었다면 이를 삭제하고 원래대로!!
+        if (placeCategories == null && withCategories == null && transCategories == null && regions == null) {
+            searchResultRVAdapter.removeAllItems()
+        }
 
         if (homeDefaultResponse.data.size != 0) {
             // MEMO: 마지막 페이지가 아니라면 더 보기 버튼 보여주기
@@ -349,5 +362,31 @@ class SearchActivity: AppCompatActivity(),
 
     override fun homeDefaultCourseFailureView() {
         Log.d("API-TEST", "homeDefaultCourseFailureView")
+    }
+
+    override fun homeFilterCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
+        binding.searchRv.visibility = View.VISIBLE
+        binding.searchDefaultLayout.visibility = View.GONE
+        binding.searchFilterCv.visibility = View.VISIBLE
+
+        // MEMO: 이전에 필터를 설정했던 결과와 현재 필터가 다르다면 이를 삭제하고 원래대로!!
+        if (prePlaceCategories != placeCategories || preWithCategories != withCategories || preTransCategories != transCategories || preRegions != regions) {
+            searchResultRVAdapter.removeAllItems()
+        }
+
+        if (homeDefaultResponse.data.size != 0) {
+            // MEMO: 마지막 페이지가 아니라면 더 보기 버튼 보여주기
+            var lastCourse = homeDefaultResponse.data[homeDefaultResponse.data.size - 1]
+            if (!lastCourse.finalPage) {
+                lastCourseId = lastCourse.courseId
+                binding.courseMoreCv.visibility = View.VISIBLE
+            } else binding.courseMoreCv.visibility = View.GONE
+        }
+
+        searchResultRVAdapter.addAllItems(homeDefaultResponse.data)
+    }
+
+    override fun homeFilterCourseFailureView() {
+        Log.d("API-TEST", "homeFilterCourseFailureView")
     }
 }

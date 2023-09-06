@@ -26,7 +26,7 @@ import cmc.sole.android.databinding.FragmentHomeBinding
 import androidx.fragment.app.Fragment
 
 class HomeFragment: Fragment(),
-    HomePopularCourseView, HomeDefaultCourseView, HomeGetCurrentGPSView, HomeUpdateCurrentGPSView, HomeScrapAddAndCancelView {
+    HomePopularCourseView, HomeDefaultCourseView, HomeFilterCourseView, HomeGetCurrentGPSView, HomeUpdateCurrentGPSView, HomeScrapAddAndCancelView {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -55,13 +55,9 @@ class HomeFragment: Fragment(),
 
     override fun onResume() {
         super.onResume()
-        Log.d("API-TEST", "onResume")
         myCourseRVAdapter.clearItems()
-        Log.d("API-TEST", "clearItems")
         homeService.getHomePopularCourse()
-        Log.d("API-TEST", "getHomePopularCourse")
-        homeService.getHomeDefaultCourse(courseId, "", null, null, null, null)
-        Log.d("API-TEST", "getHomeDefaultCourse")
+        homeService.getHomeDefaultCourse(courseId, "")
     }
 
     private fun initAdapter() {
@@ -115,7 +111,6 @@ class HomeFragment: Fragment(),
             val currentLocation = getCurrentLocation()
             if (currentLocation != null) {
                 homeService.updateCurrentGPS(currentLocation)
-                Log.d("API-TEST", "currentLocation = $currentLocation")
             }
             popularCourseRVAdapter.clearItems()
             homeService.getHomePopularCourse()
@@ -128,7 +123,7 @@ class HomeFragment: Fragment(),
         }
 
         binding.courseMoreCv.setOnClickListener {
-            homeService.getHomeDefaultCourse(lastCourseId, "", null, null, null, null)
+            homeService.getHomeDefaultCourse(lastCourseId, "")
         }
     }
 
@@ -218,4 +213,13 @@ class HomeFragment: Fragment(),
     override fun homeScrapAddAndCancelSuccessView() { }
 
     override fun homeScrapAddAndCancelFailureView() { }
+    
+    // TODO: 필터 설정 오류 생기면 이 부분에 직접 필터 넣어주기
+    override fun homeFilterCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
+        TODO("Not yet implemented")
+    }
+
+    override fun homeFilterCourseFailureView() {
+        TODO("Not yet implemented")
+    }
 }
