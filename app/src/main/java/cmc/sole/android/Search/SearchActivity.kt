@@ -328,20 +328,20 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
     }
 
     private fun checkFilterAndApplyAPI() {
-        if (placeCategories == null && withCategories == null && transCategories == null && regions == null) {
+        if (placeCategories?.size == 0 && withCategories?.size == 0 && transCategories?.size == 0 && regions?.size == 0) {
+            Log.d("API-TEST", "filterXX")
             searchService.getHomeDefaultCourse(courseId, searchWord)
         } else {
+            Log.d("API-TEST", "filterOO")
             searchService.getHomeFilterCourse(courseId, searchWord, placeCategories, withCategories, transCategories, regions)
         }
     }
 
-    // MEMO: 경우의 수 : 기본) 필터 X -> 필터 X / 1) 필터 X -> 필터 O / 2) 필터 O -> O / 3) 필터 O -> X
     override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
         binding.searchRv.visibility = View.VISIBLE
         binding.searchDefaultLayout.visibility = View.GONE
         binding.searchFilterCv.visibility = View.VISIBLE
         binding.searchFilterCv.strokeColor = Color.parseColor("#D3D4D5")
-
 
         // MEMO: 이전에 필터를 설정했던 결과가 있었다면 이를 삭제하고 원래대로!!
         if (placeCategories == null && withCategories == null && transCategories == null && regions == null) {
