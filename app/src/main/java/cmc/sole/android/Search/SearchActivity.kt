@@ -372,6 +372,9 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
         // MEMO: 이전에 필터를 설정했던 결과와 현재 필터가 다르다면 이를 삭제하고 원래대로!!
         if (prePlaceCategories != placeCategories || preWithCategories != withCategories || preTransCategories != transCategories || preRegions != regions) {
             searchResultRVAdapter.removeAllItems()
+            prePlaceCategories = placeCategories
+            preWithCategories = withCategories
+            preTransCategories = transCategories
         }
 
         if (homeDefaultResponse.data.size != 0) {
