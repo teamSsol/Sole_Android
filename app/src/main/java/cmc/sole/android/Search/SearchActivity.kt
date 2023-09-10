@@ -54,17 +54,16 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
     private var searchWord = ""
 
     // MEMO: 필터 적용
-    var filterFlag = false
     var tagFlagList = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
     var regionFlagList = arrayListOf<String>()
-    var placeCategories: HashSet<Categories>? = null
-    var transCategories: HashSet<Categories>? = null
-    var withCategories: HashSet<Categories>? = null
-    var regions: HashSet<Region>? = null
-    var prePlaceCategories: HashSet<Categories>? = null
-    var preTransCategories: HashSet<Categories>? = null
-    var preWithCategories: HashSet<Categories>? = null
-    var preRegions: HashSet<Categories>? = null
+    var placeCategories: HashSet<Categories> = hashSetOf()
+    var transCategories: HashSet<Categories> = hashSetOf()
+    var withCategories: HashSet<Categories> = hashSetOf()
+    var regions: HashSet<Region> = hashSetOf()
+    private var prePlaceCategories: HashSet<Categories> = hashSetOf()
+    private var preTransCategories: HashSet<Categories> = hashSetOf()
+    private var preWithCategories: HashSet<Categories> = hashSetOf()
+    private var preRegions: HashSet<Categories> = hashSetOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -250,10 +249,6 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
                     // MEMO: 태그
                     for (i in 0..17) {
                         tagFlagList[i] = returnTagList[i].isChecked
-
-                        if (returnTagList[i].isChecked) {
-                            filterFlag = true
-                        }
                     }
 
                     var tagArrayList = arrayListOf<String>()
@@ -269,15 +264,6 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
                     var regionList = hashSetOf<Region>()
                     for (i in 0 until returnRegionList.size) {
                         regionList.add(returnRegionCode(returnRegionList[i]))
-                    }
-                    if (returnRegionList.size > 0) {
-                        filterFlag = true
-                    }
-
-                    if (filterFlag) {
-                        binding.searchFilterCv.strokeColor = ContextCompat.getColor(binding.root.context, R.color.main)
-                    } else {
-                        binding.searchFilterCv.strokeColor = Color.parseColor("#D3D4D5")
                     }
 
                     regions = regionList
@@ -336,6 +322,7 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
     }
 
     override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
+        Log.d("API-TEST", "DEFAULT")
         binding.searchRv.visibility = View.VISIBLE
         binding.searchDefaultLayout.visibility = View.GONE
         binding.searchFilterCv.visibility = View.VISIBLE
@@ -363,9 +350,13 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
     }
 
     override fun homeFilterCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
+        Log.d("API-TEST", "FILTER")
+        Log.d("API-TEST", "homeDefaultResponse = ${homeDefaultResponse.data}")
+        Log.d("API-TEST", "homeDefaultResponse = ${homeDefaultResponse.data[0].finalPage}")
         binding.searchRv.visibility = View.VISIBLE
         binding.searchDefaultLayout.visibility = View.GONE
         binding.searchFilterCv.visibility = View.VISIBLE
+        binding.searchFilterCv.strokeColor = ContextCompat.getColor(binding.root.context, R.color.main)
 
         // MEMO: 이전에 필터를 설정했던 결과와 현재 필터가 다르다면 이를 삭제하고 원래대로!!
         if (prePlaceCategories != placeCategories || preWithCategories != withCategories || preTransCategories != transCategories || preRegions != regions) {
