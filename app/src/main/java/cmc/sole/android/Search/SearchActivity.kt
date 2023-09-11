@@ -329,7 +329,7 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
         binding.searchFilterCv.strokeColor = Color.parseColor("#D3D4D5")
 
         // MEMO: 이전에 필터를 설정했던 결과가 있었다면 이를 삭제하고 원래대로!!
-        if (placeCategories?.size == 0 && withCategories?.size == 0 && transCategories?.size == 0 && regions?.size == 0) {
+        if (placeCategories.size == 0 && withCategories.size == 0 && transCategories.size == 0 && regions.size == 0) {
             searchResultRVAdapter.removeAllItems()
         }
 
@@ -340,9 +340,11 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
                 lastCourseId = lastCourse.courseId
                 binding.courseMoreCv.visibility = View.VISIBLE
             } else binding.courseMoreCv.visibility = View.GONE
-        }
 
-        searchResultRVAdapter.addAllItems(homeDefaultResponse.data)
+            searchResultRVAdapter.addAllItems(homeDefaultResponse.data)
+        } else {
+            binding.courseMoreCv.visibility = View.GONE
+        }
     }
 
     override fun homeDefaultCourseFailureView() {
@@ -350,9 +352,6 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
     }
 
     override fun homeFilterCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
-        Log.d("API-TEST", "FILTER")
-        Log.d("API-TEST", "homeDefaultResponse = ${homeDefaultResponse.data}")
-        Log.d("API-TEST", "homeDefaultResponse = ${homeDefaultResponse.data[0].finalPage}")
         binding.searchRv.visibility = View.VISIBLE
         binding.searchDefaultLayout.visibility = View.GONE
         binding.searchFilterCv.visibility = View.VISIBLE
@@ -366,6 +365,7 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
             preTransCategories = transCategories
         }
 
+        Log.d("API-TEST", "data.size = ${homeDefaultResponse.data.size}")
         if (homeDefaultResponse.data.size != 0) {
             // MEMO: 마지막 페이지가 아니라면 더 보기 버튼 보여주기
             var lastCourse = homeDefaultResponse.data[homeDefaultResponse.data.size - 1]
@@ -373,6 +373,8 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
                 lastCourseId = lastCourse.courseId
                 binding.courseMoreCv.visibility = View.VISIBLE
             } else binding.courseMoreCv.visibility = View.GONE
+        } else {
+            binding.courseMoreCv.visibility = View.GONE
         }
 
         searchResultRVAdapter.addAllItems(homeDefaultResponse.data)
