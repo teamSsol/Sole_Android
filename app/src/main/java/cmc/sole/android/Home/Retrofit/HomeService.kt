@@ -128,7 +128,8 @@ class HomeService {
                 call: Call<HomeCurrentGPSResponse>,
                 response: Response<HomeCurrentGPSResponse>
             ) {
-                Log.d("API-TEST", "updateCurrentGPS response = ${response}")
+                Log.d("API-TEST", "location = $homeCurrentGPSRequest")
+                Log.d("API-TEST", "updateCurrentGPS response = $response")
                 Log.d("API-TEST", "updateCurrentGPS response.body = ${response.body()}")
                 if (response.code() == 200) {
                     val resp = response.body()

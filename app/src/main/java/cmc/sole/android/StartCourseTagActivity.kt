@@ -35,7 +35,6 @@ class StartCourseTagActivity: AppCompatActivity(),
     private var placeTagList = ArrayList<TagButton>()
     private var withTagList = ArrayList<TagButton>()
     private var transTagList = ArrayList<TagButton>()
-    private var checkTagList: MutableList<TagButton> = mutableListOf()
     private var tagFlag = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
 
     private lateinit var homeService: HomeService
@@ -221,7 +220,6 @@ class StartCourseTagActivity: AppCompatActivity(),
                 myCourseTagTransRVAdapter.getItem(0).isChecked = true
                 myCourseTagTransRVAdapter.notifyItemChanged(0)
             }
-
         }
     }
 

@@ -24,6 +24,9 @@ import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecor
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.databinding.FragmentHomeBinding
 import androidx.fragment.app.Fragment
+import cmc.sole.android.getPlaceCategories
+import cmc.sole.android.getTransCategories
+import cmc.sole.android.getWithCategories
 
 class HomeFragment: Fragment(),
     HomePopularCourseView, HomeDefaultCourseView, HomeFilterCourseView, HomeGetCurrentGPSView, HomeUpdateCurrentGPSView, HomeScrapAddAndCancelView {
@@ -57,6 +60,8 @@ class HomeFragment: Fragment(),
         super.onResume()
         myCourseRVAdapter.clearItems()
         homeService.getHomePopularCourse()
+
+        Log.d("API-TEST", "placeCategories = ${getPlaceCategories()}\nwithCategories = ${getWithCategories()}\ntransCategories = ${getTransCategories()}")
         homeService.getHomeDefaultCourse(courseId, "")
     }
 
@@ -109,6 +114,7 @@ class HomeFragment: Fragment(),
         binding.homePopularCourseLayoutCv.setOnClickListener {
             // UPDATE: 현재 위치 변경
             val currentLocation = getCurrentLocation()
+            Log.d("API-TEST", "currentLocation = $currentLocation")
             if (currentLocation != null) {
                 homeService.updateCurrentGPS(currentLocation)
             }
@@ -199,13 +205,11 @@ class HomeFragment: Fragment(),
     override fun homeDefaultCourseFailureView() { }
 
     override fun homeGetCurrentGPSSuccessView(currentGPS: String) {
-        Log.d("API-TEST", currentGPS.toString())
         binding.homePopularCourseSettingLocationIv.text = currentGPS
     }
 
     override fun homeGetCurrentGPSFailureView() { }
     override fun homeUpdateCurrentGPSSuccessView(homeCurrentGPSResult: HomeCurrentGPSResult) {
-        Log.d("API-TEST", homeCurrentGPSResult.currentGps.toString())
         binding.homePopularCourseSettingLocationIv.text = homeCurrentGPSResult.currentGps.address
     }
 
