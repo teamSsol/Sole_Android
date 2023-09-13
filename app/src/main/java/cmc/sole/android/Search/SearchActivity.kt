@@ -128,6 +128,7 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
                     binding.searchDefaultLayout.visibility = View.GONE
                     binding.searchResultRv.visibility = View.VISIBLE
                     binding.searchTextEt.setText(data.searchWord)
+                    binding.searchTextEt.setSelection(data.searchWord.length - 1)
                     checkFilterAndApplyAPI()
                 }
             }
@@ -160,6 +161,7 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
                 binding.searchDefaultLayout.visibility = View.VISIBLE
                 binding.searchResultRv.visibility = View.GONE
                 binding.searchFilterCv.visibility = View.GONE
+                binding.courseMoreCv.visibility = View.GONE
                 binding.searchTextEt.setText("")
 
                 searchResultRVAdapter.removeAllItems()
@@ -209,21 +211,23 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
                 val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(binding.searchTextEt.windowToken, 0)
 
-                binding.searchDefaultLayout.visibility = View.GONE
-                binding.searchResultRv.visibility = View.VISIBLE
+                if (binding.searchTextEt.text.toString() != "") {
+                    binding.searchDefaultLayout.visibility = View.GONE
+                    binding.searchResultRv.visibility = View.VISIBLE
 
-                searchWord = binding.searchTextEt.text.toString()
-                searchResultRVAdapter.removeAllItems()
+                    searchWord = binding.searchTextEt.text.toString()
+                    searchResultRVAdapter.removeAllItems()
 
-                searchService.getHomeDefaultCourse(courseId, searchWord)
+                    searchService.getHomeDefaultCourse(courseId, searchWord)
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    val searchWord = binding.searchTextEt.text.toString()
-                    recentDao?.deleteWord(searchWord)
-                    recentDao?.insert(SearchWord(searchWord))
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val searchWord = binding.searchTextEt.text.toString()
+                        recentDao?.deleteWord(searchWord)
+                        recentDao?.insert(SearchWord(searchWord))
+                    }
+
+                    true
                 }
-
-                true
             }
 
             false
@@ -314,7 +318,7 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
     }
 
     private fun checkFilterAndApplyAPI() {
-        if (placeCategories?.size == 0 && withCategories?.size == 0 && transCategories?.size == 0 && regions?.size == 0) {
+        if (placeCategories.size == 0 && withCategories.size == 0 && transCategories.size == 0 && regions.size == 0) {
             searchService.getHomeDefaultCourse(courseId, searchWord)
         } else {
             searchService.getHomeFilterCourse(courseId, searchWord, placeCategories, withCategories, transCategories, regions)
