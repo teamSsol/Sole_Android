@@ -128,7 +128,7 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
                     binding.searchDefaultLayout.visibility = View.GONE
                     binding.searchResultRv.visibility = View.VISIBLE
                     binding.searchTextEt.setText(data.searchWord)
-                    binding.searchTextEt.setSelection(data.searchWord.length - 1)
+                    binding.searchTextEt.setSelection(data.searchWord.length)
                     checkFilterAndApplyAPI()
                 }
             }
@@ -214,6 +214,7 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
                 if (binding.searchTextEt.text.toString() != "") {
                     binding.searchDefaultLayout.visibility = View.GONE
                     binding.searchResultRv.visibility = View.VISIBLE
+                    binding.searchTextEt.setSelection(binding.searchTextEt.length())
 
                     searchWord = binding.searchTextEt.text.toString()
                     searchResultRVAdapter.removeAllItems()
