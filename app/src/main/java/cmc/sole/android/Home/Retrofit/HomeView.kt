@@ -95,9 +95,3 @@ interface MyPageMemberQuitView {
     fun myPageMemberQuitSuccessView()
     fun myPageMemberQuitFailureView()
 }
-
-// MEMO: 스크랩 등록/취소
-interface ScrapOnOffView {
-    fun scrapOnOffSuccessView()
-    fun scrapOnOffFailureView()
-}

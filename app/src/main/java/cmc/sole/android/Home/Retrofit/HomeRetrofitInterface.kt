@@ -56,11 +56,6 @@ interface HomeRetrofitInterface {
         @Path("courseId") courseId: Int?
     ): Call<HomeCourseDetailResponse>
 
-    @POST("/api/courses/{courseId}/scrap")
-    fun scrapAddAndCancel(
-        @Path("courseId") courseId: Int
-    ): Call<Void>
-
     // MEMO: 마이페이지
     @GET("/api/mypage")
     fun getMyPageInfo(): Call<MyPageInfoResponse>
@@ -104,8 +99,9 @@ interface HomeRetrofitInterface {
     fun quitMember(): Call<Void>
     
     // MEMO: 스크랩 등록/취소
-    @POST("/api/courses/{courseId}/scrap")
-    fun scrapOnOff(
-        @Path("courseId") courseId: Int
+    @POST("/api/courses/{courseId}")
+    fun scrapAddAndCancel(
+        @Path("courseId") courseId: Int,
+        @Query("scrapFolderId") scrapFolderId: Int? = null
     ): Call<Void>
 }

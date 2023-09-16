@@ -6,14 +6,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.recyclerview.widget.LinearLayoutManager
+import cmc.sole.android.Home.Retrofit.HomeScrapAddAndCancelView
 import cmc.sole.android.Home.Retrofit.HomeService
-import cmc.sole.android.Home.Retrofit.ScrapOnOffView
 import cmc.sole.android.Scrap.Retrofit.*
 import cmc.sole.android.Scrap.ScrapCourseMoveRVAdapter
 import cmc.sole.android.databinding.BottomFragmentScrapSelectFolderBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class ScrapSelectFolderBottomFragment: BottomSheetDialogFragment(), ScrapFolderView, ScrapOnOffView {
+class ScrapSelectFolderBottomFragment: BottomSheetDialogFragment(), ScrapFolderView, HomeScrapAddAndCancelView {
 
     lateinit var binding: BottomFragmentScrapSelectFolderBinding
     private var courseId: Int = -1
@@ -58,7 +58,8 @@ class ScrapSelectFolderBottomFragment: BottomSheetDialogFragment(), ScrapFolderV
                 // scrapService.moveScrapCourse(data.scrapFolderId, ScrapFolderCourseMoveRequest(moveCourseId))
                 // MEMO: 폴더 이동시키기
                 Log.d("API-TEST", "courseId = $courseId")
-                homeService.scrapOnOff(courseId)
+                homeService.scrapAddAndCancel(courseId, data.scrapFolderId)
+                Log.d("API-TEST", "courseId = $courseId / scrapFolderId = ${data.scrapFolderId}")
             }
         })
     }
@@ -68,7 +69,7 @@ class ScrapSelectFolderBottomFragment: BottomSheetDialogFragment(), ScrapFolderV
         scrapService.setScrapFolderView(this)
         scrapService.getScrapFolder()
         homeService = HomeService()
-        homeService.setScrapOnOffView(this)
+        homeService.setHomeScrapAddAndCancelView(this)
     }
 
     override fun onResume() {
@@ -90,12 +91,12 @@ class ScrapSelectFolderBottomFragment: BottomSheetDialogFragment(), ScrapFolderV
 
     }
 
-    override fun scrapOnOffSuccessView() {
+    override fun homeScrapAddAndCancelSuccessView() {
         dismiss()
         isSuccess = true
     }
 
-    override fun scrapOnOffFailureView() {
+    override fun homeScrapAddAndCancelFailureView() {
         Log.d("API-TEST", "SCRAP_FAILURE")
         isSuccess = false
     }

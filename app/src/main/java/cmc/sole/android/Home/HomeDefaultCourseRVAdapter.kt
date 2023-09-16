@@ -72,7 +72,8 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
                         holder.binding.itemCourseHeartIv.setImageResource(R.drawable.ic_heart_empty)
                     else holder.binding.itemCourseHeartIv.setImageResource(R.drawable.ic_heart_color)
 
-                    homeService.scrapAddAndCancel(courseList[position].courseId)
+                    // UPDATE: 스크랩 수정
+                    // homeService.scrapAddAndCancel(courseList[position].courseId)
                     courseList[position].like = !courseList[position].like
                 }
                 holder.bind(courseList[position])

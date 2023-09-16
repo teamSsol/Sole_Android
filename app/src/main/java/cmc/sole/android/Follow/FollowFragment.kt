@@ -57,7 +57,8 @@ class FollowFragment: Fragment(),
         binding.followActivityRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         followActivityRVAdapter.setOnItemClickListener(object: FollowActivityRVAdapter.OnItemClickListener {
             override fun onItemClick(data: FollowCourseResult, position: Int) {
-                homeService.scrapAddAndCancel(data.courseId!!)
+                // UPDATE: 업데이트 예정
+                // homeService.scrapAddAndCancel(data.courseId!!)
             }
         })
     }

@@ -39,7 +39,6 @@ class HomeService {
     private lateinit var myPageNoticeAddView: MyPageNoticeAddView
     private lateinit var myPageNoticeUpdateView: MyPageNoticeUpdateView
     private lateinit var myPageMemberQuitView: MyPageMemberQuitView
-    private lateinit var scrapOnOffView: ScrapOnOffView
 
     fun setHomeGetCurrentGPSView(homeGetCurrentGPSView: HomeGetCurrentGPSView) {
         this.homeGetCurrentGPSView = homeGetCurrentGPSView
@@ -94,9 +93,6 @@ class HomeService {
     }
     fun setMyPageMemberQuitView(myPageMemberQuitView: MyPageMemberQuitView) {
         this.myPageMemberQuitView = myPageMemberQuitView
-    }
-    fun setScrapOnOffView(scrapOnOffView: ScrapOnOffView) {
-        this.scrapOnOffView = scrapOnOffView
     }
 
     fun getCurrentGPS() {
@@ -283,23 +279,6 @@ class HomeService {
             }
             override fun onFailure(call: Call<HomeCourseDetailResponse>, t: Throwable) {
                 Log.e("HOME-SERVICE", "HOME-SERVICE-GET-COURSE-DETAIL-FAILURE", t)
-            }
-        })
-    }
-
-    fun scrapAddAndCancel(courseId: Int) {
-        homeService?.scrapAddAndCancel(courseId)?.enqueue(object: Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                // Log.d("API-TEST", "scrapAddAndCancel response = $response")
-                // Log.d("API-TEST", "scrapAddAndCancel response = ${response.body()}")
-                if (response.code() == 200) {
-                    homeScrapAddAndCancelView.homeScrapAddAndCancelSuccessView()
-                } else {
-                    homeScrapAddAndCancelView.homeScrapAddAndCancelFailureView()
-                }
-            }
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                Log.e("API-TEST", "HOME-SERVICE-SCRAP-FAILURE", t)
             }
         })
     }
@@ -500,20 +479,20 @@ class HomeService {
     }
 
     // MEMO: 스크랩 등록/취소
-    fun scrapOnOff(courseId: Int) {
-        homeService?.scrapOnOff(courseId)?.enqueue(object: Callback<Void> {
+    fun scrapAddAndCancel(courseId: Int, scrapFolderId: Int?) {
+        homeService?.scrapAddAndCancel(courseId, scrapFolderId)?.enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                Log.d("API-TEST", "scrapOnOff response = $response")
-                Log.d("API-TEST", "scrapOnOff response.body = ${response.body()}")
+                Log.d("API-TEST", "scrapAddAndCancel response = $response")
+                Log.d("API-TEST", "scrapAddAndCancel response.body = ${response.body()}")
                 if (response.code() == 200) {
-                    scrapOnOffView.scrapOnOffSuccessView()
+                    homeScrapAddAndCancelView.homeScrapAddAndCancelSuccessView()
                 } else {
-                    scrapOnOffView.scrapOnOffFailureView()
+                    homeScrapAddAndCancelView.homeScrapAddAndCancelFailureView()
                 }
             }
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                Log.e("HOME-SERVICE", "HOME-SERVICE-SCRAP-ON-OFF-FAILURE", t)
-                Log.e("API-TEST", "HOME-SERVICE-SCRAP-ON-OFF-FAILURE", t)
+                Log.e("HOME-SERVICE", "HOME-SERVICE-SCRAP-ADD-CANCEL-FAILURE", t)
+                Log.e("API-TEST", "HOME-SERVICE-SCRAP-ADD-CANCEL-FAILURE", t)
             }
         })
     }
