@@ -54,6 +54,7 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
     var memberId = -1
     var pointList = mutableListOf<LatLng>()
     private var checkWriter: Boolean = false
+    var heartNumber: Int? = null
 
     // NaverMap
     lateinit var naverMap: NaverMap
@@ -130,6 +131,10 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
                         // UPDATE: 성공 여부 받아오기
                         if (isSuccess) {
                             like = !like
+                            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
+
+                            heartNumber = heartNumber!! + 1
+                            binding.courseDetailCourseHeartNumber.text = heartNumber.toString()
                             binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
                         }
                     }
@@ -236,7 +241,8 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         binding.courseDetailFollowerTv.text = "팔로워 " + homeCourseDetailResult.follower.toString()
         binding.courseDetailFollowingTv.text = "팔로잉 " + homeCourseDetailResult.following.toString()
 
-        binding.courseDetailCourseHeartNumber.text = homeCourseDetailResult.scrapCount.toString()
+        heartNumber = homeCourseDetailResult.scrapCount
+        binding.courseDetailCourseHeartNumber.text = heartNumber.toString()
         binding.courseDetailCourseWriteDate.text = homeCourseDetailResult.startDate
         binding.courseDetailCourseName.text = homeCourseDetailResult.title
         binding.courseDetailNicknameTv.text = homeCourseDetailResult.writer.nickname
@@ -260,10 +266,12 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
     override fun homeScrapAddAndCancelSuccessView() {
         like = !like
         if (like) {
-            binding.courseDetailCourseHeartNumber.text = (binding.courseDetailCourseHeartNumber.toString().toInt() + 1).toString()
+            heartNumber = heartNumber!! + 1
+            binding.courseDetailCourseHeartNumber.text = heartNumber.toString()
             binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
         } else {
-            // binding.courseDetailCourseHeartNumber.text = (binding.courseDetailCourseHeartNumber.toString().toInt() - 1).toString()
+            heartNumber = heartNumber!! - 1
+            binding.courseDetailCourseHeartNumber.text = heartNumber.toString()
             binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_course_detail_heart)
         }
     }
