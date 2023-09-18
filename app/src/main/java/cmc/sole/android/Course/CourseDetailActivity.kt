@@ -132,10 +132,9 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
                         if (isSuccess) {
                             like = !like
                             binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
-
                             heartNumber = heartNumber!! + 1
                             binding.courseDetailCourseHeartNumber.text = heartNumber.toString()
-                            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
+                            binding.courseDetailCourseHeartIv.setImageResource(R.drawable.ic_heart_color)
                         }
                     }
                 })
@@ -265,14 +264,11 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
 
     override fun homeScrapAddAndCancelSuccessView() {
         like = !like
-        if (like) {
-            heartNumber = heartNumber!! + 1
-            binding.courseDetailCourseHeartNumber.text = heartNumber.toString()
-            binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_heart_color)
-        } else {
+        if (!like) {
             heartNumber = heartNumber!! - 1
             binding.courseDetailCourseHeartNumber.text = heartNumber.toString()
             binding.courseDetailTitleHeartIv.setImageResource(R.drawable.ic_course_detail_heart)
+            binding.courseDetailCourseHeartIv.setImageResource(R.drawable.ic_course_detail_heart)
         }
     }
 
