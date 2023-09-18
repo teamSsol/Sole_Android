@@ -24,6 +24,8 @@ import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecor
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.databinding.FragmentHomeBinding
 import androidx.fragment.app.Fragment
+import cmc.sole.android.Course.ScrapSelectFolderBottomFragment
+import cmc.sole.android.R
 import cmc.sole.android.getPlaceCategories
 import cmc.sole.android.getTransCategories
 import cmc.sole.android.getWithCategories
@@ -41,6 +43,7 @@ class HomeFragment: Fragment(),
     private lateinit var homeService: HomeService
     var courseId: Int? = null
     var lastCourseId: Int? = null
+    var clickItemIndex: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,13 +89,36 @@ class HomeFragment: Fragment(),
         binding.homeMyCourseRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         myCourseRVAdapter.setOnItemClickListener(object: HomeDefaultCourseRVAdapter.OnItemClickListener {
             override fun onItemClick(data: DefaultCourse, position: Int, mode: String) {
+                clickItemIndex = position
                 if (mode == "all") {
                     val intent = Intent(activity, CourseDetailActivity::class.java)
                     intent.putExtra("courseId", data.courseId)
                     intent.putExtra("like", data.like)
                     startActivity(intent)
                 } else if (mode == "heart") {
-
+                    if (data.like) {
+                        homeService.scrapAddAndCancel(data.courseId, null)
+                    } else {
+                        val scrapSelectFolderBottomFragment = ScrapSelectFolderBottomFragment()
+                        var bundle = Bundle()
+                        bundle.putInt("courseId", data.courseId,)
+                        scrapSelectFolderBottomFragment.arguments = bundle
+                        scrapSelectFolderBottomFragment.show(activity!!.supportFragmentManager, "ScrapSelectFolderBottomFragment")
+                        scrapSelectFolderBottomFragment.setOnDialogFinishListener(object: ScrapSelectFolderBottomFragment.OnDialogFinishListener {
+                            override fun finish(isSuccess: Boolean) {
+                                // UPDATE: 성공 여부 받아오기
+                                if (isSuccess) {
+                                    // Log.d("API-TEST", "1 ${myCourseRVAdapter.returnItem(position)}")
+                                    Log.d("API-TEST", "1 ${myCourseRVAdapter.returnItem(position).like}")
+                                    myCourseRVAdapter.changeLikeStatus(position)
+                                    Log.d("API-TEST", "5 ${myCourseRVAdapter.returnItem(position).like}")
+                                    myCourseRVAdapter.notifyItemChanged(position)
+                                    Log.d("API-TEST", "1 ${myCourseRVAdapter.returnItem(position).like}")
+                                    // Log.d("API-TEST", "2 ${myCourseRVAdapter.returnItem(position)}")
+                                }
+                            }
+                        })
+                    }
                 }
             }
         })
@@ -165,6 +191,7 @@ class HomeFragment: Fragment(),
         homeService.setHomeDefaultCourseView(this)
         homeService.setHomeGetCurrentGPSView(this)
         homeService.setHomeUpdateCurrentGPSView(this)
+        homeService.setHomeScrapAddAndCancelView(this)
         homeService.getHomePopularCourse()
         homeService.getCurrentGPS()
     }
@@ -214,7 +241,9 @@ class HomeFragment: Fragment(),
     }
 
     override fun homeUpdateCurrentGPSFailureView() { }
-    override fun homeScrapAddAndCancelSuccessView() { }
+    override fun homeScrapAddAndCancelSuccessView() {
+        myCourseRVAdapter.changeLikeStatus(clickItemIndex!!)
+    }
 
     override fun homeScrapAddAndCancelFailureView() { }
     
