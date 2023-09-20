@@ -63,8 +63,6 @@ class HomeFragment: Fragment(),
         super.onResume()
         myCourseRVAdapter.clearItems()
         homeService.getHomePopularCourse()
-
-        Log.d("API-TEST", "placeCategories = ${getPlaceCategories()}\nwithCategories = ${getWithCategories()}\ntransCategories = ${getTransCategories()}")
         homeService.getHomeDefaultCourse(courseId, "")
     }
 
@@ -108,13 +106,8 @@ class HomeFragment: Fragment(),
                             override fun finish(isSuccess: Boolean) {
                                 // UPDATE: 성공 여부 받아오기
                                 if (isSuccess) {
-                                    // Log.d("API-TEST", "1 ${myCourseRVAdapter.returnItem(position)}")
-                                    Log.d("API-TEST", "1 ${myCourseRVAdapter.returnItem(position).like}")
                                     myCourseRVAdapter.changeLikeStatus(position)
-                                    Log.d("API-TEST", "5 ${myCourseRVAdapter.returnItem(position).like}")
                                     myCourseRVAdapter.notifyItemChanged(position)
-                                    Log.d("API-TEST", "1 ${myCourseRVAdapter.returnItem(position).like}")
-                                    // Log.d("API-TEST", "2 ${myCourseRVAdapter.returnItem(position)}")
                                 }
                             }
                         })

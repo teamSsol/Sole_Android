@@ -55,11 +55,8 @@ class ScrapSelectFolderBottomFragment: BottomSheetDialogFragment(), ScrapFolderV
         binding.scrapSelectFolderRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         scrapCourseMoveRVAdapter.setOnItemClickListener(object: ScrapCourseMoveRVAdapter.OnItemClickListener {
             override fun onItemClick(data: ScrapFolderDataResult, position: Int) {
-                // scrapService.moveScrapCourse(data.scrapFolderId, ScrapFolderCourseMoveRequest(moveCourseId))
                 // MEMO: 폴더 이동시키기
-                Log.d("API-TEST", "courseId = $courseId")
                 homeService.scrapAddAndCancel(courseId, data.scrapFolderId)
-                Log.d("API-TEST", "courseId = $courseId / scrapFolderId = ${data.scrapFolderId}")
             }
         })
     }
