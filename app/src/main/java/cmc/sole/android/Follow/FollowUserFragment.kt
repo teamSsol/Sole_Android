@@ -26,21 +26,26 @@ import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexboxLayoutManager
 import kotlin.math.roundToInt
 import androidx.fragment.app.Fragment
+import cmc.sole.android.Course.ScrapSelectFolderBottomFragment
+import cmc.sole.android.Home.Retrofit.HomeScrapAddAndCancelView
+import cmc.sole.android.Home.Retrofit.HomeService
 import cmc.sole.android.databinding.FragmentFollowerFollowerBinding
 
 class FollowUserFragment: Fragment(),
-    FollowUserInfoView {
+    FollowUserInfoView, HomeScrapAddAndCancelView {
 
     private var _binding: FragmentFollowUserBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var followService: FollowService
+    private lateinit var homeService: HomeService
     lateinit var followUserRecentRVAdapter: HomeDefaultCourseRVAdapter
     lateinit var tagRVAdapter: MyCourseTagRVAdapter
     private var tagList = ArrayList<String>()
     var recentCourseList = ArrayList<DefaultCourse>()
     private var followInfoMemberSocialId = ""
     var courseId: Int? = null
+    var clickItemIndex: Int? = null
 
     // UPDATE: courseId 연결해주기!
     override fun onCreateView(
@@ -60,6 +65,9 @@ class FollowUserFragment: Fragment(),
     }
 
     private fun initService() {
+        homeService = HomeService()
+        homeService.setHomeScrapAddAndCancelView(this)
+
         followService = FollowService()
         followService.setFollowUserInfoView(this)
         followService.getFollowUserInfo(followInfoMemberSocialId, courseId)
@@ -71,9 +79,31 @@ class FollowUserFragment: Fragment(),
         binding.followUserRecentRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         followUserRecentRVAdapter.setOnItemClickListener(object: HomeDefaultCourseRVAdapter.OnItemClickListener {
             override fun onItemClick(data: DefaultCourse, position: Int, mode: String) {
-                val intent = Intent(activity, CourseDetailActivity::class.java)
-                intent.putExtra("courseId", data.courseId)
-                startActivity(intent)
+                clickItemIndex = position
+                if (mode == "all") {
+                    val intent = Intent(activity, CourseDetailActivity::class.java)
+                    intent.putExtra("courseId", data.courseId)
+                    intent.putExtra("like", data.like)
+                    startActivity(intent)
+                } else if (mode == "heart") {
+                    if (data.like) {
+                        homeService.scrapAddAndCancel(data.courseId, null)
+                    } else {
+                        val scrapSelectFolderBottomFragment = ScrapSelectFolderBottomFragment()
+                        var bundle = Bundle()
+                        bundle.putInt("courseId", data.courseId,)
+                        scrapSelectFolderBottomFragment.arguments = bundle
+                        scrapSelectFolderBottomFragment.show(activity!!.supportFragmentManager, "ScrapSelectFolderBottomFragment")
+                        scrapSelectFolderBottomFragment.setOnDialogFinishListener(object: ScrapSelectFolderBottomFragment.OnDialogFinishListener {
+                            override fun finish(isSuccess: Boolean) {
+                                if (isSuccess) {
+                                    followUserRecentRVAdapter.changeLikeStatus(position)
+                                    followUserRecentRVAdapter.notifyItemChanged(position)
+                                }
+                            }
+                        })
+                    }
+                }
             }
         })
 
@@ -131,5 +161,14 @@ class FollowUserFragment: Fragment(),
     override fun followUserInfoFailureView() {
         var message = "팔로우 유저 정보 불러오기 실패"
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun homeScrapAddAndCancelSuccessView() {
+        followUserRecentRVAdapter.changeLikeStatus(clickItemIndex!!)
+        followUserRecentRVAdapter.notifyItemChanged(clickItemIndex!!)
+    }
+
+    override fun homeScrapAddAndCancelFailureView() {
+
     }
 }

@@ -104,7 +104,6 @@ class HomeFragment: Fragment(),
                         scrapSelectFolderBottomFragment.show(activity!!.supportFragmentManager, "ScrapSelectFolderBottomFragment")
                         scrapSelectFolderBottomFragment.setOnDialogFinishListener(object: ScrapSelectFolderBottomFragment.OnDialogFinishListener {
                             override fun finish(isSuccess: Boolean) {
-                                // UPDATE: 성공 여부 받아오기
                                 if (isSuccess) {
                                     myCourseRVAdapter.changeLikeStatus(position)
                                     myCourseRVAdapter.notifyItemChanged(position)
@@ -236,6 +235,7 @@ class HomeFragment: Fragment(),
     override fun homeUpdateCurrentGPSFailureView() { }
     override fun homeScrapAddAndCancelSuccessView() {
         myCourseRVAdapter.changeLikeStatus(clickItemIndex!!)
+        myCourseRVAdapter.notifyItemChanged(clickItemIndex!!)
     }
 
     override fun homeScrapAddAndCancelFailureView() { }
