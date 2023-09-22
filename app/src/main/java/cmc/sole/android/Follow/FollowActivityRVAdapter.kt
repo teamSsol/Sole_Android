@@ -33,7 +33,7 @@ class FollowActivityRVAdapter(private val followActivityList: ArrayList<FollowCo
     override fun onBindViewHolder(holder: FollowActivityRVAdapter.ViewHolder, position: Int) {
         holder.binding.itemFollowActivityHeartIv.setOnClickListener {
             itemClickListener.onItemClick(followActivityList[position], position)
-            this.notifyDataSetChanged()
+            // this.notifyDataSetChanged()
         }
         holder.bind(followActivityList[position])
     }

@@ -55,6 +55,8 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
     var pointList = mutableListOf<LatLng>()
     private var checkWriter: Boolean = false
     var heartNumber: Int? = null
+    private var follower = 0
+    private var following = 0
 
     // NaverMap
     lateinit var naverMap: NaverMap
@@ -238,7 +240,9 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
         }
 
         binding.courseDetailFollowerTv.text = "팔로워 " + homeCourseDetailResult.follower.toString()
+        follower = homeCourseDetailResult.follower
         binding.courseDetailFollowingTv.text = "팔로잉 " + homeCourseDetailResult.following.toString()
+        following = homeCourseDetailResult.following
 
         heartNumber = homeCourseDetailResult.scrapCount
         binding.courseDetailCourseHeartNumber.text = heartNumber.toString()
@@ -281,11 +285,14 @@ class CourseDetailActivity: AppCompatActivity(), OnMapReadyCallback,
             followStatus = "FOLLOWING"
             binding.itemFollowFollowBtn.visibility = View.VISIBLE
             binding.itemFollowFollowingBtn.visibility = View.GONE
+            follower -= 1
         } else {
             followStatus = "NOT_FOLLOW"
             binding.itemFollowFollowBtn.visibility = View.GONE
             binding.itemFollowFollowingBtn.visibility = View.VISIBLE
+            follower += 1
         }
+        binding.courseDetailFollowerTv.text = "팔로워 $follower"
     }
 
     override fun followUnfollowFailureView() {
