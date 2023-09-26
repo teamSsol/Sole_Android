@@ -53,13 +53,12 @@ class ScrapFolderDetailFragment: Fragment(),
         scrapFolderName = arguments?.getString("title").toString()
         binding.scrapFolderDetailTitle.text = arguments?.getString("title")
         scrapFolderId = requireArguments().getInt("scrapFolderId", -1)
+        Log.d("API-TEST", "scrapFolderId = $scrapFolderId")
 
         initService()
         initAdapter()
 
-        if (scrapFolderName == "기본 폴더") {
-            scrapService.getDefaultFolder()
-        } else scrapService.getScrapCourse(scrapFolderId)
+        scrapService.getScrapCourse(scrapFolderId)
 
         initClickListener()
         
