@@ -77,7 +77,6 @@ class FollowFollowerFragment: Fragment(),
     }
 
     override fun followListSuccessView(followerResult: ArrayList<FollowUserDataResult>) {
-        Log.d("API-TEST", "followerResult = $followerResult")
         followListRVAdapter.addAllItems(followerResult)
 
         if (followerResult.size == 0) {

@@ -94,7 +94,6 @@ class ScrapSelectFolderBottomFragment: BottomSheetDialogFragment(), ScrapFolderV
     }
 
     override fun homeScrapAddAndCancelFailureView() {
-        Log.d("API-TEST", "SCRAP_FAILURE")
         isSuccess = false
     }
 }

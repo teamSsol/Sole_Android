@@ -39,7 +39,7 @@ class ScrapFolderDetailFragment: Fragment(),
     lateinit var scrapFolderName: String
     var scrapFolderId = 0
     var deleteCourseId = ArrayList<Int>()
-    var scrapListSize = -1
+    private var scrapListSize = -1
 
     private lateinit var callback: OnBackPressedCallback
 
@@ -53,7 +53,6 @@ class ScrapFolderDetailFragment: Fragment(),
         scrapFolderName = arguments?.getString("title").toString()
         binding.scrapFolderDetailTitle.text = arguments?.getString("title")
         scrapFolderId = requireArguments().getInt("scrapFolderId", -1)
-        Log.d("API-TEST", "scrapFolderId = $scrapFolderId")
 
         initService()
         initAdapter()
@@ -134,7 +133,6 @@ class ScrapFolderDetailFragment: Fragment(),
             bundle.putIntegerArrayList("deleteCourseId", deleteCourseId)
             bundle.putString("folderName", scrapFolderName)
             bundle.putInt("scrapListSize", scrapListSize)
-            Log.d("API-TEST", "2 scrapListSize = $scrapListSize")
             scrapFolderOptionBottomFragment.arguments = bundle
             scrapFolderOptionBottomFragment.show(requireActivity().supportFragmentManager, "ScrapFolderDetailBottom")
             scrapFolderOptionBottomFragment.setOnFinishListener(object: ScrapFolderOptionBottomFragment.OnScrapOptionFinishListener {

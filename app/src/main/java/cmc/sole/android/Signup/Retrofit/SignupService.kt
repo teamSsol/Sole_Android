@@ -34,8 +34,6 @@ class SignupService {
     fun signupCheck(body: SignupCheckRequest) {
         signupService?.socialCheck("kakao", body)?.enqueue(object: Callback<SignupCheckResponse> {
             override fun onResponse(call: Call<SignupCheckResponse>, response: Response<SignupCheckResponse>) {
-                // Log.d("API-TEST", "SignupCheck response = $response")
-                // Log.d("API-TEST", "SignupCheck response.body = ${response.body()}")
                 if (response.code() == 200) {
                     val signupCheckResponse = response.body()
                     if (signupCheckResponse?.success == true) {
@@ -82,8 +80,6 @@ class SignupService {
     fun socialSignup(provider: String?, memberRequestDto: MultipartBody.Part, multipartFile: MultipartBody.Part?) {
         signupService?.socialSignup(provider, memberRequestDto, multipartFile)?.enqueue(object: Callback<SignupSocialResponse> {
             override fun onResponse(call: Call<SignupSocialResponse>, response: Response<SignupSocialResponse>) {
-                // Log.d("API-TEST", "response = $response")
-                // Log.d("API-TEST", "response.body = ${response.body()}")
                 if (response.code() == 200) {
                     val signupSocialResponse = response.body()
                     if (signupSocialResponse != null) {

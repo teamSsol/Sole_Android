@@ -249,8 +249,6 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
             myCourseOptionBottomFragment.show(supportFragmentManager!!, "CourseDetailOptionBottom")
             myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
                 override fun finish(returnTagList: List<TagButton>, returnRegionList: ArrayList<String>) {
-                    Log.d("API-TEST", "returnTagList = $returnTagList / returnRegionList = $returnRegionList")
-
                     // MEMO: 태그
                     for (i in 0..17) {
                         tagFlagList[i] = returnTagList[i].isChecked
@@ -276,13 +274,9 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
                     withCategories = returnCategories("WITH")
                     transCategories = returnCategories("TRANS")
 
-                    Log.d("API-TEST", "region = $regions / placeCategories = $placeCategories / withCategories = $withCategories / transCategories = $transCategories")
-                    Log.d("API-TEST", "region = ${regions.toString()} / placeCategories = ${placeCategories.toString()} / withCategories = ${withCategories.toString()} / transCategories = ${transCategories.toString()}")
-
                     checkFilterAndApplyAPI()
 
                     var map = hashSetOf(Categories.ACTIVITY, Categories.CAFE)
-                    Log.d("API-TEST", "map = ${map}")
                 }
             })
         }
@@ -327,7 +321,6 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
     }
 
     override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
-        Log.d("API-TEST", "DEFAULT")
         binding.searchRv.visibility = View.VISIBLE
         binding.searchDefaultLayout.visibility = View.GONE
         binding.searchFilterCv.visibility = View.VISIBLE
@@ -370,7 +363,6 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
             preTransCategories = transCategories
         }
 
-        Log.d("API-TEST", "data.size = ${homeDefaultResponse.data.size}")
         if (homeDefaultResponse.data.size != 0) {
             // MEMO: 마지막 페이지가 아니라면 더 보기 버튼 보여주기
             var lastCourse = homeDefaultResponse.data[homeDefaultResponse.data.size - 1]

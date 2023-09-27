@@ -110,9 +110,6 @@ class LoginActivity: AppCompatActivity(),
             saveAccessToken(result.data.accessToken)
             saveRefreshToken(result.data.refreshToken)
 
-            Log.d("API-TEST", "AccessToken = ${getAccessToken()}")
-            Log.d("API-TEST", "RefreshToken = ${getRefreshToken()}")
-
             changeActivity(MainActivity::class.java)
             finish()
         } else {

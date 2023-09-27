@@ -62,7 +62,6 @@ class FollowFragment: Fragment(),
         followActivityRVAdapter.setOnItemClickListener(object: FollowActivityRVAdapter.OnItemClickListener {
             override fun onItemClick(data: FollowCourseResult, position: Int) {
                 clickItemIndex = position
-                Log.d("API-TEST", "data.like = ${data.like}")
                 if (data.like) {
                     homeService.scrapAddAndCancel(data.courseId!!, null)
                 } else {

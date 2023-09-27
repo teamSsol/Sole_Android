@@ -82,7 +82,6 @@ class AuthorizationTokenInterceptor: Interceptor {
         request = chain.request()
         response = chain.proceed(builder.build())
         if (response.code == 401) {
-            Log.d("API-TEST", "Response.code = ${response.code}")
             getNewToken()
         }
 

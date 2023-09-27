@@ -67,7 +67,6 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
                     itemClickListener.onItemClick(courseList[position], position, "all")
                 }
                 holder.binding.itemCourseHeartIv.setOnClickListener {
-                    Log.d("API-TEST", "heartClick")
                     itemClickListener.onItemClick(courseList[position], position, "heart")
                 }
                 holder.bind(courseList[position])

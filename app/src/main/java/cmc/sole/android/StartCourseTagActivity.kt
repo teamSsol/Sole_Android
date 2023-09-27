@@ -169,8 +169,6 @@ class StartCourseTagActivity: AppCompatActivity(),
             }
         }
 
-        Log.d("API-TEST", "resultTagSet = $resultTagSet")
-
         return resultTagSet
     }
 

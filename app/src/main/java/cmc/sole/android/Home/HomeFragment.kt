@@ -132,7 +132,6 @@ class HomeFragment: Fragment(),
         binding.homePopularCourseLayoutCv.setOnClickListener {
             // UPDATE: 현재 위치 변경
             val currentLocation = getCurrentLocation()
-            Log.d("API-TEST", "currentLocation = $currentLocation")
             if (currentLocation != null) {
                 homeService.updateCurrentGPS(currentLocation)
             }
