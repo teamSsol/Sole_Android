@@ -83,6 +83,7 @@ class ScrapFolderDetailFragment: Fragment(),
                     binding.scrapFolderDetailDeleteCv.strokeColor = Color.parseColor("#D3D4D5")
                     val intent = Intent(activity, CourseDetailActivity::class.java)
                     intent.putExtra("courseId", data.courseId)
+                    intent.putExtra("like", data.like)
                     startActivity(intent)
                 } else {
                     scrapFolderDetailRVAdapter.checkMode(1)
