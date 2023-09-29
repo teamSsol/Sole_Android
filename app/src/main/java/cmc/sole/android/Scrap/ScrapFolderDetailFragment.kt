@@ -64,6 +64,11 @@ class ScrapFolderDetailFragment: Fragment(),
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        scrapService.getScrapCourse(scrapFolderId)
+    }
+
     private fun initService() {
         scrapService = ScrapService()
         scrapService.setScrapCourseView(this)
