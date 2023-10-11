@@ -18,9 +18,9 @@ import cmc.sole.android.databinding.ItemCourseMoreBinding
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexboxLayoutManager
 
+
 // UPDATE: viewType 제거하고 업데이트 필요
-class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>): RecyclerView.Adapter<RecyclerView.ViewHolder>(),
-    HomeScrapAddAndCancelView {
+class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var itemClickListener: OnItemClickListener
     private lateinit var tagRVAdapter: MyCourseTagRVAdapter
@@ -52,7 +52,6 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
                 binding.courseDefaultTagRv.addItemDecoration(RecyclerViewVerticalDecoration("top", 20))
 
                 homeService = HomeService()
-                homeService.setHomeScrapAddAndCancelView(this)
                 CourseItemViewHolder(binding)
             }
         }
@@ -68,12 +67,7 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
                     itemClickListener.onItemClick(courseList[position], position, "all")
                 }
                 holder.binding.itemCourseHeartIv.setOnClickListener {
-                    if (courseList[position].like)
-                        holder.binding.itemCourseHeartIv.setImageResource(R.drawable.ic_heart_empty)
-                    else holder.binding.itemCourseHeartIv.setImageResource(R.drawable.ic_heart_color)
-
-                    homeService.scrapAddAndCancel(courseList[position].courseId)
-                    courseList[position].like = !courseList[position].like
+                    itemClickListener.onItemClick(courseList[position], position, "heart")
                 }
                 holder.bind(courseList[position])
                 holder.setIsRecyclable(false)
@@ -126,6 +120,10 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
         return courseList
     }
 
+    fun returnItem(position: Int): DefaultCourse {
+        return courseList[position]
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     fun removeAllItems() {
         courseList.clear()
@@ -137,11 +135,8 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
         this.notifyDataSetChanged()
     }
 
-    override fun homeScrapAddAndCancelSuccessView() {
-
-    }
-
-    override fun homeScrapAddAndCancelFailureView() {
-
+    fun changeLikeStatus(position: Int) {
+        courseList[position].like = !courseList[position].like
+        this.notifyItemChanged(position)
     }
 }

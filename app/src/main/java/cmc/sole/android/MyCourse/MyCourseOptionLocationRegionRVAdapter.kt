@@ -101,10 +101,8 @@ class MyCourseOptionLocationRegionRVAdapter(private val regionList: ArrayList<Re
     }
 
     fun changeIsSelectedText(cityAndRegion: String) {
-        Log.d("API-TEST", "regionList = $regionList")
         var region = cityAndRegion.split(" ")[1]
         var index = regionList.indexOf(RegionData(region))
-        Log.d("API-TEST", "index = $index")
         if (index != -1) {
             regionList[index].isSelected = !regionList[index].isSelected
             this.notifyItemChanged(index)

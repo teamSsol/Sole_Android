@@ -32,9 +32,8 @@ class FollowActivityRVAdapter(private val followActivityList: ArrayList<FollowCo
 
     override fun onBindViewHolder(holder: FollowActivityRVAdapter.ViewHolder, position: Int) {
         holder.binding.itemFollowActivityHeartIv.setOnClickListener {
-            followActivityList[position].like = !followActivityList[position].like
             itemClickListener.onItemClick(followActivityList[position], position)
-            this.notifyDataSetChanged()
+            // this.notifyDataSetChanged()
         }
         holder.bind(followActivityList[position])
     }
@@ -66,5 +65,10 @@ class FollowActivityRVAdapter(private val followActivityList: ArrayList<FollowCo
     fun addAllItems(items: ArrayList<FollowCourseResult>) {
         followActivityList.addAll(items)
         this.notifyDataSetChanged()
+    }
+
+    fun changeLikeStatus(position: Int) {
+        followActivityList[position].like = !followActivityList[position].like
+        this.notifyItemChanged(position)
     }
 }

@@ -81,7 +81,11 @@ class CourseDetailCourseRVAdapter(private val courseList: ArrayList<PlaceRespons
 
     fun addAllItems(items: ArrayList<PlaceResponseDtos>) {
         courseList.clear()
-        courseList.addAll(items)
+        for (i in 0 until items.size) {
+            if (items[i].placeName.length > 1 && items[i].placeImgUrls.isNotEmpty() && items[i].address.length > 1) {
+                courseList.add(items[i])
+            }
+        }
         this.notifyDataSetChanged()
     }
 }

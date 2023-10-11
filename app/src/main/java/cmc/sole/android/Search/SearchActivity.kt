@@ -7,21 +7,20 @@ import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
 import cmc.sole.android.CourseTag.Categories
+import cmc.sole.android.CourseTag.transCategories
 import cmc.sole.android.Home.DefaultCourse
 import cmc.sole.android.Home.HomeDefaultCourseRVAdapter
 import cmc.sole.android.Home.HomeDefaultResponse
 import cmc.sole.android.Home.Retrofit.HomeDefaultCourseView
+import cmc.sole.android.Home.Retrofit.HomeFilterCourseView
 import cmc.sole.android.Home.Retrofit.HomeService
 import cmc.sole.android.MyCourse.MyCourseOptionBottomFragment
-import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryRequest
-import cmc.sole.android.MyCourse.Retrofit.MyCourseService
 import cmc.sole.android.MyCourse.TagButton
 import cmc.sole.android.R
 import cmc.sole.android.Search.RoomDB.SearchWord
@@ -36,10 +35,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.NullPointerException
 
 
-class SearchActivity: AppCompatActivity(),
-    HomeDefaultCourseView {
+class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCourseView {
 
     lateinit var binding: ActivitySearchBinding
 
@@ -57,9 +56,14 @@ class SearchActivity: AppCompatActivity(),
     // MEMO: 필터 적용
     var tagFlagList = booleanArrayOf(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false)
     var regionFlagList = arrayListOf<String>()
-    var placeCategories = mutableSetOf<Categories>()
-    var transCategories = mutableSetOf<Categories>()
-    var withCategories = mutableSetOf<Categories>()
+    var placeCategories: HashSet<Categories> = hashSetOf()
+    var transCategories: HashSet<Categories> = hashSetOf()
+    var withCategories: HashSet<Categories> = hashSetOf()
+    var regions: HashSet<Region> = hashSetOf()
+    private var prePlaceCategories: HashSet<Categories> = hashSetOf()
+    private var preTransCategories: HashSet<Categories> = hashSetOf()
+    private var preWithCategories: HashSet<Categories> = hashSetOf()
+    private var preRegions: HashSet<Categories> = hashSetOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,6 +99,7 @@ class SearchActivity: AppCompatActivity(),
     private fun initService() {
         searchService = HomeService()
         searchService.setHomeDefaultCourseView(this)
+        searchService.setHomeFilterCourseView(this)
     }
 
     private fun initAdapter() {
@@ -123,7 +128,8 @@ class SearchActivity: AppCompatActivity(),
                     binding.searchDefaultLayout.visibility = View.GONE
                     binding.searchResultRv.visibility = View.VISIBLE
                     binding.searchTextEt.setText(data.searchWord)
-                    searchService.getHomeDefaultCourse(courseId, data.searchWord)
+                    binding.searchTextEt.setSelection(data.searchWord.length)
+                    checkFilterAndApplyAPI()
                 }
             }
         })
@@ -155,6 +161,7 @@ class SearchActivity: AppCompatActivity(),
                 binding.searchDefaultLayout.visibility = View.VISIBLE
                 binding.searchResultRv.visibility = View.GONE
                 binding.searchFilterCv.visibility = View.GONE
+                binding.courseMoreCv.visibility = View.GONE
                 binding.searchTextEt.setText("")
 
                 searchResultRVAdapter.removeAllItems()
@@ -204,49 +211,47 @@ class SearchActivity: AppCompatActivity(),
                 val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(binding.searchTextEt.windowToken, 0)
 
-                binding.searchDefaultLayout.visibility = View.GONE
-                binding.searchResultRv.visibility = View.VISIBLE
+                if (binding.searchTextEt.text.toString() != "") {
+                    binding.searchDefaultLayout.visibility = View.GONE
+                    binding.searchResultRv.visibility = View.VISIBLE
+                    binding.searchTextEt.setSelection(binding.searchTextEt.length())
 
-                searchWord = binding.searchTextEt.text.toString()
-                searchResultRVAdapter.removeAllItems()
+                    searchWord = binding.searchTextEt.text.toString()
+                    searchResultRVAdapter.removeAllItems()
 
-                searchService.getHomeDefaultCourse(courseId, searchWord)
+                    searchService.getHomeDefaultCourse(courseId, searchWord)
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    val searchWord = binding.searchTextEt.text.toString()
-                    recentDao?.deleteWord(searchWord)
-                    recentDao?.insert(SearchWord(searchWord))
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val searchWord = binding.searchTextEt.text.toString()
+                        recentDao?.deleteWord(searchWord)
+                        recentDao?.insert(SearchWord(searchWord))
+                    }
+
+                    true
                 }
-
-                true
             }
 
             false
         }
 
         binding.courseMoreCv.setOnClickListener {
-            searchService.getHomeDefaultCourse(lastCourseId, searchWord)
+            checkFilterAndApplyAPI()
         }
 
 
         binding.searchFilterCv.setOnClickListener {
             val myCourseOptionBottomFragment = MyCourseOptionBottomFragment()
             var bundle = Bundle()
+            bundle.putString("viewFlag", "searchActivity")
             bundle.putBooleanArray("tagFlag", tagFlagList)
             bundle.putStringArrayList("regionFlag", regionFlagList)
             myCourseOptionBottomFragment.arguments = bundle
             myCourseOptionBottomFragment.show(supportFragmentManager!!, "CourseDetailOptionBottom")
             myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
                 override fun finish(returnTagList: List<TagButton>, returnRegionList: ArrayList<String>) {
-                    var filterFlag = false
-
                     // MEMO: 태그
                     for (i in 0..17) {
                         tagFlagList[i] = returnTagList[i].isChecked
-
-                        if (returnTagList[i].isChecked) {
-                            filterFlag = true
-                        }
                     }
 
                     var tagArrayList = arrayListOf<String>()
@@ -259,39 +264,28 @@ class SearchActivity: AppCompatActivity(),
 
                     // MEMO: 지역 필터
                     regionFlagList = returnRegionList
-                    var regionList = mutableSetOf<Region>()
+                    var regionList = hashSetOf<Region>()
                     for (i in 0 until returnRegionList.size) {
                         regionList.add(returnRegionCode(returnRegionList[i]))
                     }
-                    if (returnRegionList.size > 0) {
-                        filterFlag = true
-                    }
 
-                    if (filterFlag) {
-                        binding.searchFilterCv.strokeColor = ContextCompat.getColor(binding.root.context, R.color.main)
-                    } else {
-                        binding.searchFilterCv.strokeColor = Color.parseColor("#D3D4D5")
-                    }
+                    regions = regionList
+                    placeCategories = returnCategories("PLACE")
+                    withCategories = returnCategories("WITH")
+                    transCategories = returnCategories("TRANS")
 
-                    var region = regionList
-                    var placeCategories = returnCategories("PLACE")
-                    var withCategories = returnCategories("WITH")
-                    var transCategories = returnCategories("TRANS")
+                    checkFilterAndApplyAPI()
 
-                    Log.d("API-TEST", "region = $region / placeCategories = $placeCategories / withCategories = $withCategories / transCategories = $transCategories")
-
-                    if (region.size == 0 && placeCategories.size == 0 && withCategories.size == 0 && transCategories.size == 0) {
-                        searchService.getHomeDefaultCourse(courseId, searchWord)
-                    } else {
-                        // myCourseService.getMyCourseHistory(null, MyCourseHistoryRequest(region, placeCategories, transCategories, withCategories))
-                    }
+                    var map = hashSetOf(Categories.ACTIVITY, Categories.CAFE)
                 }
             })
         }
     }
 
-    private fun returnCategories(option: String): MutableSet<Categories> {
-        var returnCategoriesArray = mutableSetOf<Categories>()
+    // private fun returnCategories(option: String): MutableSet<Categories> {
+    private fun returnCategories(option: String): HashSet<Categories> {
+        // var returnCategoriesArray = mutableSetOf<Categories>()
+        var returnCategoriesArray = hashSetOf<Categories>()
 
         when(option) {
             "PLACE" -> {
@@ -318,10 +312,24 @@ class SearchActivity: AppCompatActivity(),
         return returnCategoriesArray
     }
 
+    private fun checkFilterAndApplyAPI() {
+        if (placeCategories.size == 0 && withCategories.size == 0 && transCategories.size == 0 && regions.size == 0) {
+            searchService.getHomeDefaultCourse(courseId, searchWord)
+        } else {
+            searchService.getHomeFilterCourse(courseId, searchWord, placeCategories, withCategories, transCategories, regions)
+        }
+    }
+
     override fun homeDefaultCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
         binding.searchRv.visibility = View.VISIBLE
         binding.searchDefaultLayout.visibility = View.GONE
         binding.searchFilterCv.visibility = View.VISIBLE
+        binding.searchFilterCv.strokeColor = Color.parseColor("#D3D4D5")
+
+        // MEMO: 이전에 필터를 설정했던 결과가 있었다면 이를 삭제하고 원래대로!!
+        if (placeCategories.size == 0 && withCategories.size == 0 && transCategories.size == 0 && regions.size == 0) {
+            searchResultRVAdapter.removeAllItems()
+        }
 
         if (homeDefaultResponse.data.size != 0) {
             // MEMO: 마지막 페이지가 아니라면 더 보기 버튼 보여주기
@@ -330,12 +338,46 @@ class SearchActivity: AppCompatActivity(),
                 lastCourseId = lastCourse.courseId
                 binding.courseMoreCv.visibility = View.VISIBLE
             } else binding.courseMoreCv.visibility = View.GONE
+
+            searchResultRVAdapter.addAllItems(homeDefaultResponse.data)
+        } else {
+            binding.courseMoreCv.visibility = View.GONE
+        }
+    }
+
+    override fun homeDefaultCourseFailureView() {
+        Log.d("API-TEST", "homeDefaultCourseFailureView")
+    }
+
+    override fun homeFilterCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
+        binding.searchRv.visibility = View.VISIBLE
+        binding.searchDefaultLayout.visibility = View.GONE
+        binding.searchFilterCv.visibility = View.VISIBLE
+        binding.searchFilterCv.strokeColor = ContextCompat.getColor(binding.root.context, R.color.main)
+
+        // MEMO: 이전에 필터를 설정했던 결과와 현재 필터가 다르다면 이를 삭제하고 원래대로!!
+        if (prePlaceCategories != placeCategories || preWithCategories != withCategories || preTransCategories != transCategories || preRegions != regions) {
+            searchResultRVAdapter.removeAllItems()
+            prePlaceCategories = placeCategories
+            preWithCategories = withCategories
+            preTransCategories = transCategories
+        }
+
+        if (homeDefaultResponse.data.size != 0) {
+            // MEMO: 마지막 페이지가 아니라면 더 보기 버튼 보여주기
+            var lastCourse = homeDefaultResponse.data[homeDefaultResponse.data.size - 1]
+            if (!lastCourse.finalPage) {
+                lastCourseId = lastCourse.courseId
+                binding.courseMoreCv.visibility = View.VISIBLE
+            } else binding.courseMoreCv.visibility = View.GONE
+        } else {
+            binding.courseMoreCv.visibility = View.GONE
         }
 
         searchResultRVAdapter.addAllItems(homeDefaultResponse.data)
     }
 
-    override fun homeDefaultCourseFailureView() {
-
+    override fun homeFilterCourseFailureView() {
+        Log.d("API-TEST", "homeFilterCourseFailureView")
     }
 }

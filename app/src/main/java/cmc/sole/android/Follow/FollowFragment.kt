@@ -1,5 +1,6 @@
 package cmc.sole.android.Follow
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +17,8 @@ import cmc.sole.android.R
 
 import cmc.sole.android.databinding.FragmentFollowBinding
 import androidx.fragment.app.Fragment
+import cmc.sole.android.Course.CourseDetailActivity
+import cmc.sole.android.Course.ScrapSelectFolderBottomFragment
 import cmc.sole.android.databinding.FragmentFollowerFollowerBinding
 
 class FollowFragment: Fragment(),
@@ -28,6 +31,7 @@ class FollowFragment: Fragment(),
     lateinit var followService: FollowService
     lateinit var followActivityRVAdapter: FollowActivityRVAdapter
     private var followActivityList = ArrayList<FollowCourseResult>()
+    var clickItemIndex: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +61,24 @@ class FollowFragment: Fragment(),
         binding.followActivityRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         followActivityRVAdapter.setOnItemClickListener(object: FollowActivityRVAdapter.OnItemClickListener {
             override fun onItemClick(data: FollowCourseResult, position: Int) {
-                homeService.scrapAddAndCancel(data.courseId!!)
+                clickItemIndex = position
+                if (data.like) {
+                    homeService.scrapAddAndCancel(data.courseId!!, null)
+                } else {
+                    val scrapSelectFolderBottomFragment = ScrapSelectFolderBottomFragment()
+                    var bundle = Bundle()
+                    bundle.putInt("courseId", data.courseId!!)
+                    scrapSelectFolderBottomFragment.arguments = bundle
+                    scrapSelectFolderBottomFragment.show(activity!!.supportFragmentManager, "ScrapSelectFolderBottomFragment")
+                    scrapSelectFolderBottomFragment.setOnDialogFinishListener(object: ScrapSelectFolderBottomFragment.OnDialogFinishListener {
+                        override fun finish(isSuccess: Boolean) {
+                            if (isSuccess) {
+                                followActivityRVAdapter.changeLikeStatus(position)
+                                followActivityRVAdapter.notifyItemChanged(position)
+                            }
+                        }
+                    })
+                }
             }
         })
     }
@@ -78,7 +99,8 @@ class FollowFragment: Fragment(),
     }
 
     override fun homeScrapAddAndCancelSuccessView() {
-        Log.d("API-TEST", "SCRAP 성공")
+        followActivityRVAdapter.changeLikeStatus(clickItemIndex!!)
+        followActivityRVAdapter.notifyItemChanged(clickItemIndex!!)
     }
 
     override fun homeScrapAddAndCancelFailureView() {

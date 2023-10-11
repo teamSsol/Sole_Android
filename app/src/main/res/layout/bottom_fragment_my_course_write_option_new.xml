@@ -38,8 +38,8 @@
         android:layout_height="32dp"
         android:src="@drawable/ic_cancel_x"
         android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toTopOf="@id/my_course_write_option_location_tv"
-        app:layout_constraintBottom_toBottomOf="@id/my_course_write_option_location_tv"
+        app:layout_constraintTop_toTopOf="@id/my_course_write_option_taste_tv"
+        app:layout_constraintBottom_toBottomOf="@id/my_course_write_option_taste_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="#404040" />
     

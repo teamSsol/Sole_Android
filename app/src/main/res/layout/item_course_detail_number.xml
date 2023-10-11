@@ -13,6 +13,7 @@
         app:cardCornerRadius="20dp"
         app:cardBackgroundColor="@color/main"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/course_detail_place_title_tv"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView

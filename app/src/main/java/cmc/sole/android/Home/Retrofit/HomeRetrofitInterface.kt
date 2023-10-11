@@ -1,9 +1,14 @@
 package cmc.sole.android.Home.Retrofit
 
+import cmc.sole.android.CourseTag.Categories
+import cmc.sole.android.CourseTag.placeCategories
+import cmc.sole.android.CourseTag.transCategories
+import cmc.sole.android.CourseTag.withCategories
 import cmc.sole.android.DefaultResponse
 import cmc.sole.android.Home.*
 import cmc.sole.android.MyCourse.Retrofit.MyCourseHistoryRequest
 import cmc.sole.android.TagSettingRequest
+import cmc.sole.android.Utils.Region
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -30,19 +35,26 @@ interface HomeRetrofitInterface {
 
     @GET("/api/courses")
     fun getHomeDefaultCourse(
-        @Query("courseId") courseId: Int?,
-        @Query("searchWord") searchWord: String
+        @Query("courseId") courseId: Int? = null,
+        @Query("searchWord") searchWord: String = ""
+    ): Call<HomeDefaultResponse>
+
+    // MEMO: 필터 적용/미적용 구분을 위한 API 추가
+    // MEMO: 위와 같은 API
+    @GET("/api/courses")
+    fun getHomeFilterCourse(
+        @Query("courseId") courseId: Int? = null,
+        @Query("searchWord") searchWord: String = "",
+        @Query("placeCategories") placeCategories: HashSet<Categories>? = null,
+        @Query("withCategories") withCategories: HashSet<Categories>? = null,
+        @Query("transCategories") transCategories: HashSet<Categories>? = null,
+        @Query("regions") regions: HashSet<Region>? = null
     ): Call<HomeDefaultResponse>
 
     @GET("/api/courses/{courseId}")
     fun getHomeDetailCourse(
         @Path("courseId") courseId: Int?
     ): Call<HomeCourseDetailResponse>
-
-    @POST("/api/courses/{courseId}/scrap")
-    fun scrapAddAndCancel(
-        @Path("courseId") courseId: Int
-    ): Call<Void>
 
     // MEMO: 마이페이지
     @GET("/api/mypage")
@@ -87,8 +99,9 @@ interface HomeRetrofitInterface {
     fun quitMember(): Call<Void>
     
     // MEMO: 스크랩 등록/취소
-    @POST("/api/courses/{courseId}/scrap")
-    fun scrapOnOff(
-        @Path("courseId") courseId: Int
+    @POST("/api/courses/{courseId}")
+    fun scrapAddAndCancel(
+        @Path("courseId") courseId: Int,
+        @Query("scrapFolderId") scrapFolderId: Int? = null
     ): Call<Void>
 }

@@ -1,6 +1,5 @@
 package cmc.sole.android.Home
 
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
 import android.content.Intent
@@ -11,12 +10,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import cmc.sole.android.Course.CourseDetailActivity
 import cmc.sole.android.MyPage.MyPageActivity
@@ -29,9 +24,14 @@ import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewHorizontalDecor
 import cmc.sole.android.Utils.RecyclerViewDecoration.RecyclerViewVerticalDecoration
 import cmc.sole.android.databinding.FragmentHomeBinding
 import androidx.fragment.app.Fragment
+import cmc.sole.android.Course.ScrapSelectFolderBottomFragment
+import cmc.sole.android.R
+import cmc.sole.android.getPlaceCategories
+import cmc.sole.android.getTransCategories
+import cmc.sole.android.getWithCategories
 
 class HomeFragment: Fragment(),
-    HomePopularCourseView, HomeDefaultCourseView, HomeGetCurrentGPSView, HomeUpdateCurrentGPSView, HomeScrapAddAndCancelView {
+    HomePopularCourseView, HomeDefaultCourseView, HomeFilterCourseView, HomeGetCurrentGPSView, HomeUpdateCurrentGPSView, HomeScrapAddAndCancelView {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -43,6 +43,7 @@ class HomeFragment: Fragment(),
     private lateinit var homeService: HomeService
     var courseId: Int? = null
     var lastCourseId: Int? = null
+    var clickItemIndex: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,13 +87,30 @@ class HomeFragment: Fragment(),
         binding.homeMyCourseRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         myCourseRVAdapter.setOnItemClickListener(object: HomeDefaultCourseRVAdapter.OnItemClickListener {
             override fun onItemClick(data: DefaultCourse, position: Int, mode: String) {
+                clickItemIndex = position
                 if (mode == "all") {
                     val intent = Intent(activity, CourseDetailActivity::class.java)
                     intent.putExtra("courseId", data.courseId)
                     intent.putExtra("like", data.like)
                     startActivity(intent)
                 } else if (mode == "heart") {
-
+                    if (data.like) {
+                        homeService.scrapAddAndCancel(data.courseId, null)
+                    } else {
+                        val scrapSelectFolderBottomFragment = ScrapSelectFolderBottomFragment()
+                        var bundle = Bundle()
+                        bundle.putInt("courseId", data.courseId,)
+                        scrapSelectFolderBottomFragment.arguments = bundle
+                        scrapSelectFolderBottomFragment.show(activity!!.supportFragmentManager, "ScrapSelectFolderBottomFragment")
+                        scrapSelectFolderBottomFragment.setOnDialogFinishListener(object: ScrapSelectFolderBottomFragment.OnDialogFinishListener {
+                            override fun finish(isSuccess: Boolean) {
+                                if (isSuccess) {
+                                    myCourseRVAdapter.changeLikeStatus(position)
+                                    myCourseRVAdapter.notifyItemChanged(position)
+                                }
+                            }
+                        })
+                    }
                 }
             }
         })
@@ -116,7 +134,6 @@ class HomeFragment: Fragment(),
             val currentLocation = getCurrentLocation()
             if (currentLocation != null) {
                 homeService.updateCurrentGPS(currentLocation)
-                Log.d("API-TEST", "currentLocation = $currentLocation")
             }
             popularCourseRVAdapter.clearItems()
             homeService.getHomePopularCourse()
@@ -165,6 +182,7 @@ class HomeFragment: Fragment(),
         homeService.setHomeDefaultCourseView(this)
         homeService.setHomeGetCurrentGPSView(this)
         homeService.setHomeUpdateCurrentGPSView(this)
+        homeService.setHomeScrapAddAndCancelView(this)
         homeService.getHomePopularCourse()
         homeService.getCurrentGPS()
     }
@@ -205,18 +223,28 @@ class HomeFragment: Fragment(),
     override fun homeDefaultCourseFailureView() { }
 
     override fun homeGetCurrentGPSSuccessView(currentGPS: String) {
-        Log.d("API-TEST", currentGPS.toString())
         binding.homePopularCourseSettingLocationIv.text = currentGPS
     }
 
     override fun homeGetCurrentGPSFailureView() { }
     override fun homeUpdateCurrentGPSSuccessView(homeCurrentGPSResult: HomeCurrentGPSResult) {
-        Log.d("API-TEST", homeCurrentGPSResult.currentGps.toString())
         binding.homePopularCourseSettingLocationIv.text = homeCurrentGPSResult.currentGps.address
     }
 
     override fun homeUpdateCurrentGPSFailureView() { }
-    override fun homeScrapAddAndCancelSuccessView() { }
+    override fun homeScrapAddAndCancelSuccessView() {
+        myCourseRVAdapter.changeLikeStatus(clickItemIndex!!)
+        myCourseRVAdapter.notifyItemChanged(clickItemIndex!!)
+    }
 
     override fun homeScrapAddAndCancelFailureView() { }
+    
+    // TODO: 필터 설정 오류 생기면 이 부분에 직접 필터 넣어주기
+    override fun homeFilterCourseSuccessView(homeDefaultResponse: HomeDefaultResponse) {
+        TODO("Not yet implemented")
+    }
+
+    override fun homeFilterCourseFailureView() {
+        TODO("Not yet implemented")
+    }
 }

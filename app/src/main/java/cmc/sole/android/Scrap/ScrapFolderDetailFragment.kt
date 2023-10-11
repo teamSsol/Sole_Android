@@ -39,7 +39,7 @@ class ScrapFolderDetailFragment: Fragment(),
     lateinit var scrapFolderName: String
     var scrapFolderId = 0
     var deleteCourseId = ArrayList<Int>()
-    var scrapListSize = -1
+    private var scrapListSize = -1
 
     private lateinit var callback: OnBackPressedCallback
 
@@ -57,13 +57,16 @@ class ScrapFolderDetailFragment: Fragment(),
         initService()
         initAdapter()
 
-        if (scrapFolderName == "기본 폴더") {
-            scrapService.getDefaultFolder()
-        } else scrapService.getScrapCourse(scrapFolderId)
+        scrapService.getScrapCourse(scrapFolderId)
 
         initClickListener()
         
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        scrapService.getScrapCourse(scrapFolderId)
     }
 
     private fun initService() {
@@ -85,6 +88,7 @@ class ScrapFolderDetailFragment: Fragment(),
                     binding.scrapFolderDetailDeleteCv.strokeColor = Color.parseColor("#D3D4D5")
                     val intent = Intent(activity, CourseDetailActivity::class.java)
                     intent.putExtra("courseId", data.courseId)
+                    intent.putExtra("like", data.like)
                     startActivity(intent)
                 } else {
                     scrapFolderDetailRVAdapter.checkMode(1)
@@ -135,7 +139,6 @@ class ScrapFolderDetailFragment: Fragment(),
             bundle.putIntegerArrayList("deleteCourseId", deleteCourseId)
             bundle.putString("folderName", scrapFolderName)
             bundle.putInt("scrapListSize", scrapListSize)
-            Log.d("API-TEST", "2 scrapListSize = $scrapListSize")
             scrapFolderOptionBottomFragment.arguments = bundle
             scrapFolderOptionBottomFragment.show(requireActivity().supportFragmentManager, "ScrapFolderDetailBottom")
             scrapFolderOptionBottomFragment.setOnFinishListener(object: ScrapFolderOptionBottomFragment.OnScrapOptionFinishListener {

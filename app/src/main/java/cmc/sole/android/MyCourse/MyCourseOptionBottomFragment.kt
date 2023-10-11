@@ -48,6 +48,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
     private var initialRegionList = arrayListOf<String>()
     private var returnRegionList = arrayListOf<String>()
     private var applyTag: Boolean = false
+    private var preViewFlag = ""
     // MEMO: 현재 선택하고 있는 지역을 알기 위함
     private var selectCityFlag = "서울"
 
@@ -106,20 +107,32 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
     ): View {
         binding = BottomFragmentMyCourseWriteOptionNewBinding.inflate(inflater, container, false)
 
+        preViewFlag = requireArguments().getString("viewFlag").toString()
+        if (preViewFlag == "searchActivity" || preViewFlag == "myCourseWrite") {
+
+        } else {
+            binding.myCourseWriteOptionTagLayout.visibility = View.VISIBLE
+            binding.myCourseWriteOptionLocationLayout.visibility = View.GONE
+            binding.myCourseWriteOptionLocationTv.visibility = View.GONE
+            binding.myCourseWriteOptionTasteTv.setTextColor(ContextCompat.getColor(binding.root.context, R.color.black))
+            binding.myCourseWriteOptionLocationTv.setTextColor(Color.parseColor("#999999"))
+            binding.myCourseOptionSelectLayout.visibility = View.GONE
+        }
+
         initialTagFlag = requireArguments().getBooleanArray("tagFlag")!!
         tagFlag = initialTagFlag.copyOf()
 
         initialRegionList = requireArguments().getStringArrayList("regionFlag")!!
         returnRegionList.addAll(initialRegionList)
-        binding.myCourseOptionSelectNumberTv.setText(initialRegionList.size.toString())
+        binding.myCourseOptionSelectNumberTv.text = initialRegionList.size.toString()
 
-        // UPDATE: 나중에 지역 추가하면 이 부분 삭제하기
-        binding.myCourseWriteOptionTagLayout.visibility = View.VISIBLE
-        binding.myCourseWriteOptionLocationLayout.visibility = View.GONE
-        binding.myCourseWriteOptionLocationTv.visibility = View.GONE
-        binding.myCourseWriteOptionTasteTv.setTextColor(ContextCompat.getColor(binding.root.context, R.color.black))
-        binding.myCourseWriteOptionLocationTv.setTextColor(Color.parseColor("#999999"))
-        binding.myCourseOptionSelectLayout.visibility = View.GONE
+//        // UPDATE: 나중에 지역 추가하면 이 부분 삭제하기
+//        binding.myCourseWriteOptionTagLayout.visibility = View.VISIBLE
+//        binding.myCourseWriteOptionLocationLayout.visibility = View.GONE
+//        binding.myCourseWriteOptionLocationTv.visibility = View.GONE
+//        binding.myCourseWriteOptionTasteTv.setTextColor(ContextCompat.getColor(binding.root.context, R.color.black))
+//        binding.myCourseWriteOptionLocationTv.setTextColor(Color.parseColor("#999999"))
+//        binding.myCourseOptionSelectLayout.visibility = View.GONE
 
         initAdapter()
         initClickListener()
