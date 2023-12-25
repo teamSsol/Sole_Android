@@ -3,6 +3,7 @@ package com.sole.android
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import cmc.sole.android.Utils.AuthorizationTokenInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -12,9 +13,10 @@ class ApplicationClass: Application() {
     companion object {
         const val Authorization_TOKEN: String = "Authorization"
         // MEMO: 운영서버
-        // const val BASE_URL = "https://www.api-teamsole.site"
+        // const val BASE_URL = "https://www.teamsole.site"
         // MEMO: 개발서버
-        const val BASE_URL = "https://dev.api-teamsole.site"
+        const val BASE_URL = "https://dev.teamsole.site"
+
         const val TAG: String = "sole-pref" // Log, SharedPreference
 
         lateinit var retrofit: Retrofit
@@ -30,7 +32,7 @@ class ApplicationClass: Application() {
         val client: OkHttpClient = OkHttpClient.Builder()
             .readTimeout(30000, TimeUnit.MILLISECONDS)
             .connectTimeout(30000, TimeUnit.MILLISECONDS)
-            // .addNetworkInterceptor(AuthorizationTokenInterceptor())
+            .addNetworkInterceptor(AuthorizationTokenInterceptor())
             .build()
 
         retrofit = Retrofit.Builder()

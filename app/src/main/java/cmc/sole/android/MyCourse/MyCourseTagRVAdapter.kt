@@ -1,5 +1,6 @@
 package cmc.sole.android.MyCourse
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,5 +57,9 @@ class MyCourseTagRVAdapter(private val tagList: ArrayList<String>): RecyclerView
     fun clearItems() {
         tagList.clear()
         this.notifyDataSetChanged()
+    }
+
+    fun returnAllItems(): ArrayList<String> {
+        return tagList
     }
 }

@@ -70,7 +70,6 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
                     itemClickListener.onItemClick(courseList[position], position, "heart")
                 }
                 holder.bind(courseList[position])
-                holder.setIsRecyclable(false)
             }
         }
     }
@@ -78,7 +77,10 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
     override fun getItemCount(): Int = courseList.size
 
     inner class CourseItemViewHolder(val binding: ItemCourseDefaultBinding): RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(course: DefaultCourse) {
+            // Log.d("API-TEST", "course = $course")
+
             binding.itemCourseTitleTv.text = course.title
             Glide.with(binding.root.context).load(course.thumbnailImg).into(binding.itemCourseImg)
             binding.itemCourseLocationTv.text = course.address
@@ -91,7 +93,6 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
                 binding.itemCourseHeartIv.setImageResource(R.drawable.ic_heart_empty)
             }
 
-            // TODO: 태그 추가하기
             tagRVAdapter.clearItems()
             for (i in 0 until course.categories.size) {
                 tagRVAdapter.addItem(Translator.tagEngToKor(binding.root.context as AppCompatActivity, course.categories.elementAt(i).toString()))
@@ -137,6 +138,7 @@ class HomeDefaultCourseRVAdapter(private val courseList: ArrayList<DefaultCourse
 
     fun changeLikeStatus(position: Int) {
         courseList[position].like = !courseList[position].like
-        this.notifyItemChanged(position)
+        this.notifyDataSetChanged()
+        // this.notifyItemChanged(position)
     }
 }

@@ -461,6 +461,7 @@ class HomeService {
     fun scrapAddAndCancel(courseId: Int, scrapFolderId: Int?) {
         homeService?.scrapAddAndCancel(courseId, scrapFolderId)?.enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                Log.d("API-TEST", "${response.code()}\n${response.body()}")
                 if (response.code() == 200) {
                     homeScrapAddAndCancelView.homeScrapAddAndCancelSuccessView()
                 } else {

@@ -83,12 +83,13 @@ class LoginActivity: AppCompatActivity(),
                     else if (token != null) {
                         accessToken = token.accessToken
                         saveKakaoAccessToken(accessToken)
+                        Log.d("API-TEST", "AccessToken = $accessToken")
                         signupCheckService.signupCheck(SignupCheckRequest(accessToken, getFCMToken().toString()))
                     }
                 }
             } else {
                 UserApiClient.instance.loginWithKakaoAccount(this) { token, error ->
-                    if (error != null) Log.e("EXAMPLE", "로그인 실패", error)
+                    if (error != null) Log.e("API-ERROR", "로그인 실패", error)
                     else if (token != null) {
                         accessToken = token.accessToken
                         saveKakaoAccessToken(accessToken)
@@ -107,6 +108,7 @@ class LoginActivity: AppCompatActivity(),
     override fun signupCheckSuccessView(result: SignupCheckResponse) {
         if (result.data.check) {
             // MEMO: 가입한 사용자
+            Log.d("API-TEST", "token = ${result.data.accessToken}")
             saveAccessToken(result.data.accessToken)
             saveRefreshToken(result.data.refreshToken)
 

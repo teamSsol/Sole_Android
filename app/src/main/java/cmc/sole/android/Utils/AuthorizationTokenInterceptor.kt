@@ -57,7 +57,6 @@ class AuthorizationTokenInterceptor: Interceptor {
     MEMO: 2. 이전에 저장한 RefreshToken을 이용해 새로운 AccessToken을 받아옴
     MEMO: 3. 동시에 새로운 refreshToken 받아오기 -> getNewToken API 연동
      */
-
     private fun updateRefreshToken() {
         val client: OkHttpClient = OkHttpClient.Builder()
             .addNetworkInterceptor(AuthorizationTokenInterceptor())

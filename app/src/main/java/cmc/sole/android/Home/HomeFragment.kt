@@ -42,7 +42,7 @@ class HomeFragment: Fragment(),
     private var myCourseList = ArrayList<DefaultCourse>()
     private lateinit var homeService: HomeService
     var courseId: Int? = null
-    var lastCourseId: Int? = null
+    private var lastCourseId: Int? = null
     var clickItemIndex: Int? = null
 
     override fun onCreateView(
@@ -130,7 +130,6 @@ class HomeFragment: Fragment(),
         }
 
         binding.homePopularCourseLayoutCv.setOnClickListener {
-            // UPDATE: 현재 위치 변경
             val currentLocation = getCurrentLocation()
             if (currentLocation != null) {
                 homeService.updateCurrentGPS(currentLocation)

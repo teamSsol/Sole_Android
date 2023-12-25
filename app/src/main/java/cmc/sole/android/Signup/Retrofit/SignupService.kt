@@ -52,7 +52,7 @@ class SignupService {
                 }
             }
             override fun onFailure(call: Call<SignupCheckResponse>, t: Throwable) {
-                Log.e("SIGNUP-SERVICE" , "signup check failure", t)
+                Log.e("SIGNUP-SERVICE" , "signup check failure $t", t)
             }
         })
     }
