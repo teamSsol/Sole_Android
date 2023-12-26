@@ -103,23 +103,19 @@ class MyCourseFragment: Fragment(),
 
     private fun initClickListener() {
         binding.myCourseFilterCv.setOnClickListener {
+            // MEMO: 검색 필터 복붙
             val myCourseOptionBottomFragment = MyCourseOptionBottomFragment()
             var bundle = Bundle()
+            bundle.putString("viewFlag", "myCourseFragment")
             bundle.putBooleanArray("tagFlag", tagFlagList)
             bundle.putStringArrayList("regionFlag", regionFlagList)
             myCourseOptionBottomFragment.arguments = bundle
             myCourseOptionBottomFragment.show(activity?.supportFragmentManager!!, "CourseDetailOptionBottom")
             myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
                 override fun finish(returnTagList: List<TagButton>, returnRegionList: ArrayList<String>) {
-                    var filterFlag = false
-
                     // MEMO: 태그
                     for (i in 0..17) {
                         tagFlagList[i] = returnTagList[i].isChecked
-
-                        if (returnTagList[i].isChecked) {
-                            filterFlag = true
-                        }
                     }
 
                     var tagArrayList = arrayListOf<String>()
@@ -132,18 +128,9 @@ class MyCourseFragment: Fragment(),
 
                     // MEMO: 지역 필터
                     regionFlagList = returnRegionList
-                    var regionList = mutableSetOf<Region>()
+                    var regionList = hashSetOf<Region>()
                     for (i in 0 until returnRegionList.size) {
                         regionList.add(returnRegionCode(returnRegionList[i]))
-                    }
-                    if (returnRegionList.size > 0) {
-                        filterFlag = true
-                    }
-
-                    if (filterFlag) {
-                        binding.myCourseFilterCv.strokeColor = ContextCompat.getColor(binding.root.context, R.color.main)
-                    } else {
-                        binding.myCourseFilterCv.strokeColor = Color.parseColor("#D3D4D5")
                     }
 
                     var region = regionList
@@ -158,6 +145,57 @@ class MyCourseFragment: Fragment(),
                     }
                 }
             })
+
+            // MEMO: 기존에 있던 버전
+//            myCourseOptionBottomFragment.setOnFinishListener(object: MyCourseOptionBottomFragment.OnTagFragmentFinishListener {
+//                override fun finish(returnTagList: List<TagButton>, returnRegionList: ArrayList<String>) {
+//                    var filterFlag = false
+//
+//                    // MEMO: 태그
+//                    for (i in 0..17) {
+//                        tagFlagList[i] = returnTagList[i].isChecked
+//
+//                        if (returnTagList[i].isChecked) {
+//                            filterFlag = true
+//                        }
+//                    }
+//
+//                    var tagArrayList = arrayListOf<String>()
+//                    for (i in 0..17) {
+//                        if (tagFlagList[i]) tagArrayList.add(returnTagList[i].title)
+//                    }
+//
+//                    tagArrayList.add("")
+//                    // tagRVAdapter.addAllItems(tagArrayList)
+//
+//                    // MEMO: 지역 필터
+//                    regionFlagList = returnRegionList
+//                    var regionList = mutableSetOf<Region>()
+//                    for (i in 0 until returnRegionList.size) {
+//                        regionList.add(returnRegionCode(returnRegionList[i]))
+//                    }
+//                    if (returnRegionList.size > 0) {
+//                        filterFlag = true
+//                    }
+//
+//                    if (filterFlag) {
+//                        binding.myCourseFilterCv.strokeColor = ContextCompat.getColor(binding.root.context, R.color.main)
+//                    } else {
+//                        binding.myCourseFilterCv.strokeColor = Color.parseColor("#D3D4D5")
+//                    }
+//
+//                    var region = regionList
+//                    var placeCategories = returnCategories("PLACE")
+//                    var withCategories = returnCategories("WITH")
+//                    var transCategories = returnCategories("TRANS")
+//
+//                    if (region.size == 0 && placeCategories.size == 0 && withCategories.size == 0 && transCategories.size == 0) {
+//                        myCourseService.getMyCourseNullTagHistory(courseId)
+//                    } else {
+//                        myCourseService.getMyCourseHistory(null, MyCourseHistoryRequest(region, placeCategories, transCategories, withCategories))
+//                    }
+//                }
+//            })
         }
 
         binding.myCourseFb.setOnClickListener {
@@ -194,11 +232,9 @@ class MyCourseFragment: Fragment(),
     }
 
     override fun setMyCourseHistoryInfoSuccessView(myCourseHistoryResult: MyCourseHistoryInfoResult) {
-        // UPDATE: API 프로필 이미지 추가하면 추가해주기!
         Glide.with(this).load(myCourseHistoryResult.profileImg).centerCrop().circleCrop().placeholder(R.drawable.ic_profile).into(binding.myCourseProfileIv)
         binding.myCourseNicknameTv.text = myCourseHistoryResult.nickname
 
-        // UPDATE: Text Span 처리 필요
         var totalDate = myCourseHistoryResult.totalDate
         var totalPlaces = myCourseHistoryResult.totalPlaces
         var totalCourses = myCourseHistoryResult.totalCourses
@@ -232,6 +268,7 @@ class MyCourseFragment: Fragment(),
     }
 
     override fun setMyCourseHistorySuccessView(myCourseHistoryResult: ArrayList<DefaultCourse>) {
+        binding.myCourseFilterCv.strokeColor = ContextCompat.getColor(binding.root.context, R.color.main)
         myCourseCourseRVAdapter.addAllItems(myCourseHistoryResult)
     }
 
@@ -302,6 +339,7 @@ class MyCourseFragment: Fragment(),
     }
 
     override fun setMyCourseNullTagHistorySuccessView(myCourseHistoryResult: ArrayList<DefaultCourse>) {
+        binding.myCourseFilterCv.strokeColor = Color.parseColor("#D3D4D5")
         myCourseCourseRVAdapter.addAllItems(myCourseHistoryResult)
     }
 

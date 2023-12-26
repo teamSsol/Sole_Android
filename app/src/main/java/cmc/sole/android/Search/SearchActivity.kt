@@ -275,8 +275,6 @@ class SearchActivity: AppCompatActivity(), HomeDefaultCourseView, HomeFilterCour
                     transCategories = returnCategories("TRANS")
 
                     checkFilterAndApplyAPI()
-
-                    var map = hashSetOf(Categories.ACTIVITY, Categories.CAFE)
                 }
             })
         }
