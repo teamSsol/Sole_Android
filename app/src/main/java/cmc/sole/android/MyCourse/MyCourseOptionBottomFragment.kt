@@ -108,7 +108,7 @@ class MyCourseOptionBottomFragment: BottomSheetDialogFragment() {
         binding = BottomFragmentMyCourseWriteOptionNewBinding.inflate(inflater, container, false)
 
         preViewFlag = requireArguments().getString("viewFlag").toString()
-        if (preViewFlag == "searchActivity" || preViewFlag == "myCourseWrite" || preViewFlag == "myCourseFragment") {
+        if (preViewFlag == "searchActivity" || preViewFlag == "myCourseFragment") {
 
         } else {
             binding.myCourseWriteOptionTagLayout.visibility = View.VISIBLE
