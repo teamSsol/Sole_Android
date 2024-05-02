@@ -71,6 +71,7 @@ class MyCourseService {
     }
 
     fun getMyCourseHistory(courseId: Int?, myCourseHistoryRequest: MyCourseHistoryRequest) {
+        Log.d("API-TEST", "myCourseHistoryRequest = $myCourseHistoryRequest")
         myCourseService?.getMyCourseHistory(courseId, myCourseHistoryRequest)?.enqueue(object: Callback<MyCourseHistoryResponse> {
             override fun onResponse(
                 call: Call<MyCourseHistoryResponse>,

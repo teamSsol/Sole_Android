@@ -268,6 +268,7 @@ class MyCourseFragment: Fragment(),
     }
 
     override fun setMyCourseHistorySuccessView(myCourseHistoryResult: ArrayList<DefaultCourse>) {
+        Log.d("API-TEST", "myCourseHistoryResult = $myCourseHistoryResult")
         binding.myCourseFilterCv.strokeColor = ContextCompat.getColor(binding.root.context, R.color.main)
         myCourseCourseRVAdapter.addAllItems(myCourseHistoryResult)
     }
